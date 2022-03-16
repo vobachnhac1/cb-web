@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import axios from 'axios';
 import * as CONST from './constants';
-import { SERVER_LOCATION } from '@env';
+// import { SERVER_LOCATION } from '@env';
 import { ERROR_CODES } from './error-codes';
 
 const REQUEST_METHOD = {
@@ -15,7 +15,7 @@ const REQUEST_METHOD = {
 export class RestClientCreator {
   constructor(options = {}) {
     this.axiosInstance = axios.create({ ...options,
-      baseURL: SERVER_LOCATION // 'https://weathermanagementdev.azurewebsites.net'
+      baseURL: "http://203.205.26.244:7005/" // 'https://weathermanagementdev.azurewebsites.net'
     });
     this.axiosInstance.defaults.headers.common[CONST.REQ_HEADER_CONTENT_TYPE] = CONST.REQ_CONTENT_TYPE.JSON;
     this.axiosInstance.defaults.timeout = 20000;
@@ -218,7 +218,6 @@ const isFormData = val => {
 const readRestResponse = async (resolve) => {
   try {
     const resp = await new Promise.resolve(resolve);
-    // console.log('resp: ', resp.status);
     if (resp.status === 200 ) {
       return { success: true, data: resp.data };
     } else if (resp.status === 204){

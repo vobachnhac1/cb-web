@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+import storage from './sync_storage';
 import globalReducer from '../stores/global'
 
 const genPersistConfig = (key, props) => ({
@@ -9,9 +9,8 @@ const genPersistConfig = (key, props) => ({
     ...props,
   });
 
-  // nơi đăng ký 1 page là 1 store
+  //COMBINING ALL REDUCERS
 const rootReducer = combineReducers({ 
     global: persistReducer(genPersistConfig('global'), globalReducer),
-
 });
-export default persistReducer(genPersistConfig('root'), rootReducer);
+export default rootReducer;

@@ -1,19 +1,21 @@
+// thực hiện logic
 
-import * as TYPES from './type';
+import { INCREMENT_COUNTER, DECREMENT_COUNTER } from "./type";
 
-const INIT_STATE = {
-    init_loading: false,
-    locale: null,
+const initialState = {
+  server: "",
+  client: "",
+  counter: 0,
 };
 
-const globalReducer = (state, {type , payload}) =>{
-    switch (action.type) {
-        case [TYPES.HOME_INIT]:
-            console.log("loading page");
-            break;
-        default:
-    return { ...state };
-    };
-
+// Creating my reducer
+export default function reducer(state = initialState, action) {
+  switch (action.type) {
+    case INCREMENT_COUNTER:
+      return { ...state, counter: action.payload };
+    case DECREMENT_COUNTER:
+      return { ...state, counter: action.payload };
+    default:
+      return state;
+  }
 }
-export default globalReducer;
