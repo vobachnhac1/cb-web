@@ -2,12 +2,12 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { incrementCounter, decrementCounter } from '@/stores/global/actions';
 import Link from 'next/link';
-import {getStateLoadPage}from '../stores/global/getter';
-import { Button, Space, DatePicker, Card } from 'antd';
-import { CiCircleFilled } from '@ant-design/icons';
-import styles from "@/styles/Home.module.css";
+import { getStateLoadPage } from '../stores/global/getter';
+// import { Button, Space, DatePicker, Card } from "antd";
+// import { CiCircleFilled } from "@ant-design/icons";
+// import styles from "@/styles/Home.module.css";
 
-function counter() {
+const Counter = () => {
   const globalState = useSelector(getStateLoadPage);
   const dispatch = useDispatch();
 
@@ -59,6 +59,6 @@ function counter() {
   //     </Space>
   //   </div>
   // );
-} 
+};
 
-export default counter;
+export default Counter;

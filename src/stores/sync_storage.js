@@ -10,7 +10,7 @@ const createNoopStorage = () => {
     },
     removeItem(_key) {
       return Promise.resolve();
-    },
+    }
   };
 };
 

@@ -5,23 +5,24 @@ import * as CONST from './constants';
 import { ERROR_CODES } from './error-codes';
 
 const REQUEST_METHOD = {
-  GET:    'GET',
-  POST:   'POST',
-  PUT:    'PUT',
-  PATCH:  'PATCH',
+  GET: 'GET',
+  POST: 'POST',
+  PUT: 'PUT',
+  PATCH: 'PATCH',
   DELETE: 'DELETE'
 };
 
 export class RestClientCreator {
   constructor(options = {}) {
-    this.axiosInstance = axios.create({ ...options,
+    this.axiosInstance = axios.create({
+      ...options,
       baseURL: "http://203.205.26.244:7005/" // 'https://weathermanagementdev.azurewebsites.net'
     });
     this.axiosInstance.defaults.headers.common[CONST.REQ_HEADER_CONTENT_TYPE] = CONST.REQ_CONTENT_TYPE.JSON;
     this.axiosInstance.defaults.timeout = 20000;
   }
 
-  setAccessToken = token => {
+  setAccessToken = (token) => {
     if (!token) {
       delete this.axiosInstance.defaults.headers.common[CONST.REQ_HEADER_AUTHORIZATION];
       return;
@@ -55,15 +56,6 @@ export class RestClientCreator {
   }
 
   async post(url, requestBody = {}, headers = {}) {
-    if (!_.isString(url)) { throw new Error('String value of URL must correct'); }
-    return await sendRequest(
-      this.axiosInstance,
-      url,
-      REQUEST_METHOD.POST,
-      headers,
-      {},
-      requestBody
-    );
   }
 
   async put(url, requestBody = {}, headers = {}) {
@@ -185,7 +177,7 @@ const sendRequest = async (
     transformRequest,
     transformResponse
   };
-  return await readRestResponse( _axios.request(url, opts));
+  return await readRestResponse(_axios.request(url, opts));
 };
 
 const toObject = urlParams => {
@@ -218,15 +210,15 @@ const isFormData = val => {
 const readRestResponse = async (resolve) => {
   try {
     const resp = await new Promise.resolve(resolve);
-    if (resp.status === 200 ) {
+    if (resp.status === 200) {
       return { success: true, data: resp.data };
-    } else if (resp.status === 204){
+    } else if (resp.status === 204) {
       return { success: true, data: resp.data || null };
     } else {
       return { status: resp.status, success: true, data: resp.data || null };
     }
   } catch (error) {
-    console.log( error);
+    console.log(error);
     const { response: { data } } = error;
     if (data) {
       return { success: false, data: JSON.parse(data) };

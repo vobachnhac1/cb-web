@@ -1,3 +1,3 @@
 // Lấy giá trị store
 
-export const getStateLoadPage  = ({ global: state }) => state.counter;
+export const getStateLoadPage = ({ global: state }) => state.counter;

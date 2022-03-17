@@ -5,11 +5,10 @@ import Link from 'next/link';
 import { getStateLoadPage } from '@/stores/global/getter';
 import { Button, Space, DatePicker, Card } from 'antd';
 import { CiCircleFilled } from '@ant-design/icons';
-import styles from "@/styles/Home.module.css";
+import styles from '@/styles/Home.module.css';
 
 function Home() {
-
-  const onChange = () => { };
+  const onChange = () => {};
   return (
     <div style={{ padding: 100 }}>
       <Space direction="vertical">

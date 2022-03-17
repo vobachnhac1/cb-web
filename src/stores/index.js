@@ -21,7 +21,10 @@ const bindMiddleware = (middleware) => {
 const makeStore = ({ isServer }) => {
   if (isServer) {
     //If it's on server side, create a store
-    return createStore(reducers, bindMiddleware([thunkMiddleware.withExtraArgument({$http: RestClient })]));
+    return createStore(
+      reducers,
+      bindMiddleware([thunkMiddleware.withExtraArgument({ $http: RestClient })])
+    );
   } else {
     //If it's on client side, create a store which will persist
     // const { persistStore, persistReducer } = require('redux-persist');
@@ -29,14 +32,14 @@ const makeStore = ({ isServer }) => {
     const persistConfig = {
       key: 'nextjs',
       // whitelist: ['global'], // only counter will be persisted, add other reducers if needed
-      storage, // if needed, use a safer storage
+      storage // if needed, use a safer storage
     };
 
     const persistedReducer = persistReducer(persistConfig, reducers); // Create a new reducer with our existing reducer
 
     const store = createStore(
-      persistedReducer, 
-      bindMiddleware([thunkMiddleware.withExtraArgument({$http: RestClient })])
+      persistedReducer,
+      bindMiddleware([thunkMiddleware.withExtraArgument({ $http: RestClient })])
     ); // Creating the store again
 
     store.__persistor = persistStore(store); // This creates a persistor object & push that persisted object to .__persistor, so that we can avail the persistability feature
