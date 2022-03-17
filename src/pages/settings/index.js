@@ -1,19 +1,16 @@
 import React from 'react';
 import LayoutCustom from '@/layout';
 import ContentCustom from '@/layout/content';
-import Head from 'next/head';
 
-const HomePage = () => {
+
+const SettingPage = () => {
   return (
     <div>
-      <Head>
-        <title>{'Home Page'}</title>
-      </Head>
       <LayoutCustom >
-        <ContentCustom type={'HomePage'} />
+        <ContentCustom type={'SettingPage'} />
       </LayoutCustom>
     </div>
   );
 }
 
-export default HomePage;
+export default SettingPage;

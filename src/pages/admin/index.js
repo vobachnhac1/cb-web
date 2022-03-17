@@ -3,17 +3,17 @@ import LayoutCustom from '@/layout';
 import ContentCustom from '@/layout/content';
 import Head from 'next/head';
 
-const HomePage = () => {
+const AdminPage = () => {
   return (
     <div>
       <Head>
-        <title>{'Home Page'}</title>
+        <title>{'Admin Page'}</title>
       </Head>
       <LayoutCustom >
-        <ContentCustom type={'HomePage'} />
+        <ContentCustom type={'AdminPage'} />
       </LayoutCustom>
     </div>
   );
 }
 
-export default HomePage;
+export default AdminPage;

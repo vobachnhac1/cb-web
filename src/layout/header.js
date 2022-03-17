@@ -5,6 +5,8 @@ const { Header } = Layout;
 import AccountProfileCustom from '@/components/account-profile-base';
 import NotificationCustom from '@/components/notification-base';
 
+
+
 const HeaderCustom = (props) => {
   const [isLeave, setIsLeave] = useState(0);
   const onMouseLeave = () => {
@@ -13,11 +15,11 @@ const HeaderCustom = (props) => {
   return (
     <Header style={{ padding: 0 }}>
       <div style={{
-        float:      'left',
-        width:      180,
-        height:     44,
         background: 'rgba(255, 255, 255, 0.3)',
-        margin:     10
+        float: 'left',
+        width: 230,
+        height: 44,
+        margin: 10
       }} />
       <div style={{ float: 'right' }} onMouseLeave={onMouseLeave} >
         <Menu
@@ -26,9 +28,9 @@ const HeaderCustom = (props) => {
           defaultSelectedKeys={[isLeave]}
           selectedKeys={isLeave}
           style={{
-            width:          '20vw',
+            width: '20vw',
             justifyContent: 'end',
-            paddingRight:   '1vw'
+            paddingRight: '1vw'
           }}>
           <Menu.Item key="Notification">
             <NotificationCustom />
@@ -41,5 +43,4 @@ const HeaderCustom = (props) => {
     </Header>
   );
 };
-
 export default HeaderCustom;

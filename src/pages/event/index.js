@@ -3,17 +3,17 @@ import LayoutCustom from '@/layout';
 import ContentCustom from '@/layout/content';
 import Head from 'next/head';
 
-const HomePage = () => {
+const EventPage = () => {
   return (
     <div>
       <Head>
-        <title>{'Home Page'}</title>
+        <title>{'Event Page'}</title>
       </Head>
       <LayoutCustom >
-        <ContentCustom type={'HomePage'} />
+        <ContentCustom type={'EventPage'} />
       </LayoutCustom>
     </div>
   );
 }
 
-export default HomePage;
+export default EventPage;

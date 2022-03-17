@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link'
 import { Layout, Menu } from 'antd';
 import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
 const { SubMenu } = Menu;
@@ -16,7 +17,7 @@ const menu = () => {
     {
       key: "subAdmin",
       parentKey: null,
-      path: "/home",
+      path: "/admin",
       icon: <UserOutlined />,
       title: "Admin Management",
       child: [
@@ -25,7 +26,7 @@ const menu = () => {
           parentKey: 'subAdmin',
           title: "Admin 1",
           icon: null,
-          path: "/home",
+          path: "/admin/user/12345",
           child: null
         },
         {
@@ -33,7 +34,7 @@ const menu = () => {
           parentKey: 'subAdmin',
           title: "Admin 2",
           icon: null,
-          path: "/home",
+          path: "/admin",
           child: null
         },
         {
@@ -41,42 +42,42 @@ const menu = () => {
           parentKey: 'subAdmin',
           title: "Admin 3",
           icon: null,
-          path: "/home",
+          path: "/admin",
           child: null
         }
       ],
     }, {
       key: "subSetting",
       parentKey: null,
-      path: "/home",
+      path: "/settings",
       icon: <LaptopOutlined />,
       title: "Setting Management",
       child: null,
     }, {
       key: "subEvent",
       parentKey: null,
-      path: "/home",
+      path: "/event",
       icon: <NotificationOutlined />,
       title: "Event Management",
       child: [
         {
           key: "event1",
           parentKey: "subEvent",
-          path: "/home",
+          path: "/event",
           icon: null,
           title: "Event 1",
           child: null
         }, {
           key: "event2",
           parentKey: "subEvent",
-          path: "/home",
+          path: "/event",
           icon: null,
           title: "Event 2",
           child: null
         }, {
           key: "event3",
           parentKey: "subEvent",
-          path: "/home",
+          path: "/event",
           icon: null,
           title: "Event 3",
           child: null
@@ -129,22 +130,24 @@ const SliderCustom = (props) => {
   }, []);
 
   const renderItemMenu = (item) => {
-    const { name, title, path, child, icon } = item;
+    const { key, title, path, child, icon } = item;
     if (__isArray(child) && !__isEmpty(child)) {
       return renderSubMenu(item);
     }
     return (
-      <Menu.Item key={name} icon={icon}>
-        <span>{title}</span>
-        {/* <Link to={path} /> */}
+      <Menu.Item key={key} icon={icon}>
+        {/* <span>{title}</span> */}
+        <Link href={path} >
+          <a>{title}</a>
+        </Link>
       </Menu.Item>
     );
   };
 
   const renderSubMenu = (group) => {
-    const { name, title, child, icon } = group;
+    const { key, title, child, icon } = group;
     return (
-      <SubMenu key={name} title={title} icon={icon}>
+      <SubMenu key={key} title={title} icon={icon}>
         {child.map(renderItemMenu)}
       </SubMenu>
     );
