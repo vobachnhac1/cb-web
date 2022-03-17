@@ -1,7 +1,8 @@
 import App from 'next/app';
-import { wrapper } from '../stores';
+import { wrapper } from '@/stores';
 import { useStore } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+require("@/styles/variables.less");
 
 function MyApp({ Component, pageProps }) {
   const store = useStore((state) => state);

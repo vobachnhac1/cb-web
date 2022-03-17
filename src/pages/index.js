@@ -1,8 +1,11 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { incrementCounter, decrementCounter } from '../stores/global/actions';
+import { incrementCounter, decrementCounter } from '@/stores/global/actions';
 import Link from 'next/link';
 import {getStateLoadPage}from '../stores/global/getter';
+import { Button, Space, DatePicker, Card } from 'antd';
+import { CiCircleFilled } from '@ant-design/icons';
+import styles from "@/styles/Home.module.css";
 
 function counter() {
   const globalState = useSelector(getStateLoadPage);
@@ -32,7 +35,7 @@ function counter() {
         and saved in the localstorage!
       </p>
 
-      <Link href="/counter">
+      <Link href="/home">
         <a>Go to Counter Page</a>
       </Link>
       <br />
@@ -45,6 +48,17 @@ function counter() {
       </Link>
     </>
   );
+  // const onChange = () => {};
+  // return (
+  //   <div style={{ padding: 100 }}>
+  //     <Space direction="vertical">
+  //       <Button type="primary">Primary Button</Button>
+  //       <Button type="ghost">Ghost Button</Button>
+  //       <DatePicker onChange={onChange} />
+  //       <CiCircleFilled />
+  //     </Space>
+  //   </div>
+  // );
 } 
 
 export default counter;

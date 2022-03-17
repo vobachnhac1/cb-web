@@ -1,7 +1,7 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux';
-import { createWrapper, HYDRATE } from 'next-redux-wrapper';
+import { createStore, applyMiddleware } from 'redux';
+import { createWrapper } from 'next-redux-wrapper';
 import { persistStore, persistReducer } from 'redux-persist';
-import { RestClient } from '../core/rest-client';
+import { RestClient } from '@/core/rest-client';
 
 import thunkMiddleware from 'redux-thunk';
 import storage from './sync_storage';
@@ -17,7 +17,6 @@ const bindMiddleware = (middleware) => {
   }
   return applyMiddleware(...middleware);
 };
-// thunk.withExtraArgument({ $http: RestClient })
 
 const makeStore = ({ isServer }) => {
   if (isServer) {
@@ -36,7 +35,7 @@ const makeStore = ({ isServer }) => {
     const persistedReducer = persistReducer(persistConfig, reducers); // Create a new reducer with our existing reducer
 
     const store = createStore(
-      persistedReducer,
+      persistedReducer, 
       bindMiddleware([thunkMiddleware.withExtraArgument({$http: RestClient })])
     ); // Creating the store again
 
