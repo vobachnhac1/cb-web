@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Layout, Menu } from 'antd';
 import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
 const { SubMenu } = Menu;
@@ -85,49 +85,53 @@ const menu = () => {
     }
   ]
 }
+const permission = [
+  {
+    parent: "subAdmin",
+    child: ["admin1", "admin3"]
+  },
+  {
+    parent: "subEvent",
+    child: ["event1", "event2", "event4"]
+  },
+  {
+    parent: "subSetting",
+    child: null
+  }
+];
 
 const SliderCustom = (props) => {
   const [collapsed, toggleCollapsed] = useState(false);
-  const permission = [
-    {
-      parent: "subAdmin",
-      child: ["admin1", "admin3"]
-    },
-    {
-      parent: "subEvent",
-      child: ["event1", "event2", "event4"]
-    },
-    {
-      parent: "subSetting",
-      child: null
-    }
-  ];
-  const mapArrScreen = permission.map((item) => {
-    let arrTemp = [];
-    let arrChild = []
-    menu().forEach(element => {
-      //check thằng parent tồn
-      if (element.key === item.parent) {
-        //check thàng child tồn tại
-        if (element.child && element.child.length > 0) {
-          arrChild = item.child.map((childMenu) => {
-            let arrExistInChild = element.child.filter(itemMenu => itemMenu.key == childMenu);
-            return _.head(arrExistInChild) || {};
-          });
+  const [mapArrScreen, setMapArrScreen] = useState([]);
+  useEffect(() => {
+    const arrScreen = permission.map((item) => {
+      let arrTemp = [];
+      let arrChild = []
+      menu().forEach(element => {
+        //check thằng parent tồn
+        if (element.key === item.parent) {
+          //check thàng child tồn tại
+          if (element.child && element.child.length > 0) {
+            arrChild = item.child.map((childMenu) => {
+              let arrExistInChild = element.child.filter(itemMenu => itemMenu.key == childMenu);
+              return _.head(arrExistInChild) || {};
+            });
+          }
+          arrTemp = {
+            ...element,
+            child: arrChild.filter((isExist) => isExist.key)
+          };
         }
-        arrTemp = {
-          ...element,
-          child: arrChild.filter((isExist) => isExist.key)
-        };
-      }
+      });
+      return arrTemp;
     });
-    return arrTemp;
-  });
+    setMapArrScreen(arrScreen);
+  }, []);
 
-  const renderItem = (item) => {
+  const renderItemMenu = (item) => {
     const { name, title, path, child, icon } = item;
     if (__isArray(child) && !__isEmpty(child)) {
-      return renderGroup(item);
+      return renderSubMenu(item);
     }
     return (
       <Menu.Item key={name} icon={icon}>
@@ -137,11 +141,11 @@ const SliderCustom = (props) => {
     );
   };
 
-  const renderGroup = (group) => {
+  const renderSubMenu = (group) => {
     const { name, title, child, icon } = group;
     return (
       <SubMenu key={name} title={title} icon={icon}>
-        {child.map(renderItem)}
+        {child.map(renderItemMenu)}
       </SubMenu>
     );
   };
@@ -160,7 +164,7 @@ const SliderCustom = (props) => {
         defaultOpenKeys={['sub1']}
         style={{ height: '100%', borderRight: 0 }}
       >
-        {mapArrScreen.map(renderItem)}
+        {mapArrScreen.map(renderItemMenu)}
       </Menu>
     </Sider>
   );
