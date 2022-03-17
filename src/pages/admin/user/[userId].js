@@ -1,7 +1,7 @@
 import React from 'react';
 import LayoutCustom from '@/layout';
 import ContentCustom from '@/layout/content';
-import { withRouter, useRouter } from 'next/router'
+import { withRouter, useRouter } from 'next/router';
 import Head from 'next/head';
 
 const UserPage = (props) => {
@@ -13,11 +13,11 @@ const UserPage = (props) => {
       <Head>
         <title>{`Admin -> User Page -> ${userId}`}</title>
       </Head>
-      <LayoutCustom >
+      <LayoutCustom>
         <ContentCustom type={`User Page -> ${userId}`} />
       </LayoutCustom>
     </div>
   );
-}
+};
 
 export default withRouter(UserPage);

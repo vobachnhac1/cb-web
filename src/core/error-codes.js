@@ -6,5 +6,5 @@ export const translate = (code) => {
 };
 
 export const ERROR_CODES = Object.freeze({
-  SERVER_ERROR: 'Failed to connect to server!'
+  SERVER_ERROR: 'Failed to connect to server!',
 });

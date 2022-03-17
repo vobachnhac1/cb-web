@@ -1,16 +1,16 @@
-import axios from "axios";
-import nookies from "nookies";
+import axios from 'axios';
+import nookies from 'nookies';
 
 export const HttpRequest = async (config, accessToken) => {
   try {
     const token = accessToken || getAuthToken();
     const headers = {
-      Accept: "*/*",
-      "Content-Type": "application/json",
+      Accept: '*/*',
+      'Content-Type': 'application/json',
       ...config.headers,
     };
     if (token) {
-      headers["Authorization"] = "Bearer " + token;
+      headers['Authorization'] = 'Bearer ' + token;
     }
     const configRequest = {
       baseURL: process.env.NEXT_PUBLIC_API_URL,

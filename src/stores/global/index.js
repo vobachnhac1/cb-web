@@ -3,9 +3,9 @@
 import { INCREMENT_COUNTER, DECREMENT_COUNTER } from './type';
 
 const initialState = {
-  server:  '',
-  client:  '',
-  counter: 0
+  server: '',
+  client: '',
+  counter: 0,
 };
 
 // Creating my reducer

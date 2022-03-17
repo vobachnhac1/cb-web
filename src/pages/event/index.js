@@ -1,4 +1,3 @@
-import React from 'react';
 import LayoutCustom from '@/layout';
 import ContentCustom from '@/layout/content';
 import Head from 'next/head';
@@ -9,11 +8,11 @@ const EventPage = () => {
       <Head>
         <title>{'Event Page'}</title>
       </Head>
-      <LayoutCustom >
+      <LayoutCustom>
         <ContentCustom type={'EventPage'} />
       </LayoutCustom>
     </div>
   );
-}
+};
 
 export default EventPage;

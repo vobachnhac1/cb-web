@@ -1,16 +1,14 @@
-import React from 'react';
 import LayoutCustom from '@/layout';
 import ContentCustom from '@/layout/content';
-
 
 const SettingPage = () => {
   return (
     <div>
-      <LayoutCustom >
+      <LayoutCustom>
         <ContentCustom type={'SettingPage'} />
       </LayoutCustom>
     </div>
   );
-}
+};
 
 export default SettingPage;

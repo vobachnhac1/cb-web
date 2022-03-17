@@ -32,7 +32,7 @@ const makeStore = ({ isServer }) => {
     const persistConfig = {
       key: 'nextjs',
       // whitelist: ['global'], // only counter will be persisted, add other reducers if needed
-      storage // if needed, use a safer storage
+      storage, // if needed, use a safer storage
     };
 
     const persistedReducer = persistReducer(persistConfig, reducers); // Create a new reducer with our existing reducer

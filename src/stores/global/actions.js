@@ -3,11 +3,11 @@ import * as TYPES from './type';
 // hàm thị thi nội bộ
 const incrementCounterDispatch = (payload) => ({
   type: TYPES.INCREMENT_COUNTER,
-  payload
+  payload,
 });
 const decrementCounterDispatch = (payload) => ({
   type: TYPES.DECREMENT_COUNTER,
-  payload
+  payload,
 });
 
 // hàm xử lý được gọi từ bên ngoài
@@ -15,7 +15,7 @@ export const incrementCounter =
   (incrementState) =>
     async (dispatch, getState, { $http }) => {
       const {
-        global: { counter }
+        global: { counter },
       } = getState();
       // test 2 api
       $http.setAccessToken(

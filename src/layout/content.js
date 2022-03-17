@@ -3,7 +3,7 @@ import { Layout, Breadcrumb } from 'antd';
 const { Content, Footer } = Layout;
 
 const ContentCustom = (props) => {
-  const { type = "" } = props;
+  const { type = '' } = props;
   return (
     <Layout style={{ padding: '0 24px 24px' }}>
       <Breadcrumb style={{ margin: '16px 0' }}>
@@ -12,17 +12,19 @@ const ContentCustom = (props) => {
         <Breadcrumb.Item>App</Breadcrumb.Item>
       </Breadcrumb>
       <Content
-        className="site-layout-background"
+        className='site-layout-background'
         style={{
-          backgroundColor: "#FFFFFF",
+          backgroundColor: '#FFFFFF',
           padding: 24,
           margin: 0,
-          minHeight: 280
+          minHeight: 280,
         }}
       >
         {type}
       </Content>
-      <Footer style={{ textAlign: 'center' }}>Website created by CB Team</Footer>
+      <Footer style={{ textAlign: 'center' }}>
+        Website created by CB Team
+      </Footer>
     </Layout>
   );
 };

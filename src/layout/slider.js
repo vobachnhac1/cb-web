@@ -1,8 +1,11 @@
-
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link'
+import Link from 'next/link';
 import { Layout, Menu } from 'antd';
-import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
+import {
+  UserOutlined,
+  LaptopOutlined,
+  NotificationOutlined,
+} from '@ant-design/icons';
 const { SubMenu } = Menu;
 const { Sider } = Layout;
 import __isArray from 'lodash/isArray';
@@ -15,90 +18,94 @@ import _ from 'lodash';
 const menu = () => {
   return [
     {
-      key: "subAdmin",
+      key: 'subAdmin',
       parentKey: null,
-      path: "/admin",
+      path: '/admin',
       icon: <UserOutlined />,
-      title: "Admin Management",
+      title: 'Admin Management',
       child: [
         {
-          key: "admin1",
+          key: 'admin1',
           parentKey: 'subAdmin',
-          title: "Admin 1",
+          title: 'Admin 1',
           icon: null,
-          path: "/admin/user/12345",
-          child: null
+          path: '/admin/user/12345',
+          child: null,
         },
         {
-          key: "admin2",
+          key: 'admin2',
           parentKey: 'subAdmin',
-          title: "Admin 2",
+          title: 'Admin 2',
           icon: null,
-          path: "/admin",
-          child: null
+          path: '/admin',
+          child: null,
         },
         {
-          key: "admin3",
+          key: 'admin3',
           parentKey: 'subAdmin',
-          title: "Admin 3",
+          title: 'Admin 3',
           icon: null,
-          path: "/admin",
-          child: null
-        }
+          path: '/admin',
+          child: null,
+        },
       ],
-    }, {
-      key: "subSetting",
+    },
+    {
+      key: 'subSetting',
       parentKey: null,
-      path: "/settings",
+      path: '/settings',
       icon: <LaptopOutlined />,
-      title: "Setting Management",
+      title: 'Setting Management',
       child: null,
-    }, {
-      key: "subEvent",
+    },
+    {
+      key: 'subEvent',
       parentKey: null,
-      path: "/event",
+      path: '/event',
       icon: <NotificationOutlined />,
-      title: "Event Management",
+      title: 'Event Management',
       child: [
         {
-          key: "event1",
-          parentKey: "subEvent",
-          path: "/event",
+          key: 'event1',
+          parentKey: 'subEvent',
+          path: '/event',
           icon: null,
-          title: "Event 1",
-          child: null
-        }, {
-          key: "event2",
-          parentKey: "subEvent",
-          path: "/event",
+          title: 'Event 1',
+          child: null,
+        },
+        {
+          key: 'event2',
+          parentKey: 'subEvent',
+          path: '/event',
           icon: null,
-          title: "Event 2",
-          child: null
-        }, {
-          key: "event3",
-          parentKey: "subEvent",
-          path: "/event",
+          title: 'Event 2',
+          child: null,
+        },
+        {
+          key: 'event3',
+          parentKey: 'subEvent',
+          path: '/event',
           icon: null,
-          title: "Event 3",
-          child: null
-        }
+          title: 'Event 3',
+          child: null,
+        },
       ],
-    }
-  ]
-}
+    },
+  ];
+};
 const permission = [
   {
-    parent: "subAdmin",
-    child: ["admin1", "admin3"]
+    parent: 'subAdmin',
+    child: ['admin1', 'admin3'],
   },
   {
-    parent: "subEvent",
-    child: ["event1", "event2", "event4"]
+    parent: 'subEvent',
+    child: ['event1', 'event2', 'event4'],
   },
   {
-    parent: "subSetting",
-    child: null
-  }
+    parent: 'subSetting',
+    child: null,
+  },
 ];
 
 const SliderCustom = (props) => {
@@ -107,20 +114,22 @@ const SliderCustom = (props) => {
   useEffect(() => {
     const arrScreen = permission.map((item) => {
       let arrTemp = [];
-      let arrChild = []
-      menu().forEach(element => {
+      let arrChild = [];
+      menu().forEach((element) => {
         //check thằng parent tồn
         if (element.key === item.parent) {
           //check thàng child tồn tại
           if (element.child && element.child.length > 0) {
             arrChild = item.child.map((childMenu) => {
-              let arrExistInChild = element.child.filter(itemMenu => itemMenu.key == childMenu);
+              let arrExistInChild = element.child.filter(
+                (itemMenu) => itemMenu.key == childMenu
+              );
               return _.head(arrExistInChild) || {};
             });
           }
           arrTemp = {
             ...element,
-            child: arrChild.filter((isExist) => isExist.key)
+            child: arrChild.filter((isExist) => isExist.key),
           };
         }
       });
@@ -137,7 +146,7 @@ const SliderCustom = (props) => {
     return (
       <Menu.Item key={key} icon={icon}>
         {/* <span>{title}</span> */}
-        <Link href={path} >
+        <Link href={path}>
           <a>{title}</a>
         </Link>
       </Menu.Item>
@@ -156,13 +165,13 @@ const SliderCustom = (props) => {
   return (
     <Sider
       width={250}
-      className="site-layout-background"
+      className='site-layout-background'
       collapsible
       collapsed={collapsed}
       onCollapse={() => toggleCollapsed(!collapsed)}
     >
       <Menu
-        mode="inline"
+        mode='inline'
         defaultSelectedKeys={['0']}
         defaultOpenKeys={['sub1']}
         style={{ height: '100%', borderRight: 0 }}

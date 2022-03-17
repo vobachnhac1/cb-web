@@ -9,11 +9,11 @@ const AdminPage = () => {
       <Head>
         <title>{'Admin Page'}</title>
       </Head>
-      <LayoutCustom >
+      <LayoutCustom>
         <ContentCustom type={'AdminPage'} />
       </LayoutCustom>
     </div>
   );
-}
+};
 
 export default AdminPage;
