@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev -p 8080",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p $PORT",
     "lint": "next lint",
     "prepare": "husky install",
     "lint:fix": "eslint src --fix && yarn format",
@@ -18,6 +18,7 @@
     "dotenv": "^16.0.0",
     "lodash": "^4.17.21",
     "next": "12.1.0",
+    "next-plugin-antd-less": "^1.8.0",
     "next-redux-wrapper": "^7.0.5",
     "react": "17.0.2",
     "react-dom": "17.0.2",
