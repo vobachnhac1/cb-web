@@ -1,5 +1,5 @@
 
-import withAntdLess from "next-plugin-antd-less";
+const withAntdLess = require("next-plugin-antd-less");
 module.exports = {
   // i18n,
   eslint: {
