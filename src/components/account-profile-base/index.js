@@ -1,4 +1,4 @@
-
+import React from 'react';
 import { Menu } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 const { SubMenu } = Menu;
@@ -13,5 +13,5 @@ const AccountProfile = () => {
       </SubMenu>
     </>
   );
-}
+};
 export default AccountProfile;
