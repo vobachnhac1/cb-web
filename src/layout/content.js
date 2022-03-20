@@ -1,5 +1,13 @@
+/* --------------------------------------------------------
+* Author Võ Bách Nhạc
+* Email vonhac.20394@gmail.com
+* Phone 0906.918.738
+* Created: 2022-03-10
+*------------------------------------------------------- */
+
 import React from 'react';
-import { Layout, Breadcrumb } from 'antd';
+import { Layout, Breadcrumb, Button } from 'antd';
+import ButtonBase from '@/components/button';
 const { Content, Footer } = Layout;
 
 const ContentCustom = (props) => {
@@ -21,6 +29,7 @@ const ContentCustom = (props) => {
         }}
       >
         {type}
+        <ButtonBase >Nhấn thử 2</ButtonBase>
       </Content>
       <Footer style={{ textAlign: 'center' }}>
         Website created by CB Team

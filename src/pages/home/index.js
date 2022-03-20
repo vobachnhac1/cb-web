@@ -1,18 +1,16 @@
-import LayoutCustom from '@/layout';
-import ContentCustom from '@/layout/content';
-import Head from 'next/head';
-
-const HomePage = () => {
+/* --------------------------------------------------------
+* Author Võ Bách Nhạc
+* Email vonhac.20394@gmail.com
+* Phone 0906.918.738
+* Created: 2022-03-10
+*------------------------------------------------------- */
+import Header  from '@/components/Head';
+import Layout  from '@/layout';
+export default function Home() {
   return (
-    <div>
-      <Head>
-        <title>{'Home Page'}</title>
-      </Head>
-      <LayoutCustom>
-        <ContentCustom type={'HomePage'} />
-      </LayoutCustom>
-    </div>
-  );
-};
-
-export default HomePage;
+    <>
+    	<Header />
+      <Layout/>
+    </>
+  )
+}

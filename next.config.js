@@ -1,29 +1,53 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* --------------------------------------------------------
+* Author Nhac Vo
+* Email vonhac.20394@gmail.com
+* Phone 0906.918.738
+*
+* Created: 2022-03-10 12:29:42
+*------------------------------------------------------- */
+const path = require('path');
+const webpack = require('webpack');
 
 const withAntdLess = require('next-plugin-antd-less');
-// import withAntdLess from 'next-plugin-antd-less';
-module.exports = {
-  // i18n,
-  reactStrictMode: true,
-  eslint: {
-    dirs: ['src'],
-  },
-};
-
-
-module.exports = withAntdLess({
-  reactStrictMode: true,
-  // You can directly change the antd less variables here
-  // modifyVars: { '@primary-color': '#f200ff' },
-  // Or better still you can specify a path to a file
-  lessVarsFilePath: './src/styles/variables.less',
-  // optional
-  lessVarsFilePathAppendToEndOfContent: false,
-  // optional https://github.com/webpack-contrib/css-loader#object
-  cssLoaderOptions: {},
-
-  // Other Config Here...
-
-  webpack(config) {
-    return config;
-  },
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+	enabled: process.env.ANALYZE === 'true',
 });
+const lessToJS = require('less-vars-to-js');
+const fs = require('fs');
+
+const loadEnvConfig = require('./bin/env');
+
+loadEnvConfig();
+
+const antdVariables = lessToJS(fs.readFileSync(path.resolve(__dirname, 'src/styles/variables.less'), 'utf8'));
+
+module.exports = withBundleAnalyzer(withAntdLess({
+	// modifyVars: {
+	// 	'hack': 'true;@import "~antd/lib/style/themes/compact.less";',
+	// 	...antdVariables,
+	// },
+	lessVarsFilePath: './src/styles/variables.less',
+	lessVarsFilePathAppendToEndOfContent: true,
+	// optional https://github.com/webpack-contrib/css-loader#object
+	cssLoaderOptions: {
+		modules: {
+			localIdentName: process.env.NODE_ENV !== 'production' ? '[folder]__[local]__[hash:4]' : '[hash:8]',
+		},
+	},
+
+	// Other Config Here...
+
+	webpack(config) {
+		config.module.rules.push({
+			test: /\.md$/,
+			use: 'frontmatter-markdown-loader',
+		});
+
+		config.plugins.push(
+			new webpack.EnvironmentPlugin({ ...process.env, 'THEME': { ...antdVariables } }),
+		);
+
+		return config;
+	},
+}));

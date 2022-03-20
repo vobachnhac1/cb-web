@@ -1,13 +1,14 @@
 import App from 'next/app';
-import { wrapper } from '@/stores';
+import { wrapper } from '@/redux';
 import { useStore } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import '@/styles/variables.less';
+
+require('@/styles/index.less');   // dùng require ko dùng import
 
 function MyApp({ Component, pageProps }) {
   const store = useStore((state) => state);
   return process.browser ? (
-    <PersistGate persistor={store.__persistor} loading={<div>Loading</div>}>
+    <PersistGate persistor={store.__persistor}>
       <Component {...pageProps} />
     </PersistGate>
   ) : (

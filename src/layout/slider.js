@@ -1,3 +1,9 @@
+/* --------------------------------------------------------
+* Author Võ Bách Nhạc
+* Email vonhac.20394@gmail.com
+* Phone 0906.918.738
+* Created: 2022-03-10
+*------------------------------------------------------- */
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Layout, Menu } from 'antd';
@@ -11,88 +17,87 @@ const { Sider } = Layout;
 import __isArray from 'lodash/isArray';
 import __isEmpty from 'lodash/isEmpty';
 import _ from 'lodash';
+import classes from './style.module.less';
 
 // qui tắc đặt tên => sub['tên'] (cha) => lấy ra con => nếu lấy 2/3 con thì ghi rõ thằng con được lấy
 
 // lưu quyền dưới database =>
-const menu = () => {
-  return [
-    {
-      key: 'subAdmin',
-      parentKey: null,
-      path: '/admin',
-      icon: <UserOutlined />,
-      title: 'Admin Management',
-      child: [
-        {
-          key: 'admin1',
-          parentKey: 'subAdmin',
-          title: 'Admin 1',
-          icon: null,
-          path: '/admin/user/12345',
-          child: null,
-        },
-        {
-          key: 'admin2',
-          parentKey: 'subAdmin',
-          title: 'Admin 2',
-          icon: null,
-          path: '/admin',
-          child: null,
-        },
-        {
-          key: 'admin3',
-          parentKey: 'subAdmin',
-          title: 'Admin 3',
-          icon: null,
-          path: '/admin',
-          child: null,
-        },
-      ],
-    },
-    {
-      key: 'subSetting',
-      parentKey: null,
-      path: '/settings',
-      icon: <LaptopOutlined />,
-      title: 'Setting Management',
-      child: null,
-    },
-    {
-      key: 'subEvent',
-      parentKey: null,
-      path: '/event',
-      icon: <NotificationOutlined />,
-      title: 'Event Management',
-      child: [
-        {
-          key: 'event1',
-          parentKey: 'subEvent',
-          path: '/event',
-          icon: null,
-          title: 'Event 1',
-          child: null,
-        },
-        {
-          key: 'event2',
-          parentKey: 'subEvent',
-          path: '/event',
-          icon: null,
-          title: 'Event 2',
-          child: null,
-        },
-        {
-          key: 'event3',
-          parentKey: 'subEvent',
-          path: '/event',
-          icon: null,
-          title: 'Event 3',
-          child: null,
-        },
-      ],
-    },
-  ];
-};
+const menu = [
+  {
+    key: 'subAdmin',
+    parentKey: null,
+    path: '/admin',
+    icon: <UserOutlined />,
+    title: 'Admin Management',
+    child: [
+      {
+        key: 'admin1',
+        parentKey: 'subAdmin',
+        title: 'Admin 1',
+        icon: null,
+        path: '/admin/user/12345',
+        child: null,
+      },
+      {
+        key: 'admin2',
+        parentKey: 'subAdmin',
+        title: 'Admin 2',
+        icon: null,
+        path: '/admin',
+        child: null,
+      },
+      {
+        key: 'admin3',
+        parentKey: 'subAdmin',
+        title: 'Admin 3',
+        icon: null,
+        path: '/admin',
+        child: null,
+      },
+    ],
+  },
+  {
+    key: 'subSetting',
+    parentKey: null,
+    path: '/settings',
+    icon: <LaptopOutlined />,
+    title: 'Setting Management',
+    child: null,
+  },
+  {
+    key: 'subEvent',
+    parentKey: null,
+    path: '/event',
+    icon: <NotificationOutlined />,
+    title: 'Event Management',
+    child: [
+      {
+        key: 'event1',
+        parentKey: 'subEvent',
+        path: '/event',
+        icon: null,
+        title: 'Event 1',
+        child: null,
+      },
+      {
+        key: 'event2',
+        parentKey: 'subEvent',
+        path: '/event',
+        icon: null,
+        title: 'Event 2',
+        child: null,
+      },
+      {
+        key: 'event3',
+        parentKey: 'subEvent',
+        path: '/event',
+        icon: null,
+        title: 'Event 3',
+        child: null,
+      },
+    ],
+  },
+];;
 const permission = [
   {
     parent: 'subAdmin',
@@ -108,6 +113,7 @@ const permission = [
   },
 ];
 
+
 const SliderCustom = (props) => {
   const [collapsed, toggleCollapsed] = useState(false);
   const [mapArrScreen, setMapArrScreen] = useState([]);
@@ -115,7 +121,7 @@ const SliderCustom = (props) => {
     const arrScreen = permission.map((item) => {
       let arrTemp = [];
       let arrChild = [];
-      menu().forEach((element) => {
+      menu.forEach((element) => {
         //check thằng parent tồn
         if (element.key === item.parent) {
           //check thàng child tồn tại
@@ -156,7 +162,7 @@ const SliderCustom = (props) => {
   const renderSubMenu = (group) => {
     const { key, title, child, icon } = group;
     return (
-      <SubMenu key={key} title={title} icon={icon}>
+      <SubMenu key={key} title={title} icon={icon} >
         {child.map(renderItemMenu)}
       </SubMenu>
     );
@@ -165,7 +171,6 @@ const SliderCustom = (props) => {
   return (
     <Sider
       width={250}
-      className='site-layout-background'
       collapsible
       collapsed={collapsed}
       onCollapse={() => toggleCollapsed(!collapsed)}

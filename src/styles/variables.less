@@ -1,9 +1,37 @@
-/** 
-  Here we can change the default variables 
-  that come with antd.
-*/
+// https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less
+@import '~antd/lib/style/themes/compact.less';
+// @import '~antd/dist/antd.dark.less'; // Introduce the official dark less style entry file
+// @import '~antd/dist/antd.compact.less'; // Introduce the official compact less style entry file
 
-@import "~antd/lib/style/themes/default.less";
-@import "~antd/dist/antd.less"; // Import Ant Design styles
+@font-family: 'Roboto', sans-serif;
 
-@primary-color: #17c734;
+// -------- Colors -----------
+@primary-color: #034da2;
+@link-color: #1890ff; // link color
+@success-color: #52c41a; // success state color
+@warning-color: #faad14; // warning state color
+@error-color: #f5222d; // error state color
+@font-size-base: 14px; // major text font size
+@heading-color: rgba(0, 0, 0, 0.85); // heading text color
+@text-color: rgba(0, 0, 0, 0.65); // major text color
+@text-color-secondary: rgba(0, 0, 0, 0.45); // secondary text color
+@disabled-color: rgba(0, 0, 0, 0.25); // disable state color
+@border-radius-base: 2px; // major border radius
+@border-color-base: #d9d9d9; // major border color
+@box-shadow-base: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08),
+  0 9px 28px 8px rgba(0, 0, 0, 0.05); // major shadow for layers
+
+
+// @btn-height-lg: 40px;
+
+// Layout
+// @layout-header-background: #202020;
+// @menu-dark-inline-submenu-bg: #171717;
+@menu-: #171717;
+// @menu-dark-item-active-bg: #171717;
+
+//custom Layout sider 
+@layout-sider-background-light: #202020;
+// @layout-trigger-background-light: #034da2;
+@layout-trigger-background: #034da2;
+// @layout-body-background: #ffffff;
