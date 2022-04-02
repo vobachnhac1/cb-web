@@ -1,20 +1,27 @@
 // thực hiện logic
 
-import { INCREMENT_COUNTER, DECREMENT_COUNTER } from './type';
+import { ConsoleSqlOutlined } from '@ant-design/icons';
+import * as TYPES from './type';
+export * as getters from './getter'
+export * as actions from './actions'
 
-const initialState = {
+let initialState = {
   server: '',
   client: '',
   counter: 0,
+  access_token:''
 };
 
 // Creating my reducer
-export default function reducer(state = initialState, action) {
-  switch (action.type) {
-    case INCREMENT_COUNTER:
-      return { ...state, counter: action.payload };
-    case DECREMENT_COUNTER:
-      return { ...state, counter: action.payload };
+export default function reducer(state = initialState, {type, payload}) {
+  switch (type) {
+    case TYPES.LOGIN_ADMIN:
+      console.log("test",state,payload)
+     
+      return {
+        ...state, 
+        access_token: payload
+      }
     default:
       return state;
   }
