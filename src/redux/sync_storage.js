@@ -20,3 +20,8 @@ const storage =
     : createNoopStorage();
 
 export default storage;
+
+
+/// js: const, let, var => collection : Map, List, Set => tránh trùng 
+
+/// ts, java, koltin: Class nêu rô kiểu dữ liệu => 

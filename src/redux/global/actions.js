@@ -28,7 +28,10 @@ export const incrementCounter =
       return dispatch(incrementCounterDispatch(increase));
     };
 
-export const decrementCounter = (decrementState) => (dispatch) => {
+export const decrementCounter = (decrementState) => (dispatch, getState, { $http }) => {
   const decrease = decrementState - 1;
   return dispatch(decrementCounterDispatch(decrease));
 };
+
+// function export ra ngoài
+
