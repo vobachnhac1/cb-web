@@ -186,5 +186,5 @@ const SliderCustom = (props) => {
     </Sider>
   );
 };
-
+ 
 export default SliderCustom;

@@ -12,6 +12,8 @@ import Router from 'next/router';
 import React from 'react';
 import Logo from '@/components/Layout/Logo';
 import classes from './style.module.less';
+import { useDispatch,useSelector } from 'react-redux';
+import { actions,getters } from '@/redux/global'
 
 
 const propTypes = {
@@ -23,8 +25,13 @@ const defaultProps = {
 };
 
 const Login = (props) => {
-	// const dispatch = useDispatch();
+	const {namelist1='ppp'} = props;
+console.log(namelist1);
+
+
+	const dispatch = useDispatch();
 	const [loading, setLoading] = React.useState(false);
+
 
 	// React.useEffect(() => {
 	// 	if (AuthStorage.loggedIn) {
@@ -32,13 +39,13 @@ const Login = (props) => {
 	// 	}
 	// }, []);
 
-	const onFinish = async (values) => {
+	const onsubmitLogin = async (values) => {
 		try {
 			setLoading(true);
-			// await dispatch(await actionLogin({
-			// 	...values,
-			// }));
-			Router.push('/home');
+			const result = await dispatch(actions.loginAdmin(values))
+			
+
+			// Router.push('/home');
 		} finally {
 			setLoading(false);
 		}
@@ -68,7 +75,7 @@ const Login = (props) => {
 						initialValues={{
 							remember: true,
 						}}
-						onFinish={onFinish}
+						onFinish={onsubmitLogin}
 						style={{
 							width: 350,
 							padding: 20,

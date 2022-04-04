@@ -16,7 +16,7 @@ export class RestClientCreator {
   constructor(options = {}) {
     this.axiosInstance = axios.create({
       ...options,
-      baseURL: 'http://203.205.26.244:7005/' // 'https://weathermanagementdev.azurewebsites.net'
+      baseURL: 'http://localhost:22222' // 'https://weathermanagementdev.azurewebsites.net'
     });
     this.axiosInstance.defaults.headers.common[CONST.REQ_HEADER_CONTENT_TYPE] = CONST.REQ_CONTENT_TYPE.JSON;
     this.axiosInstance.defaults.timeout = 20000;
@@ -56,6 +56,15 @@ export class RestClientCreator {
   }
 
   async post(url, requestBody = {}, headers = {}) {
+     if (!_.isString(url)) { throw new Error('String value of URL must correct'); }
+    return await sendRequest(
+      this.axiosInstance,
+      url,
+      REQUEST_METHOD.POST,
+      headers,
+      {},
+      requestBody
+    );
   }
 
   async put(url, requestBody = {}, headers = {}) {
@@ -209,22 +218,32 @@ const isFormData = val => {
  */
 const readRestResponse = async (resolve) => {
   try {
-    const resp = await new Promise.resolve(resolve);
+    
+    const resp = await Promise.resolve(resolve).then(function(value) {
+        return value
+    }, function(value) {
+      // not called
+    });
+ 
     if (resp.status === 200) {
-      return { success: true, data: resp.data };
+      return { success: true, data:  JSON.parse(resp.data)|| null };
     } else if (resp.status === 204) {
-      return { success: true, data: resp.data || null };
+      return { success: true, data:  JSON.parse(resp.data) || null };
     } else {
-      return { status: resp.status, success: true, data: resp.data || null };
+      return { status: resp.status, success: true, data:  JSON.parse(resp.data) || null };
     }
   } catch (error) {
     console.log(error);
-    const { response: { data } } = error;
-    if (data) {
-      return { success: false, data: JSON.parse(data) };
+    // const { response: { data } } = error;
+    // if (data) {
+
+    //   return { success: false, data: JSON.parse(data) };
+    // }
+    return {
+      success:false,
+      message:'err try catch'
     }
   }
-  return { success: false, error: 'Không thể connect server tại thời điểm này' };
 };
 
 export const parseRequestParams = params => {

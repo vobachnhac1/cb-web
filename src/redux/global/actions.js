@@ -10,6 +10,11 @@ const decrementCounterDispatch = (payload) => ({
   payload,
 });
 
+const loginAdminDispatch = (payload) =>({
+  type:TYPES.LOGIN_ADMIN,
+  payload
+})
+
 // hàm xử lý được gọi từ bên ngoài
 export const incrementCounter =
   (incrementState) =>
@@ -32,6 +37,20 @@ export const decrementCounter = (decrementState) => (dispatch, getState, { $http
   const decrease = decrementState - 1;
   return dispatch(decrementCounterDispatch(decrease));
 };
+
+export const loginAdmin = (payload) => async (dispatch,getState,{ $http })=>{
+  
+  console.log('action',payload)
+  const result  = await $http.post('/login-jwt',{
+    ...payload
+  })
+  const access_token = result?.data?.access_token;
+  $http.setAccessToken(access_token)
+  dispatch(loginAdminDispatch(access_token))
+  const state = getState()
+  console.log('getstate',state)
+  return true;
+}
 
 // function export ra ngoài
 
