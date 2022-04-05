@@ -11,6 +11,8 @@ import {
   UserOutlined,
   LaptopOutlined,
   NotificationOutlined,
+  SettingOutlined
+
 } from '@ant-design/icons';
 const { SubMenu } = Menu;
 const { Sider } = Layout;
@@ -27,56 +29,42 @@ const menu = [
     key: 'subAdmin',
     parentKey: null,
     path: '/admin',
-    icon: <UserOutlined />,
-    title: 'Admin Management',
+    icon: <SettingOutlined />,
+    title: 'Kết quả trúng thưởng ',
     child: [
       {
         key: 'admin1',
         parentKey: 'subAdmin',
-        title: 'Admin 1',
+        title: 'Danh sách kết quả',
         icon: null,
         path: '/admin/user/12345',
         child: null,
       },
       {
-        key: 'admin2',
-        parentKey: 'subAdmin',
-        title: 'Admin 2',
-        icon: null,
-        path: '/admin',
-        child: null,
-      },
-      {
         key: 'admin3',
         parentKey: 'subAdmin',
-        title: 'Admin 3',
+        title: 'Thêm mới',
         icon: null,
         path: '/admin',
         child: null,
       },
+      
     ],
   },
-  {
-    key: 'subSetting',
-    parentKey: null,
-    path: '/settings',
-    icon: <LaptopOutlined />,
-    title: 'Setting Management',
-    child: null,
-  },
+  
   {
     key: 'subEvent',
     parentKey: null,
     path: '/event',
-    icon: <NotificationOutlined />,
-    title: 'Event Management',
+    icon: <SettingOutlined />,
+    title: 'Vòng quay',
     child: [
       {
         key: 'event1',
         parentKey: 'subEvent',
         path: '/event',
         icon: null,
-        title: 'Event 1',
+        title: 'Danh sách vòng quay',
         child: null,
       },
       {
@@ -84,18 +72,45 @@ const menu = [
         parentKey: 'subEvent',
         path: '/event',
         icon: null,
-        title: 'Event 2',
+        title: 'Thêm vòng quay',
         child: null,
       },
+     
+    ],
+  },
+   {
+    key: 'subEvent',
+    parentKey: null,
+    path: '/event',
+    icon: <SettingOutlined />,
+    title: 'Chi tiết vòng quay',
+    child: [
       {
-        key: 'event3',
+        key: 'event1',
         parentKey: 'subEvent',
         path: '/event',
         icon: null,
-        title: 'Event 3',
+        title: 'Danh sách chi tiết vòng quay',
         child: null,
       },
+      {
+        key: 'event2',
+        parentKey: 'subEvent',
+        path: '/event',
+        icon: null,
+        title: 'Thêm chi tiết vòng quay',
+        child: null,
+      },
+     
     ],
+  },
+  {
+    key: 'subSetting',
+    parentKey: null,
+    path: '/settings',
+    icon: <SettingOutlined />,
+    title: 'Chức năng mới đang cập nhật',
+    child: null,
   },
 ];;
 const permission = [

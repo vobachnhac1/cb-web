@@ -14,6 +14,10 @@ import AccountProfileCustom from '@/components/AccountProfileBase';
 import NotificationCustom from '@/components/NotificationBase';
 
 const stylesLess = require("./style.module.less");
+
+import logocbb from './images/logocb.jpg'
+import Image from 'next/image';
+
 const HeaderCustom = (props) => {
   const [isLeave, setIsLeave] = useState(0);
   const onMouseLeave = () => {
@@ -30,14 +34,22 @@ const HeaderCustom = (props) => {
           margin: 10,
         }}
       >
-        <img
+        {/* <img
           style={{
             float: 'left',
             width: 230,
             height: 44,
           }}
-          src='/logo.jpg'
-        />
+          src={logocbb}
+          alt="logocbb"
+        /> */}
+        	<Image
+            width={230}
+            height={44}
+            src={logocbb}
+            alt="logocbb"
+          />
+      
       </div>
       <div style={{ marginTop: 1, float: 'right' }} onMouseLeave={onMouseLeave}>
         <Menu

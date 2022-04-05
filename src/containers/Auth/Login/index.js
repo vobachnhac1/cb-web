@@ -42,10 +42,15 @@ console.log(namelist1);
 	const onsubmitLogin = async (values) => {
 		try {
 			setLoading(true);
-			const result = await dispatch(actions.loginAdmin(values))
+			const result = await dispatch(actions.loginAdmin(values));
+
+			if(result){
+				Router.push('/home');
+			}
+			console.log('result',result)
 			
 
-			// Router.push('/home');
+		
 		} finally {
 			setLoading(false);
 		}
