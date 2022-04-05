@@ -12,7 +12,6 @@ import * as styles from './style.module.less';
 
 export default function Wheel() {
 
-
   const [places, setPlaces] = useState(['Pizzas', 'Sandwiches', 'Salads', 'Soup', 'Japanese food', 'Pastas', 'Soup']);
   const onSelectItem = (value) => {
     console.log('Wheel value: ', value);

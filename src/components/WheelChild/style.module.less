@@ -57,6 +57,7 @@
 
 
 /* Wheel */
+/// nó không nhận
 .wheel {
   display: block;
   position: relative;
@@ -73,6 +74,7 @@
   cursor: pointer;
 }
 
+/// nó không nhận
 .wheel.spinning {
   transform: rotate(calc(var(--nb-turn) * 360deg + (-360deg * var(--selected-item) / var(--nb-item, 1))));
   transition: transform var(--spinning-duration);

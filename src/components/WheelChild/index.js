@@ -7,6 +7,7 @@
 import { useState } from 'react'
 import * as styles from './style.module.less';
 require("./style.module.less");
+const classNames = require("classnames");
 
 const WheelChild = (props) => {
   const [selectedItem, setSelectedItem] = useState(null);
@@ -15,24 +16,30 @@ const WheelChild = (props) => {
     '--nb-item': items.length,
     '--selected-item': selectedItem,
   };
-  const spinning = selectedItem !== null ? '.spinning' : '';
+  const spinning = selectedItem !== null ? true : false;
   const selectItem = () => {
     if (selectedItem === null) {
       const selectedItem = Math.floor(Math.random() * props.items.length);
+      setSelectedItem(selectedItem);
       if (props.onSelectItem) {
         props.onSelectItem(selectedItem);
       }
-      setSelectedItem(selectedItem);
     } else {
       setSelectedItem(null)
-      setTimeout(selectItem, 500);
+      setTimeout(props.onSelectItem, 500);
     }
   }
   return (
     <div className={styles["wheel-container"]}>
-      <div className={styles[`wheel${spinning}`]} style={wheelVars} onClick={selectItem}>
+      <div className={
+        classNames({ [styles["wheel"]]: true }, { [styles["spinning"]]: spinning })} //chỗ import
+        style={wheelVars}
+        onClick={selectItem}>
         {items.map((item, index) => (
-          <div className={styles["wheel-item"]} key={index} style={{ '--item-nb': index }}>
+          <div
+
+            className={classNames({ [styles["wheel-item"]]: true })}
+            key={index} style={{ '--item-nb': index }}>
             {item}
           </div>
         ))}
