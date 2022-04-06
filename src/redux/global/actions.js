@@ -41,7 +41,7 @@ export const decrementCounter = (decrementState) => (dispatch, getState, { $http
 export const loginAdmin = (payload) => async (dispatch,getState,{ $http })=>{
   
   console.log('action',payload)
-  const result  = await $http.post('/login-jwt',{
+  const result  = await $http.post('/auth/local/signin',{
     ...payload
   })
   const access_token = result?.data?.access_token;
