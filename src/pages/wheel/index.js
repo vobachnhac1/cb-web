@@ -42,7 +42,20 @@ const arrDisplay = [
   }, {
     value: 'Mười',
     url: "/images/reward/reward9.png"
+  }, {
+    value: 'Mười Một',
+    url: "/images/reward/reward0.png"
+  }, {
+    value: 'Mười Hai',
+    url: "/images/reward/reward1.png"
+  }, {
+    value: 'Mười Ba',
+    url: "/images/reward/reward2.png"
+  }, {
+    value: 'Mười Bốn',
+    url: "/images/reward/reward3.png"
   },
+
 ]
 export default function Wheel() {
   const [places, setPlaces] = useState(arrDisplay);
