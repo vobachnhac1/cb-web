@@ -1,9 +1,9 @@
 :root {
   --wheel-font: 'Lato', 'Quicksand', sans-serif;
-  --wheel-size: 400px;
+  --wheel-size: 500px;
   --wheel-slice-spacing: 50px;
   --wheel-border-size: 5px;
-  --wheel-color: #da3768;
+  --wheel-color: #337ab7;
   --neutral-color: white;
   --PI: 3.14159265358979;
   --nb-item: 0;
@@ -12,7 +12,60 @@
   --nb-turn: 5;
   --spinning-duration: 4s;
   --reset-duration: 0.25s;
+  --item-reward-url: url("/images/reward/reward1.png");
 }
+
+
+// Nhac custom
+.wheel-viewbox-border {
+  top: 35%;
+  left: 36%;
+  z-index: 1;
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  border-radius: 100px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 1) 31%, rgba(0, 155, 217, 1) 80%);
+
+}
+
+.wheel-viewbox {
+  top: 38%;
+  left: 39%;
+  z-index: 1;
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 80px;
+  background-image: url("/images/logo_cbbank.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  animation-duration: 2s;
+  animation-name: animation_logo;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+// animation logo
+@keyframes animation_logo {
+  from {
+    top: 42%;
+    left: 43%;
+    width: 80px;
+    height: 80px;
+    border-radius: 50px;
+  }
+
+  to {
+    width: 120px;
+    height: 120px;
+    border-radius: 120px;
+    top: 38%;
+    left: 39%;
+  }
+}
+
 
 /* Wheel container = outer pink circle */
 .wheel-container {
@@ -27,6 +80,7 @@
   border: solid var(--wheel-color) 3px;
   border-radius: 50%;
   user-select: none;
+  top: 30%;
 }
 
 
@@ -57,7 +111,6 @@
 
 
 /* Wheel */
-/// nó không nhận
 .wheel {
   display: block;
   position: relative;
@@ -74,7 +127,6 @@
   cursor: pointer;
 }
 
-/// nó không nhận
 .wheel.spinning {
   transform: rotate(calc(var(--nb-turn) * 360deg + (-360deg * var(--selected-item) / var(--nb-item, 1))));
   transition: transform var(--spinning-duration);
@@ -110,7 +162,7 @@
 
   /* text */
   color: var(--neutral-color);
-  text-align: right;
+  text-align: center;
   padding: 0 25px 0 50px;
   font-family: var(--wheel-font);
 }
@@ -137,10 +189,25 @@
     but overall it works pretty well
     TODO: To study
   */
-  --slice-max-width: calc(var(--PI) * var(--wheel-size) + var(--wheel-size) / 2);
+  --slice-max-width: calc(var(--PI) * var(--wheel-size) + var(--wheel-size)*1.9);
   --slice-width: calc((var(--slice-max-width) / var(--nb-item)) - var(--wheel-slice-spacing));
-  border: solid transparent calc(var(--slice-width) / 2);
+  border: solid transparent calc(var(--slice-width) /2);
   border-left: solid transparent 0;
   /* profondeur du triangle = du centre de la roue à la bordure = 300px / 2 */
   border-right: solid var(--neutral-color) calc(var(--wheel-size) / 2);
 }
+
+.wheel-item-icon {
+  top: -40%;
+  left: 80%;
+  z-index: 1;
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  background-image: var(--item-reward-url);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+// tùy theo số lượng mà mình sẽ scale3

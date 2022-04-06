@@ -4,7 +4,7 @@
 * Phone 0906.918.738
 * Created: 2022-04-04
 *------------------------------------------------------- */
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import * as styles from './style.module.less';
 require("./style.module.less");
 const classNames = require("classnames");
@@ -29,22 +29,29 @@ const WheelChild = (props) => {
       setTimeout(props.onSelectItem, 500);
     }
   }
+
   return (
     <div className={styles["wheel-container"]}>
+      <div className={classNames({ [styles['wheel-viewbox-border']]: true })} />
+      <div className={classNames({ [styles['wheel-viewbox']]: true })} onClick={selectItem} />
       <div className={
         classNames({ [styles["wheel"]]: true }, { [styles["spinning"]]: spinning })} //chỗ import
-        style={wheelVars}
-        onClick={selectItem}>
+        style={wheelVars}>
         {items.map((item, index) => (
           <div
-
             className={classNames({ [styles["wheel-item"]]: true })}
-            key={index} style={{ '--item-nb': index }}>
-            {item}
+            key={index}
+            style={{ '--item-nb': index, '--item-reward-url': `url('${item.url}'` }}>
+            <div
+              className={classNames({ [styles["wheel-item-icon"]]: true })}
+            />
+            {item.value}
           </div>
-        ))}
+        )
+        )}
       </div>
     </div>
   );
 }
+
 export default WheelChild;

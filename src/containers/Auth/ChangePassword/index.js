@@ -28,7 +28,7 @@ const ChangePassword = (props) => {
 	// const { token } = props;
 
 	// const dispatch = useDispatch();
-	// const [loading, setLoading] = React.useState(false);
+	const [loading, setLoading] = React.useState(false);
 
 	// useAsync(async () => {
 	// 	if (!AuthStorage.loggedIn) {

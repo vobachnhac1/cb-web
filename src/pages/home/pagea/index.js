@@ -6,13 +6,13 @@
 *------------------------------------------------------- */
 import Header from '@/components/Head';
 import Layout from '@/layout';
-import ChangePassword from '@/containers/Auth/ChangePassword'
+import ForgotPassword from '@/containers/Auth/ForgotPassword'
 export default function Home() {
   return (
     <>
       <Header />
       <Layout>
-        {/* <ChangePassword /> */}
+        <ForgotPassword />
       </Layout>
     </>
   )
