@@ -17,38 +17,6 @@
   --item-reward-url: url("/images/reward/reward1.png");
 }
 
-// @media screen and (min-width: 1200px) and (max-width: 1440px) {
-//   :root {
-//     --wheel-size: 700px;
-//   }
-// }
-
-// @media screen and (min-width: 768px) and (max-width: 1200px) {
-//   :root {
-//     --wheel-size: 500px;
-//   }
-
-//   .wheel-viewbox {
-//     top: 38%;
-//     left: 39%;
-//   }
-
-// }
-
-
-
-// @media screen and (min-width: 280px) and (max-width: 380px) {
-//   :root {
-//     --wheel-size: 250px;
-//   }
-// }
-
-
-
-
-
-
-
 // Nhac custom
 .wheel-viewbox-border {
   top: 35%;
@@ -75,7 +43,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   animation-duration: 2s;
-  animation-name: animation_logo;
+  // animation-name: animation_logo;
   animation-iteration-count: infinite;
   animation-direction: alternate;
 }
@@ -146,8 +114,6 @@
 }
 
 
-
-
 @media screen and (min-width: 200px) and (max-width: 280px) {
   :root {
     --wheel-size: 230px;
@@ -192,17 +158,10 @@
 }
 
 
-
-
-
-
-
-
-
-
 /* Wheel container = outer pink circle */
 .wheel-container {
-  display: block;
+  z-index: 1;
+  // display: block;
   position: relative;
   box-sizing: content-box;
   width: calc(var(--wheel-size) + 2 * var(--wheel-border-size));
