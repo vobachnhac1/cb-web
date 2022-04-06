@@ -3,6 +3,7 @@
   --wheel-font-size: 16px;
   --wheel-icon-size: 40px;
   --wheel-size: 500px;
+  --wheel-position-wheel: 10%;
   --wheel-slice-spacing: 50px;
   --wheel-border-size: 5px;
   --wheel-color: #337ab7;
@@ -42,8 +43,8 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  animation-duration: 2s;
-  // animation-name: animation_logo;
+  animation-duration: 4s;
+  animation-name: animation_logo;
   animation-iteration-count: infinite;
   animation-direction: alternate;
 }
@@ -71,23 +72,23 @@
 
 @media screen and (min-width: 280px) and (max-width: 768px) {
   :root {
-    --wheel-size: 320px;
+    --wheel-size: 290px;
     --wheel-font-size: 12px;
     --wheel-icon-size: 25px;
-
+    --wheel-position-wheel: 30%;
   }
 
   .wheel-viewbox {
-    top: 39%;
-    left: 39%;
+    top: 37%;
+    left: 36%;
     width: 80px;
     height: 80px;
     border-radius: 80px;
   }
 
   .wheel-viewbox-border {
-    top: 36%;
-    left: 36%;
+    top: 34%;
+    left: 33%;
     width: 100px;
     height: 100px;
     border-radius: 100px;
@@ -96,16 +97,16 @@
 
   @keyframes animation_logo {
     from {
-      top: 44%;
-      left: 44%;
+      top: 42%;
+      left: 42%;
       width: 50px;
       height: 50px;
       border-radius: 50px;
     }
 
     to {
-      top: 40.5%;
-      left: 40.5%;
+      top: 39%;
+      left: 38%;
       width: 70px;
       height: 70px;
       border-radius: 80px;
@@ -116,22 +117,22 @@
 
 @media screen and (min-width: 200px) and (max-width: 280px) {
   :root {
-    --wheel-size: 230px;
-    --wheel-font-size: 9px;
+    --wheel-size: 200px;
+    --wheel-font-size: 7px;
     --wheel-icon-size: 18px;
   }
 
   .wheel-viewbox {
-    top: 44%;
-    left: 42%;
+    top: 42%;
+    left: 40%;
     width: 40px;
     height: 40px;
     border-radius: 80px;
   }
 
   .wheel-viewbox-border {
-    top: 40%;
-    left: 38%;
+    top: 37%;
+    left: 35%;
     width: 60px;
     height: 60px;
     border-radius: 60px;
@@ -140,16 +141,16 @@
 
   @keyframes animation_logo {
     from {
-      top: 44%;
-      left: 42%;
+      top: 42%;
+      left: 40%;
       width: 40px;
       height: 40px;
       border-radius: 50px;
     }
 
     to {
-      top: 42%;
-      left: 40%;
+      top: 39%;
+      left: 37.5%;
       width: 50px;
       height: 50px;
       border-radius: 50px;
@@ -171,7 +172,7 @@
   border: solid var(--wheel-color) 3px;
   border-radius: 50%;
   user-select: none;
-  top: 10%;
+  top: var(--wheel-position-wheel);
 }
 
 
@@ -204,7 +205,7 @@
 /* Wheel */
 .wheel {
   display: block;
-  position: relative;
+  position: absolute;
   box-sizing: content-box;
   margin: auto;
   width: var(--wheel-size);
@@ -219,7 +220,7 @@
 }
 
 .wheel.spinning {
-  transform: rotate(calc(var(--nb-turn) * 360deg + (-360deg * var(--selected-item) / var(--nb-item, 1))));
+  transform: rotate(calc(var(--nb-turn) * 360deg + (-360deg * var(--selected-item) / var(--nb-item, 2))));
   transition: transform var(--spinning-duration);
 }
 
