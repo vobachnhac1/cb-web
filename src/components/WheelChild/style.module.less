@@ -3,7 +3,7 @@
   --wheel-font-size: 16px;
   --wheel-icon-size: 40px;
   --wheel-size: 500px;
-  --wheel-position-wheel: 10%;
+  --wheel-position-wheel: 15%;
   --wheel-slice-spacing: 50px;
   --wheel-border-size: 5px;
   --wheel-color: #337ab7;
@@ -16,6 +16,7 @@
   --spinning-duration: 4s;
   --reset-duration: 0.25s;
   --item-reward-url: url("/images/reward/reward1.png");
+  --scale-distance: 1;
 }
 
 // Nhac custom
@@ -68,27 +69,121 @@
   }
 }
 
-
-
-@media screen and (min-width: 280px) and (max-width: 768px) {
+// done
+@media screen and (min-width: 1200px) {
   :root {
-    --wheel-size: 260px;
-    --wheel-font-size: 12px;
-    --wheel-icon-size: 25px;
-    --wheel-position-wheel: 30%;
+    --wheel-size: 600px;
+    --wheel-font-size: 22px;
+    --wheel-icon-size: 50px;
+    --wheel-position-wheel: 20%;
+    --scale-distance: 0.7;
   }
 
   .wheel-viewbox {
-    top: 37%;
-    left: 36%;
+    top: 44%;
+    left: 44%;
     width: 80px;
     height: 80px;
     border-radius: 80px;
   }
 
   .wheel-viewbox-border {
-    top: 34%;
-    left: 33%;
+    top: 40.5%;
+    left: 40.5%;
+    width: 120px;
+    height: 120px;
+    border-radius: 120px;
+
+  }
+
+  @keyframes animation_logo {
+    from {
+      top: 45%;
+      left: 45%;
+      width: 60px;
+      height: 60px;
+      border-radius: 60px;
+    }
+
+    to {
+      top: 44%;
+      left: 44%;
+      width: 80px;
+      height: 80px;
+      border-radius: 80px;
+    }
+  }
+}
+
+// done
+@media screen and (min-width: 768px) and (max-width: 1200px) {
+  :root {
+    --wheel-size: 400px;
+    --wheel-font-size: 16px;
+    --wheel-icon-size: 25px;
+    --wheel-position-wheel: 20%;
+    --scale-distance: 1;
+
+  }
+
+  .wheel-viewbox {
+    top: 41%;
+    left: 41%;
+    width: 80px;
+    height: 80px;
+    border-radius: 80px;
+  }
+
+  .wheel-viewbox-border {
+    top: 36%;
+    left: 36%;
+    width: 120px;
+    height: 120px;
+    border-radius: 120px;
+
+  }
+
+  @keyframes animation_logo {
+    from {
+      top: 44%;
+      left: 44%;
+      width: 60px;
+      height: 60px;
+      border-radius: 60px;
+    }
+
+    to {
+      top: 41%;
+      left: 41%;
+      width: 80px;
+      height: 80px;
+      border-radius: 80px;
+    }
+  }
+}
+
+// done
+@media screen and (min-width: 413px) and (max-width: 767px) {
+  :root {
+    --wheel-size: 310px;
+    --wheel-font-size: 10px;
+    --wheel-icon-size: 25px;
+    --wheel-position-wheel: 30%;
+    --scale-distance: 1.5;
+
+  }
+
+  .wheel-viewbox {
+    top: 39%;
+    left: 39%;
+    width: 70px;
+    height: 70px;
+    border-radius: 70px;
+  }
+
+  .wheel-viewbox-border {
+    top: 34.5%;
+    left: 34.5%;
     width: 100px;
     height: 100px;
     border-radius: 100px;
@@ -106,7 +201,7 @@
 
     to {
       top: 39%;
-      left: 38%;
+      left: 39%;
       width: 70px;
       height: 70px;
       border-radius: 80px;
@@ -114,50 +209,101 @@
   }
 }
 
-
-@media screen and (min-width: 200px) and (max-width: 280px) {
+// done
+@media screen and (min-width: 320px) and (max-width: 413px) {
   :root {
-    --wheel-size: 200px;
-    --wheel-font-size: 7px;
-    --wheel-icon-size: 18px;
+    --wheel-size: 240px;
+    --wheel-font-size: 10px;
+    --wheel-icon-size: 15px;
     --wheel-position-wheel: 30%;
+    --scale-distance: 2;
+
   }
 
   .wheel-viewbox {
-    top: 42%;
-    left: 40%;
-    width: 40px;
-    height: 40px;
-    border-radius: 80px;
-  }
-
-  .wheel-viewbox-border {
-    top: 37%;
-    left: 35%;
+    top: 39%;
+    left: 39%;
     width: 60px;
     height: 60px;
     border-radius: 60px;
 
   }
 
+  .wheel-viewbox-border {
+    top: 35%;
+    left: 35%;
+    width: 80px;
+    height: 80px;
+    border-radius: 80px;
+
+  }
+
   @keyframes animation_logo {
     from {
-      top: 42%;
-      left: 40%;
+      top: 43%;
+      left: 43%;
       width: 40px;
       height: 40px;
-      border-radius: 50px;
+      border-radius: 40px;
     }
 
     to {
-      top: 39%;
-      left: 37.5%;
+      top: 41%;
+      left: 41%;
       width: 50px;
       height: 50px;
       border-radius: 50px;
     }
   }
 }
+
+// done
+@media screen and (max-width: 319px) {
+  :root {
+    --wheel-size: 200px;
+    --wheel-font-size: 8px;
+    --wheel-icon-size: 12px;
+    --wheel-position-wheel: 30%;
+    --scale-distance: 2.5;
+  }
+
+  .wheel-viewbox {
+    top: 41%;
+    left: 41%;
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+
+  }
+
+  .wheel-viewbox-border {
+    top: 34%;
+    left: 34%;
+    width: 70px;
+    height: 70px;
+    border-radius: 70px;
+
+  }
+
+  @keyframes animation_logo {
+    from {
+      top: 41%;
+      left: 41%;
+      width: 40px;
+      height: 40px;
+      border-radius: 40px;
+    }
+
+    to {
+      top: 39%;
+      left: 39%;
+      width: 50px;
+      height: 50px;
+      border-radius: 50px;
+    }
+  }
+}
+
 
 
 /* Wheel container = outer pink circle */
@@ -283,7 +429,7 @@
     but overall it works pretty well
     TODO: To study
   */
-  --slice-max-width: calc(var(--PI) * var(--wheel-size) + var(--wheel-size)*1.9);
+  --slice-max-width: calc(var(--PI) * var(--wheel-size) + var(--wheel-size)* var(--scale-distance));
   --slice-width: calc((var(--slice-max-width) / var(--nb-item)) - var(--wheel-slice-spacing));
   border: solid transparent calc(var(--slice-width) /2);
   border-left: solid transparent 0;
