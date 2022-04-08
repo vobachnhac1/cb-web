@@ -8,10 +8,10 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Layout, Menu } from 'antd';
 import {
-  UserOutlined,
-  LaptopOutlined,
-  NotificationOutlined,
-  SettingOutlined
+  AliyunOutlined,
+  CodepenCircleOutlined,
+  CodepenOutlined,
+  CodeSandboxOutlined
 
 } from '@ant-design/icons';
 const { SubMenu } = Menu;
@@ -26,104 +26,47 @@ import classes from './style.module.less';
 // lưu quyền dưới database =>
 const menu = [
   {
-    key: 'subAdmin',
+    key: 'subTopic',
     parentKey: null,
-    path: '/admin',
-    icon: <SettingOutlined />,
-    title: 'Kết quả trúng thưởng ',
-    child: [
-      {
-        key: 'admin1',
-        parentKey: 'subAdmin',
-        title: 'Danh sách kết quả',
-        icon: null,
-        path: '/admin/user/12345',
-        child: null,
-      },
-      {
-        key: 'admin3',
-        parentKey: 'subAdmin',
-        title: 'Thêm mới',
-        icon: null,
-        path: '/admin',
-        child: null,
-      },
-      
-    ],
-  },
-  
-  {
-    key: 'subEvent',
+    path: '/admin/topic',
+    icon: <CodepenOutlined />,
+    title: 'Topic',
+    child: null,
+  }, {
+    key: 'subWheel',
     parentKey: null,
-    path: '/event',
-    icon: <SettingOutlined />,
-    title: 'Vòng quay',
-    child: [
-      {
-        key: 'event1',
-        parentKey: 'subEvent',
-        path: '/event',
-        icon: null,
-        title: 'Danh sách vòng quay',
-        child: null,
-      },
-      {
-        key: 'event2',
-        parentKey: 'subEvent',
-        path: '/event',
-        icon: null,
-        title: 'Thêm vòng quay',
-        child: null,
-      },
-     
-    ],
-  },
-   {
-    key: 'subEvent',
+    path: '/admin/wheel',
+    icon: <CodeSandboxOutlined />,
+    title: 'Wheel',
+    child: null,
+  }, {
+    key: 'subWheelDetail',
     parentKey: null,
-    path: '/event',
-    icon: <SettingOutlined />,
-    title: 'Chi tiết vòng quay',
-    child: [
-      {
-        key: 'event1',
-        parentKey: 'subEvent',
-        path: '/event',
-        icon: null,
-        title: 'Danh sách chi tiết vòng quay',
-        child: null,
-      },
-      {
-        key: 'event2',
-        parentKey: 'subEvent',
-        path: '/event',
-        icon: null,
-        title: 'Thêm chi tiết vòng quay',
-        child: null,
-      },
-     
-    ],
-  },
-  {
-    key: 'subSetting',
+    path: '/admin/wheel-detail',
+    icon: <AliyunOutlined />,
+    title: 'Wheel Detail',
+    child: null,
+  }, {
+    key: 'subSegment',
     parentKey: null,
-    path: '/settings',
-    icon: <SettingOutlined />,
-    title: 'Chức năng mới đang cập nhật',
+    path: '/admin/segment',
+    icon: <CodepenCircleOutlined />,
+    title: 'Segment',
     child: null,
   },
-];;
+];
 const permission = [
   {
-    parent: 'subAdmin',
-    child: ['admin1', 'admin3'],
-  },
-  {
-    parent: 'subEvent',
-    child: ['event1', 'event2', 'event4'],
-  },
-  {
-    parent: 'subSetting',
+    parent: 'subTopic',
+    child: null,
+  }, {
+    parent: 'subWheel',
+    child: null,
+  }, {
+    parent: 'subWheelDetail',
+    child: null,
+  }, {
+    parent: 'subSegment',
     child: null,
   },
 ];
@@ -201,5 +144,5 @@ const SliderCustom = (props) => {
     </Sider>
   );
 };
- 
+
 export default SliderCustom;

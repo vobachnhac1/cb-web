@@ -47,6 +47,7 @@ module.exports = withBundleAnalyzer(withAntdLess({
 		config.plugins.push(
 			new webpack.EnvironmentPlugin({ ...process.env, 'THEME': { ...antdVariables } }),
 		);
+		config.infrastructureLogging = { debug: /PackFileCache/ }
 
 		return config;
 	},
