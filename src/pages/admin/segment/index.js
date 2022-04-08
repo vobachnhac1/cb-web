@@ -6,6 +6,8 @@
 *------------------------------------------------------- */
 require("./style.module.less");
 import { useState,useEffect } from 'react';
+import Link from 'next/link';
+import Router from 'next/router';
 import * as styles from './style.module.less';
 import * as classnames from 'classnames';
 import LayoutHome from '@/containers/Home';
@@ -100,14 +102,17 @@ const columns = [
     <LayoutHome>
       <Col style={{ marginBottom: 30 }}>
         <Card
-          headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'center', backgroundColor: "rgba(87, 131, 122, 1)" }}
+          headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'center', backgroundColor: "rgb(3, 77, 162)" }}
           title="Tất cả kết quả giải thưởng"
           bordered={true}
-          style={{ backgroundColor: '#FFFFFF' }}>
+          style={{ backgroundColor: '#FFFFFF',padding:0 }}>
           <Col span={48}>
             <Row gutter={[16, 24]}>
               <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }}>Thêm</Button>
+                <Link href="/admin/segment/add-segment">
+								<Button type='primary' size='middle' style={{ width: '100%' }}>Thêm</Button>
+								</Link>
+                
               </Col>
               <Col className="gutter-row" span={3}>
                 <Button type='primary' size='middle' style={{ width: '100%' }}>Tìm kiếm</Button>
