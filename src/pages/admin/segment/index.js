@@ -5,14 +5,41 @@
 * Created: 2022-04-07
 *------------------------------------------------------- */
 require("./style.module.less");
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import * as styles from './style.module.less';
 import * as classnames from 'classnames';
 import LayoutHome from '@/containers/Home';
 import { Button, Card, Col, Row, Space, Table,Popconfirm } from 'antd';
-require("./style.module.less");
 
-const handleDelete = (key) => {
+// khai báo store
+import { useSelector, useDispatch } from 'react-redux';
+import { actions as actionSegment } from '@/redux/segment';
+import { getters as gettersSegment } from '@/redux/segment';
+
+// handhandleDelete
+
+
+export default function Segment(props) {
+  const dispatch = useDispatch();
+ const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
+
+ console.log('danh sach list Segment',listSegment)
+
+  // gọi 1 function rồi theo dõi nhưng thay đổi của param đó
+  useEffect(() => {
+    initPage(); // chjay 1 lần duy nhất
+  }, [])
+
+  // useEffect(() => {
+  //   // chạy khi có sụ thay đổi của listTopic
+  // }, [listSegment])
+
+  const initPage = async () => {
+    await dispatch(actionSegment.searchSegment()); 
+  }
+
+
+  const handleDelete = (key) => {
     console.log('đã click nut delete')
 };
 const columns = [
@@ -53,7 +80,7 @@ const columns = [
 
         <Space size="middle">
         <a>Edit</a>
-        { data.length >= 1 ? (
+        { listSegment.length >= 1 ? (
               <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)} >
                 <a style={{color:'red'}}>Delete</a>
               </Popconfirm>
@@ -63,42 +90,6 @@ const columns = [
      ),
   },
 ];
-
-const data = [
-  {
-    segment_id: '1',
-    segment_name: 'tên ket qua trung thuoc',
-    topic_name: 'chủ đề',
-    inactived_date:'11:00 07/04/2022',
-    created_date:'11:00 05/04/2022'
-  }, 
-   {
-    segment_id: '1',
-    segment_name: 'tên ket qua trung thuoc',
-    topic_name: 'chủ đề',
-    inactived_date:'11:00 07/04/2022',
-    created_date:'11:00 05/04/2022'
-  }, 
-   {
-    segment_id: '1',
-    segment_name: 'tên ket qua trung thuoc',
-    topic_name: 'chủ đề',
-    inactived_date:'11:00 07/04/2022',
-    created_date:'11:00 05/04/2022'
-  }, 
-   {
-    segment_id: '1',
-    segment_name: 'tên ket qua trung thuoc',
-    topic_name: 'chủ đề',
-    inactived_date:'11:00 07/04/2022',
-    created_date:'11:00 05/04/2022'
-  }, 
-  
-];
-
-export default function Segment(props) {
-
-
   const pagination = {
     current: 1,
     pageSize: 10,
@@ -129,7 +120,7 @@ export default function Segment(props) {
           <Col span={48} style={{ marginTop: 10 }}>
             <Table
               columns={columns}
-              dataSource={data}
+              dataSource={listSegment}
               size='large'
               pagination={pagination}
               loading={false}
