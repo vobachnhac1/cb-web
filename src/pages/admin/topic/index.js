@@ -21,6 +21,11 @@ import ModalTopic from '@/containers/modal-topic';
 export default function Topic(props) {
   const dispatch = useDispatch();
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
+  const [visible, setVisible] = useState(false);
+  const [bodyModel, setBodyModel] = useState({
+    isAdd: false,
+    record: null
+  });
   const columns = [
     {
       title: 'Topic ID',
@@ -55,20 +60,6 @@ export default function Topic(props) {
       ),
     },
   ];
-  // gọi 1 function rồi theo dõi nhưng thay đổi của param đó
-  useEffect(() => {
-    initPage(); // chjay 1 lần duy nhất
-  }, [])
-
-  useEffect(() => {
-    // chạy khi có sụ thay đổi của listTopic
-  }, [listTopic])
-
-
-  const initPage = async () => {
-    await dispatch(actionTopic.searchTopic()); // hàm gọi xuống store call api search-all topic
-  }
-
   const pagination = {
     current: 1,
     pageSize: 10,
@@ -76,11 +67,14 @@ export default function Topic(props) {
 
   };
 
-  const [visible, setVisible] = useState(false);
-  const [bodyModel, setBodyModel] = useState({
-    isAdd: false,
-    record: null
-  });
+  // gọi 1 function rồi theo dõi nhưng thay đổi của param đó
+  useEffect(() => {
+    initPage(); // chjay 1 lần duy nhất
+  }, [])
+
+  const initPage = async () => {
+    await dispatch(actionTopic.searchTopic()); // hàm gọi xuống store call api search-all topic
+  }
 
   const addNewTopic = () => {
     setVisible(true);
@@ -106,6 +100,7 @@ export default function Topic(props) {
     }
     Message.Error("NOTYFICATON", "DELETE TOPIC FAIL");
   }
+
   const approveTopic = async (record) => {
     const result = await dispatch(actionTopic.approveTopic(record));
     if (result) {
@@ -129,7 +124,7 @@ export default function Topic(props) {
           headStyle={{
             fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'center', backgroundColor: '#0C74CF'
           }}
-          title="QUẢN LÝ CHỦ ĐỀ"
+          title="TOPIC MANAGEMENT"
           bordered={true}
           style={{ backgroundColor: '#FFFFFF' }}>
           <Col span={48} >
