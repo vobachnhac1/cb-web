@@ -10,6 +10,8 @@ import * as styles from './style.module.less';
 import * as classnames from 'classnames';
 import LayoutHome from '@/containers/Home';
 import { Button, Card, Col, Row, Space, Table } from 'antd';
+
+// khai báo store
 import { useSelector, useDispatch } from 'react-redux';
 import { actions as actionTopic } from '@/redux/topic';
 import { getters as gettersTopic } from '@/redux/topic';
@@ -31,6 +33,10 @@ const columns = [
     title: 'InActive Date',
     dataIndex: 'inactived_date',
     key: 'inactived_date',
+  }, {
+    title: 'Status',
+    dataIndex: 'status_yn',
+    key: 'status_yn',
   },
   {
     title: 'Action',
@@ -48,13 +54,19 @@ const columns = [
 export default function Topic(props) {
   const dispatch = useDispatch();
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
+
+  // gọi 1 function rồi theo dõi nhưng thay đổi của param đó
   useEffect(() => {
-    initPage();
+    // initPage(); // chjay 1 lần duy nhất
   }, [])
+
   useEffect(() => {
+    // chạy khi có sụ thay đổi của listTopic
   }, [listTopic])
+
+
   const initPage = async () => {
-    await dispatch(actionTopic.searchTopic());
+    await dispatch(actionTopic.searchTopic()); // hàm gọi xuống store call api search-all topic
   }
 
   const pagination = {
@@ -71,7 +83,7 @@ export default function Topic(props) {
           title="QUẢN LÝ CHỦ ĐỀ"
           bordered={true}
           style={{ backgroundColor: '#FFFFFF' }}>
-          <Col span={48}>
+          <Col span={48} >
             <Row gutter={[16, 24]}>
               <Col className="gutter-row" span={3}>
                 <Button type='primary' size='middle' style={{ width: '100%' }}>Thêm</Button>
