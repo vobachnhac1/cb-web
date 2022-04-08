@@ -2,8 +2,8 @@ import * as TYPES from './type';
 import URLSERVER from '@/redux/urlServer.json';
 
 // hàm thị thi nội bộ
-const setSearchTopic = (payload) => ({ type: TYPES.TOPIC_SEARCH, payload });
-
+// const setSearchTopic = (payload) => ({ type: TYPES.TOPIC_SEARCH, payload });
+const getAllSegment = (payload)=>({ type: TYPES.TOPIC_SEARCH, payload });
 // hàm xử lý được gọi từ bên ngoài
 export const searchTopic = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
