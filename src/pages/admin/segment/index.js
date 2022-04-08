@@ -62,7 +62,7 @@ const columns = [
     dataIndex: 'topic_name',
     key: 'topic_name',
     
-    render: text => <a>{text}</a>,
+   
   },
   {
     title: 'Ngày hết hiệu lực',
