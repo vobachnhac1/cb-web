@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import axios from 'axios';
 import * as CONST from './constants';
+import URLSERVER from '@/redux/urlServer.json';
 // import { SERVER_LOCATION } from '@env';
 import { ERROR_CODES } from './error-codes';
 
@@ -16,7 +17,7 @@ export class RestClientCreator {
   constructor(options = {}) {
     this.axiosInstance = axios.create({
       ...options,
-      baseURL: 'http://localhost:2222' // 'https://weathermanagementdev.azurewebsites.net'
+      baseURL: URLSERVER.server//'http://localhost:22222' // 'https://weathermanagementdev.azurewebsites.net'
     });
     this.axiosInstance.defaults.headers.common[CONST.REQ_HEADER_CONTENT_TYPE] = CONST.REQ_CONTENT_TYPE.JSON;
     this.axiosInstance.defaults.timeout = 20000;
@@ -56,7 +57,7 @@ export class RestClientCreator {
   }
 
   async post(url, requestBody = {}, headers = {}) {
-     if (!_.isString(url)) { throw new Error('String value of URL must correct'); }
+    if (!_.isString(url)) { throw new Error('String value of URL must correct'); }
     return await sendRequest(
       this.axiosInstance,
       url,
@@ -218,19 +219,19 @@ const isFormData = val => {
  */
 const readRestResponse = async (resolve) => {
   try {
-    
-    const resp = await Promise.resolve(resolve).then(function(value) {
-        return value
-    }, function(value) {
+
+    const resp = await Promise.resolve(resolve).then(function (value) {
+      return value
+    }, function (value) {
       // not called
     });
- 
+
     if (resp.status === 200) {
-      return { success: true, data:  JSON.parse(resp.data)|| null };
+      return { success: true, data: JSON.parse(resp.data) || null };
     } else if (resp.status === 204) {
-      return { success: true, data:  JSON.parse(resp.data) || null };
+      return { success: true, data: JSON.parse(resp.data) || null };
     } else {
-      return { status: resp.status, success: true, data:  JSON.parse(resp.data) || null };
+      return { status: resp.status, success: true, data: JSON.parse(resp.data) || null };
     }
   } catch (error) {
     console.log(error);
@@ -240,8 +241,8 @@ const readRestResponse = async (resolve) => {
     //   return { success: false, data: JSON.parse(data) };
     // }
     return {
-      success:false,
-      message:'err try catch'
+      success: false,
+      message: 'err try catch'
     }
   }
 };

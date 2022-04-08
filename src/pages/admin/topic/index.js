@@ -5,12 +5,14 @@
 * Created: 2022-04-07
 *------------------------------------------------------- */
 require("./style.module.less");
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as styles from './style.module.less';
 import * as classnames from 'classnames';
 import LayoutHome from '@/containers/Home';
 import { Button, Card, Col, Row, Space, Table } from 'antd';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { actions as actionTopic } from '@/redux/topic';
+import { getters as gettersTopic } from '@/redux/topic';
 
 const columns = [
   {
@@ -29,7 +31,8 @@ const columns = [
     title: 'InActive Date',
     dataIndex: 'inactived_date',
     key: 'inactived_date',
-  }, {
+  },
+  {
     title: 'Action',
     key: 'action',
     render: (text, record) => (
@@ -41,75 +44,23 @@ const columns = [
   },
 ];
 
-const data = [
-  {
-    topic_id: '1',
-    topic_name: 'Trúng Nhà',
-    inactived_date: '11:00 07/04/2022',
-    tags: ['nice', 'developer'],
-  }, {
-    topic_id: '2',
-    topic_name: 'Trúng Xe',
-    inactived_date: '11:00 07/04/2022',
-    tags: ['nice', 'developer'],
-  }, {
-    topic_id: '3',
-    topic_name: 'Trúng Điện Thoại',
-    inactived_date: '11:00 07/04/2022',
-    tags: ['nice', 'developer'],
-  }, {
-    topic_id: '4',
-    topic_name: 'Trúng Laptop',
-    inactived_date: '11:00 07/04/2022',
-    tags: ['nice', 'developer'],
-  }, {
-    topic_id: '5',
-    topic_name: 'Trúng Nhà',
-    inactived_date: '11:00 07/04/2022',
-    tags: ['nice', 'developer'],
-  }, {
-    topic_id: '6',
-    topic_name: 'Trúng Xe',
-    inactived_date: '11:00 07/04/2022',
-    tags: ['nice', 'developer'],
-  }, {
-    topic_id: '7',
-    topic_name: 'Trúng Điện Thoại',
-    inactived_date: '11:00 07/04/2022',
-    tags: ['nice', 'developer'],
-  }, {
-    topic_id: '8',
-    topic_name: 'Trúng Laptop',
-    inactived_date: '11:00 07/04/2022',
-    tags: ['nice', 'developer'],
-  }, {
-    topic_id: '9',
-    topic_name: 'Trúng Điện Thoại',
-    inactived_date: '11:00 07/04/2022',
-    tags: ['nice', 'developer'],
-  }, {
-    topic_id: '10',
-    topic_name: 'Trúng Laptop',
-    inactived_date: '11:00 07/04/2022',
-    tags: ['nice', 'developer'],
-  }, {
-    topic_id: '11',
-    topic_name: 'Trúng Điện Thoại',
-    inactived_date: '11:00 07/04/2022',
-    tags: ['nice', 'developer'],
-  }, {
-    topic_id: '12',
-    topic_name: 'Trúng Laptop',
-    inactived_date: '11:00 07/04/2022',
-    tags: ['nice', 'developer'],
-  },
-];
 
 export default function Topic(props) {
+  const dispatch = useDispatch();
+  const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
+  useEffect(() => {
+    initPage();
+  }, [])
+  useEffect(() => {
+  }, [listTopic])
+  const initPage = async () => {
+    await dispatch(actionTopic.searchTopic());
+  }
+
   const pagination = {
     current: 1,
     pageSize: 10,
-    total: 200,
+    // total: 200,
 
   };
   return (
@@ -136,7 +87,7 @@ export default function Topic(props) {
           <Col span={48} style={{ marginTop: 10 }}>
             <Table
               columns={columns}
-              dataSource={data}
+              dataSource={listTopic}
               size='large'
               pagination={pagination}
               loading={false}
