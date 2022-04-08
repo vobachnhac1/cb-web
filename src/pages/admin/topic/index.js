@@ -48,6 +48,7 @@ export default function Topic(props) {
       key: 'action',
       render: (text, record) => (
         <Space size="middle">
+          <Button style={{ color: 'green', borderColor: 'green', borderWidth: 0.5 }} onClick={() => approveTopic(record)} >Approve</Button>
           <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateTopic(record)} >Edit</Button>
           <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} onClick={() => deleteTopic(record)} >Delete</Button>
         </Space>
@@ -105,6 +106,15 @@ export default function Topic(props) {
     }
     Message.Error("NOTYFICATON", "DELETE TOPIC FAIL");
   }
+  const approveTopic = async (record) => {
+    const result = await dispatch(actionTopic.approveTopic(record));
+    if (result) {
+      initPage();
+      Message.Success("NOTYFICATON", "APPROVE TOPIC SUCCESS");
+      return
+    }
+    Message.Error("NOTYFICATON", "APPROVE TOPIC FAILED");
+  }
 
   const callbackModal = (params) => {
     setVisible(params.visible);
@@ -128,7 +138,7 @@ export default function Topic(props) {
                 <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewTopic}>Thêm</Button>
               </Col>
               <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }}>Tìm kiếm</Button>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={initPage} >Tìm kiếm</Button>
               </Col>
             </Row>
           </Col>
