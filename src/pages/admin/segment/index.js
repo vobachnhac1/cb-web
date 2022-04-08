@@ -49,16 +49,17 @@ const columns = [
     title: 'Mã kết quả trúng thưởng',
     dataIndex: 'segment_id',
     key: 'segment_id',
-    
-    render: text => <a>{text}</a>,
+    fixed: 'left'
+    // render: text => <a>{text}</a>,
   },
   {
     title: 'Tên kết quả trúng thưởng',
     dataIndex: 'segment_name',
     key: 'segment_name',
+    fixed: 'left'
   },
   {
-    title: 'chủ đề',
+    title: 'Chủ đề',
     dataIndex: 'topic_name',
     key: 'topic_name',
     
