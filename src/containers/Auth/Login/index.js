@@ -41,6 +41,7 @@ console.log(namelist1);
 
 	const onsubmitLogin = async (values) => {
 		try {
+			console.log(values)
 			setLoading(true);
 			const result = await dispatch(actions.loginAdmin(values));
 

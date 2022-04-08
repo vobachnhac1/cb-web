@@ -5,17 +5,55 @@
 * Created: 2022-04-07
 *------------------------------------------------------- */
 require("./style.module.less");
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 
 import * as styles from './style.module.less';
 import * as classnames from 'classnames';
 import LayoutHome from '@/containers/Home';
-import { useDispatch,useSelector } from 'react-redux';
-import { actions,getters } from '@/redux/global'
-import { Form,Input,Button,DatePicker,Layout,Col ,Card,Row } from 'antd';
+import { Form,Input,Button,DatePicker,Layout,Col ,Card,Select } from 'antd';
+import moment from 'moment';
+
+
+// khai báo store
+import { useSelector, useDispatch } from 'react-redux';
+import { actions as actionTopic } from '@/redux/topic';
+import { getters as gettersTopic} from '@/redux/topic';
 
 const {  Content } = Layout;
+
 export default function Segment() {
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+  const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
+
+  useEffect(() => {
+      initPage(); // chjay 1 lần duy nhất
+    }, [])
+
+    // useEffect(() => {
+    //   // chạy khi có sụ thay đổi của listTopic
+    // }, [listSegment])
+
+    const initPage = async () => {
+      await dispatch(actionTopic.searchTopic()); 
+    }
+
+    const onsubmitSaveSegment = async(values)=>{
+      try {
+            setLoading(true);
+            // const result = await dispatch(actions.loginAdmin(values));
+
+            // if(result){
+            //   Router.push('/home');
+            // }
+            console.log('value form Segment',values)
+            
+          } finally {
+            setLoading(false);
+          }
+    }
+
   return (
     <LayoutHome>
          <Col style={{ marginBottom: 30 }}>
@@ -45,27 +83,33 @@ export default function Segment() {
                     }}
                      labelAlign='left'
                     size={'default'}
+                    onFinish={onsubmitSaveSegment}
                   >
-                  
-                    <Form.Item label="Mã kết quả trúng thưởng">
+                    
+                    <Form.Item name="segment_id" label="Mã kết quả trúng thưởng">
                       <Input />
                     </Form.Item>
-                    <Form.Item label="Chủ đề">
+                    <Form.Item name="topic_id" label="Chủ đề">
+                      <Select>
+                        {listTopic.map((Item) => (
+                          <Select.Option value={Item.topic_id}>{Item.topic_name}</Select.Option>
+                          // <option value={option.value}>{option.label}</option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                    <Form.Item  name="segment_name" label="Tên kết quả trúng thưởng">
                       <Input />
                     </Form.Item>
-                    <Form.Item label="Tên kết quả trúng thưởng">
+                    <Form.Item name="segment_color" label="Màu sắc hiển thị">
                       <Input />
                     </Form.Item>
-                    <Form.Item label="Màu sắc hiển thị">
-                      <Input />
-                    </Form.Item>
-                    <Form.Item label="Ngày hết hiệu lực">
+                    <Form.Item name="inactived_date" label="Ngày hết hiệu lực">
                       <DatePicker />
                     </Form.Item>
                   
                 
                     <Form.Item>
-                      <Button type="primary">Save</Button>
+                      <Button type="primary"  htmlType="submit" loading={loading}>Save</Button>
 
                       <Button style={{
                         margin: '0 8px',
