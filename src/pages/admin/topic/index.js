@@ -166,7 +166,7 @@ export default function Topic(props) {
             <Row gutter={[16, 24]}>
               <Col className="gutter-row" span={4}>
                 <Input
-                  placeholder='Nhập Topic Name'
+                  placeholder='Input Topic Name'
                   style={{ width: '100%' }}
                   value={filter.topic_name}
                   onChange={(text) => setFilter({ ...filter, topic_name: text.target.value })} />
@@ -194,10 +194,10 @@ export default function Topic(props) {
             </Row>
             <Row gutter={[16, 24]} style={{ marginTop: 10 }}>
               <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewTopic}>Thêm</Button>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewTopic}>Add</Button>
               </Col>
               <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch} >Tìm kiếm</Button>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch} >Search</Button>
               </Col>
             </Row>
           </Col>
