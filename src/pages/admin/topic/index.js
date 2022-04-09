@@ -14,7 +14,8 @@ import * as Message from '@/components/message';
 
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
-import { actions as actionTopic } from '@/redux/topic';
+import { actions as actionTopic } from 
+'@/redux/topic';
 import { getters as gettersTopic } from '@/redux/topic';
 import ModalTopic from '@/containers/modal-topic';
 
