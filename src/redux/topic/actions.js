@@ -93,6 +93,17 @@ export const approveTopic = (payload) => async (dispatch, getState, { $http }) =
   return true;
 }
 
+export const filterTopic = (payload) => async (dispatch, getState, { $http }) => {
+  const result = await $http.post(URLSERVER.searchTopicById, payload);
+  const { success, data } = result;
+  if (!success || !data.success) {
+    return false;
+  }
+  const listTopic = data.data;
+  dispatch(setSearchTopic(listTopic))
+  return true
+}
+
 
 // function export ra ngoài
 
