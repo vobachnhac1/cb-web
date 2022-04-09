@@ -9,13 +9,15 @@ import { buildReducer } from '../wrapper';
 //Creating my reducer
 export default buildReducer(
   {
-    listTopic: []
-  }, {
-  [TYPES.TOPIC_SEARCH]: (state = listTopic, payload) => {
+    listWheel: []
+  },
+  {
+    [TYPES.WHEEL_SEARCH]: (state = listWheel, payload) => {
 
-    return {
-      ...state,
-      listTopic: payload
+      return {
+        ...state,
+        listWheel: payload
+      }
     }
   },
-});
+);

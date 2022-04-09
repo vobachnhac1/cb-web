@@ -1,7 +1,7 @@
 // TOPIC
-export const TOPIC_SEARCH = 'TOPIC_SEARCH';
-export const TOPIC_INSERT = 'TOPIC_INSERT';
-export const TOPIC_UPDATE = 'TOPIC_UPDATE';
-export const TOPIC_DELETE = 'TOPIC_DELETE';
-export const TOPIC_APPROVE = 'TOPIC_APPROVE';
-export const TOPIC_SEARCH_BY_ID = 'TOPIC_SEARCH_BY_ID';
+export const WHEEL_SEARCH = 'WHEEL_SEARCH';
+export const WHEEL_INSERT = 'WHEEL_INSERT';
+export const WHEEL_UPDATE = 'WHEEL_UPDATE';
+export const WHEEL_DELETE = 'WHEEL_DELETE';
+export const WHEEL_APPROVE = 'WHEEL_APPROVE';
+export const WHEEL_SEARCH_BY_ID = 'WHEEL_SEARCH_BY_ID';
