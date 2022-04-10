@@ -36,11 +36,12 @@ const layoutContent = {
 const ModalTopic = (props) => {
   const { callback, visible = false, bodyModel: { isAdd = false, record = null } } = props;
   const dispatch = useDispatch();
-  const [isApprove, setIsApprove] = useState('N');
+  const [isApprove, setIsApprove] = useState(record ? record.status_yn : "N");
   const [topicName, setTopicName] = useState(record ? record.topic_name : "");
 
   useEffect(() => {
     setTopicName(record ? record.topic_name : "")
+    setIsApprove(record ? record.status_yn : "")
   }, [visible]);
 
   const onChangeSelect = (record) => {
@@ -83,7 +84,6 @@ const ModalTopic = (props) => {
   }
   const onCancel = () => {
     callback({ visible: false });
-
   }
   return (
     <Modal
