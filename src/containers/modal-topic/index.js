@@ -6,8 +6,6 @@
 *------------------------------------------------------- */
 require("./style.module.less");
 
-import Header from '@/components/Head';
-import Layout from '@/layout';
 import { Card, Col, Form, Input, Modal, Row, Select, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 
