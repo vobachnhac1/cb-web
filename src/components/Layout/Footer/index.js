@@ -8,13 +8,13 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 
-import classes from './style.module.less';
+import * as classes from './style.module.less';
 
 const Footer = (props) => {
 	// const { } = props;
 
 	return (
-		<footer className={classes.footer}>
+		<footer className={[classes.footer]}>
 			<div>
 				<strong className="text-primary">cb-demo</strong>
 				<span> 2021 © All Rights Reserved.</span>

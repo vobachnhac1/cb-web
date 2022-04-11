@@ -8,6 +8,7 @@ import React from 'react';
 import { Layout } from 'antd';
 import HeaderCustom from './header';
 import SliderCustom from './slider';
+import { Footer } from 'antd/lib/layout/layout';
 
 const LayoutCustom = (props) => {
   const { children } = props;
@@ -17,7 +18,12 @@ const LayoutCustom = (props) => {
       <HeaderCustom />
       <Layout>
         <SliderCustom />
-        {children}
+        <Layout style={{ padding: 16, flexDirection: 'column', justifyContent: 'space-between' }}>
+          {children}
+          <Footer style={{ textAlign: 'center', fontWeight: 'bold', height: 50 }}>
+            <span>-----------  Website designed by CB Team -----------</span>
+          </Footer>
+        </Layout>
       </Layout>
     </Layout>
   );
