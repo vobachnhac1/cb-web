@@ -11,7 +11,7 @@
   "approveTopicById": "/topic/approve-by-id",
   "deleteTopicById": "/topic/delete-by-id",
   "searchAllWheel": "/wheel/select-all",
-  "searchWheelById": "/wheel/select-by-topic-id",
+  "searchWheelById": "/wheel/select-by-Wheel-id",
   "insertWheel": "/wheel/create",
   "updateWheelById": "/wheel/update-by-id",
   "approveWheelById": "/wheel/approve-by-id",

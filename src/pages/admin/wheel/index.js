@@ -25,12 +25,15 @@ import { actions as actionWheel } from '@/redux/wheel';
 import { getters as gettersWheel } from '@/redux/wheel';
 
 import moment from 'moment';
+import __ from 'lodash';
 
 export default function Wheel(props) {
   const [dataSearch, setDataSearch] = useState('')
   const dispatch = useDispatch();
   const listWheel = useSelector(gettersWheel.getStateLoadPageWheel) || [];
-
+  const [filter, setFilter] = useState({
+    wheel_name: null,
+  });
 
   // gọi 1 function rồi theo dõi nhưng thay đổi của param đó
   useEffect(() => {
@@ -58,21 +61,17 @@ export default function Wheel(props) {
 
   }
 
-  const searchBtn = async () => {
-    let paramsSearch = {
-      "topic_id": '',
-      "segment_id": 0,
-      "segment_name": "string",
-      "segment_color": "string",
-      "inactived_date": "2022-04-08T04:17:56.025Z",
-      "created_date": "2022-04-08T04:17:56.025Z",
-      "datelastmaint": "2022-04-08T04:17:56.025Z",
-      "is_approve": true,
-      'dataSearch': dataSearch,
+  const onSearch = async () => {
+    // console.log('test search ', filter)
+    const { wheel_name } = filter;
+    if (__.isNil(wheel_name)) {
+      initPage();
+    } else {
+      const result = await dispatch(actionWheel.filterWheel(filter));
+      return;
     }
-    console.log(paramsSearch)
-    await dispatch(actionSegment.searchSegment(paramsSearch));
   }
+
 
 
   const handleDelete = async (record) => {
@@ -201,7 +200,7 @@ export default function Wheel(props) {
           <Col span={48}>
             <Row gutter={[16, 24]}>
               <Col className="gutter-row" span={12}>
-                <Input placeholder="Thông tin cần tìm" onChange={(event) => setDataSearch(event.target.value)} />
+                <Input placeholder="Thông tin cần tìm" value={filter.wheel_name} onChange={(event) => setFilter({ ...filter, wheel_name: event.target.value })} />
               </Col>
             </Row>
             <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
@@ -209,7 +208,7 @@ export default function Wheel(props) {
                 <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewWheel}>Thêm</Button>
               </Col>
               <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={searchBtn}>Tìm kiếm</Button>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>
               </Col>
             </Row>
           </Col>

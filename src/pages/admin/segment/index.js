@@ -65,26 +65,12 @@ export default function Segment(props) {
   const onSearch = async () => {
     // console.log('test search ', filter)
     const { segment_name, topic_id, from_date_act, to_date_act } = filter;
-    // if (!__.isNil(segment_name) && segment_name.length > 0 && !__.isNil(topic_id) && __.isNil(from_date_act) && __.isNil(to_date_act)) {
-    //   const result = await dispatch(actionSegment.filterSegment(filter));
-    //   return;
-    // } else if (!__.isNil(topic_name) && !__.isNil(from_date_act) && !__.isNil(to_date_act)) {
-    //   const result = await dispatch(actionSegment.filterSegment(filter));
-    //   return;
-    // }
-    // if (!__.isNil(from_date_act) && !__.isNil(to_date_act)) {
-    //   const result = await dispatch(actionSegment.filterSegment(filter));
-    //   return;
-    // }
-
     if (__.isNil(segment_name) && __.isNil(topic_id) && __.isNil(from_date_act) && __.isNil(to_date_act)) {
       initPage();
     } else {
       const result = await dispatch(actionSegment.filterSegment(filter));
       return;
     }
-
-
   }
 
 

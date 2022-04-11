@@ -2,7 +2,7 @@ import * as TYPES from './type';
 import URLSERVER from '@/redux/urlServer.json';
 
 // hàm thị thi nội bộ
-const searchWheelDispath = (payload) => ({ type: TYPES.WHEEL_SEARCH, payload });
+const setSearchWheel = (payload) => ({ type: TYPES.WHEEL_SEARCH, payload });
 // hàm xử lý được gọi từ bên ngoài
 export const searchWheel = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
@@ -27,7 +27,7 @@ export const searchWheel = (payload) => async (dispatch, getState, { $http }) =>
     return false;
   }
   const listWheel = data.data;
-  dispatch(searchWheelDispath(listWheel))
+  dispatch(setSearchWheel(listWheel))
   return true
 }
 
@@ -106,6 +106,17 @@ export const deleteWheelById = (payload) => async (dispatch, getState, { $http }
   if (!success || !data.success) {
     return false;
   }
+  return true
+}
+
+export const filterWheel = (payload) => async (dispatch, getState, { $http }) => {
+  const result = await $http.post(URLSERVER.searchWheelById, payload);
+  const { success, data } = result;
+  if (!success || !data.success) {
+    return false;
+  }
+  const listWheel = data.data;
+  dispatch(setSearchWheel(listWheel))
   return true
 }
 
