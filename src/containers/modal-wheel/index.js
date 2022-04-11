@@ -144,7 +144,7 @@ const ModalSegment = (props) => {
       return;
     }
     //edit
-    const result = await dispatch(actionSegment.updateTopic(param));
+    const result = await dispatch(actionWheel.updateWheel(param));
     if (result) {
       callback({ visible: false });
       Message.Success("NOTYFICATON", "UPDATE SEGMENT SUCCESS");
@@ -198,7 +198,7 @@ const ModalSegment = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'ID '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Input style={{ width: '100%' }} value={wheelId} onChange={(text) => setWheelId(text.target.value)} />
+              <Input type="number" style={{ width: '100%' }} value={wheelId} onChange={(text) => setWheelId(text.target.value)} />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
@@ -211,7 +211,7 @@ const ModalSegment = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Số kết quả '}</Text>
+              <Text type="number" className={classNames({ [styles['text-font']]: true })}>{'Số kết quả '}</Text>
             </Col>
             <Col  {...layoutContent}>
               <Input style={{ width: '100%' }} value={numSegments} onChange={(text) => setNumSegments(text.target.value)} />
@@ -231,7 +231,7 @@ const ModalSegment = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng giá trị giải '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Input style={{ width: '100%' }} value={totalValue} onChange={(text) => setTotalValue(text.target.value)} />
+              <Input type="number" style={{ width: '100%' }} value={totalValue} onChange={(text) => setTotalValue(text.target.value)} />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
@@ -240,7 +240,7 @@ const ModalSegment = (props) => {
             </Col>
             <Col  {...layoutContent}>
 
-              <Input style={{ width: '100%' }} value={remainValue} onChange={(text) => setRemainValue(text.target.value)} />
+              <Input type="number" style={{ width: '100%' }} value={remainValue} onChange={(text) => setRemainValue(text.target.value)} />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
@@ -248,8 +248,7 @@ const ModalSegment = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Bán kính vòng quay '}</Text>
             </Col>
             <Col  {...layoutContent}>
-
-              <Input style={{ width: '100%' }} value={outerRadius} onChange={(text) => setOuterRadius(text.target.value)} />
+              <Input type="number" style={{ width: '100%' }} value={outerRadius} onChange={(text) => setOuterRadius(text.target.value)} />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
@@ -257,12 +256,12 @@ const ModalSegment = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Đặt kích thước chữ '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Input style={{ width: '100%' }} value={textFrontSize} onChange={(text) => setTextFrontSize(text.target.value)} />
+              <Input type="number" style={{ width: '100%' }} value={textFrontSize} onChange={(text) => setTextFrontSize(text.target.value)} />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Đặt góc vòng quay '}</Text>
+              <Text type="number" className={classNames({ [styles['text-font']]: true })}>{'Đặt góc vòng quay '}</Text>
             </Col>
             <Col  {...layoutContent}>
               <Input style={{ width: '100%' }} value={ratationAngle} onChange={(text) => setRatationAngle(text.target.value)} />

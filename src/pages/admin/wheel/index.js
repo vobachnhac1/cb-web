@@ -141,7 +141,7 @@ export default function Wheel(props) {
       render: (text, record) => (
 
         <Space size="middle">
-          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateSegment(record)} >Edit</Button>
+          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateWheel(record)} >Edit</Button>
 
           {listWheel.length >= 1 ? (
             <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)} >
@@ -167,14 +167,14 @@ export default function Wheel(props) {
     record: null
   });
 
-  const addNewSegment = () => {
+  const addNewWheel = () => {
     setVisible(true);
     setBodyModel({
       record: null,
       isAdd: true
     });
   }
-  const updateSegment = (record) => {
+  const updateWheel = (record) => {
     setVisible(true);
     setBodyModel({
       record: record,
@@ -206,7 +206,7 @@ export default function Wheel(props) {
             </Row>
             <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
               <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewSegment}>Thêm</Button>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewWheel}>Thêm</Button>
               </Col>
               <Col className="gutter-row" span={3}>
                 <Button type='primary' size='middle' style={{ width: '100%' }} onClick={searchBtn}>Tìm kiếm</Button>
