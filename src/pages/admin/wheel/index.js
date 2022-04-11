@@ -1,7 +1,7 @@
 /* --------------------------------------------------------
-* Author Võ Bách Nhạc
-* Email vonhac.20394@gmail.com
-* Phone 0906.918.738
+* Author Lê Quý Nam
+* Email lqn1604.dev@gmail.com
+* Phone 036.847.5269
 * Created: 2022-04-07
 *------------------------------------------------------- */
 require("./style.module.less");
