@@ -16,12 +16,15 @@ const { Text } = Typography;
 import * as Message from '@/components/message';
 import ModalSegment from '@/containers/modal-segment';
 import ModalTopic from '@/containers/modal-topic';
+import ModalWheelDetail from '@/containers/modal-wheel-detail'
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
 import { actions as actionSegment } from '@/redux/segment';
 import { getters as gettersSegment } from '@/redux/segment';
 import { actions as actionTopic } from '@/redux/topic';
 import { getters as gettersTopic } from '@/redux/topic';
+import { actions as actionWheelDetail } from '@/redux/wheel-detail';
+import { getters as gettersWheelDetail } from '@/redux/wheel-detail';
 
 import moment from 'moment';
 // handhandleDelete
@@ -33,6 +36,18 @@ export default function WheelDetail(props) {
   const dispatch = useDispatch();
   const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
+  const listWheelDetail = [
+    {
+      "wheel_detail_id": 1,
+      "wheel_id": 0,
+      "segment_id": 1,
+      "no": 1,
+      "goal_yn": 1,
+      "remain_value": 1,
+      "created_date": "2022-04-06T17:05:36.000Z",
+      "datelastmaint": "2022-04-06T17:05:36.000Z"
+    }
+  ];
 
   // gọi 1 function rồi theo dõi nhưng thay đổi của param đó
   useEffect(() => {
@@ -41,18 +56,21 @@ export default function WheelDetail(props) {
 
 
   const initPage = async () => {
-    const paramsInitSegment = {
-      "topic_id": 0,
-      "segment_id": 0,
-      "segment_name": "string",
-      "segment_color": "string",
-      "inactived_date": "2022-04-08T04:17:56.025Z",
-      "created_date": "2022-04-08T04:17:56.025Z",
-      "datelastmaint": "2022-04-08T04:17:56.025Z",
-      "is_approve": true
-    }
-    await dispatch(actionSegment.searchSegment(paramsInitSegment));
+    // const paramsInitSegment = {
+    //   "wheel_id": 0,
+    //   "wheel_detail_id": 0,
+    //   "segment_id": 0,
+    //   "no": 0,
+    //   "goal_yn": 0,
+    //   "remain_value": 0,
+    //   "inactived_date": "2022-04-11T06:06:50.653Z",
+    //   "created_date": "2022-04-11T06:06:50.653Z",
+    //   "datelastmaint": "2022-04-11T06:06:50.653Z",
+    //   "is_approve": true
+    // }
+    // await dispatch(actionSegment.searchSegment(paramsInitSegment));
     await dispatch(actionTopic.searchTopic());
+    await dispatch(actionWheelDetail.searchWheelDetail());
   }
 
   const searchBtn = async () => {
@@ -85,24 +103,40 @@ export default function WheelDetail(props) {
   };
   const columns = [
     {
-      title: 'Mã kết quả\n trúng thưởng',
-      dataIndex: 'segment_id',
-      key: 'segment_id',
+      title: 'ID',
+      dataIndex: 'wheel_detail_id',
+      key: 'wheel_detail_id',
       fixed: 'left',
       width: 100
       // render: text => <a>{text}</a>,
     },
     {
-      title: 'Tên kết quả \n trúng thưởng',
-      dataIndex: 'segment_name',
-      key: 'segment_name',
+      title: 'Mã vòng quay',
+      dataIndex: 'wheel_id',
+      key: 'wheel_id',
       fixed: 'left',
       width: 250
     },
     {
-      title: 'Chủ đề',
-      dataIndex: 'topic_name',
-      key: 'topic_name',
+      title: 'Mã trúng thưởng',
+      dataIndex: 'segment_id',
+      key: 'segment_id',
+      fixed: 'center',
+      width: 250,
+
+    },
+    {
+      title: 'STT',
+      dataIndex: 'no',
+      key: 'no',
+      fixed: 'center',
+      width: 250,
+
+    },
+    {
+      title: 'Số lần trung thưởng còn lại',
+      dataIndex: 'remain_value',
+      key: 'remain_value',
       fixed: 'center',
       width: 250,
 
@@ -115,17 +149,6 @@ export default function WheelDetail(props) {
       render: (text, record) => {
         return <p>
           {!text ? '' : moment(text).format('YYYY-MM-DD, hh:mm:ss')}
-        </p>
-      }
-    },
-    {
-      title: 'Ngày tạo',
-      dataIndex: 'created_date',
-      key: 'created_date',
-      width: 170,
-      render: (text, record) => {
-        return <p>
-          {moment(text).format('YYYY-MM-DD, hh:mm:ss')}
         </p>
       }
     },
@@ -187,7 +210,7 @@ export default function WheelDetail(props) {
   return (
     <LayoutHome>
       <Col style={{ marginBottom: 30 }}>
-        <ModalSegment visible={visible} bodyModel={bodyModel} callback={callbackModal} />
+        <ModalWheelDetail visible={visible} bodyModel={bodyModel} callback={callbackModal} />
 
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'center', backgroundColor: "rgb(3, 77, 162)" }}
@@ -231,7 +254,7 @@ export default function WheelDetail(props) {
           <Col span={48} style={{ marginTop: 10 }}>
             <Table
               columns={columns}
-              dataSource={listSegment}
+              dataSource={listWheelDetail}
               size='large'
               pagination={pagination}
               loading={false}

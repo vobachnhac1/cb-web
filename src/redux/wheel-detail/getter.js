@@ -1,8 +1,8 @@
 
 // Lấy giá trị store
 
-export const getStateLoadPageSegment = ({ segment: { listSegment } }) => {
-  return listSegment.map((item, index) => ({ ...item, key: index })) || []
+export const getStateLoadPageWheelDetail = ({ wheeldetail: { listWheelDetail } }) => {
+  return listWheelDetail.map((item, index) => ({ ...item, key: index })) || []
 };
 
 

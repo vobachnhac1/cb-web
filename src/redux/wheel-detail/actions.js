@@ -2,44 +2,46 @@ import * as TYPES from './type';
 import URLSERVER from '@/redux/urlServer.json';
 
 // hàm thị thi nội bộ
-const searchSegmentDispath = (payload) => ({ type: TYPES.SEGMENT_SEARCH, payload });
+const searchWheelDetailDispath = (payload) => ({ type: TYPES.WHEELDETAIL_SEARCH, payload });
 // hàm xử lý được gọi từ bên ngoài
-export const searchSegment = (payload) => async (dispatch, getState, { $http }) => {
+export const searchWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
-    "topic_id": payload.topic_id,
-    "segment_id": payload.segment_id,
-    "segment_name": payload.segment_name,
-    "segment_color": payload.segment_color,
-    "inactived_date": payload.inactived_date,
-    "created_date": payload.created_date,
-    "datelastmaint": payload.datelastmaint,
-    "is_approve": payload.is_approve
+    "wheel_id": 0,
+    "wheel_detail_id": 0,
+    "segment_id": 0,
+    "no": 0,
+    "goal_yn": 0,
+    "remain_value": 0,
+    "inactived_date": "2022-04-11T06:06:50.653Z",
+    "created_date": "2022-04-11T06:06:50.653Z",
+    "datelastmaint": "2022-04-11T06:06:50.653Z",
+    "is_approve": true
   }
   // call xuống backend url + param 
-  const result = await $http.post(URLSERVER.searchAllSegment, param);
+  const result = await $http.post(URLSERVER.searchAllWheelDetail, param);
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
   }
-  const listSegment = data.data; 0
-  dispatch(searchSegmentDispath(listSegment))
+  const listWheelDetail = data.data; 0
+  dispatch(searchWheelDetailDispath(listWheelDetail))
   return true
 }
 
-export const insertSegment = (payload) => async (dispatch, getState, { $http }) => {
+export const insertWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
     "topic_id": payload.topic_id,
-    "segment_id": payload.segment_id,
-    "segment_name": payload.segment_name,
-    "segment_color": payload.segment_color,
+    "wheeldetail_id": payload.wheeldetail_id,
+    "wheeldetail_name": payload.wheeldetail_name,
+    "wheeldetail_color": payload.wheeldetail_color,
     "inactived_date": payload.inactived_date,
     "created_date": "2022-04-08T09:54:19.063Z",
     "datelastmaint": "2022-04-08T09:54:19.063Z",
     "is_approve": payload.is_approve
   }
   // call xuống backend url + param 
-  const result = await $http.post(URLSERVER.insertSegment, param);
-  console.log('call action create insert Segment', result)
+  const result = await $http.post(URLSERVER.insertWheelDetail, param);
+  console.log('call action create insert WheelDetail', result)
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
@@ -47,19 +49,19 @@ export const insertSegment = (payload) => async (dispatch, getState, { $http }) 
   return true
 }
 
-export const updateSegment = (payload) => async (dispatch, getState, { $http }) => {
+export const updateWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
     "topic_id": payload.topic_id,
-    "segment_id": payload.segment_id,
-    "segment_name": payload.segment_name,
-    "segment_color": payload.segment_color,
+    "wheeldetail_id": payload.wheeldetail_id,
+    "wheeldetail_name": payload.wheeldetail_name,
+    "wheeldetail_color": payload.wheeldetail_color,
     "inactived_date": payload.inactived_date,
     "created_date": "2022-04-08T09:54:19.063Z",
     "datelastmaint": "2022-04-08T09:54:19.063Z",
     "is_approve": payload.is_approve
   }
   // call xuống backend url + param 
-  const result = await $http.post(URLSERVER.updateSegmentById, param);
+  const result = await $http.post(URLSERVER.updateWheelDetailById, param);
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
@@ -67,19 +69,19 @@ export const updateSegment = (payload) => async (dispatch, getState, { $http }) 
   return true
 }
 
-export const deleteSegmentById = (payload) => async (dispatch, getState, { $http }) => {
+export const deleteWheelDetailById = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
     "topic_id": payload.topic_id,
-    "segment_id": payload.segment_id,
-    "segment_name": payload.segment_name,
-    "segment_color": payload.segment_color,
+    "wheeldetail_id": payload.wheeldetail_id,
+    "wheeldetail_name": payload.wheeldetail_name,
+    "wheeldetail_color": payload.wheeldetail_color,
     "inactived_date": payload.inactived_date,
     "created_date": payload.created_date,
     "datelastmaint": payload.datelastmaint,
     "is_approve": payload.is_approve
   }
   // call xuống backend url + param 
-  const result = await $http.post(URLSERVER.deleteSegmentById, param);
+  const result = await $http.post(URLSERVER.deleteWheelDetailById, param);
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
