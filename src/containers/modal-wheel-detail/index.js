@@ -44,8 +44,6 @@ const ModalSegment = (props) => {
   const [segmentColor, setSegmentColor] = useState(record ? record.segment_color : "");
   const [inactived_date, setInactived_date] = useState(record ? record.inactived_date : "");
 
-  console.log('record', props);
-
   const dispatch = useDispatch();
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
 

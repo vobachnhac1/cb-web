@@ -43,7 +43,7 @@ export const insertWheelDetail = (payload) => async (dispatch, getState, { $http
   }
   // call xuống backend url + param 
   const result = await $http.post(URLSERVER.insertWheelDetail, param);
-  console.log('call action create insert WheelDetail', result)
+  // console.log('call action create insert WheelDetail', result)
   const { success, data } = result;
   if (!success || !data.success) {
     return false;

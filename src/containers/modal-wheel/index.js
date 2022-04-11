@@ -49,7 +49,6 @@ const ModalSegment = (props) => {
   const [ratationAngle, setRatationAngle] = useState(record ? record.rotation_angle : "");
   const [inactived_date, setInactived_date] = useState(record ? record.inactived_date : "");
 
-  console.log('record', props);
 
   const dispatch = useDispatch();
 

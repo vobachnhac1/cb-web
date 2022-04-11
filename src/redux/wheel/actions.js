@@ -50,7 +50,6 @@ export const insertWheel = (payload) => async (dispatch, getState, { $http }) =>
   // console.log('call action', param)
   // call xuống backend url + param 
   const result = await $http.post(URLSERVER.insertWheel, param);
-  console.log('call action create insert Wheel', result)
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
@@ -74,7 +73,6 @@ export const updateWheel = (payload) => async (dispatch, getState, { $http }) =>
     "datelastmaint": "2022-04-09T08:41:40.514Z",
     "is_approve": true
   }
-  console.log('call action edit wheel', param)
   // call xuống backend url + param 
   const result = await $http.post(URLSERVER.updateWheelById, param);
   const { success, data } = result;
