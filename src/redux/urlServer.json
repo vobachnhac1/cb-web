@@ -17,7 +17,7 @@
   "approveWheelById": "/wheel/approve-by-id",
   "deleteWheelById": "/wheel/delete-by-id",
   "searchAllSegment": "/segment/select-all",
-  "searchSegmentById": "/segment/select-by-topic-id",
+  "searchSegmentById": "/segment/select-by-segment-id",
   "insertSegment": "/segment/create",
   "updateSegmentById": "/segment/update-by-id",
   "approveSegmentById": "/segment/approve-by-id",

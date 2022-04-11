@@ -2,7 +2,7 @@ import * as TYPES from './type';
 import URLSERVER from '@/redux/urlServer.json';
 
 // hàm thị thi nội bộ
-const searchSegmentDispath = (payload) => ({ type: TYPES.SEGMENT_SEARCH, payload });
+const setSearchSegment = (payload) => ({ type: TYPES.SEGMENT_SEARCH, payload });
 // hàm xử lý được gọi từ bên ngoài
 export const searchSegment = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
@@ -21,8 +21,8 @@ export const searchSegment = (payload) => async (dispatch, getState, { $http }) 
   if (!success || !data.success) {
     return false;
   }
-  const listSegment = data.data;0
-  dispatch(searchSegmentDispath(listSegment))
+  const listSegment = data.data; 0
+  dispatch(setSearchSegment(listSegment))
   return true
 }
 
@@ -86,6 +86,18 @@ export const deleteSegmentById = (payload) => async (dispatch, getState, { $http
   }
   return true
 }
+
+export const filterSegment = (payload) => async (dispatch, getState, { $http }) => {
+  const result = await $http.post(URLSERVER.searchSegmentById, payload);
+  const { success, data } = result;
+  if (!success || !data.success) {
+    return false;
+  }
+  const listSegment = data.data;
+  dispatch(setSearchSegment(listSegment))
+  return true
+}
+
 
 
 // function export ra ngoài

@@ -11,8 +11,9 @@ import Router from 'next/router';
 import * as styles from './style.module.less';
 import * as classnames from 'classnames';
 import LayoutHome from '@/containers/Home';
-import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Typography, Input } from 'antd';
+import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Typography, Input, DatePicker } from 'antd';
 const { Text } = Typography;
+const { RangePicker } = DatePicker;
 import * as Message from '@/components/message';
 import ModalSegment from '@/containers/modal-segment';
 import ModalTopic from '@/containers/modal-topic';
@@ -24,6 +25,7 @@ import { actions as actionTopic } from '@/redux/topic';
 import { getters as gettersTopic } from '@/redux/topic';
 
 import moment from 'moment';
+import __ from 'lodash';
 // handhandleDelete
 
 
@@ -33,7 +35,12 @@ export default function Segment(props) {
   const dispatch = useDispatch();
   const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
-
+  const [filter, setFilter] = useState({
+    segment_name: null,
+    topic_id: null,
+    from_date_act: null,
+    to_date_act: null
+  });
   // gọi 1 function rồi theo dõi nhưng thay đổi của param đó
   useEffect(() => {
     initPage(); // chjay 1 lần duy nhất
@@ -55,20 +62,29 @@ export default function Segment(props) {
     await dispatch(actionTopic.searchTopic());
   }
 
-  const searchBtn = async () => {
-    let paramsSearch = {
-      "topic_id": topicId,
-      "segment_id": 0,
-      "segment_name": "string",
-      "segment_color": "string",
-      "inactived_date": "2022-04-08T04:17:56.025Z",
-      "created_date": "2022-04-08T04:17:56.025Z",
-      "datelastmaint": "2022-04-08T04:17:56.025Z",
-      "is_approve": true,
-      'dataSearch': dataSearch,
+  const onSearch = async () => {
+    // console.log('test search ', filter)
+    const { segment_name, topic_id, from_date_act, to_date_act } = filter;
+    // if (!__.isNil(segment_name) && segment_name.length > 0 && !__.isNil(topic_id) && __.isNil(from_date_act) && __.isNil(to_date_act)) {
+    //   const result = await dispatch(actionSegment.filterSegment(filter));
+    //   return;
+    // } else if (!__.isNil(topic_name) && !__.isNil(from_date_act) && !__.isNil(to_date_act)) {
+    //   const result = await dispatch(actionSegment.filterSegment(filter));
+    //   return;
+    // }
+    // if (!__.isNil(from_date_act) && !__.isNil(to_date_act)) {
+    //   const result = await dispatch(actionSegment.filterSegment(filter));
+    //   return;
+    // }
+
+    if (__.isNil(segment_name) && __.isNil(topic_id) && __.isNil(from_date_act) && __.isNil(to_date_act)) {
+      initPage();
+    } else {
+      const result = await dispatch(actionSegment.filterSegment(filter));
+      return;
     }
-    console.log(paramsSearch)
-    await dispatch(actionSegment.searchSegment(paramsSearch));
+
+
   }
 
 
@@ -190,30 +206,50 @@ export default function Segment(props) {
         <ModalSegment visible={visible} bodyModel={bodyModel} callback={callbackModal} />
 
         <Card
-          headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'center', backgroundColor: "rgb(3, 77, 162)" }}
+          headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
           title="Tất cả kết quả giải thưởng"
           bordered={true}
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>
             <Row gutter={[16, 24]}>
-
-              <Col className="gutter-row"  >
+              {/* <Col className="gutter-row"  >
                 <Text style={{ marginLeft: '4px' }}>{'Chủ đề :'}</Text>
-              </Col>
+              </Col> */}
               <Col className="gutter-row" span={4}>
-
                 <Select
+                  allowClear
+                  placeholder="Chủ đề"
                   style={{ width: '100%' }}
                   defaultValue=""
-                  value={topicId}
-                  onChange={(value) => setTopicId(value)}>
+                  value={filter.topic_id}
+                  onChange={(value) => setFilter({ ...filter, topic_id: value })}>
                   {listTopic.map((Item, key) => (
                     <Select.Option value={Item.topic_id} key={key}>{Item.topic_name}</Select.Option>
                   ))}
                 </Select>
               </Col>
-              <Col className="gutter-row" span={12}>
-                <Input placeholder="Thông tin cần tìm" onChange={(event) => setDataSearch(event.target.value)} />
+              <Col className="gutter-row" span={8}>
+                <Input placeholder="Thông tin cần tìm" value={filter.segment_name} onChange={(event) => setFilter({ ...filter, segment_name: event.target.value })} />
+              </Col>
+              <Col className="gutter-row" span={8}>
+                <RangePicker
+
+                  onChange={(dates, dateString) => {
+                    if (dates) {
+                      setFilter({
+                        ...filter,
+                        from_date_act: dateString[0],
+                        to_date_act: dateString[1],
+                      });
+                    } else {
+                      setFilter({
+                        ...filter,
+                        from_date_act: null,
+                        to_date_act: null,
+                      });
+                    }
+                  }}
+                />
               </Col>
             </Row>
             <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
@@ -221,7 +257,7 @@ export default function Segment(props) {
                 <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewSegment}>Thêm</Button>
               </Col>
               <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={searchBtn}>Tìm kiếm</Button>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>
               </Col>
             </Row>
           </Col>
