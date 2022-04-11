@@ -62,7 +62,6 @@ export default function Wheel(props) {
   }
 
   const onSearch = async () => {
-    // console.log('test search ', filter)
     const { wheel_name } = filter;
     if (__.isNil(wheel_name)) {
       initPage();
@@ -76,7 +75,6 @@ export default function Wheel(props) {
 
   const handleDelete = async (record) => {
     let dataRecord = { ...record }
-    console.log('đã click nut delete', dataRecord)
     const result = await dispatch(actionWheel.deleteWheelById(dataRecord));
     if (result) {
       initPage();

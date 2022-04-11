@@ -85,14 +85,12 @@ export default function WheelDetail(props) {
       "is_approve": true,
       'dataSearch': dataSearch,
     }
-    console.log(paramsSearch)
     await dispatch(actionSegment.searchSegment(paramsSearch));
   }
 
 
   const handleDelete = async (record) => {
     let dataRecord = { ...record }
-    console.log('đã click nut delete', dataRecord)
     const result = await dispatch(actionSegment.deleteSegmentById(dataRecord));
     if (result) {
       initPage();

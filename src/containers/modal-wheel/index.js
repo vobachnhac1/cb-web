@@ -132,7 +132,6 @@ const ModalSegment = (props) => {
 
     // add
     if (isAdd) {
-      console.log('param', param)
       const result = await dispatch(actionWheel.insertWheel(param));
       if (result) {
         callback({ visible: false });

@@ -80,11 +80,7 @@ const ModalSegment = (props) => {
       Message.Warning("NOTYFICATON", "Hãy chọn ngày kết thúc giải thưởng");
       return;
     }
-    // console.log('segmentId',segmentId)
-    // console.log('topicId',topicId)
-    // console.log('segmentName',segmentName)
-    // console.log('segmentColor',segmentColor)
-    // console.log('inactived_date',inactived_date)
+    
 
     const param = {
       ...record,
