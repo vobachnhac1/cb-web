@@ -78,7 +78,7 @@ export default function Wheel(props) {
   const handleDelete = async (record) => {
     let dataRecord = { ...record }
     console.log('đã click nut delete', dataRecord)
-    const result = await dispatch(actionSegment.deleteSegmentById(dataRecord));
+    const result = await dispatch(actionWheel.deleteWheelById(dataRecord));
     if (result) {
       initPage();
       Message.Success("NOTYFICATON", "DELETE WHEEL SUCCESS");

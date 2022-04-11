@@ -86,14 +86,19 @@ export const updateWheel = (payload) => async (dispatch, getState, { $http }) =>
 
 export const deleteWheelById = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
-    "topic_id": payload.topic_id,
-    "wheel_id": payload.wheel_id,
+    "wheel_id": parseInt(payload.wheel_id),
+    "num_segments": parseInt(payload.num_segments),
     "wheel_name": payload.wheel_name,
-    "wheel_color": payload.wheel_color,
+    "account_nbr": payload.account_nbr,
+    "total_value": parseInt(payload.total_value),
+    "remain_value": parseInt(payload.remain_value),
+    "outer_radius": parseInt(payload.outer_radius),
+    "text_fontsize": parseInt(payload.text_fontsize),
+    "rotation_angle": parseInt(payload.rotation_angle),
     "inactived_date": payload.inactived_date,
-    "created_date": payload.created_date,
-    "datelastmaint": payload.datelastmaint,
-    "is_approve": payload.is_approve
+    "created_date": "2022-04-09T08:41:40.514Z",
+    "datelastmaint": "2022-04-09T08:41:40.514Z",
+    "is_approve": true
   }
   // call xuống backend url + param 
   const result = await $http.post(URLSERVER.deleteWheelById, param);
