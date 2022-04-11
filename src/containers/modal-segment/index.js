@@ -62,10 +62,10 @@ const ModalSegment = (props) => {
   }
 
   const onCallback = async () => {
-    if (!segmentId || segmentId.lenght == 0) {
-      Message.Warning("NOTYFICATON", "Mã kết quả chưa điền nội dung");
-      return;
-    }
+    // if (!segmentId || segmentId.lenght == 0) {
+    //   Message.Warning("NOTYFICATON", "Mã kết quả chưa điền nội dung");
+    //   return;
+    // }
     if (!topicId) {
       Message.Warning("NOTYFICATON", "Chủ đề chưa được chọn");
       return;
@@ -162,15 +162,19 @@ const ModalSegment = (props) => {
 
         >
           {/*  */}
-          <Row >
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Mã kết quả trúng thưởng :'}</Text>
-            </Col>
-            <Col  {...layoutContent}>
+          {
+            segmentId ? <Row >
+              <Col {...layoutHeader} >
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Mã kết quả trúng thưởng :'}</Text>
+              </Col>
+              <Col  {...layoutContent}>
 
-              <Input style={{ width: '100%' }} value={segmentId} onChange={(text) => setSegmentId(text.target.value)} />
-            </Col>
-          </Row>
+                <Input style={{ width: '100%' }} value={segmentId} onChange={(text) => setSegmentId(text.target.value)} disabled />
+              </Col>
+            </Row>
+              : ""
+          }
+
 
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >

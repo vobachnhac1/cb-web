@@ -193,14 +193,18 @@ const ModalSegment = (props) => {
 
         >
           {/*  */}
-          <Row >
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'ID '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
-              <Input type="number" style={{ width: '100%' }} value={wheelId} onChange={(text) => setWheelId(text.target.value)} />
-            </Col>
-          </Row>
+          {
+            wheelId ? <Row >
+              <Col {...layoutHeader} >
+                <Text className={classNames({ [styles['text-font']]: true })}>{'ID '}</Text>
+              </Col>
+              <Col  {...layoutContent}>
+                <Input type="number" style={{ width: '100%' }} value={wheelId} onChange={(text) => setWheelId(text.target.value)} disabled />
+              </Col>
+            </Row>
+              : ""
+          }
+
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
               <Text className={classNames({ [styles['text-font']]: true })}>{'Tên vòng quay'}</Text>
