@@ -1,7 +1,9 @@
+
 // Lấy giá trị store
 
-export const getStateLoadPageTopic = ({ topic: { listTopic } }) => {
-  return listTopic.map((item, index) => ({ ...item, key: index })) || []
+export const getStateLoadPageWheelDetail = ({ wheeldetail: { listWheelDetail } }) => {
+  return listWheelDetail.map((item, index) => ({ ...item, key: index })) || []
 };
+
 
 /// lấy state

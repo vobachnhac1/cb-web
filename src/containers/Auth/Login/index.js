@@ -47,10 +47,6 @@ console.log(namelist1);
 			if(result){
 				Router.push('/home');
 			}
-			console.log('result',result)
-			
-
-		
 		} finally {
 			setLoading(false);
 		}
