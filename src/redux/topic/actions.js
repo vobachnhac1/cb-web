@@ -76,6 +76,33 @@ export const deleteTopic = (payload) => async (dispatch, getState, { $http }) =>
   }
   return true;
 }
+export const approveTopic = (payload) => async (dispatch, getState, { $http }) => {
+  const param = {
+    "topic_id": payload.topic_id,
+    "topic_name": null,
+    "inactived_date": null,
+    "created_date": null,
+    "datelastmaint": null,
+    "is_approve": null
+  }
+  const result = await $http.post(URLSERVER.approveTopicById, param);
+  const { success, data } = result;
+  if (!success || !data.success) {
+    return false;
+  }
+  return true;
+}
+
+export const filterTopic = (payload) => async (dispatch, getState, { $http }) => {
+  const result = await $http.post(URLSERVER.searchTopicById, payload);
+  const { success, data } = result;
+  if (!success || !data.success) {
+    return false;
+  }
+  const listTopic = data.data;
+  dispatch(setSearchTopic(listTopic))
+  return true
+}
 
 
 // function export ra ngoài
