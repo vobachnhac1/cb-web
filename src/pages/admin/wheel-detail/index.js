@@ -142,27 +142,14 @@ export default function WheelDetail(props) {
 
     },
     {
-      title: 'Ngày hết hiệu lực',
-      dataIndex: 'inactived_date',
-      key: 'inactived_date',
-      width: 170,
-      render: (text, record) => {
-        return <p>
-          {!text ? '' : moment(text).format('YYYY-MM-DD, hh:mm:ss')}
-        </p>
-      }
-    },
-
-    {
       title: 'Action',
       key: 'action',
       width: 140,
       render: (text, record) => (
 
         <Space size="middle">
-          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateSegment(record)} >Edit</Button>
-
-          {listSegment.length >= 1 ? (
+          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateDetail(record)} >Edit</Button>
+          {listWheelDetail.length >= 1 ? (
             <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)} >
               <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Delete</Button>
             </Popconfirm>
@@ -186,14 +173,14 @@ export default function WheelDetail(props) {
     record: null
   });
 
-  const addNewSegment = () => {
+  const addNewWheelDetail = () => {
     setVisible(true);
     setBodyModel({
       record: null,
       isAdd: true
     });
   }
-  const updateSegment = (record) => {
+  const updateDetail = (record) => {
     setVisible(true);
     setBodyModel({
       record: record,
@@ -213,35 +200,19 @@ export default function WheelDetail(props) {
         <ModalWheelDetail visible={visible} bodyModel={bodyModel} callback={callbackModal} />
 
         <Card
-          headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'center', backgroundColor: "rgb(3, 77, 162)" }}
+          headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
           title="Chi tiết vòng quay"
           bordered={true}
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>
             <Row gutter={[16, 24]}>
-
-              <Col className="gutter-row"  >
-                <Text style={{ marginLeft: '4px' }}>{'Chủ đề :'}</Text>
-              </Col>
-              <Col className="gutter-row" span={4}>
-
-                <Select
-                  style={{ width: '100%' }}
-                  defaultValue=""
-                  value={topicId}
-                  onChange={(value) => setTopicId(value)}>
-                  {listTopic.map((Item, key) => (
-                    <Select.Option value={Item.topic_id} key={key}>{Item.topic_name}</Select.Option>
-                  ))}
-                </Select>
-              </Col>
               <Col className="gutter-row" span={12}>
                 <Input placeholder="Thông tin cần tìm" onChange={(event) => setDataSearch(event.target.value)} />
               </Col>
             </Row>
             <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
               <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewSegment}>Thêm</Button>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewWheelDetail}>Thêm</Button>
               </Col>
               <Col className="gutter-row" span={3}>
                 <Button type='primary' size='middle' style={{ width: '100%' }} onClick={searchBtn}>Tìm kiếm</Button>

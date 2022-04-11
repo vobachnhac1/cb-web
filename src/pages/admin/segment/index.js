@@ -215,7 +215,7 @@ export default function Segment(props) {
                 </Select>
               </Col>
               <Col className="gutter-row" span={8}>
-                <Input placeholder="Thông tin cần tìm" value={filter.segment_name} onChange={(event) => setFilter({ ...filter, segment_name: event.target.value })} />
+                <Input placeholder="Tên chủ đề cần tìm" value={filter.segment_name} onChange={(event) => setFilter({ ...filter, segment_name: event.target.value })} />
               </Col>
               <Col className="gutter-row" span={8}>
                 <RangePicker

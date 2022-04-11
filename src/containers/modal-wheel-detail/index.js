@@ -141,7 +141,7 @@ const ModalSegment = (props) => {
     >
       <Card
         headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'center', backgroundColor: "rgb(3, 77, 162)" }}
-        title={isAdd ? "Thêm Kết quả giải thưởng" : 'Cập nhật Kết quả giải thưởng'}
+        title={isAdd ? "Thêm Kết chi tiết vòng quay" : 'Cập nhật Kết chi tiết vòng quay'}
         bordered={true}
         style={{ backgroundColor: '#FFFFFF' }}>
         <Form
