@@ -30,14 +30,16 @@ export const searchWheelDetail = (payload) => async (dispatch, getState, { $http
 
 export const insertWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
-    "topic_id": payload.topic_id,
-    "wheeldetail_id": payload.wheeldetail_id,
-    "wheeldetail_name": payload.wheeldetail_name,
-    "wheeldetail_color": payload.wheeldetail_color,
-    "inactived_date": payload.inactived_date,
-    "created_date": "2022-04-08T09:54:19.063Z",
-    "datelastmaint": "2022-04-08T09:54:19.063Z",
-    "is_approve": payload.is_approve
+    "wheel_id": payload.wheel_id,
+    "wheel_detail_id": payload.wheel_detail_id,
+    "segment_id": payload.segment_id,
+    "no": payload.no,
+    "goal_yn": payload.goal_yn,
+    "remain_value": payload.remain_value,
+    "inactived_date": "2022-04-11T07:39:21.202Z",
+    "created_date": "2022-04-11T07:39:21.202Z",
+    "datelastmaint": "2022-04-11T07:39:21.202Z",
+    "is_approve": true
   }
   // call xuống backend url + param 
   const result = await $http.post(URLSERVER.insertWheelDetail, param);
