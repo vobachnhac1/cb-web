@@ -212,10 +212,7 @@ export default function Segment(props) {
                   ))}
                 </Select>
               </Col>
-              <Col className="gutter-row" span={8}>
-                <Input placeholder="Tên chủ đề cần tìm" value={filter.segment_name} onChange={(event) => setFilter({ ...filter, segment_name: event.target.value })} />
-              </Col>
-              <Col className="gutter-row" span={8}>
+              <Col className="gutter-row" span={5}>
                 <RangePicker
 
                   onChange={(dates, dateString) => {
@@ -234,6 +231,9 @@ export default function Segment(props) {
                     }
                   }}
                 />
+              </Col>
+              <Col className="gutter-row" span={6}>
+                <Input placeholder="Tên giải thưởng cần tìm" allowClear value={filter.segment_name} onChange={(event) => setFilter({ ...filter, segment_name: event.target.value ? event.target.value : null })} />
               </Col>
             </Row>
             <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
