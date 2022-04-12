@@ -198,7 +198,7 @@ export default function Wheel(props) {
           <Col span={48}>
             <Row gutter={[16, 24]}>
               <Col className="gutter-row" span={12}>
-                <Input placeholder="Tên vòng quay cần tìm" value={filter.wheel_name} onChange={(event) => setFilter({ ...filter, wheel_name: event.target.value })} />
+                <Input allowClear placeholder="Tên vòng quay cần tìm" value={filter.wheel_name} onChange={(event) => setFilter({ ...filter, wheel_name: event.target.value })} />
               </Col>
             </Row>
             <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
