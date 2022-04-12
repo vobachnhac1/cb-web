@@ -6,21 +6,15 @@
 *------------------------------------------------------- */
 require("./style.module.less");
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Router from 'next/router';
-import * as styles from './style.module.less';
-import * as classnames from 'classnames';
+
 import LayoutHome from '@/containers/Home';
-import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Typography, Input } from 'antd';
-const { Text } = Typography;
+import { Button, Card, Col, Row, Space, Table, Popconfirm, Input } from 'antd';
+
 import * as Message from '@/components/message';
-import ModalSegment from '@/containers/modal-segment';
 import ModalWheel from '@/containers/modal-wheel'
 
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
-import { actions as actionSegment } from '@/redux/segment';
-import { getters as gettersSegment } from '@/redux/segment';
 import { actions as actionWheel } from '@/redux/wheel';
 import { getters as gettersWheel } from '@/redux/wheel';
 
@@ -35,9 +29,8 @@ export default function Wheel(props) {
     wheel_name: null,
   });
 
-  // gọi 1 function rồi theo dõi nhưng thay đổi của param đó
   useEffect(() => {
-    initPage(); // chjay 1 lần duy nhất
+    initPage(); 
   }, [])
 
 
@@ -58,9 +51,7 @@ export default function Wheel(props) {
       "is_approve": true
     }
     await dispatch(actionWheel.searchWheel(paramsInit));
-
   }
-
   const onSearch = async () => {
     const { wheel_name } = filter;
     if (__.isNil(wheel_name)) {
@@ -70,9 +61,6 @@ export default function Wheel(props) {
       return;
     }
   }
-
-
-
   const handleDelete = async (record) => {
     let dataRecord = { ...record }
     const result = await dispatch(actionWheel.deleteWheelById(dataRecord));
@@ -150,12 +138,7 @@ export default function Wheel(props) {
       ),
     },
   ];
-  const pagination = {
-    current: 1,
-    pageSize: 10,
-    total: 200,
-
-  };
+ 
 
 
   const [visible, setVisible] = useState(false);
@@ -178,7 +161,6 @@ export default function Wheel(props) {
       isAdd: false
     });
   }
-
 
   const callbackModal = (params) => {
     setVisible(params.visible);
@@ -218,7 +200,6 @@ export default function Wheel(props) {
               columns={columns}
               dataSource={listWheel}
               size='large'
-              pagination={pagination}
               loading={false}
               scroll={{ x: 1300 }}
             />

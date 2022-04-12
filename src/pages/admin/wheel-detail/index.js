@@ -157,13 +157,6 @@ export default function WheelDetail(props) {
       ),
     },
   ];
-  const pagination = {
-    current: 1,
-    pageSize: 10,
-    total: 200,
-
-  };
-
 
   const [visible, setVisible] = useState(false);
   const [bodyModel, setBodyModel] = useState({
@@ -225,7 +218,6 @@ export default function WheelDetail(props) {
               columns={columns}
               dataSource={listWheelDetail}
               size='large'
-              pagination={pagination}
               loading={false}
               scroll={{ x: 1300 }}
             />

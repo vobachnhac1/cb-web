@@ -80,7 +80,7 @@ const ModalSegment = (props) => {
       Message.Warning("NOTYFICATON", "Hãy chọn ngày kết thúc giải thưởng");
       return;
     }
-   
+
 
     const param = {
       ...record,
@@ -204,7 +204,7 @@ const ModalSegment = (props) => {
             </Col>
             <Col  {...layoutContent}>
 
-              <Input style={{ width: '100%' }} value={segmentColor} onChange={(text) => setSegmentColor(text.target.value)} />
+              <Input type="color" style={{ width: '50%' }} value={segmentColor ? segmentColor : '#00BFFF'} onChange={(text) => setSegmentColor(text.target.value)} />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
@@ -213,7 +213,7 @@ const ModalSegment = (props) => {
             </Col>
             <Col  {...layoutContent}>
 
-              <DatePicker value={inactived_date ? moment(inactived_date) : null} onChange={(date) => setInactived_date(date)} />
+              <DatePicker style={{ width: '50%' }} value={inactived_date ? moment(inactived_date) : null} onChange={(date) => setInactived_date(date)} />
             </Col>
           </Row>
         </Form>

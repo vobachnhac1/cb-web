@@ -71,10 +71,6 @@ const ModalSegment = (props) => {
   }
 
   const onCallback = async () => {
-    if (!wheelId || wheelId.lenght == 0) {
-      Message.Warning("NOTYFICATON", "ID chưa điền nội dung");
-      return;
-    }
     if (!wheelName || wheelName.lenght == 0) {
       Message.Warning("NOTYFICATON", "Tên vòng quay chưa điền nội dung");
       return;
@@ -114,7 +110,7 @@ const ModalSegment = (props) => {
 
     const param = {
       ...record,
-      "wheel_id": wheelId,
+      "wheel_id": wheelId ? wheelId : 0,
       "num_segments": numSegments,
       "wheel_name": wheelName,
       "account_nbr": accountNbr,

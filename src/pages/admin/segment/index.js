@@ -6,17 +6,12 @@
 *------------------------------------------------------- */
 require("./style.module.less");
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Router from 'next/router';
-import * as styles from './style.module.less';
-import * as classnames from 'classnames';
 import LayoutHome from '@/containers/Home';
-import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Typography, Input, DatePicker } from 'antd';
-const { Text } = Typography;
+import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Input, DatePicker } from 'antd';
+
 const { RangePicker } = DatePicker;
 import * as Message from '@/components/message';
 import ModalSegment from '@/containers/modal-segment';
-import ModalTopic from '@/containers/modal-topic';
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
 import { actions as actionSegment } from '@/redux/segment';
@@ -30,8 +25,6 @@ import __ from 'lodash';
 
 
 export default function Segment(props) {
-  const [topicId, setTopicId] = useState('');
-  const [dataSearch, setDataSearch] = useState('')
   const dispatch = useDispatch();
   const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
@@ -41,11 +34,10 @@ export default function Segment(props) {
     from_date_act: null,
     to_date_act: null
   });
-  // gọi 1 function rồi theo dõi nhưng thay đổi của param đó
+  
   useEffect(() => {
-    initPage(); // chjay 1 lần duy nhất
+    initPage(); 
   }, [])
-
 
   const initPage = async () => {
     const paramsInitSegment = {
@@ -71,7 +63,6 @@ export default function Segment(props) {
       return;
     }
   }
-
 
   const handleDelete = async (record) => {
     let dataRecord = { ...record }
@@ -135,10 +126,8 @@ export default function Segment(props) {
       key: 'action',
       width: 140,
       render: (text, record) => (
-
         <Space size="middle">
           <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateSegment(record)} >Edit</Button>
-
           {listSegment.length >= 1 ? (
             <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)} >
               <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Delete</Button>
@@ -149,14 +138,7 @@ export default function Segment(props) {
       ),
     },
   ];
-  const pagination = {
-    current: 1,
-    pageSize: 10,
-    total: 200,
-
-  };
-
-
+ 
   const [visible, setVisible] = useState(false);
   const [bodyModel, setBodyModel] = useState({
     isAdd: false,
@@ -177,8 +159,6 @@ export default function Segment(props) {
       isAdd: false
     });
   }
-
-
   const callbackModal = (params) => {
     setVisible(params.visible);
     initPage();
@@ -188,7 +168,6 @@ export default function Segment(props) {
     <LayoutHome>
       <Col style={{ marginBottom: 30 }}>
         <ModalSegment visible={visible} bodyModel={bodyModel} callback={callbackModal} />
-
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
           title="Tất cả kết quả giải thưởng"
@@ -196,9 +175,6 @@ export default function Segment(props) {
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>
             <Row gutter={[16, 24]}>
-              {/* <Col className="gutter-row"  >
-                <Text style={{ marginLeft: '4px' }}>{'Chủ đề :'}</Text>
-              </Col> */}
               <Col className="gutter-row" span={4}>
                 <Select
                   allowClear
@@ -214,7 +190,6 @@ export default function Segment(props) {
               </Col>
               <Col className="gutter-row" span={5}>
                 <RangePicker
-
                   onChange={(dates, dateString) => {
                     if (dates) {
                       setFilter({
@@ -253,7 +228,6 @@ export default function Segment(props) {
               columns={columns}
               dataSource={listSegment}
               size='large'
-              pagination={pagination}
               loading={false}
               scroll={{ x: 1300 }}
             />
