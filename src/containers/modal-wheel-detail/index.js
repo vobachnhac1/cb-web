@@ -19,6 +19,8 @@ import { actions as actionSegment } from '@/redux/segment';
 import { getters as gettersSegment } from '@/redux/segment';
 import { actions as actionWheel } from '@/redux/wheel';
 import { getters as gettersWheel } from '@/redux/wheel';
+import { actions as actionWheelDetail } from '@/redux/wheel-detail';
+import { getters as gettersWheelDetail } from '@/redux/wheel-detail';
 
 const classNames = require("classnames");
 const styles = require("./style.module.less");
@@ -69,29 +71,17 @@ const ModalWheelDetail = (props) => {
   }, [visible]);
 
   const initPage = async () => {
-    // setSegmentId(record ? record.segment_id : "")
-    // setTopicId(record ? record.topic_id : "")
-    // setSegmentName(record ? record.segment_name : "")
-    // setSegmentColor(record ? record.segment_color : "")
-    // setInactived_date(record ? record.inactived_date : "")
-    // 
     setWheelDetailId(record ? record.wheel_detail_id : "")
     setWheelId(record ? record.wheel_id : "")
     setSegmentId(record ? record.segment_id : "")
     setNo(record ? record.no : "")
     setRemainValue(record ? record.remain_value : "")
     setGoalYn(record ? record.goal_yn : -1)
-
-
   }
 
   const onCallback = async () => {
     if (!segmentId || segmentId.lenght == 0) {
       Message.Warning("NOTYFICATON", "Mã kết quả chưa điền nội dung");
-      return;
-    }
-    if (!topicId) {
-      Message.Warning("NOTYFICATON", "Chủ đề chưa được chọn");
       return;
     }
     if (!no) {
@@ -107,26 +97,9 @@ const ModalWheelDetail = (props) => {
       Message.Warning("NOTYFICATON", "Trúng thưởng chưa được chọn");
     }
 
-    if (!inactived_date) {
-      Message.Warning("NOTYFICATON", "Hãy chọn ngày kết thúc giải thưởng");
-      return;
-    }
-    // {
-    //   "wheel_id": 0,
-    //     "wheel_detail_id": 0,
-    //       "segment_id": 0,
-    //         "no": 0,
-    //           "goal_yn": 0,
-    //             "remain_value": 0,
-    //               "inactived_date": "2022-04-13T08:32:30.059Z",
-    //                 "created_date": "2022-04-13T08:32:30.059Z",
-    //                   "datelastmaint": "2022-04-13T08:32:30.059Z",
-    //                     "is_approve": true
-    // }
-
     const param = {
       ...record,
-      wheel_detail_id: wheel_detail_id ? wheelDetailId : 0,
+      wheel_detail_id: wheelDetailId ? wheelDetailId : 0,
       wheel_id: wheelId,
       segment_id: segmentId,
       no: no,
@@ -137,13 +110,13 @@ const ModalWheelDetail = (props) => {
 
     // add
     if (isAdd) {
-      const result = await dispatch(actionSegment.insertSegment(param));
+      const result = await dispatch(actionWheelDetail.insertWheelDetail(param));
       if (result) {
         callback({ visible: false });
-        Message.Success("NOTYFICATON", "ADD NEW SEGMENT SUCCESS");
+        Message.Success("NOTYFICATON", "ADD NEW WHEEL DETAIL SUCCESS");
         return;
       }
-      Message.Error("NOTYFICATON", "ADD NEW SEGMENT FAILED");
+      Message.Error("NOTYFICATON", "ADD NEW WHEEL DETAIL FAILED");
       return;
     }
     //edit
@@ -202,31 +175,32 @@ const ModalWheelDetail = (props) => {
 
         >
           {/*  */}
-          <Row >
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'ID'}</Text>
-            </Col>
-            <Col  {...layoutContent}>
-
-              <Input style={{ width: '100%' }} value={wheelDetailId} onChange={(text) => setWheelDetailId(text.target.value)} />
-            </Col>
-          </Row>
-
+          {
+            !isAdd ?
+              <Row >
+                <Col {...layoutHeader} >
+                  <Text className={classNames({ [styles['text-font']]: true })}>{'ID'}</Text>
+                </Col>
+                <Col  {...layoutContent}>
+                  <Input disabled style={{ width: '100%' }} value={wheelDetailId} onChange={(text) => setWheelDetailId(text.target.value)} />
+                </Col>
+              </Row>
+              : ''
+          }
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
               <Text className={classNames({ [styles['text-font']]: true })}>{'Mã vòng quay '}</Text>
             </Col>
             <Col  {...layoutContent}>
 
-              <Select
+              <Select disabled={isAdd ? false : true}
                 style={{ width: '100%' }}
                 defaultValue=""
                 value={
                   wheelId}
-                onChange={(value) => setTopicId(value)}>
+                onChange={(value) => setWheelId(value)}>
                 {listWheel.map((Item, key) => (
                   <Select.Option value={Item.wheel_id} key={key}>{Item.Wheel_name}</Select.Option>
-                  // <option value={option.value}>{option.label}</option>
                 ))}
               </Select>
             </Col>
@@ -238,14 +212,14 @@ const ModalWheelDetail = (props) => {
             <Col  {...layoutContent}>
 
               <Select
+                disabled={isAdd ? false : true}
                 style={{ width: '100%' }}
                 defaultValue=""
                 value={
                   segmentId}
-                onChange={(value) => setTopicId(value)}>
+                onChange={(value) => setSegmentId(value)}>
                 {listSegment.map((Item, key) => (
                   <Select.Option value={Item.segment_id} key={key}>{Item.segment_name}</Select.Option>
-                  // <option value={option.value}>{option.label}</option>
                 ))}
               </Select>
             </Col>
@@ -256,7 +230,7 @@ const ModalWheelDetail = (props) => {
             </Col>
             <Col  {...layoutContent}>
 
-              <Input style={{ width: '100%' }} value={no} onChange={(text) => setNo(text.target.value)} />
+              <Input type="number" min="1" max="15" style={{ width: '100%' }} value={no} onChange={(text) => setNo(text.target.value)} />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
@@ -264,8 +238,6 @@ const ModalWheelDetail = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Trúng thưởng '}</Text>
             </Col>
             <Col  {...layoutContent}>
-
-
               <Radio.Group onChange={onChangeRadio} value={goalYn}>
                 <Radio value={1}>Có</Radio>
                 <Radio value={0}>Không</Radio>
@@ -278,7 +250,7 @@ const ModalWheelDetail = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Số lần trúng thưởng còn lại '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Input style={{ width: '100%' }} value={remainValue} onChange={(text) => setRemainValue(text.target.value)} />
+              <Input type="number" min={0} style={{ width: '100%' }} value={remainValue} onChange={(text) => setRemainValue(text.target.value)} />
             </Col>
           </Row>
         </Form>

@@ -40,18 +40,7 @@ export default function WheelDetail(props) {
   const dispatch = useDispatch();
   const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
-  const listWheelDetail = [
-    {
-      "wheel_detail_id": 1,
-      "wheel_id": 0,
-      "segment_id": 1,
-      "no": 1,
-      "goal_yn": 1,
-      "remain_value": 1,
-      "created_date": "2022-04-06T17:05:36.000Z",
-      "datelastmaint": "2022-04-06T17:05:36.000Z"
-    }
-  ];
+  const listWheelDetail = useSelector(gettersWheelDetail.getStateLoadPageWheelDetail) || [];
 
   // gọi 1 function rồi theo dõi nhưng thay đổi của param đó
   useEffect(() => {
@@ -81,15 +70,7 @@ export default function WheelDetail(props) {
 
   const searchBtn = async () => {
     let paramsSearch = {
-      "topic_id": topicId,
-      "segment_id": 0,
-      "segment_name": "string",
-      "segment_color": "string",
-      "inactived_date": "2022-04-08T04:17:56.025Z",
-      "created_date": "2022-04-08T04:17:56.025Z",
-      "datelastmaint": "2022-04-08T04:17:56.025Z",
-      "is_approve": true,
-      'dataSearch': dataSearch,
+
     }
     await dispatch(actionSegment.searchSegment(paramsSearch));
   }
@@ -119,14 +100,14 @@ export default function WheelDetail(props) {
       dataIndex: 'wheel_id',
       key: 'wheel_id',
       fixed: 'left',
-      width: 200
+      width: 150
     },
     {
       title: 'Mã trúng thưởng',
       dataIndex: 'segment_id',
       key: 'segment_id',
       fixed: 'center',
-      width: 200,
+      width: 150,
 
     },
     {
@@ -167,14 +148,13 @@ export default function WheelDetail(props) {
           {text === '1' ? 'N' : 'Y'}
         </Space>
       )
-
     },
     {
       title: 'Số lần trung thưởng còn lại',
       dataIndex: 'remain_value',
       key: 'remain_value',
       fixed: 'center',
-      width: 250,
+      width: 150,
 
     },
     {

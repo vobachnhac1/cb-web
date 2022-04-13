@@ -29,16 +29,28 @@ export const searchWheelDetail = (payload) => async (dispatch, getState, { $http
 }
 
 export const insertWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
+  // const data = {
+  //   "wheel_id": 0,
+  //   "wheel_detail_id": 0,
+  //   "segment_id": 0,
+  //   "no": 0,
+  //   "goal_yn": 0,
+  //   "remain_value": 0,
+  //   "inactived_date": "2022-04-13T08:32:30.059Z",
+  //   "created_date": "2022-04-13T08:32:30.059Z",
+  //   "datelastmaint": "2022-04-13T08:32:30.059Z",
+  //   "is_approve": true
+  // }
   const param = {
-    "wheel_id": payload.wheel_id,
-    "wheel_detail_id": payload.wheel_detail_id,
-    "segment_id": payload.segment_id,
-    "no": payload.no,
-    "goal_yn": payload.goal_yn,
-    "remain_value": payload.remain_value,
-    "inactived_date": "2022-04-11T07:39:21.202Z",
-    "created_date": "2022-04-11T07:39:21.202Z",
-    "datelastmaint": "2022-04-11T07:39:21.202Z",
+    "wheel_id": parseInt(payload.wheel_id),
+    "wheel_detail_id": parseInt(payload.wheel_detail_id),
+    "segment_id": parseInt(payload.segment_id),
+    "no": parseInt(payload.no),
+    "goal_yn": parseInt(payload.goal_yn),
+    "remain_value": parseInt(payload.remain_value),
+    "inactived_date": "2022-04-13T08:32:30.059Z",
+    "created_date": "2022-04-13T08:32:30.059Z",
+    "datelastmaint": "2022-04-13T08:32:30.059Z",
     "is_approve": true
   }
   // call xuống backend url + param 
