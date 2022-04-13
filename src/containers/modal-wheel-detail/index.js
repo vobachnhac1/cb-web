@@ -8,7 +8,7 @@ require("./style.module.less");
 
 import Header from '@/components/Head';
 import Layout from '@/layout';
-import { Card, Col, Form, Input, Modal, Row, Select, Typography, DatePicker, Button } from 'antd';
+import { Card, Col, Form, Input, Modal, Row, Select, Typography, Radio } from 'antd';
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
@@ -16,7 +16,9 @@ import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 import { getters as gettersTopic } from '@/redux/topic';
 import { actions as actionSegment } from '@/redux/segment';
-
+import { getters as gettersSegment } from '@/redux/segment';
+import { actions as actionWheel } from '@/redux/wheel';
+import { getters as gettersWheel } from '@/redux/wheel';
 
 const classNames = require("classnames");
 const styles = require("./style.module.less");
@@ -35,28 +37,52 @@ const layoutContent = {
   md: { span: 12, offset: 0 },
   lg: { span: 16, offset: 0 },
 };
-const ModalSegment = (props) => {
+const ModalWheelDetail = (props) => {
   const { callback, visible = false, bodyModel: { isAdd = false, record = null } } = props;
   const [loading, setLoading] = useState(false);
-  const [segmentId, setSegmentId] = useState(record ? record.segment_id : "");
+  // const [segmentId, setSegmentId] = useState(record ? record.segment_id : "");
   const [topicId, setTopicId] = useState(record ? record.topic_id : "");
   const [segmentName, setSegmentName] = useState(record ? record.segment_name : "");
   const [segmentColor, setSegmentColor] = useState(record ? record.segment_color : "");
   const [inactived_date, setInactived_date] = useState(record ? record.inactived_date : "");
+  // set state
+
+  const [wheelDetailId, setWheelDetailId] = useState(record ? record.wheel_detail_id : "")
+  const [wheelId, setWheelId] = useState(record ? record.wheel_id : "")
+  const [segmentId, setSegmentId] = useState(record ? record.segment_id : "");
+  const [no, setNo] = useState(record ? record.no : "")
+  const [remainValue, setRemainValue] = useState(record ? record.remain_value : "")
+  const [goalYn, setGoalYn] = useState(record ? record.goal_yn : -1)
+
+  console.log('record', record)
+  console.log('goalYn', goalYn)
+
+  const [valueRaido, setValueRaido] = useState(-1);
 
   const dispatch = useDispatch();
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
+  const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
+  const listWheel = useSelector(gettersWheel.getStateLoadPageWheel) || [];
 
   useEffect(() => {
     initPage();
   }, [visible]);
 
   const initPage = async () => {
+    // setSegmentId(record ? record.segment_id : "")
+    // setTopicId(record ? record.topic_id : "")
+    // setSegmentName(record ? record.segment_name : "")
+    // setSegmentColor(record ? record.segment_color : "")
+    // setInactived_date(record ? record.inactived_date : "")
+    // 
+    setWheelDetailId(record ? record.wheel_detail_id : "")
+    setWheelId(record ? record.wheel_id : "")
     setSegmentId(record ? record.segment_id : "")
-    setTopicId(record ? record.topic_id : "")
-    setSegmentName(record ? record.segment_name : "")
-    setSegmentColor(record ? record.segment_color : "")
-    setInactived_date(record ? record.inactived_date : "")
+    setNo(record ? record.no : "")
+    setRemainValue(record ? record.remain_value : "")
+    setGoalYn(record ? record.goal_yn : -1)
+
+
   }
 
   const onCallback = async () => {
@@ -68,30 +94,44 @@ const ModalSegment = (props) => {
       Message.Warning("NOTYFICATON", "Chủ đề chưa được chọn");
       return;
     }
-    if (!segmentName || segmentName.lenght == 0) {
-      Message.Warning("NOTYFICATON", "Tên kết quả trúng thưởng chưa có nội dung");
+    if (!no) {
+      Message.Warning("NOTYFICATON", "Số thứ tự vòng quay chưa có nội dung");
       return;
+    } else {
+      if (no < 0) {
+        Message.Warning("NOTYFICATON", "Số thứ tự vòng quay không đúng");
+      }
     }
-    if (!segmentColor || segmentColor.lenght == 0) {
-      Message.Warning("NOTYFICATON", "Màu sắc hiển thị chưa có nội dung");
-      return;
+
+    if (goalYn === -1) {
+      Message.Warning("NOTYFICATON", "Trúng thưởng chưa được chọn");
     }
-    if (!inactived_date || inactived_date.lenght == 0) {
+
+    if (!inactived_date) {
       Message.Warning("NOTYFICATON", "Hãy chọn ngày kết thúc giải thưởng");
       return;
     }
-    
+    // {
+    //   "wheel_id": 0,
+    //     "wheel_detail_id": 0,
+    //       "segment_id": 0,
+    //         "no": 0,
+    //           "goal_yn": 0,
+    //             "remain_value": 0,
+    //               "inactived_date": "2022-04-13T08:32:30.059Z",
+    //                 "created_date": "2022-04-13T08:32:30.059Z",
+    //                   "datelastmaint": "2022-04-13T08:32:30.059Z",
+    //                     "is_approve": true
+    // }
 
     const param = {
       ...record,
+      wheel_detail_id: wheel_detail_id ? wheelDetailId : 0,
+      wheel_id: wheelId,
       segment_id: segmentId,
-      topic_id: topicId,
-      segment_name: segmentName,
-      segment_color: segmentColor,
-      inactived_date: inactived_date,
-      is_approve: true,
-      // status_yn: isApprove,
-      visible: false
+      no: no,
+      goal_yn: goalYn,
+      remain_value: remainValue,
     }
 
 
@@ -121,6 +161,12 @@ const ModalSegment = (props) => {
     callback({ visible: false });
 
   }
+
+  function onChangeRadio(e) {
+    console.log('radio checked', e.target.value);
+    setGoalYn(e.target.value);
+  }
+
   return (
     <Modal
       width={750}
@@ -134,7 +180,7 @@ const ModalSegment = (props) => {
       onCancel={onCancel}
     >
       <Card
-        headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'center', backgroundColor: "rgb(3, 77, 162)" }}
+        headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
         title={isAdd ? "Thêm Kết chi tiết vòng quay" : 'Cập nhật Kết chi tiết vòng quay'}
         bordered={true}
         style={{ backgroundColor: '#FFFFFF' }}>
@@ -158,17 +204,17 @@ const ModalSegment = (props) => {
           {/*  */}
           <Row >
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Mã kết quả trúng thưởng :'}</Text>
+              <Text className={classNames({ [styles['text-font']]: true })}>{'ID'}</Text>
             </Col>
             <Col  {...layoutContent}>
 
-              <Input style={{ width: '100%' }} value={segmentId} onChange={(text) => setSegmentId(text.target.value)} />
+              <Input style={{ width: '100%' }} value={wheelDetailId} onChange={(text) => setWheelDetailId(text.target.value)} />
             </Col>
           </Row>
 
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Chủ đề :'}</Text>
+              <Text className={classNames({ [styles['text-font']]: true })}>{'Mã vòng quay '}</Text>
             </Col>
             <Col  {...layoutContent}>
 
@@ -176,10 +222,10 @@ const ModalSegment = (props) => {
                 style={{ width: '100%' }}
                 defaultValue=""
                 value={
-                  topicId}
+                  wheelId}
                 onChange={(value) => setTopicId(value)}>
-                {listTopic.map((Item, key) => (
-                  <Select.Option value={Item.topic_id} key={key}>{Item.topic_name}</Select.Option>
+                {listWheel.map((Item, key) => (
+                  <Select.Option value={Item.wheel_id} key={key}>{Item.Wheel_name}</Select.Option>
                   // <option value={option.value}>{option.label}</option>
                 ))}
               </Select>
@@ -187,29 +233,52 @@ const ModalSegment = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Tên kết quả trúng thưởng '}</Text>
+              <Text className={classNames({ [styles['text-font']]: true })}>{'Kết quả trúng thưởng'}</Text>
             </Col>
             <Col  {...layoutContent}>
 
-              <Input style={{ width: '100%' }} value={segmentName} onChange={(text) => setSegmentName(text.target.value)} />
+              <Select
+                style={{ width: '100%' }}
+                defaultValue=""
+                value={
+                  segmentId}
+                onChange={(value) => setTopicId(value)}>
+                {listSegment.map((Item, key) => (
+                  <Select.Option value={Item.segment_id} key={key}>{Item.segment_name}</Select.Option>
+                  // <option value={option.value}>{option.label}</option>
+                ))}
+              </Select>
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Màu sắc hiển thị '}</Text>
+              <Text className={classNames({ [styles['text-font']]: true })}>{'Số thứ tự trên vòng quay '}</Text>
             </Col>
             <Col  {...layoutContent}>
 
-              <Input style={{ width: '100%' }} value={segmentColor} onChange={(text) => setSegmentColor(text.target.value)} />
+              <Input style={{ width: '100%' }} value={no} onChange={(text) => setNo(text.target.value)} />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Ngày hết hiệu lực '}</Text>
+              <Text className={classNames({ [styles['text-font']]: true })}>{'Trúng thưởng '}</Text>
             </Col>
             <Col  {...layoutContent}>
 
-              <DatePicker value={inactived_date ? moment(inactived_date) : null} onChange={(date) => setInactived_date(date)} />
+
+              <Radio.Group onChange={onChangeRadio} value={goalYn}>
+                <Radio value={1}>Có</Radio>
+                <Radio value={0}>Không</Radio>
+
+              </Radio.Group>
+            </Col>
+          </Row>
+          <Row style={{ marginTop: 10 }}>
+            <Col {...layoutHeader} >
+              <Text className={classNames({ [styles['text-font']]: true })}>{'Số lần trúng thưởng còn lại '}</Text>
+            </Col>
+            <Col  {...layoutContent}>
+              <Input style={{ width: '100%' }} value={remainValue} onChange={(text) => setRemainValue(text.target.value)} />
             </Col>
           </Row>
         </Form>
@@ -218,4 +287,4 @@ const ModalSegment = (props) => {
   )
 }
 
-export default ModalSegment;
+export default ModalWheelDetail;

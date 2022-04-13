@@ -30,25 +30,13 @@ export default function Wheel(props) {
   });
 
   useEffect(() => {
-    initPage(); 
+    initPage();
   }, [])
 
 
   const initPage = async () => {
     const paramsInit = {
-      "wheel_id": 0,
-      "num_segments": 0,
-      "wheel_name": "string",
-      "account_nbr": "string",
-      "total_value": 0,
-      "remain_value": 0,
-      "outer_radius": 0,
-      "text_fontsize": 0,
-      "rotation_angle": 0,
-      "inactived_date": "2022-04-09T07:38:05.782Z",
-      "created_date": "2022-04-09T07:38:05.782Z",
-      "datelastmaint": "2022-04-09T07:38:05.782Z",
-      "is_approve": true
+
     }
     await dispatch(actionWheel.searchWheel(paramsInit));
   }
@@ -138,7 +126,7 @@ export default function Wheel(props) {
       ),
     },
   ];
- 
+
 
 
   const [visible, setVisible] = useState(false);

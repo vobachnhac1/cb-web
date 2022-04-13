@@ -11,11 +11,12 @@ import Router from 'next/router';
 import * as styles from './style.module.less';
 import * as classnames from 'classnames';
 import LayoutHome from '@/containers/Home';
-import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Typography, Input } from 'antd';
+import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Typography, Input, } from 'antd';
+import { DownOutlined, UpOutlined } from '@ant-design/icons';
+;
 const { Text } = Typography;
 import * as Message from '@/components/message';
-import ModalSegment from '@/containers/modal-segment';
-import ModalTopic from '@/containers/modal-topic';
+
 import ModalWheelDetail from '@/containers/modal-wheel-detail'
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
@@ -23,8 +24,11 @@ import { actions as actionSegment } from '@/redux/segment';
 import { getters as gettersSegment } from '@/redux/segment';
 import { actions as actionTopic } from '@/redux/topic';
 import { getters as gettersTopic } from '@/redux/topic';
+import { actions as actionWheel } from '@/redux/wheel';
+import { getters as gettersWheel } from '@/redux/wheel';
 import { actions as actionWheelDetail } from '@/redux/wheel-detail';
 import { getters as gettersWheelDetail } from '@/redux/wheel-detail';
+
 
 import moment from 'moment';
 // handhandleDelete
@@ -70,6 +74,8 @@ export default function WheelDetail(props) {
     // }
     // await dispatch(actionSegment.searchSegment(paramsInitSegment));
     await dispatch(actionTopic.searchTopic());
+    await dispatch(actionSegment.searchSegment({}));
+    await dispatch(actionWheel.searchWheel({}));
     await dispatch(actionWheelDetail.searchWheelDetail());
   }
 
@@ -113,14 +119,14 @@ export default function WheelDetail(props) {
       dataIndex: 'wheel_id',
       key: 'wheel_id',
       fixed: 'left',
-      width: 250
+      width: 200
     },
     {
       title: 'Mã trúng thưởng',
       dataIndex: 'segment_id',
       key: 'segment_id',
       fixed: 'center',
-      width: 250,
+      width: 200,
 
     },
     {
@@ -128,7 +134,39 @@ export default function WheelDetail(props) {
       dataIndex: 'no',
       key: 'no',
       fixed: 'center',
-      width: 250,
+      width: 100,
+      render: (text, record) => (
+        <Space size="large">
+          {record.no}
+          <span style={{
+            'float': 'right'
+          }}>
+            <a style={{
+              'color': '#32CD32'
+            }}
+            >
+              <UpOutlined />
+            </a>
+            <a style={{
+              'color': '#FF0000'
+            }}>
+              <DownOutlined />
+            </a>
+          </span>
+        </Space>
+      ),
+    },
+    {
+      title: 'Trúng thưởng',
+      dataIndex: 'goal_yn',
+      key: 'goal_yn',
+      fixed: 'center',
+      width: 100,
+      render: (text, record) => (
+        <Space size="large">
+          {text === '1' ? 'N' : 'Y'}
+        </Space>
+      )
 
     },
     {
@@ -198,7 +236,7 @@ export default function WheelDetail(props) {
           <Col span={48}>
             <Row gutter={[16, 24]}>
               <Col className="gutter-row" span={12}>
-                <Input placeholder="Thông tin cần tìm" onChange={(event) => setDataSearch(event.target.value)} />
+                <Input allowClear placeholder="Thông tin cần tìm" onChange={(event) => setDataSearch(event.target.value)} />
               </Col>
             </Row>
             <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>

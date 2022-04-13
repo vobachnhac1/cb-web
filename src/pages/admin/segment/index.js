@@ -41,14 +41,6 @@ export default function Segment(props) {
 
   const initPage = async () => {
     const paramsInitSegment = {
-      "topic_id": 0,
-      "segment_id": 0,
-      "segment_name": "string",
-      "segment_color": "string",
-      "inactived_date": "2022-04-08T04:17:56.025Z",
-      "created_date": "2022-04-08T04:17:56.025Z",
-      "datelastmaint": "2022-04-08T04:17:56.025Z",
-      "is_approve": true
     }
     await dispatch(actionSegment.searchSegment(paramsInitSegment));
     await dispatch(actionTopic.searchTopic());

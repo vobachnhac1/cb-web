@@ -5,14 +5,14 @@ const setSearchSegment = (payload) => ({ type: TYPES.SEGMENT_SEARCH, payload });
 
 export const searchSegment = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
-    "topic_id": payload.topic_id,
-    "segment_id": payload.segment_id,
-    "segment_name": payload.segment_name,
-    "segment_color": payload.segment_color,
-    "inactived_date": payload.inactived_date,
-    "created_date": payload.created_date,
-    "datelastmaint": payload.datelastmaint,
-    "is_approve": payload.is_approve
+    "topic_id": payload.topic_id ? payload.topic_id : 0,
+    "segment_id": payload.segment_id ? payload.segment_id : 0,
+    "segment_name": payload.segment_name ? payload.segment_name : "string",
+    "segment_color": payload.segment_color ? payload.segment_color : "string"  ,
+    "inactived_date": payload.inactived_date ? payload.inactived_date : "2022-04-08T04:17:56.025Z",
+    "created_date": payload.created_date ? payload.created_date : "2022-04-08T04:17:56.025Z", 
+    "datelastmaint": payload.datelastmaint ? payload.datelastmaint : "2022-04-08T04:17:56.025Z" ,
+    "is_approve": payload.is_approve ? payload.is_approve : true,
   }
   const result = await $http.post(URLSERVER.searchAllSegment, param);
   const { success, data } = result;
