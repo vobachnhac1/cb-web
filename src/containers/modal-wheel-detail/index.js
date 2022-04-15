@@ -40,7 +40,8 @@ const layoutContent = {
   lg: { span: 16, offset: 0 },
 };
 const ModalWheelDetail = (props) => {
-  const { callback, visible = false, bodyModel: { isAdd = false, record = null } } = props;
+  const { callback, visible = false, bodyModel: { isAdd = false, record = null, queryWheel_id } } = props;
+  console.log("bodyModel", queryWheel_id)
   const [loading, setLoading] = useState(false);
   // const [segmentId, setSegmentId] = useState(record ? record.segment_id : "");
   const [topicId, setTopicId] = useState(record ? record.topic_id : "");
@@ -56,8 +57,8 @@ const ModalWheelDetail = (props) => {
   const [remainValue, setRemainValue] = useState(record ? record.remain_value : "")
   const [goalYn, setGoalYn] = useState(record ? record.goal_yn : -1)
 
-  console.log('record', record)
-  console.log('goalYn', goalYn)
+  // console.log('record', record)
+  // console.log('goalYn', goalYn)
 
   const [valueRaido, setValueRaido] = useState(-1);
 
@@ -72,7 +73,7 @@ const ModalWheelDetail = (props) => {
 
   const initPage = async () => {
     setWheelDetailId(record ? record.wheel_detail_id : "")
-    setWheelId(record ? record.wheel_id : "")
+    setWheelId(record ? record.wheel_id : queryWheel_id)
     setSegmentId(record ? record.segment_id : "")
     setNo(record ? record.no : "")
     setRemainValue(record ? record.remain_value : "")
@@ -80,22 +81,22 @@ const ModalWheelDetail = (props) => {
   }
 
   const onCallback = async () => {
-    if (!segmentId || segmentId.lenght == 0) {
-      Message.Warning("NOTYFICATON", "Mã kết quả chưa điền nội dung");
-      return;
-    }
-    if (!no) {
-      Message.Warning("NOTYFICATON", "Số thứ tự vòng quay chưa có nội dung");
-      return;
-    } else {
-      if (no < 0) {
-        Message.Warning("NOTYFICATON", "Số thứ tự vòng quay không đúng");
-      }
-    }
+    // if (!segmentId || segmentId.lenght == 0) {
+    //   Message.Warning("NOTYFICATON", "Mã kết quả chưa điền nội dung");
+    //   return;
+    // }
+    // if (!no) {
+    //   Message.Warning("NOTYFICATON", "Số thứ tự vòng quay chưa có nội dung");
+    //   return;
+    // } else {
+    //   if (no < 0) {
+    //     Message.Warning("NOTYFICATON", "Số thứ tự vòng quay không đúng");
+    //   }
+    // }
 
-    if (goalYn === -1) {
-      Message.Warning("NOTYFICATON", "Trúng thưởng chưa được chọn");
-    }
+    // if (goalYn === -1) {
+    //   Message.Warning("NOTYFICATON", "Trúng thưởng chưa được chọn");
+    // }
 
     const param = {
       ...record,
@@ -120,13 +121,13 @@ const ModalWheelDetail = (props) => {
       return;
     }
     //edit
-    const result = await dispatch(actionSegment.updateTopic(param));
+    const result = await dispatch(actionWheelDetail.updateWheelDetail(param));
     if (result) {
       callback({ visible: false });
-      Message.Success("NOTYFICATON", "UPDATE SEGMENT SUCCESS");
+      Message.Success("NOTYFICATON", "UPDATE WHEELDETAIL SUCCESS");
       return;
     }
-    Message.Error("NOTYFICATON", "UPDATE SEGMENT FAILED");
+    Message.Error("NOTYFICATON", "UPDATE WHEELDETAIL FAILED");
 
 
   }
@@ -136,7 +137,6 @@ const ModalWheelDetail = (props) => {
   }
 
   function onChangeRadio(e) {
-    console.log('radio checked', e.target.value);
     setGoalYn(e.target.value);
   }
 
@@ -193,7 +193,7 @@ const ModalWheelDetail = (props) => {
             </Col>
             <Col  {...layoutContent}>
 
-              <Select disabled={isAdd ? false : true}
+              <Select disabled={true}
                 style={{ width: '100%' }}
                 defaultValue=""
                 value={

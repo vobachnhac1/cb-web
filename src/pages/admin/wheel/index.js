@@ -6,7 +6,8 @@
 *------------------------------------------------------- */
 require("./style.module.less");
 import { useState, useEffect } from 'react';
-
+import Link from 'next/link';
+import Router from 'next/router';
 import LayoutHome from '@/containers/Home';
 import { Button, Card, Col, Row, Space, Table, Popconfirm, Input } from 'antd';
 
@@ -110,10 +111,15 @@ export default function Wheel(props) {
     {
       title: 'Action',
       key: 'action',
-      width: 140,
+      width: 300,
       render: (text, record) => (
 
         <Space size="middle">
+          <Button style={{ color: '#7cb305', borderColor: '#7cb305', borderWidth: 0.5 }} onClick={() => ViewsWheelDetail(record)} >
+            <Link href={`/admin/wheel-detail/${record.wheel_id}`}>
+              Chi tiết vòng quay
+            </Link>
+          </Button>
           <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateWheel(record)} >Edit</Button>
 
           {listWheel.length >= 1 ? (
@@ -148,6 +154,9 @@ export default function Wheel(props) {
       record: record,
       isAdd: false
     });
+  }
+  const ViewsWheelDetail = (record) => {
+    // Router.push('/home');
   }
 
   const callbackModal = (params) => {

@@ -16,7 +16,7 @@ export default buildReducer(
 
       return {
         ...state,
-        listWheelDetail: payload
+        listWheelDetail: payload //.sort(function (a, b) { return a.no - b.no })
       }
     }
   },

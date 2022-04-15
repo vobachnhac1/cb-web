@@ -41,7 +41,8 @@ export default function WheelDetail(props) {
   const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
   const listWheelDetail = useSelector(gettersWheelDetail.getStateLoadPageWheelDetail) || [];
-
+  const [isFlagStt, setIsFlagStt] = useState(false);
+  const [indexStt, setIndexStt] = useState(true)
   // gọi 1 function rồi theo dõi nhưng thay đổi của param đó
   useEffect(() => {
     initPage(); // chjay 1 lần duy nhất
@@ -66,6 +67,7 @@ export default function WheelDetail(props) {
     await dispatch(actionSegment.searchSegment({}));
     await dispatch(actionWheel.searchWheel({}));
     await dispatch(actionWheelDetail.searchWheelDetail());
+   
   }
 
   const searchBtn = async () => {
@@ -86,21 +88,50 @@ export default function WheelDetail(props) {
     }
     Message.Error("NOTYFICATON", "DELETE TOPIC FAIL");
   };
+
+  const handleOnOut = async (record) => {
+    let payload = {
+
+    }
+  }
+
+  const handleDownOut = async (record) => {
+
+  }
+
   const columns = [
     {
       title: 'ID',
       dataIndex: 'wheel_detail_id',
       key: 'wheel_detail_id',
       fixed: 'left',
-      width: 100
+      width: 60
       // render: text => <a>{text}</a>,
     },
+    // {
+    //   title: 'Mã vòng quay',
+    //   dataIndex: 'wheel_id',
+    //   key: 'wheel_id',
+    //   fixed: 'left',
+    //   width: 150,
+    // },
     {
       title: 'Mã vòng quay',
       dataIndex: 'wheel_id',
       key: 'wheel_id',
       fixed: 'left',
-      width: 150
+      width: 150,
+      render: (text, record) => (
+        <p>
+          {listWheelDetail.find(function (item) {
+            const wheel_name = ''
+            if (record.wheel_id = item.wheel_id) {
+              return item.wheel_name
+            }
+          })}
+        </p>
+
+      ),
     },
     {
       title: 'Mã trúng thưởng',
@@ -115,27 +146,42 @@ export default function WheelDetail(props) {
       dataIndex: 'no',
       key: 'no',
       fixed: 'center',
-      width: 100,
-      render: (text, record) => (
-        <Space size="large">
-          {record.no}
-          <span style={{
-            'float': 'right'
-          }}>
-            <a style={{
-              'color': '#32CD32'
-            }}
-            >
-              <UpOutlined />
-            </a>
-            <a style={{
-              'color': '#FF0000'
-            }}>
-              <DownOutlined />
-            </a>
-          </span>
-        </Space>
-      ),
+      width: 200,
+      // render: (text, record) => (
+      //   <p style={{
+      //     'width': '100%',
+      //     'display': 'flex',
+      //     'justifyContent': 'space-between'
+
+      //   }}>
+      //     <span> {record.no}</span>
+      //     <span style={{
+      //       'marginRight': '15px',
+      //       'marginLeft': '5px'
+      //     }}>
+      //       <Button style={{
+      //         'color': '#32CD32',
+      //         'border': 'none'
+      //       }}
+      //       >
+      //         <UpOutlined />
+      //       </Button>
+      //       <Button style={{
+      //         'color': '#FF0000',
+      //         'border': 'none',
+      //         'marginLeft': '5px'
+      //       }}>
+      //         <DownOutlined />
+      //       </Button>
+      //     </span>
+      //     { 
+      //       indexStt
+      //     }
+      //     <span >
+      //       <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} >Cập nhật STT</Button>
+      //     </span>
+      //   </p>
+      // ),
     },
     {
       title: 'Trúng thưởng',
