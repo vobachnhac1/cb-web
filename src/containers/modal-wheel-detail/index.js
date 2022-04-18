@@ -40,15 +40,8 @@ const layoutContent = {
   lg: { span: 16, offset: 0 },
 };
 const ModalWheelDetail = (props) => {
-  const { callback, visible = false, bodyModel: { isAdd = false, record = null, queryWheel_id } } = props;
-  console.log("bodyModel", queryWheel_id)
-  const [loading, setLoading] = useState(false);
-  // const [segmentId, setSegmentId] = useState(record ? record.segment_id : "");
-  const [topicId, setTopicId] = useState(record ? record.topic_id : "");
-  const [segmentName, setSegmentName] = useState(record ? record.segment_name : "");
-  const [segmentColor, setSegmentColor] = useState(record ? record.segment_color : "");
-  const [inactived_date, setInactived_date] = useState(record ? record.inactived_date : "");
-  // set state
+  const { callback, visible = false, bodyModel: { isAdd = false, record = null, queryWheel_id, dataListSearch } } = props;
+  const dispatch = useDispatch();
 
   const [wheelDetailId, setWheelDetailId] = useState(record ? record.wheel_detail_id : "")
   const [wheelId, setWheelId] = useState(record ? record.wheel_id : "")
@@ -56,13 +49,6 @@ const ModalWheelDetail = (props) => {
   const [no, setNo] = useState(record ? record.no : "")
   const [remainValue, setRemainValue] = useState(record ? record.remain_value : "")
   const [goalYn, setGoalYn] = useState(record ? record.goal_yn : -1)
-
-  // console.log('record', record)
-  // console.log('goalYn', goalYn)
-
-  const [valueRaido, setValueRaido] = useState(-1);
-
-  const dispatch = useDispatch();
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
   const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
   const listWheel = useSelector(gettersWheel.getStateLoadPageWheel) || [];
@@ -81,26 +67,26 @@ const ModalWheelDetail = (props) => {
   }
 
   const onCallback = async () => {
-    // if (!segmentId || segmentId.lenght == 0) {
-    //   Message.Warning("NOTYFICATON", "Mã kết quả chưa điền nội dung");
-    //   return;
-    // }
-    // if (!no) {
-    //   Message.Warning("NOTYFICATON", "Số thứ tự vòng quay chưa có nội dung");
-    //   return;
-    // } else {
-    //   if (no < 0) {
-    //     Message.Warning("NOTYFICATON", "Số thứ tự vòng quay không đúng");
-    //   }
-    // }
+    if (!segmentId) {
+      Message.Warning("NOTYFICATON", "Kết quả trúng thưởng chưa được chọn");
+      return;
+    }
+    if (!no || no < 0) {
+      Message.Warning("NOTYFICATON", "Số thứ tự chưa hợp lệ hoặc chưa có nội dung");
+      return;
+    }
+    if (goalYn === -1) {
+      Message.Warning("NOTYFICATON", "Trúng thưởng chưa được chọn");
+      return;
+    }
+    if (!remainValue || remainValue <= 0) {
+      Message.Warning("NOTYFICATON", "Số lần trúng thưởng chưa hợp lệ hoặc chưa có nội dung");
+      return;
+    }
 
-    // if (goalYn === -1) {
-    //   Message.Warning("NOTYFICATON", "Trúng thưởng chưa được chọn");
-    // }
-
-    const param = {
+    let param = {
       ...record,
-      wheel_detail_id: wheelDetailId ? wheelDetailId : 0,
+      wheel_detail_id: wheelDetailId ? wheelDetailId : moment().format('x'),
       wheel_id: wheelId,
       segment_id: segmentId,
       no: no,
@@ -108,12 +94,30 @@ const ModalWheelDetail = (props) => {
       remain_value: remainValue,
     }
 
+    //get wheelname
+    for (let i = 0; i < listWheel.length; i++) {
+      console.log(listWheel[i].wheel_id, wheelId)
+      if (wheelId == listWheel[i].wheel_id) {
+        param.wheel_name = listWheel[i].wheel_name;
+        break
+      }
+    }
+
+    // segmentname
+    for (let i = 0; i < listSegment.length; i++) {
+      if (segmentId == listSegment[i].segment_id) {
+        param.segment_name = listSegment[i].segment_name;
+        break
+      }
+    }
+
 
     // add
     if (isAdd) {
       const result = await dispatch(actionWheelDetail.insertWheelDetail(param));
+      let data = result
       if (result) {
-        callback({ visible: false });
+        callback({ visible: false, data: data });
         Message.Success("NOTYFICATON", "ADD NEW WHEEL DETAIL SUCCESS");
         return;
       }
@@ -122,8 +126,11 @@ const ModalWheelDetail = (props) => {
     }
     //edit
     const result = await dispatch(actionWheelDetail.updateWheelDetail(param));
+    let data = result
     if (result) {
-      callback({ visible: false });
+      callback({
+        visible: false, data: data
+      });
       Message.Success("NOTYFICATON", "UPDATE WHEELDETAIL SUCCESS");
       return;
     }
@@ -132,7 +139,7 @@ const ModalWheelDetail = (props) => {
 
   }
   const onCancel = () => {
-    callback({ visible: false });
+    callback({ visible: false, data: dataListSearch });
 
   }
 
@@ -171,10 +178,7 @@ const ModalWheelDetail = (props) => {
           }}
           labelAlign='left'
           size={'default'}
-
-
         >
-          {/*  */}
           {
             !isAdd ?
               <Row >

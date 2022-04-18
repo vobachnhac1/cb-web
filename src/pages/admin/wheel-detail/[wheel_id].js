@@ -30,8 +30,7 @@ import { actions as actionWheelDetail } from '@/redux/wheel-detail';
 import { getters as gettersWheelDetail } from '@/redux/wheel-detail';
 
 
-import moment from 'moment';
-// handhandleDelete
+
 WheelDetail.getInitialProps = async ({ query }) => {
   return { query }
 }
@@ -39,59 +38,55 @@ WheelDetail.getInitialProps = async ({ query }) => {
 export default function WheelDetail({ query }) {
   // const { query } = useRouter();
   const dispatch = useDispatch();
-  const [topicId, setTopicId] = useState('');
-  const [dataSearch, setDataSearch] = useState('')
-  const paramsID = query.wheel_id
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState({
+    segment_id: null,
+    wheel_name: null,
+  });
+ 
   const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
-  const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
   const listWheelDetail = useSelector(gettersWheelDetail.getStateLoadPageWheelDetail) || [];
-  const [isFlagStt, setIsFlagStt] = useState(false);
-  const [indexStt, setIndexStt] = useState(true)
+  const [listSearch, setListSearch] = useState([]);
+
   // gọi 1 function rồi theo dõi nhưng thay đổi của param đó
   useEffect(() => {
     initPage(); // chjay 1 lần duy nhất
   }, [])
 
-
   const initPage = async () => {
-
+    setLoading(true);
     const data = {
       'wheel_id': query.wheel_id
     }
     await dispatch(actionTopic.searchTopic());
     await dispatch(actionSegment.searchSegment({}));
-    // await dispatch(actionWheel.searchWheel({}));
-    // await dispatch(actionWheelDetail.searchWheelDetail());
-    await dispatch(actionWheelDetail.filterWheelDetail(data));
+    const resultDoneFilterWheelDetail = await dispatch(actionWheelDetail.filterWheelDetail(data));
+    setListSearch(resultDoneFilterWheelDetail)
+    setLoading(false)
   }
 
-  const searchBtn = async () => {
-    let paramsSearch = {
-
-    }
-    await dispatch(actionSegment.searchSegment(paramsSearch));
+  const onSearch = async () => {
+    setLoading(true);
+    const result = await dispatch(actionWheelDetail.searchWheelDetailById(filter));
+    setListSearch(result)
+    setLoading(false)
   }
 
 
   const handleDelete = async (record) => {
     let dataRecord = { ...record }
     const result = await dispatch(actionWheelDetail.deleteWheelDetailById(dataRecord));
+    setListSearch(result)
     if (result) {
-      // initPage();
       Message.Success("NOTYFICATON", "DELETE WHEEL DETAIL SUCCESS");
       return
     }
     Message.Error("NOTYFICATON", "DELETE WHEEL DETAIL FAIL");
   };
 
-  const handleOnOut = async (record) => {
-    let payload = {
-
-    }
-  }
-
-  const handleDownOut = async (record) => {
-
+  const onSaveListData = async () => {
+    const data = listWheelDetail
+    await dispatch(actionWheelDetail.SaveOnListWheelDetail(data));
   }
 
   const columns = [
@@ -100,7 +95,7 @@ export default function WheelDetail({ query }) {
       dataIndex: 'wheel_detail_id',
       key: 'wheel_detail_id',
       fixed: 'left',
-      width: 60
+      width: 100
       // render: text => <a>{text}</a>,
     },
     {
@@ -108,23 +103,19 @@ export default function WheelDetail({ query }) {
       dataIndex: 'wheel_name',
       key: 'wheel_name',
       fixed: 'left',
-      width: 150,
-
     },
     {
       title: 'Tên giải thưởng',
       dataIndex: 'segment_name',
       key: 'segment_name',
       fixed: 'center',
-      width: 150,
-
     },
     {
       title: 'STT',
       dataIndex: 'no',
       key: 'no',
       fixed: 'center',
-      width: 200,
+      width: 180,
       render: (text, record) => (
         <p style={{
           'width': '100%',
@@ -139,56 +130,21 @@ export default function WheelDetail({ query }) {
           }}>Stt đang bị trùng </span> : ''}
         </p >
       ),
-      // render: (text, record) => (
-      //   <p style={{
-      //     'width': '100%',
-      //     'display': 'flex',
-      //     'justifyContent': 'space-between'
-
-      //   }}>
-      //     <span> {record.no}</span>
-      //     <span style={{
-      //       'marginRight': '15px',
-      //       'marginLeft': '5px'
-      //     }}>
-      //       <Button style={{
-      //         'color': '#32CD32',
-      //         'border': 'none'
-      //       }}
-      //       >
-      //         <UpOutlined />
-      //       </Button>
-      //       <Button style={{
-      //         'color': '#FF0000',
-      //         'border': 'none',
-      //         'marginLeft': '5px'
-      //       }}>
-      //         <DownOutlined />
-      //       </Button>
-      //     </span>
-      //     { 
-      //       indexStt
-      //     }
-      //     <span >
-      //       <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} >Cập nhật STT</Button>
-      //     </span>
-      //   </p>
-      // ),
     },
     {
       title: 'Trúng thưởng',
       dataIndex: 'goal_yn',
       key: 'goal_yn',
       fixed: 'center',
-      width: 100,
+      width: 120,
       render: (text, record) => (
         <Space size="large">
-          {text === '1' ? 'N' : 'Y'}
+          {text == '1' ? 'Y' : 'N'}
         </Space>
       )
     },
     {
-      title: 'Số lần trung thưởng còn lại',
+      title: 'Số lần trúng còn lại',
       dataIndex: 'remain_value',
       key: 'remain_value',
       fixed: 'center',
@@ -198,14 +154,14 @@ export default function WheelDetail({ query }) {
     {
       title: 'Action',
       key: 'action',
-      width: 140,
+      width: 170,
       render: (text, record) => (
 
         <Space size="middle">
-          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateDetail(record)} >Edit</Button>
+          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateDetail(record)} >Cập nhật</Button>
           {listWheelDetail.length >= 1 ? (
             <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)} >
-              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Delete</Button>
+              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
             </Popconfirm>
           ) : null
           }
@@ -220,33 +176,36 @@ export default function WheelDetail({ query }) {
     record: null
   });
 
+
   const addNewWheelDetail = () => {
     const wheel_id = query.wheel_id;
-
     setVisible(true);
     setBodyModel({
       record: null,
       isAdd: true,
-      queryWheel_id: wheel_id
+      queryWheel_id: wheel_id,
+      dataListSearch: listSearch
     });
+
   }
   const updateDetail = (record) => {
     setVisible(true);
     setBodyModel({
       record: record,
-      isAdd: false
+      isAdd: false,
+      dataListSearch: listSearch
     });
   }
 
 
   const callbackModal = (params) => {
     setVisible(params.visible);
-    // initPage();
+    setListSearch(params.data)
   }
   const backToWheel = () => {
     Router.push('/admin/wheel')
   }
-  console.log('listWheelDetail', listWheelDetail)
+  // console.log('listWheelDetail', listWheelDetail)
   return (
     <LayoutHome>
       <Col style={{ marginBottom: 30 }}>
@@ -270,7 +229,7 @@ export default function WheelDetail({ query }) {
                 </Button>
               </Col>
               <Col className="gutter-row" span={2} style={{ marginBottom: 10 }}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} >Lưu lại</Button>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSaveListData}>Lưu lại</Button>
               </Col>
             </Row>
 
@@ -279,8 +238,22 @@ export default function WheelDetail({ query }) {
         <div style={{ marginTop: 20 }} />
         <Card>
           <Row gutter={[16, 24]}>
-            <Col className="gutter-row" span={12}>
-              <Input allowClear placeholder="Thông tin cần tìm" onChange={(event) => setDataSearch(event.target.value)} />
+            <Col className="gutter-row" span={4}>
+              <Select
+                allowClear
+                placeholder="Tên giải thưởng"
+                style={{ width: '100%' }}
+                defaultValue=""
+                value={filter.segment_id}
+                onChange={(value) => setFilter({ ...filter, segment_id: value })}>
+                {listSegment.map((Item, key) => (
+                  <Select.Option value={Item.segment_id} key={key}>{Item.segment_name}</Select.Option>
+                ))}
+              </Select>
+            </Col>
+            <Col className="gutter-row" span={6}>
+              <Input allowClear placeholder="Thông tin cần tìm" value={filter.wheel_name} onChange={(event) => setFilter({ ...filter, wheel_name: event.target.value ? event.target.value : null })} />
+              {/* onChange={(event) => setDataSearch(event.target.value)} */}
             </Col>
           </Row>
           <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
@@ -288,17 +261,16 @@ export default function WheelDetail({ query }) {
               <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewWheelDetail}>Thêm</Button>
             </Col>
             <Col className="gutter-row" span={3}>
-              <Button type='primary' size='middle' style={{ width: '100%' }} onClick={searchBtn}>Tìm kiếm</Button>
+              <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>
             </Col>
 
           </Row>
           <Col span={48} style={{ marginTop: 10 }}>
-
             <Table
               columns={columns}
-              dataSource={listWheelDetail}
+              dataSource={listSearch}
               size='large'
-              loading={false}
+              loading={loading}
               scroll={{ x: 1300 }}
             />
           </Col>

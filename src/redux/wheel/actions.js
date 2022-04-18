@@ -5,22 +5,6 @@ import URLSERVER from '@/redux/urlServer.json';
 const setSearchWheel = (payload) => ({ type: TYPES.WHEEL_SEARCH, payload });
 // hàm xử lý được gọi từ bên ngoài
 
-
-// const paramsInit = {
-//   "wheel_id": 0,
-//   "num_segments": 0,
-//   "wheel_name": "string",
-//   "account_nbr": "string",
-//   "total_value": 0,
-//   "remain_value": 0,
-//   "outer_radius": 0,
-//   "text_fontsize": 0,
-//   "rotation_angle": 0,
-//   "inactived_date": "2022-04-09T07:38:05.782Z",
-//   "created_date": "2022-04-09T07:38:05.782Z",
-//   "datelastmaint": "2022-04-09T07:38:05.782Z",
-//   "is_approve": true
-// }
 export const searchWheel = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
     "wheel_id": payload.wheel_id ? payload.wheel_id : 0,
@@ -64,8 +48,7 @@ export const insertWheel = (payload) => async (dispatch, getState, { $http }) =>
     "datelastmaint": "2022-04-09T08:41:40.514Z",
     "is_approve": true
   }
-  // console.log('call action', param)
-  // call xuống backend url + param 
+
   const result = await $http.post(URLSERVER.insertWheel, param);
   const { success, data } = result;
   if (!success || !data.success) {

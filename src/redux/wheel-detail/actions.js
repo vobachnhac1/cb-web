@@ -28,11 +28,28 @@ export const searchWheelDetail = (payload) => async (dispatch, getState, { $http
   return true
 }
 
+export const SaveOnListWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
+  const param = [...payload]
+  console.log('param save on list', param)
+
+  // // call xuống backend url + param 
+  // const result = await $http.post(URLSERVER.insertWheelDetail, param);
+  // // console.log('call action create insert WheelDetail', result)
+  // const { success, data } = result;
+  // if (!success || !data.success) {
+  //   return false;
+  // }
+
+  return true
+}
+
 export const insertWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
     "wheel_id": parseInt(payload.wheel_id),
-    "wheel_detail_id": parseInt(payload.wheel_detail_id),
+    "wheel_name": payload.wheel_name,
+    "wheel_detail_id": payload.wheel_detail_id,
     "segment_id": parseInt(payload.segment_id),
+    "segment_name": payload.segment_name,
     "no": parseInt(payload.no),
     "goal_yn": parseInt(payload.goal_yn),
     "remain_value": parseInt(payload.remain_value),
@@ -41,20 +58,14 @@ export const insertWheelDetail = (payload) => async (dispatch, getState, { $http
     "datelastmaint": "2022-04-13T08:32:30.059Z",
     "is_approve": true
   }
-  // // call xuống backend url + param 
-  // const result = await $http.post(URLSERVER.insertWheelDetail, param);
-  // // console.log('call action create insert WheelDetail', result)
-  // const { success, data } = result;
-  // if (!success || !data.success) {
-  //   return false;
-  // }
+  
   let state = getState()
   let listWheelDetail = [...state.wheeldetail.listWheelDetail]
   listWheelDetail.push(param)
   const listData = resultDoneWheelDetail(listWheelDetail);
   dispatch(setSearchWheelDetail(listData))
 
-  return true
+  return listData
 }
 
 export const updateWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
@@ -64,10 +75,7 @@ export const updateWheelDetail = (payload) => async (dispatch, getState, { $http
     "goal_yn": payload.goal_yn,
     "remain_value": payload.remain_value,
   }
-  console.log('payload', payload)
-  // call xuống backend url + param 
-  // const result = await $http.post(URLSERVER.updateWheelDetailById, param);
-  // Wheeldetail_id 
+
   let state = getState()
   let listWheelDetail = [...state.wheeldetail.listWheelDetail]
 
@@ -83,77 +91,25 @@ export const updateWheelDetail = (payload) => async (dispatch, getState, { $http
 
   dispatch(setSearchWheelDetail(listData))
 
-  return true
+  return listData
 }
 
 export const deleteWheelDetailById = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
-    "wheeldetail_id": payload.wheeldetail_id,
+    "wheel_detail_id": payload.wheel_detail_id,
   }
+
   let state = getState()
   let listWheelDetail = [...state.wheeldetail.listWheelDetail]
   for (let i = 0; i < listWheelDetail.length; i++) {
-    if (listWheelDetail[i].wheeldetail_id === param.wheeldetail_id) {
+    if (listWheelDetail[i].wheel_detail_id === param.wheel_detail_id) {
       listWheelDetail.splice(i, 1)
       break
     }
   }
   const listData = resultDoneWheelDetail(listWheelDetail);
-
   dispatch(setSearchWheelDetail(listData))
-  // arr.splice(index, 1);
-  // call xuống backend url + param 
-  // const result = await $http.post(URLSERVER.deleteWheelDetailById, param);
-  // const { success, data } = result;
-  // if (!success || !data.success) {
-  //   return false;
-  // }
-  return true
-}
-
-// function swap(arr,indexA, indexB) {
-//   var temp = a;
-//   a = b;
-//   b = temp;
-
-// }
-
-
-export const upOutData = (payload) => async (dispatch, getState, { $http }) => {
-  // payload, nhan wheeldetail_id,listData
-  let wheeldetail_id = payload.wheeldetail_id
-  const listData = payload.listWheelDetail;
-  for (let i = 0; i < listData.length; i++) {
-    // get vi vi wheeldetail_id nam trong data;
-    if (listData[i].wheeldetail_id === wheeldetail_id) {
-      // swap(listData[i], listData[i-1])
-      let temp = listData[i];
-      listData[i] = listData[i - 1];
-      listData[i - 1] = temp
-    }
-  }
-  dispatch(setSearchWheelDetail(listData))
-  // get lisst vao state
-
-
-}
-
-export const downOutData = (payload) => async (dispatch, getState, { $http }) => {
-  // payload, nhan wheeldetail_id,
-  let wheeldetail_id = payload.wheeldetail_id
-  const listData = payload.listWheelDetail;
-
-  for (let i = 0; i < listData.length; i++) {
-    // get vi vi wheeldetail_id nam trong data;
-    if (listData[i].wheeldetail_id === wheeldetail_id) {
-      // swap(listData[i], listData[i + 1])
-      let temp = listData[i];
-      listData[i] = listData[i + 1];
-      listData[i + 1] = temp
-    }
-  }
-  dispatch(setSearchWheelDetail(listData))
-
+  return listData
 }
 
 export const filterWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
@@ -177,7 +133,41 @@ export const filterWheelDetail = (payload) => async (dispatch, getState, { $http
   const listData = resultDoneWheelDetail(data.data);
 
   dispatch(setSearchWheelDetail(listData))
-  return true
+  return listData
+}
+
+export const searchWheelDetailById = (payload) => async (dispatch, getState, { $http }) => {
+  let param = {
+    'segment_id': payload.segment_id ? payload.segment_id : null,
+    'wheel_name': payload.wheel_name ? payload.wheel_name : null
+  }
+  let fillterData = []
+  let state = getState()
+  let listWheelDetail = [...state.wheeldetail.listWheelDetail]
+  if (!param.segment_id && !param.wheel_name) {
+    fillterData = [...state.wheeldetail.listWheelDetail]
+  } else {
+    for (let i = 0; i < listWheelDetail.length; i++) {
+      if (param.segment_id && !param.wheel_name) {
+        if (listWheelDetail[i].segment_id === param.segment_id) {
+          fillterData.push(listWheelDetail[i])
+        }
+      } else if (!param.segment_id && param.wheel_name) {
+        if (listWheelDetail[i].wheel_name.includes(param.wheel_name)) {
+          fillterData.push(listWheelDetail[i])
+        }
+      } else if (param.segment_id && param.wheel_name) {
+        if (listWheelDetail[i].segment_id === param.segment_id) {
+          if (listWheelDetail[i].wheel_name.includes(param.wheel_name)) {
+            fillterData.push(listWheelDetail[i])
+          }
+        }
+      }
+    }
+
+  }
+  const listData = resultDoneWheelDetail(fillterData);
+  return listData
 }
 
 function resultDoneWheelDetail(data) {
@@ -186,7 +176,6 @@ function resultDoneWheelDetail(data) {
   for (let i = 0; i < dataList.length; i++) {
     dataList[i].is_duplicated = false;
   }
-
   for (let i = 0; i < dataList.length; i++) {
     // dataList.includes(dataList.no)
     for (let j = 0; j < dataList.length; j++) {
@@ -198,6 +187,8 @@ function resultDoneWheelDetail(data) {
   const dataResult = dataList.sort(function (a, b) { return a.no - b.no })
   return dataResult
 }
+
+
 
 // function export ra ngoài
 

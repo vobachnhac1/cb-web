@@ -66,7 +66,6 @@ export default function Wheel(props) {
       dataIndex: 'wheel_id',
       key: 'wheel_id',
       fixed: 'left',
-      width: 50
       // render: text => <a>{text}</a>,
     },
     {
@@ -74,7 +73,6 @@ export default function Wheel(props) {
       dataIndex: 'wheel_name',
       key: 'wheel_name',
       fixed: 'left',
-      width: 250
     },
     {
       title: 'Số kết quả',
@@ -82,19 +80,16 @@ export default function Wheel(props) {
       key: 'num_segments',
       fixed: 'center',
       width: 100,
-
     },
     {
       title: 'Tổng giá trị giải',
       dataIndex: 'total_value',
       key: 'total_value',
-      width: 250,
     },
     {
       title: 'Giá trị còn lại',
       dataIndex: 'remain_value',
       key: 'remain_value',
-      width: 250,
     },
     {
       title: 'Ngày hết hiệu lực',
@@ -111,20 +106,19 @@ export default function Wheel(props) {
     {
       title: 'Action',
       key: 'action',
-      width: 300,
+      width: 320,
       render: (text, record) => (
-
         <Space size="middle">
           <Button style={{ color: '#7cb305', borderColor: '#7cb305', borderWidth: 0.5 }} onClick={() => ViewsWheelDetail(record)} >
             <Link href={`/admin/wheel-detail/${record.wheel_id}`}>
               Chi tiết vòng quay
             </Link>
           </Button>
-          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateWheel(record)} >Edit</Button>
+          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateWheel(record)} >Cập nhật</Button>
 
           {listWheel.length >= 1 ? (
             <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)} >
-              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Delete</Button>
+              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
             </Popconfirm>
           ) : null
           }

@@ -34,9 +34,9 @@ export default function Segment(props) {
     from_date_act: null,
     to_date_act: null
   });
-  
+
   useEffect(() => {
-    initPage(); 
+    initPage();
   }, [])
 
   const initPage = async () => {
@@ -80,14 +80,13 @@ export default function Segment(props) {
       dataIndex: 'segment_name',
       key: 'segment_name',
       fixed: 'left',
-      width: 250
+
     },
     {
       title: 'Chủ đề',
       dataIndex: 'topic_name',
       key: 'topic_name',
       fixed: 'center',
-      width: 250,
 
     },
     {
@@ -116,13 +115,13 @@ export default function Segment(props) {
     {
       title: 'Action',
       key: 'action',
-      width: 140,
+      width: 170,
       render: (text, record) => (
         <Space size="middle">
-          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateSegment(record)} >Edit</Button>
+          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateSegment(record)} >Cập nhật</Button>
           {listSegment.length >= 1 ? (
             <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)} >
-              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Delete</Button>
+              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
             </Popconfirm>
           ) : null
           }
@@ -130,7 +129,7 @@ export default function Segment(props) {
       ),
     },
   ];
- 
+
   const [visible, setVisible] = useState(false);
   const [bodyModel, setBodyModel] = useState({
     isAdd: false,

@@ -37,7 +37,6 @@ export const insertSegment = (payload) => async (dispatch, getState, { $http }) 
   }
 
   const result = await $http.post(URLSERVER.insertSegment, param);
-  console.log('call action create insert Segment', result)
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
