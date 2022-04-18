@@ -71,22 +71,30 @@ const ModalWheelDetail = (props) => {
       Message.Warning("NOTYFICATON", "Kết quả trúng thưởng chưa được chọn");
       return;
     }
-    if (!no || no < 0) {
+    if (!no || no <= 0) {
       Message.Warning("NOTYFICATON", "Số thứ tự chưa hợp lệ hoặc chưa có nội dung");
+      return;
+    }
+    if (!isAdd && no > dataListSearch.length) {
+      Message.Warning("NOTYFICATON", "Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (dataListSearch.length));
+      return;
+    }
+    if (isAdd && no > dataListSearch.length + 1) {
+      Message.Warning("NOTYFICATON", "Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (dataListSearch.length + 1));
       return;
     }
     if (goalYn === -1) {
       Message.Warning("NOTYFICATON", "Trúng thưởng chưa được chọn");
       return;
     }
-    if (!remainValue || remainValue <= 0) {
+    if (!remainValue || remainValue <= -1) {
       Message.Warning("NOTYFICATON", "Số lần trúng thưởng chưa hợp lệ hoặc chưa có nội dung");
       return;
     }
 
     let param = {
       ...record,
-      wheel_detail_id: wheelDetailId ? wheelDetailId : moment().format('x'),
+      wheel_detail_id: wheelDetailId ? wheelDetailId : 0,
       wheel_id: wheelId,
       segment_id: segmentId,
       no: no,

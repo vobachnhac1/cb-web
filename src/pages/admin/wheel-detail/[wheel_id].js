@@ -43,7 +43,7 @@ export default function WheelDetail({ query }) {
     segment_id: null,
     wheel_name: null,
   });
- 
+
   const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
   const listWheelDetail = useSelector(gettersWheelDetail.getStateLoadPageWheelDetail) || [];
   const [listSearch, setListSearch] = useState([]);
@@ -78,18 +78,46 @@ export default function WheelDetail({ query }) {
     const result = await dispatch(actionWheelDetail.deleteWheelDetailById(dataRecord));
     setListSearch(result)
     if (result) {
-      Message.Success("NOTYFICATON", "DELETE WHEEL DETAIL SUCCESS");
+      Message.Success("NOTYFICATON", "DELETE WHEEL DETAIL");
       return
     }
     Message.Error("NOTYFICATON", "DELETE WHEEL DETAIL FAIL");
   };
 
   const onSaveListData = async () => {
-    const data = listWheelDetail
-    await dispatch(actionWheelDetail.SaveOnListWheelDetail(data));
+    // const data = listWheelDetail
+    for (let i = o; i < listWheelDetail.length; i++) {
+      if (listWheelDetail[i].is_duplicated) {
+        Message.Error("NOTYFICATON", "STT WHEEL DETAIL DUPLICATED");
+        return;
+      }
+    }
+
+    const data = {
+      'wheel_id': query.wheel_id,
+      'data': listWheelDetail,
+    }
+
+    const { success, list } = await dispatch(actionWheelDetail.SaveOnListWheelDetail(data));
+
+    if (success) {
+      Message.Success("NOTYFICATON", "SAVED WHEEL DETAIL SUCCESS");
+      setListSearch(list)
+      return
+    }
+    Message.Error("NOTYFICATON", "SAVED WHEEL DETAIL FAIL");
+
   }
 
   const columns = [
+    {
+      title: 'Key',
+      dataIndex: 'key',
+      key: 'key',
+      fixed: 'left',
+      width: 100
+      // render: text => <a>{text}</a>,
+    },
     {
       title: 'ID',
       dataIndex: 'wheel_detail_id',
@@ -186,7 +214,7 @@ export default function WheelDetail({ query }) {
       queryWheel_id: wheel_id,
       dataListSearch: listSearch
     });
-
+    
   }
   const updateDetail = (record) => {
     setVisible(true);

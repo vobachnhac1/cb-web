@@ -26,6 +26,7 @@
   "searchWheelDetailById": "/wheel-detail/select-by-wheel-detail-filter",
   "insertWheelDetail": "/wheel-detail/create",
   "updateWheelDetailById": "/wheel-detail/update-by-id",
+  "updateWheelDetailUpdateList":"/wheel-detail/update-list",
   "approveWheelDetailById": "/wheel-detail/approve-by-id",
   "deleteWheelDetailById": "/wheel-detail/delete-by-id"
 }

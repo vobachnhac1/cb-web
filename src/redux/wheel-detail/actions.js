@@ -29,18 +29,27 @@ export const searchWheelDetail = (payload) => async (dispatch, getState, { $http
 }
 
 export const SaveOnListWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
-  const param = [...payload]
-  console.log('param save on list', param)
 
-  // // call xuống backend url + param 
-  // const result = await $http.post(URLSERVER.insertWheelDetail, param);
-  // // console.log('call action create insert WheelDetail', result)
-  // const { success, data } = result;
-  // if (!success || !data.success) {
-  //   return false;
-  // }
 
-  return true
+  const param = {
+    "wheel_id": payload.wheel_id,
+    "list_wheel_detail": payload.data,
+    "list_length": payload.data.length
+  }
+  const result = await $http.post(URLSERVER.updateWheelDetailUpdateList, param);
+
+  const { success, data } = result;
+  if (!success || !data.success) {
+    return false;
+  }
+
+  console.log(data.data)
+  // const listData = resultDoneWheelDetail(data);
+  // dispatch(setSearchWheelDetail(listData))
+
+  return {
+    success: true, list: data.data
+  }
 }
 
 export const insertWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
@@ -58,29 +67,38 @@ export const insertWheelDetail = (payload) => async (dispatch, getState, { $http
     "datelastmaint": "2022-04-13T08:32:30.059Z",
     "is_approve": true
   }
-  
+
   let state = getState()
   let listWheelDetail = [...state.wheeldetail.listWheelDetail]
   listWheelDetail.push(param)
   const listData = resultDoneWheelDetail(listWheelDetail);
   dispatch(setSearchWheelDetail(listData))
-
+  console.log('insertWheelDetail', listData)
   return listData
 }
 
 export const updateWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
     "wheel_detail_id": payload.wheel_detail_id,
-    "no": payload.no,
-    "goal_yn": payload.goal_yn,
-    "remain_value": payload.remain_value,
+    "no": parseInt(payload.no),
+    "goal_yn": parseInt(payload.goal_yn),
+    "remain_value": parseInt(payload.remain_value),
+    "key": payload.key
   }
 
   let state = getState()
   let listWheelDetail = [...state.wheeldetail.listWheelDetail]
 
+  // for (let i = 0; i < listWheelDetail.length; i++) {
+  //   if (listWheelDetail[i].wheel_detail_id === param.wheel_detail_id) {
+  //     listWheelDetail[i].no = param.no
+  //     listWheelDetail[i].goal_yn = param.goal_yn
+  //     listWheelDetail[i].remain_value = param.remain_value
+  //   }
+  // }
+
   for (let i = 0; i < listWheelDetail.length; i++) {
-    if (listWheelDetail[i].wheel_detail_id === param.wheel_detail_id) {
+    if (listWheelDetail[i].key === param.key) {
       listWheelDetail[i].no = param.no
       listWheelDetail[i].goal_yn = param.goal_yn
       listWheelDetail[i].remain_value = param.remain_value
@@ -88,7 +106,6 @@ export const updateWheelDetail = (payload) => async (dispatch, getState, { $http
   }
 
   const listData = resultDoneWheelDetail(listWheelDetail);
-
   dispatch(setSearchWheelDetail(listData))
 
   return listData
@@ -97,13 +114,23 @@ export const updateWheelDetail = (payload) => async (dispatch, getState, { $http
 export const deleteWheelDetailById = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
     "wheel_detail_id": payload.wheel_detail_id,
+    "key": payload.key
   }
 
   let state = getState()
   let listWheelDetail = [...state.wheeldetail.listWheelDetail]
+  // for (let i = 0; i < listWheelDetail.length; i++) {
+  //   if (listWheelDetail[i].wheel_detail_id === param.wheel_detail_id) {
+  //     listWheelDetail.splice(i, 1)
+  //     // listWheelDetail[i].is_delete = true
+  //     break
+  //   }
+  // }
+
   for (let i = 0; i < listWheelDetail.length; i++) {
-    if (listWheelDetail[i].wheel_detail_id === param.wheel_detail_id) {
+    if (listWheelDetail[i].key === param.key) {
       listWheelDetail.splice(i, 1)
+      // listWheelDetail[i].is_delete = true
       break
     }
   }
@@ -184,7 +211,12 @@ function resultDoneWheelDetail(data) {
       }
     }
   }
-  const dataResult = dataList.sort(function (a, b) { return a.no - b.no })
+
+  console.log('dataList resultDoneWheelDetail', dataList)
+  const dataResult = dataList.sort(function (a, b) { return a.no - b.no }).map((item, index) => ({ ...item, key: index }))
+  // dataResult
+
+  console.log('dataResult resultDoneWheelDetail', dataResult)
   return dataResult
 }
 
