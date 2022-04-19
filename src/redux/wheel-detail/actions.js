@@ -29,8 +29,6 @@ export const searchWheelDetail = (payload) => async (dispatch, getState, { $http
 }
 
 export const SaveOnListWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
-
-
   const param = {
     "wheel_id": payload.wheel_id,
     "list_wheel_detail": payload.data,
@@ -43,12 +41,11 @@ export const SaveOnListWheelDetail = (payload) => async (dispatch, getState, { $
     return false;
   }
 
-  console.log(data.data)
-  // const listData = resultDoneWheelDetail(data);
-  // dispatch(setSearchWheelDetail(listData))
+  const listData = resultDoneWheelDetail(data.data);
+  dispatch(setSearchWheelDetail(listData))
 
   return {
-    success: true, list: data.data
+    success: true, list: listData
   }
 }
 
@@ -73,7 +70,6 @@ export const insertWheelDetail = (payload) => async (dispatch, getState, { $http
   listWheelDetail.push(param)
   const listData = resultDoneWheelDetail(listWheelDetail);
   dispatch(setSearchWheelDetail(listData))
-  console.log('insertWheelDetail', listData)
   return listData
 }
 
@@ -89,14 +85,6 @@ export const updateWheelDetail = (payload) => async (dispatch, getState, { $http
   let state = getState()
   let listWheelDetail = [...state.wheeldetail.listWheelDetail]
 
-  // for (let i = 0; i < listWheelDetail.length; i++) {
-  //   if (listWheelDetail[i].wheel_detail_id === param.wheel_detail_id) {
-  //     listWheelDetail[i].no = param.no
-  //     listWheelDetail[i].goal_yn = param.goal_yn
-  //     listWheelDetail[i].remain_value = param.remain_value
-  //   }
-  // }
-
   for (let i = 0; i < listWheelDetail.length; i++) {
     if (listWheelDetail[i].key === param.key) {
       listWheelDetail[i].no = param.no
@@ -107,30 +95,41 @@ export const updateWheelDetail = (payload) => async (dispatch, getState, { $http
 
   const listData = resultDoneWheelDetail(listWheelDetail);
   dispatch(setSearchWheelDetail(listData))
-
   return listData
 }
 
+// xóa phần tử trong state wheelDetail bằng is_delete = true
 export const deleteWheelDetailById = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
     "wheel_detail_id": payload.wheel_detail_id,
     "key": payload.key
   }
-
   let state = getState()
   let listWheelDetail = [...state.wheeldetail.listWheelDetail]
-  // for (let i = 0; i < listWheelDetail.length; i++) {
-  //   if (listWheelDetail[i].wheel_detail_id === param.wheel_detail_id) {
-  //     listWheelDetail.splice(i, 1)
-  //     // listWheelDetail[i].is_delete = true
-  //     break
-  //   }
-  // }
-
   for (let i = 0; i < listWheelDetail.length; i++) {
     if (listWheelDetail[i].key === param.key) {
-      listWheelDetail.splice(i, 1)
-      // listWheelDetail[i].is_delete = true
+      listWheelDetail[i].is_delete = true
+      // listDeleted.push(listWheelDetail[i])
+      break
+    }
+  }
+
+  const listData = resultDoneWheelDetail(listWheelDetail);
+  dispatch(setSearchWheelDetail(listData))
+  return listData
+}
+
+// phục hồi phần tử trong state wheelDetail bằng is_delete = false
+export const restoreWheelDetailById = (payload) => async (dispatch, getState, { $http }) => {
+  const param = {
+    "wheel_detail_id": payload.wheel_detail_id,
+    "key": payload.key
+  }
+  let state = getState()
+  let listWheelDetail = [...state.wheeldetail.listWheelDetail]
+  for (let i = 0; i < listWheelDetail.length; i++) {
+    if (listWheelDetail[i].key === param.key) {
+      listWheelDetail[i].is_delete = false
       break
     }
   }
@@ -139,6 +138,7 @@ export const deleteWheelDetailById = (payload) => async (dispatch, getState, { $
   return listData
 }
 
+// get all data wheel_Detail from wheel_id
 export const filterWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
   let param = {
     "wheel_id": payload.wheel_id ? parseInt(payload.wheel_id) : null,
@@ -159,7 +159,7 @@ export const filterWheelDetail = (payload) => async (dispatch, getState, { $http
   }
   const listData = resultDoneWheelDetail(data.data);
 
-  dispatch(setSearchWheelDetail(listData))
+  dispatch(setSearchWheelDetail(listData.map(item => ({ ...item, is_delete: false }))))
   return listData
 }
 
@@ -197,30 +197,38 @@ export const searchWheelDetailById = (payload) => async (dispatch, getState, { $
   return listData
 }
 
-function resultDoneWheelDetail(data) {
+function resultDoneWheelDetail(data, listDeleted) {
   // kiem tra stt có tồn tại trong dataList.no, thì thêm 1 trường isDuplicate true/false
-  let dataList = data
+  let dataList = [...data]
+  let dataListDeleted = [];
+  let dataListNoDeleted = []
+
+  // cho tất cã data thành không trùng nhau về STT : false. lập ra 2 arr item đã xóa và item chưa xóa
   for (let i = 0; i < dataList.length; i++) {
     dataList[i].is_duplicated = false;
+    if (dataList[i].is_delete) {
+      dataListDeleted.push(dataList[i])
+    } else {
+      dataListNoDeleted.push(dataList[i])
+    }
   }
-  for (let i = 0; i < dataList.length; i++) {
+
+  // Tìm các phần tử data trùng nhau của data chua xóa
+  for (let i = 0; i < dataListNoDeleted.length; i++) {
     // dataList.includes(dataList.no)
-    for (let j = 0; j < dataList.length; j++) {
-      if (i !== j && dataList[i].no === dataList[j].no) {
-        dataList[i].is_duplicated = true;
+    for (let j = 0; j < dataListNoDeleted.length; j++) {
+      if (i !== j && dataListNoDeleted[i].no === dataListNoDeleted[j].no) {
+        dataListNoDeleted[i].is_duplicated = true;
       }
     }
   }
 
-  console.log('dataList resultDoneWheelDetail', dataList)
-  const dataResult = dataList.sort(function (a, b) { return a.no - b.no }).map((item, index) => ({ ...item, key: index }))
-  // dataResult
-
-  console.log('dataResult resultDoneWheelDetail', dataResult)
+  // sắp xếp thứ tự tứ bé đến lớn stt,
+  let dataResult = dataListNoDeleted.sort(function (a, b) {
+    return a.no - b.no
+  }).concat(dataListDeleted).map((item, index) => ({ ...item, key: index }))
   return dataResult
 }
 
 
-
-// function export ra ngoài
 

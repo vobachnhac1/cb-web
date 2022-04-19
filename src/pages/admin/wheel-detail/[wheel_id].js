@@ -84,22 +84,32 @@ export default function WheelDetail({ query }) {
     Message.Error("NOTYFICATON", "DELETE WHEEL DETAIL FAIL");
   };
 
+  const handleRestore = async (record) => {
+    let dataRecord = { ...record }
+    const result = await dispatch(actionWheelDetail.restoreWheelDetailById(dataRecord));
+    setListSearch(result)
+    if (result) {
+      Message.Success("NOTYFICATON", "RESTORE WHEEL DETAIL");
+      return
+    }
+    Message.Error("NOTYFICATON", "RESTORE WHEEL DETAIL FAIL");
+  };
+
   const onSaveListData = async () => {
     // const data = listWheelDetail
-    for (let i = o; i < listWheelDetail.length; i++) {
+    for (let i = 0; i < listWheelDetail.length; i++) {
       if (listWheelDetail[i].is_duplicated) {
         Message.Error("NOTYFICATON", "STT WHEEL DETAIL DUPLICATED");
         return;
       }
     }
-
+    // return;
     const data = {
       'wheel_id': query.wheel_id,
       'data': listWheelDetail,
     }
 
     const { success, list } = await dispatch(actionWheelDetail.SaveOnListWheelDetail(data));
-
     if (success) {
       Message.Success("NOTYFICATON", "SAVED WHEEL DETAIL SUCCESS");
       setListSearch(list)
@@ -109,6 +119,7 @@ export default function WheelDetail({ query }) {
 
   }
 
+  // define colums
   const columns = [
     {
       title: 'Key',
@@ -184,16 +195,24 @@ export default function WheelDetail({ query }) {
       key: 'action',
       width: 170,
       render: (text, record) => (
-
-        <Space size="middle">
-          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateDetail(record)} >Cập nhật</Button>
-          {listWheelDetail.length >= 1 ? (
-            <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)} >
-              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
-            </Popconfirm>
-          ) : null
+        <>
+          {
+            record.is_delete ?
+              <Space size="middle">
+                <Button style={{ color: '#7cb305', borderColor: '#7cb305', borderWidth: 0.5 }} onClick={() => viewsDetail(record)} >Xem</Button>
+                <Popconfirm title="Sure to delete?" onConfirm={() => handleRestore(record)} >
+                  <Button style={{ color: '#faad14', borderColor: '#fa8c16', borderWidth: 0.5 }} >Khôi phục</Button>
+                </Popconfirm>
+              </Space>
+              :
+              <Space size="middle">
+                <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateDetail(record)} >Cập nhật</Button>
+                <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)} >
+                  <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
+                </Popconfirm>
+              </Space>
           }
-        </Space>
+        </>
       ),
     },
   ];
@@ -214,13 +233,23 @@ export default function WheelDetail({ query }) {
       queryWheel_id: wheel_id,
       dataListSearch: listSearch
     });
-    
+
   }
   const updateDetail = (record) => {
     setVisible(true);
     setBodyModel({
       record: record,
       isAdd: false,
+      dataListSearch: listSearch
+    });
+  }
+
+  const viewsDetail = (record) => {
+    setVisible(true);
+    setBodyModel({
+      record: record,
+      isAdd: false,
+      isViews: true,
       dataListSearch: listSearch
     });
   }
@@ -233,7 +262,8 @@ export default function WheelDetail({ query }) {
   const backToWheel = () => {
     Router.push('/admin/wheel')
   }
-  // console.log('listWheelDetail', listWheelDetail)
+
+
   return (
     <LayoutHome>
       <Col style={{ marginBottom: 30 }}>

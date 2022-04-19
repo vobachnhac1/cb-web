@@ -40,7 +40,7 @@ const layoutContent = {
   lg: { span: 16, offset: 0 },
 };
 const ModalWheelDetail = (props) => {
-  const { callback, visible = false, bodyModel: { isAdd = false, record = null, queryWheel_id, dataListSearch } } = props;
+  const { callback, visible = false, bodyModel: { isAdd = false, record = null, queryWheel_id, dataListSearch, isViews } } = props;
   const dispatch = useDispatch();
 
   const [wheelDetailId, setWheelDetailId] = useState(record ? record.wheel_detail_id : "")
@@ -48,7 +48,7 @@ const ModalWheelDetail = (props) => {
   const [segmentId, setSegmentId] = useState(record ? record.segment_id : "");
   const [no, setNo] = useState(record ? record.no : "")
   const [remainValue, setRemainValue] = useState(record ? record.remain_value : "")
-  const [goalYn, setGoalYn] = useState(record ? record.goal_yn : -1)
+  const [goalYn, setGoalYn] = useState(record ? record.goal_yn : 0)
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
   const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
   const listWheel = useSelector(gettersWheel.getStateLoadPageWheel) || [];
@@ -104,7 +104,6 @@ const ModalWheelDetail = (props) => {
 
     //get wheelname
     for (let i = 0; i < listWheel.length; i++) {
-      console.log(listWheel[i].wheel_id, wheelId)
       if (wheelId == listWheel[i].wheel_id) {
         param.wheel_name = listWheel[i].wheel_name;
         break
@@ -163,13 +162,14 @@ const ModalWheelDetail = (props) => {
       centered
       visible={visible}
       okText={'Comfirm'}
+      okButtonProps={{ disabled: isViews ? true : false }}
       cancelText={'Cancel'}
       onOk={onCallback}
       onCancel={onCancel}
     >
       <Card
         headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
-        title={isAdd ? "Thêm Kết chi tiết vòng quay" : 'Cập nhật Kết chi tiết vòng quay'}
+        title={isViews ? 'Xem chi tiết vòng quay' : (isAdd ? "Thêm Kết chi tiết vòng quay" : 'Cập nhật Kết chi tiết vòng quay')}
         bordered={true}
         style={{ backgroundColor: '#FFFFFF' }}>
         <Form
@@ -242,7 +242,7 @@ const ModalWheelDetail = (props) => {
             </Col>
             <Col  {...layoutContent}>
 
-              <Input type="number" min="1" max="15" style={{ width: '100%' }} value={no} onChange={(text) => setNo(text.target.value)} />
+              <Input disabled={isViews ? true : false} type="number" min="1" max="15" style={{ width: '100%' }} value={no} onChange={(text) => setNo(text.target.value)} />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
@@ -250,7 +250,7 @@ const ModalWheelDetail = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Trúng thưởng '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Radio.Group onChange={onChangeRadio} value={goalYn}>
+              <Radio.Group disabled={isViews ? true : false} onChange={onChangeRadio} value={goalYn ? goalYn : 0}>
                 <Radio value={1}>Có</Radio>
                 <Radio value={0}>Không</Radio>
 
@@ -262,7 +262,7 @@ const ModalWheelDetail = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Số lần trúng thưởng còn lại '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Input type="number" min={0} style={{ width: '100%' }} value={remainValue} onChange={(text) => setRemainValue(text.target.value)} />
+              <Input disabled={isViews ? true : false} type="number" min={0} style={{ width: '100%' }} value={remainValue} onChange={(text) => setRemainValue(text.target.value)} />
             </Col>
           </Row>
         </Form>
