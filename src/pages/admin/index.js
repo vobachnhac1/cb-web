@@ -10,8 +10,6 @@ import * as styles from './style.module.less';
 import * as classnames from 'classnames';
 import LayoutHome from '@/containers/Home';
 
-
-
 export default function HomeWheel() {
 
   return (

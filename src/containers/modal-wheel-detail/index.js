@@ -8,7 +8,7 @@ require("./style.module.less");
 
 import Header from '@/components/Head';
 import Layout from '@/layout';
-import { Card, Col, Form, Input, Modal, Row, Select, Typography, DatePicker, Button } from 'antd';
+import { Card, Col, Form, Input, Modal, Row, Select, Typography, Radio } from 'antd';
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
@@ -16,7 +16,11 @@ import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 import { getters as gettersTopic } from '@/redux/topic';
 import { actions as actionSegment } from '@/redux/segment';
-
+import { getters as gettersSegment } from '@/redux/segment';
+import { actions as actionWheel } from '@/redux/wheel';
+import { getters as gettersWheel } from '@/redux/wheel';
+import { actions as actionWheelDetail } from '@/redux/wheel-detail';
+import { getters as gettersWheelDetail } from '@/redux/wheel-detail';
 
 const classNames = require("classnames");
 const styles = require("./style.module.less");
@@ -35,92 +39,121 @@ const layoutContent = {
   md: { span: 12, offset: 0 },
   lg: { span: 16, offset: 0 },
 };
-const ModalSegment = (props) => {
-  const { callback, visible = false, bodyModel: { isAdd = false, record = null } } = props;
-  const [loading, setLoading] = useState(false);
-  const [segmentId, setSegmentId] = useState(record ? record.segment_id : "");
-  const [topicId, setTopicId] = useState(record ? record.topic_id : "");
-  const [segmentName, setSegmentName] = useState(record ? record.segment_name : "");
-  const [segmentColor, setSegmentColor] = useState(record ? record.segment_color : "");
-  const [inactived_date, setInactived_date] = useState(record ? record.inactived_date : "");
-
+const ModalWheelDetail = (props) => {
+  const { callback, visible = false, bodyModel: { isAdd = false, record = null, queryWheel_id, dataListSearch, isViews } } = props;
   const dispatch = useDispatch();
+
+  const [wheelDetailId, setWheelDetailId] = useState(record ? record.wheel_detail_id : "")
+  const [wheelId, setWheelId] = useState(record ? record.wheel_id : "")
+  const [segmentId, setSegmentId] = useState(record ? record.segment_id : "");
+  const [no, setNo] = useState(record ? record.no : "")
+  const [remainValue, setRemainValue] = useState(record ? record.remain_value : "")
+  const [goalYn, setGoalYn] = useState(record ? record.goal_yn : 0)
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
+  const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
+  const listWheel = useSelector(gettersWheel.getStateLoadPageWheel) || [];
 
   useEffect(() => {
     initPage();
   }, [visible]);
 
   const initPage = async () => {
+    setWheelDetailId(record ? record.wheel_detail_id : "")
+    setWheelId(record ? record.wheel_id : queryWheel_id)
     setSegmentId(record ? record.segment_id : "")
-    setTopicId(record ? record.topic_id : "")
-    setSegmentName(record ? record.segment_name : "")
-    setSegmentColor(record ? record.segment_color : "")
-    setInactived_date(record ? record.inactived_date : "")
+    setNo(record ? record.no : "")
+    setRemainValue(record ? record.remain_value : "")
+    setGoalYn(record ? record.goal_yn : -1)
   }
 
   const onCallback = async () => {
-    if (!segmentId || segmentId.lenght == 0) {
-      Message.Warning("NOTYFICATON", "Mã kết quả chưa điền nội dung");
+    if (!segmentId) {
+      Message.Warning("NOTYFICATON", "Kết quả trúng thưởng chưa được chọn");
       return;
     }
-    if (!topicId) {
-      Message.Warning("NOTYFICATON", "Chủ đề chưa được chọn");
+    if (!no || no <= 0) {
+      Message.Warning("NOTYFICATON", "Số thứ tự chưa hợp lệ hoặc chưa có nội dung");
       return;
     }
-    if (!segmentName || segmentName.lenght == 0) {
-      Message.Warning("NOTYFICATON", "Tên kết quả trúng thưởng chưa có nội dung");
+    if (!isAdd && no > dataListSearch.length) {
+      Message.Warning("NOTYFICATON", "Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (dataListSearch.length));
       return;
     }
-    if (!segmentColor || segmentColor.lenght == 0) {
-      Message.Warning("NOTYFICATON", "Màu sắc hiển thị chưa có nội dung");
+    if (isAdd && no > dataListSearch.length + 1) {
+      Message.Warning("NOTYFICATON", "Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (dataListSearch.length + 1));
       return;
     }
-    if (!inactived_date || inactived_date.lenght == 0) {
-      Message.Warning("NOTYFICATON", "Hãy chọn ngày kết thúc giải thưởng");
+    if (goalYn === -1) {
+      Message.Warning("NOTYFICATON", "Trúng thưởng chưa được chọn");
       return;
     }
-    
+    if (!remainValue || remainValue <= -1) {
+      Message.Warning("NOTYFICATON", "Số lần trúng thưởng chưa hợp lệ hoặc chưa có nội dung");
+      return;
+    }
 
-    const param = {
+    let param = {
       ...record,
+      wheel_detail_id: wheelDetailId ? wheelDetailId : 0,
+      wheel_id: wheelId,
       segment_id: segmentId,
-      topic_id: topicId,
-      segment_name: segmentName,
-      segment_color: segmentColor,
-      inactived_date: inactived_date,
-      is_approve: true,
-      // status_yn: isApprove,
-      visible: false
+      no: no,
+      goal_yn: goalYn,
+      remain_value: remainValue,
+    }
+
+    //get wheelname
+    for (let i = 0; i < listWheel.length; i++) {
+      if (wheelId == listWheel[i].wheel_id) {
+        param.wheel_name = listWheel[i].wheel_name;
+        break
+      }
+    }
+
+    // segmentname
+    for (let i = 0; i < listSegment.length; i++) {
+      if (segmentId == listSegment[i].segment_id) {
+        param.segment_name = listSegment[i].segment_name;
+        break
+      }
     }
 
 
     // add
     if (isAdd) {
-      const result = await dispatch(actionSegment.insertSegment(param));
+      const result = await dispatch(actionWheelDetail.insertWheelDetail(param));
+      let data = result
       if (result) {
-        callback({ visible: false });
-        Message.Success("NOTYFICATON", "ADD NEW SEGMENT SUCCESS");
+        callback({ visible: false, data: data });
+        Message.Success("NOTYFICATON", "ADD NEW WHEEL DETAIL SUCCESS");
         return;
       }
-      Message.Error("NOTYFICATON", "ADD NEW SEGMENT FAILED");
+      Message.Error("NOTYFICATON", "ADD NEW WHEEL DETAIL FAILED");
       return;
     }
     //edit
-    const result = await dispatch(actionSegment.updateTopic(param));
+    const result = await dispatch(actionWheelDetail.updateWheelDetail(param));
+    let data = result
     if (result) {
-      callback({ visible: false });
-      Message.Success("NOTYFICATON", "UPDATE SEGMENT SUCCESS");
+      callback({
+        visible: false, data: data
+      });
+      Message.Success("NOTYFICATON", "UPDATE WHEELDETAIL SUCCESS");
       return;
     }
-    Message.Error("NOTYFICATON", "UPDATE SEGMENT FAILED");
+    Message.Error("NOTYFICATON", "UPDATE WHEELDETAIL FAILED");
 
 
   }
   const onCancel = () => {
-    callback({ visible: false });
+    callback({ visible: false, data: dataListSearch });
 
   }
+
+  function onChangeRadio(e) {
+    setGoalYn(e.target.value);
+  }
+
   return (
     <Modal
       width={750}
@@ -129,13 +162,14 @@ const ModalSegment = (props) => {
       centered
       visible={visible}
       okText={'Comfirm'}
+      okButtonProps={{ disabled: isViews ? true : false }}
       cancelText={'Cancel'}
       onOk={onCallback}
       onCancel={onCancel}
     >
       <Card
-        headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'center', backgroundColor: "rgb(3, 77, 162)" }}
-        title={isAdd ? "Thêm Kết chi tiết vòng quay" : 'Cập nhật Kết chi tiết vòng quay'}
+        headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
+        title={isViews ? 'Xem chi tiết vòng quay' : (isAdd ? "Thêm Kết chi tiết vòng quay" : 'Cập nhật Kết chi tiết vòng quay')}
         bordered={true}
         style={{ backgroundColor: '#FFFFFF' }}>
         <Form
@@ -152,64 +186,83 @@ const ModalSegment = (props) => {
           }}
           labelAlign='left'
           size={'default'}
-
-
         >
-          {/*  */}
-          <Row >
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Mã kết quả trúng thưởng :'}</Text>
-            </Col>
-            <Col  {...layoutContent}>
-
-              <Input style={{ width: '100%' }} value={segmentId} onChange={(text) => setSegmentId(text.target.value)} />
-            </Col>
-          </Row>
-
+          {
+            !isAdd ?
+              <Row >
+                <Col {...layoutHeader} >
+                  <Text className={classNames({ [styles['text-font']]: true })}>{'ID'}</Text>
+                </Col>
+                <Col  {...layoutContent}>
+                  <Input disabled style={{ width: '100%' }} value={wheelDetailId} onChange={(text) => setWheelDetailId(text.target.value)} />
+                </Col>
+              </Row>
+              : ''
+          }
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Chủ đề :'}</Text>
+              <Text className={classNames({ [styles['text-font']]: true })}>{'Mã vòng quay '}</Text>
             </Col>
             <Col  {...layoutContent}>
 
-              <Select
+              <Select disabled={true}
                 style={{ width: '100%' }}
                 defaultValue=""
                 value={
-                  topicId}
-                onChange={(value) => setTopicId(value)}>
-                {listTopic.map((Item, key) => (
-                  <Select.Option value={Item.topic_id} key={key}>{Item.topic_name}</Select.Option>
-                  // <option value={option.value}>{option.label}</option>
+                  wheelId}
+                onChange={(value) => setWheelId(value)}>
+                {listWheel.map((Item, key) => (
+                  <Select.Option value={Item.wheel_id} key={key}>{Item.Wheel_name}</Select.Option>
                 ))}
               </Select>
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Tên kết quả trúng thưởng '}</Text>
+              <Text className={classNames({ [styles['text-font']]: true })}>{'Kết quả trúng thưởng'}</Text>
             </Col>
             <Col  {...layoutContent}>
 
-              <Input style={{ width: '100%' }} value={segmentName} onChange={(text) => setSegmentName(text.target.value)} />
+              <Select
+                disabled={isAdd ? false : true}
+                style={{ width: '100%' }}
+                defaultValue=""
+                value={
+                  segmentId}
+                onChange={(value) => setSegmentId(value)}>
+                {listSegment.map((Item, key) => (
+                  <Select.Option value={Item.segment_id} key={key}>{Item.segment_name}</Select.Option>
+                ))}
+              </Select>
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Màu sắc hiển thị '}</Text>
+              <Text className={classNames({ [styles['text-font']]: true })}>{'Số thứ tự trên vòng quay '}</Text>
             </Col>
             <Col  {...layoutContent}>
 
-              <Input style={{ width: '100%' }} value={segmentColor} onChange={(text) => setSegmentColor(text.target.value)} />
+              <Input disabled={isViews ? true : false} type="number" min="1" max="15" style={{ width: '100%' }} value={no} onChange={(text) => setNo(text.target.value)} />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Ngày hết hiệu lực '}</Text>
+              <Text className={classNames({ [styles['text-font']]: true })}>{'Trúng thưởng '}</Text>
             </Col>
             <Col  {...layoutContent}>
+              <Radio.Group disabled={isViews ? true : false} onChange={onChangeRadio} value={goalYn ? goalYn : 0}>
+                <Radio value={1}>Có</Radio>
+                <Radio value={0}>Không</Radio>
 
-              <DatePicker value={inactived_date ? moment(inactived_date) : null} onChange={(date) => setInactived_date(date)} />
+              </Radio.Group>
+            </Col>
+          </Row>
+          <Row style={{ marginTop: 10 }}>
+            <Col {...layoutHeader} >
+              <Text className={classNames({ [styles['text-font']]: true })}>{'Số lần trúng thưởng còn lại '}</Text>
+            </Col>
+            <Col  {...layoutContent}>
+              <Input disabled={isViews ? true : false} type="number" min={0} style={{ width: '100%' }} value={remainValue} onChange={(text) => setRemainValue(text.target.value)} />
             </Col>
           </Row>
         </Form>
@@ -218,4 +271,4 @@ const ModalSegment = (props) => {
   )
 }
 
-export default ModalSegment;
+export default ModalWheelDetail;

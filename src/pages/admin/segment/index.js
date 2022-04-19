@@ -7,8 +7,8 @@
 require("./style.module.less");
 import { useState, useEffect } from 'react';
 import LayoutHome from '@/containers/Home';
-import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Typography, Input, DatePicker } from 'antd';
-const { Text } = Typography;
+import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Input, DatePicker } from 'antd';
+
 const { RangePicker } = DatePicker;
 import * as Message from '@/components/message';
 import ModalSegment from '@/containers/modal-segment';
@@ -34,20 +34,13 @@ export default function Segment(props) {
     from_date_act: null,
     to_date_act: null
   });
-  // gọi 1 function rồi theo dõi nhưng thay đổi của param đó
+
   useEffect(() => {
-    initPage(); // chjay 1 lần duy nhất
+    initPage();
   }, [])
 
-
   const initPage = async () => {
-    const paramsInitSegment = {
-      "topic_id": 0,
-      "segment_id": 0,
-      "segment_name": "string",
-      "segment_color": "string",
-    }
-    await dispatch(actionSegment.searchSegment(paramsInitSegment));
+    await dispatch(actionSegment.searchSegment());
     await dispatch(actionTopic.searchTopic());
   }
 
@@ -60,7 +53,6 @@ export default function Segment(props) {
       return;
     }
   }
-
 
   const handleDelete = async (record) => {
     let dataRecord = record
@@ -86,14 +78,13 @@ export default function Segment(props) {
       dataIndex: 'segment_name',
       key: 'segment_name',
       fixed: 'left',
-      width: 250
+
     },
     {
       title: 'Chủ đề',
       dataIndex: 'topic_name',
       key: 'topic_name',
       fixed: 'center',
-      width: 250,
 
     },
     {
@@ -122,15 +113,13 @@ export default function Segment(props) {
     {
       title: 'Action',
       key: 'action',
-      width: 140,
+      width: 170,
       render: (text, record) => (
-
         <Space size="middle">
-          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateSegment(record)} >Edit</Button>
-
+          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateSegment(record)} >Cập nhật</Button>
           {listSegment.length >= 1 ? (
             <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)} >
-              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Delete</Button>
+              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
             </Popconfirm>
           ) : null
           }
@@ -166,8 +155,6 @@ export default function Segment(props) {
       isAdd: false
     });
   }
-
-
   const callbackModal = (params) => {
     setVisible(params.visible);
     initPage();
@@ -177,7 +164,6 @@ export default function Segment(props) {
     <LayoutHome>
       <Col style={{ marginBottom: 30 }}>
         <ModalSegment visible={visible} bodyModel={bodyModel} callback={callbackModal} />
-
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
           title="Tất cả kết quả giải thưởng"
@@ -200,7 +186,6 @@ export default function Segment(props) {
               </Col>
               <Col className="gutter-row" span={5}>
                 <RangePicker
-
                   onChange={(dates, dateString) => {
                     if (dates) {
                       setFilter({

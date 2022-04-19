@@ -18,6 +18,7 @@ import { getters as gettersWheel } from '@/redux/wheel';
 
 import moment from 'moment';
 import __ from 'lodash';
+import Link from 'next/link';
 
 export default function Wheel(props) {
   const dispatch = useDispatch();
@@ -26,16 +27,14 @@ export default function Wheel(props) {
     wheel_name: null,
   });
 
-  // gọi 1 function rồi theo dõi nhưng thay đổi của param đó
   useEffect(() => {
-    initPage(); // chjay 1 lần duy nhất
+    initPage();
   }, [])
 
 
   const initPage = async () => {
     await dispatch(actionWheel.searchWheel());
   }
-
   const onSearch = async () => {
     const { wheel_name } = filter;
     if (__.isNil(wheel_name)) {
@@ -45,9 +44,6 @@ export default function Wheel(props) {
       return;
     }
   }
-
-
-
   const handleDelete = async (record) => {
     const result = await dispatch(actionWheel.deleteWheelById(record));
     if (result) {
@@ -70,7 +66,6 @@ export default function Wheel(props) {
       dataIndex: 'wheel_name',
       key: 'wheel_name',
       fixed: 'left',
-      width: 250
     },
     {
       title: 'Số kết quả',
@@ -78,19 +73,16 @@ export default function Wheel(props) {
       key: 'num_segments',
       fixed: 'center',
       width: 100,
-
     },
     {
       title: 'Tổng giá trị giải',
       dataIndex: 'total_value',
       key: 'total_value',
-      width: 250,
     },
     {
       title: 'Giá trị còn lại',
       dataIndex: 'remain_value',
       key: 'remain_value',
-      width: 250,
     },
     {
       title: 'Ngày hết hiệu lực',
@@ -107,15 +99,19 @@ export default function Wheel(props) {
     {
       title: 'Action',
       key: 'action',
-      width: 140,
+      width: 320,
       render: (text, record) => (
-
         <Space size="middle">
-          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateWheel(record)} >Edit</Button>
+          <Button style={{ color: '#7cb305', borderColor: '#7cb305', borderWidth: 0.5 }}>
+            <Link href={`/admin/wheel-detail/${record.wheel_id}`}>
+              Chi tiết vòng quay
+            </Link>
+          </Button>
+          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateWheel(record)} >Cập nhật</Button>
 
           {listWheel.length >= 1 ? (
             <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)} >
-              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Delete</Button>
+              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
             </Popconfirm>
           ) : null
           }
@@ -127,9 +123,7 @@ export default function Wheel(props) {
     current: 1,
     pageSize: 10,
     total: listWheel.length,
-
   };
-
 
   const [visible, setVisible] = useState(false);
 
@@ -137,7 +131,6 @@ export default function Wheel(props) {
     isAdd: false,
     record: null
   });
-
   const addNewWheel = () => {
     setVisible(true);
     setBodyModel({
@@ -191,15 +184,15 @@ export default function Wheel(props) {
             <Table
               columns={columns}
               dataSource={listWheel}
-              size='large'
               pagination={pagination}
+              size='large'
               loading={false}
               scroll={{ x: 1300 }}
             />
           </Col>
         </Card>
       </Col>
-    </LayoutHome>
+    </LayoutHome >
   )
 }
 

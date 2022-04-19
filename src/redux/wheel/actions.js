@@ -4,8 +4,8 @@ import URLSERVER from '@/redux/urlServer.json';
 // hàm thị thi nội bộ
 const setSearchWheel = (payload) => ({ type: TYPES.WHEEL_SEARCH, payload });
 // hàm xử lý được gọi từ bên ngoài
-export const searchWheel = (payload) => async (dispatch, getState, { $http }) => {
 
+export const searchWheel = (payload) => async (dispatch, getState, { $http }) => {
   // call xuống backend url + param 
   const result = await $http.get(URLSERVER.searchAllWheel);
   const { success, data } = result;
@@ -18,7 +18,7 @@ export const searchWheel = (payload) => async (dispatch, getState, { $http }) =>
 }
 
 export const insertWheel = (payload) => async (dispatch, getState, { $http }) => {
-  // call xuống backend url + param 
+  // call xuống backend url + param
   const result = await $http.post(URLSERVER.insertWheel, payload);
   const { success, data } = result;
   if (!success || !data.success) {

@@ -104,7 +104,7 @@ const ModalSegment = (props) => {
 
     const param = {
       ...record,
-      "wheel_id": wheelId,
+      "wheel_id": wheelId ? wheelId : 0,
       "num_segments": numSegments,
       "wheel_name": wheelName,
       "account_nbr": accountNbr,

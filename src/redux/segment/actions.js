@@ -1,9 +1,8 @@
 import * as TYPES from './type';
 import URLSERVER from '@/redux/urlServer.json';
 
-// hàm thị thi nội bộ
 const setSearchSegment = (payload) => ({ type: TYPES.SEGMENT_SEARCH, payload });
-// hàm xử lý được gọi từ bên ngoài
+
 export const searchSegment = (payload) => async (dispatch, getState, { $http }) => {
   // call xuống backend url + param 
   const result = await $http.get(URLSERVER.searchAllSegment);
@@ -27,9 +26,8 @@ export const insertSegment = (payload) => async (dispatch, getState, { $http }) 
     "datelastmaint": "2022-04-08T09:54:19.063Z",
     "is_approve": payload.is_approve
   }
-  // call xuống backend url + param 
+
   const result = await $http.post(URLSERVER.insertSegment, param);
-  console.log('call action create insert Segment', result)
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
@@ -48,7 +46,7 @@ export const updateSegment = (payload) => async (dispatch, getState, { $http }) 
     "datelastmaint": "2022-04-08T09:54:19.063Z",
     "is_approve": payload.is_approve
   }
-  // call xuống backend url + param 
+  // call xuống backend url + param
   const result = await $http.put(URLSERVER.updateSegmentById, param);
   const { success, data } = result;
   if (!success || !data.success) {
@@ -61,7 +59,7 @@ export const deleteSegmentById = (payload) => async (dispatch, getState, { $http
   const param = {
     "segment_id": payload.segment_id,
   }
-  // call xuống backend url + param 
+  // call xuống backend url + param
   const result = await $http.delete(URLSERVER.deleteSegmentById, param);
   const { success, data } = result;
   if (!success || !data.success) {
