@@ -23,10 +23,10 @@
   "approveSegmentById": "/segment/approve-by-id",
   "deleteSegmentById": "/segment/delete-by-id",
   "searchAllWheelDetail": "/wheel-detail/select-all-wheel-detail",
-  "searchWheelDetailById": "/wheel-detail/select-by-wheel-detail-filter",
+  "searchWheelDetailByfilter": "/wheel-detail/select-by-wheel-detail-filter",
   "insertWheelDetail": "/wheel-detail/create",
   "updateWheelDetailById": "/wheel-detail/update-by-id",
-  "updateWheelDetailUpdateList":"/wheel-detail/update-list",
+  "updateWheelDetailUpdateList": "/wheel-detail/update-list",
   "approveWheelDetailById": "/wheel-detail/approve-by-id",
   "deleteWheelDetailById": "/wheel-detail/delete-by-id"
 }

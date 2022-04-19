@@ -18,7 +18,7 @@ export const searchWheelDetail = (payload) => async (dispatch, getState, { $http
     "is_approve": true
   }
   // call xuống backend url + param 
-  const result = await $http.post(URLSERVER.searchAllWheelDetail, param);
+  const result = await $http.get(URLSERVER.searchAllWheelDetail, param);
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
@@ -152,7 +152,7 @@ export const filterWheelDetail = (payload) => async (dispatch, getState, { $http
     "datelastmaint": null,
     "is_approve": true
   }
-  const result = await $http.post(URLSERVER.searchWheelDetailById, param);
+  const result = await $http.post(URLSERVER.searchWheelDetailByfilter, param);
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
