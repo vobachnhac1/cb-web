@@ -6,21 +6,13 @@
 *------------------------------------------------------- */
 require("./style.module.less");
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Router from 'next/router';
-import * as styles from './style.module.less';
-import * as classnames from 'classnames';
 import LayoutHome from '@/containers/Home';
-import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Typography, Input } from 'antd';
-const { Text } = Typography;
+import { Button, Card, Col, Row, Space, Table, Popconfirm, Input } from 'antd';
 import * as Message from '@/components/message';
-import ModalSegment from '@/containers/modal-segment';
 import ModalWheel from '@/containers/modal-wheel'
 
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
-import { actions as actionSegment } from '@/redux/segment';
-import { getters as gettersSegment } from '@/redux/segment';
 import { actions as actionWheel } from '@/redux/wheel';
 import { getters as gettersWheel } from '@/redux/wheel';
 
@@ -28,7 +20,6 @@ import moment from 'moment';
 import __ from 'lodash';
 
 export default function Wheel(props) {
-  const [dataSearch, setDataSearch] = useState('')
   const dispatch = useDispatch();
   const listWheel = useSelector(gettersWheel.getStateLoadPageWheel) || [];
   const [filter, setFilter] = useState({
@@ -42,23 +33,7 @@ export default function Wheel(props) {
 
 
   const initPage = async () => {
-    const paramsInit = {
-      "wheel_id": 0,
-      "num_segments": 0,
-      "wheel_name": "string",
-      "account_nbr": "string",
-      "total_value": 0,
-      "remain_value": 0,
-      "outer_radius": 0,
-      "text_fontsize": 0,
-      "rotation_angle": 0,
-      "inactived_date": "2022-04-09T07:38:05.782Z",
-      "created_date": "2022-04-09T07:38:05.782Z",
-      "datelastmaint": "2022-04-09T07:38:05.782Z",
-      "is_approve": true
-    }
-    await dispatch(actionWheel.searchWheel(paramsInit));
-
+    await dispatch(actionWheel.searchWheel());
   }
 
   const onSearch = async () => {
@@ -66,7 +41,7 @@ export default function Wheel(props) {
     if (__.isNil(wheel_name)) {
       initPage();
     } else {
-      const result = await dispatch(actionWheel.filterWheel(filter));
+      await dispatch(actionWheel.filterWheel(filter));
       return;
     }
   }
@@ -74,8 +49,7 @@ export default function Wheel(props) {
 
 
   const handleDelete = async (record) => {
-    let dataRecord = { ...record }
-    const result = await dispatch(actionWheel.deleteWheelById(dataRecord));
+    const result = await dispatch(actionWheel.deleteWheelById(record));
     if (result) {
       initPage();
       Message.Success("NOTYFICATON", "DELETE WHEEL SUCCESS");
@@ -90,7 +64,6 @@ export default function Wheel(props) {
       key: 'wheel_id',
       fixed: 'left',
       width: 50
-      // render: text => <a>{text}</a>,
     },
     {
       title: 'Tên vòng quay',
@@ -153,12 +126,13 @@ export default function Wheel(props) {
   const pagination = {
     current: 1,
     pageSize: 10,
-    total: 200,
+    total: listWheel.length,
 
   };
 
 
   const [visible, setVisible] = useState(false);
+
   const [bodyModel, setBodyModel] = useState({
     isAdd: false,
     record: null
@@ -171,6 +145,7 @@ export default function Wheel(props) {
       isAdd: true
     });
   }
+
   const updateWheel = (record) => {
     setVisible(true);
     setBodyModel({
@@ -178,7 +153,6 @@ export default function Wheel(props) {
       isAdd: false
     });
   }
-
 
   const callbackModal = (params) => {
     setVisible(params.visible);

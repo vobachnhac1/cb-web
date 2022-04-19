@@ -5,22 +5,17 @@
 * Created: 2022-04-08
 *------------------------------------------------------- */
 require("./style.module.less");
-
-import Header from '@/components/Head';
-import Layout from '@/layout';
-import { Card, Col, Form, Input, Modal, Row, Select, Typography, DatePicker, Button } from 'antd';
+import { Card, Col, Form, Input, Modal, Row, Typography, DatePicker } from 'antd';
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
-import { actions as actionSegment } from '@/redux/segment';
 import { actions as actionWheel } from '@/redux/wheel';
 
 
 const classNames = require("classnames");
 const styles = require("./style.module.less");
-const { Option } = Select;
 const { Text } = Typography;
 
 const layoutHeader = {
@@ -37,7 +32,6 @@ const layoutContent = {
 };
 const ModalSegment = (props) => {
   const { callback, visible = false, bodyModel: { isAdd = false, record = null } } = props;
-  const [loading, setLoading] = useState(false);
   const [wheelId, setWheelId] = useState(record ? record.wheel_id : "");
   const [wheelName, setWheelName] = useState(record ? record.wheel_name : "");
   const [numSegments, setNumSegments] = useState(record ? record.num_segments : "");
@@ -71,45 +65,41 @@ const ModalSegment = (props) => {
   }
 
   const onCallback = async () => {
-    if (!wheelId || wheelId.lenght == 0) {
-      Message.Warning("NOTYFICATON", "ID chưa điền nội dung");
-      return;
+    let msg_error = [];
+
+    if ((!wheelId || wheelId.lenght == 0) && !isAdd) {
+      msg_error.push("-ID chưa điền nội dung");
     }
     if (!wheelName || wheelName.lenght == 0) {
-      Message.Warning("NOTYFICATON", "Tên vòng quay chưa điền nội dung");
-      return;
+      msg_error.push("-Tên vòng quay chưa điền nội dung");
     }
     if (!numSegments || numSegments.lenght == 0) {
-      Message.Warning("NOTYFICATON", "Số kết quả trúng thưởng chưa có nội dung");
-      return;
+      msg_error.push("-Số kết quả trúng thưởng chưa có nội dung");
     }
     if (!accountNbr || accountNbr.lenght == 0) {
-      Message.Warning("NOTYFICATON", "Tài khoảng trích tiền chưa có nội dung");
-      return;
+      msg_error.push("-Tài khoản trích tiền chưa có nội dung");
     }
     if (!totalValue || totalValue.lenght == 0) {
-      Message.Warning("NOTYFICATON", "Tổng giải thưởng chưa có nội dung");
-      return;
+      msg_error.push("-Tổng giải thưởng chưa có nội dung");
     }
     if (!remainValue || remainValue.lenght == 0) {
-      Message.Warning("NOTYFICATON", "Tổng giá trị giải thuưởng còn lại chưa có nội dung");
-      return;
+      msg_error.push("-Tổng giá trị giải thuưởng còn lại chưa có nội dung");
     }
     if (!outerRadius || outerRadius.lenght == 0) {
-      Message.Warning("NOTYFICATON", "Bán kính vòng quay chưa có nội dung");
-      return;
+      msg_error.push("-Bán kính vòng quay chưa có nội dung");
     }
     if (!textFrontSize || textFrontSize.lenght == 0) {
-      Message.Warning("NOTYFICATON", "Đặt kích thước chữ chưa có nội dung");
-      return;
+      msg_error.push("-Đặt kích thước chữ chưa có nội dung");
     }
     if (!ratationAngle || ratationAngle.lenght == 0) {
-      Message.Warning("NOTYFICATON", "Đặt góc vòng quay chưa có nội dung");
-      return;
+      msg_error.push("-Đặt góc vòng quay chưa có nội dung");
     }
     if (!inactived_date || inactived_date.lenght == 0) {
-      Message.Warning("NOTYFICATON", "Hãy chọn ngày kết thúc giải thưởng");
-      return;
+      msg_error.push("-Hãy chọn ngày kết thúc giải thưởng");
+    }
+    if (msg_error && msg_error.length > 0) {
+      Message.WarningArr("Thông Báo", msg_error);
+      return
     }
 
     const param = {

@@ -6,17 +6,12 @@
 *------------------------------------------------------- */
 require("./style.module.less");
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Router from 'next/router';
-import * as styles from './style.module.less';
-import * as classnames from 'classnames';
 import LayoutHome from '@/containers/Home';
 import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Typography, Input, DatePicker } from 'antd';
 const { Text } = Typography;
 const { RangePicker } = DatePicker;
 import * as Message from '@/components/message';
 import ModalSegment from '@/containers/modal-segment';
-import ModalTopic from '@/containers/modal-topic';
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
 import { actions as actionSegment } from '@/redux/segment';
@@ -30,8 +25,6 @@ import __ from 'lodash';
 
 
 export default function Segment(props) {
-  const [topicId, setTopicId] = useState('');
-  const [dataSearch, setDataSearch] = useState('')
   const dispatch = useDispatch();
   const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
@@ -53,10 +46,6 @@ export default function Segment(props) {
       "segment_id": 0,
       "segment_name": "string",
       "segment_color": "string",
-      "inactived_date": "2022-04-08T04:17:56.025Z",
-      "created_date": "2022-04-08T04:17:56.025Z",
-      "datelastmaint": "2022-04-08T04:17:56.025Z",
-      "is_approve": true
     }
     await dispatch(actionSegment.searchSegment(paramsInitSegment));
     await dispatch(actionTopic.searchTopic());
@@ -67,14 +56,14 @@ export default function Segment(props) {
     if (__.isNil(segment_name) && __.isNil(topic_id) && __.isNil(from_date_act) && __.isNil(to_date_act)) {
       initPage();
     } else {
-      const result = await dispatch(actionSegment.filterSegment(filter));
+      await dispatch(actionSegment.filterSegment(filter));
       return;
     }
   }
 
 
   const handleDelete = async (record) => {
-    let dataRecord = { ...record }
+    let dataRecord = record
     const result = await dispatch(actionSegment.deleteSegmentById(dataRecord));
     if (result) {
       initPage();
@@ -152,7 +141,7 @@ export default function Segment(props) {
   const pagination = {
     current: 1,
     pageSize: 10,
-    total: 200,
+    total: listSegment.length || 0,
 
   };
 
@@ -196,9 +185,6 @@ export default function Segment(props) {
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>
             <Row gutter={[16, 24]}>
-              {/* <Col className="gutter-row"  >
-                <Text style={{ marginLeft: '4px' }}>{'Chủ đề :'}</Text>
-              </Col> */}
               <Col className="gutter-row" span={4}>
                 <Select
                   allowClear
@@ -252,7 +238,7 @@ export default function Segment(props) {
             <Table
               columns={columns}
               dataSource={listSegment}
-              size='large'
+              size='middle'
               pagination={pagination}
               loading={false}
               scroll={{ x: 1300 }}
