@@ -18,6 +18,7 @@ import { getters as gettersWheel } from '@/redux/wheel';
 
 import moment from 'moment';
 import __ from 'lodash';
+import Link from 'next/link';
 
 export default function Wheel(props) {
   const dispatch = useDispatch();
@@ -101,7 +102,7 @@ export default function Wheel(props) {
       width: 320,
       render: (text, record) => (
         <Space size="middle">
-          <Button style={{ color: '#7cb305', borderColor: '#7cb305', borderWidth: 0.5 }} onClick={() => ViewsWheelDetail(record)} >
+          <Button style={{ color: '#7cb305', borderColor: '#7cb305', borderWidth: 0.5 }}>
             <Link href={`/admin/wheel-detail/${record.wheel_id}`}>
               Chi tiết vòng quay
             </Link>
@@ -130,7 +131,6 @@ export default function Wheel(props) {
     isAdd: false,
     record: null
   });
-
   const addNewWheel = () => {
     setVisible(true);
     setBodyModel({
