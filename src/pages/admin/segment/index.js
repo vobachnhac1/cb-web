@@ -40,9 +40,7 @@ export default function Segment(props) {
   }, [])
 
   const initPage = async () => {
-    const paramsInitSegment = {
-    }
-    await dispatch(actionSegment.searchSegment(paramsInitSegment));
+    await dispatch(actionSegment.searchSegment());
     await dispatch(actionTopic.searchTopic());
   }
 
@@ -51,13 +49,13 @@ export default function Segment(props) {
     if (__.isNil(segment_name) && __.isNil(topic_id) && __.isNil(from_date_act) && __.isNil(to_date_act)) {
       initPage();
     } else {
-      const result = await dispatch(actionSegment.filterSegment(filter));
+      await dispatch(actionSegment.filterSegment(filter));
       return;
     }
   }
 
   const handleDelete = async (record) => {
-    let dataRecord = { ...record }
+    let dataRecord = record
     const result = await dispatch(actionSegment.deleteSegmentById(dataRecord));
     if (result) {
       initPage();
@@ -129,6 +127,13 @@ export default function Segment(props) {
       ),
     },
   ];
+  const pagination = {
+    current: 1,
+    pageSize: 10,
+    total: listSegment.length || 0,
+
+  };
+
 
   const [visible, setVisible] = useState(false);
   const [bodyModel, setBodyModel] = useState({
@@ -218,7 +223,8 @@ export default function Segment(props) {
             <Table
               columns={columns}
               dataSource={listSegment}
-              size='large'
+              size='middle'
+              pagination={pagination}
               loading={false}
               scroll={{ x: 1300 }}
             />

@@ -5,10 +5,7 @@
 * Created: 2022-04-08
 *------------------------------------------------------- */
 require("./style.module.less");
-
-import Header from '@/components/Head';
-import Layout from '@/layout';
-import { Card, Col, Form, Input, Modal, Row, Select, Typography, DatePicker, Button } from 'antd';
+import { Card, Col, Form, Input, Modal, Row, Select, Typography, DatePicker } from 'antd';
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
@@ -20,7 +17,6 @@ import { actions as actionSegment } from '@/redux/segment';
 
 const classNames = require("classnames");
 const styles = require("./style.module.less");
-const { Option } = Select;
 const { Text } = Typography;
 
 const layoutHeader = {
@@ -37,7 +33,6 @@ const layoutContent = {
 };
 const ModalSegment = (props) => {
   const { callback, visible = false, bodyModel: { isAdd = false, record = null } } = props;
-  const [loading, setLoading] = useState(false);
   const [segmentId, setSegmentId] = useState(record ? record.segment_id : "");
   const [topicId, setTopicId] = useState(record ? record.topic_id : "");
   const [segmentName, setSegmentName] = useState(record ? record.segment_name : "");
@@ -64,24 +59,23 @@ const ModalSegment = (props) => {
     //   Message.Warning("NOTYFICATON", "Mã kết quả chưa điền nội dung");
     //   return;
     // }
+    let msg_error = [];
     if (!topicId) {
-      Message.Warning("NOTYFICATON", "Chủ đề chưa được chọn");
-      return;
+      msg_error.push("- Chủ đề chưa được chọn");
     }
     if (!segmentName || segmentName.lenght == 0) {
-      Message.Warning("NOTYFICATON", "Tên kết quả trúng thưởng chưa có nội dung");
-      return;
+      msg_error.push("- Tên kết quả trúng thưởng chưa có nội dung");
     }
     if (!segmentColor || segmentColor.lenght == 0) {
-      Message.Warning("NOTYFICATON", "Màu sắc hiển thị chưa có nội dung");
-      return;
+      msg_error.push("- Màu sắc hiển thị chưa có nội dung");
     }
     if (!inactived_date || inactived_date.lenght == 0) {
-      Message.Warning("NOTYFICATON", "Hãy chọn ngày kết thúc giải thưởng");
-      return;
+      msg_error.push("- Hãy chọn ngày kết thúc giải thưởng");
     }
-
-
+    if (msg_error && msg_error.length > 0) {
+      Message.WarningArr("NOTYFICATON", msg_error);
+      return
+    }
     const param = {
       ...record,
       segment_id: segmentId,
@@ -90,10 +84,8 @@ const ModalSegment = (props) => {
       segment_color: segmentColor,
       inactived_date: inactived_date,
       is_approve: true,
-      // status_yn: isApprove,
       visible: false
     }
-
 
     // add
     if (isAdd) {
@@ -107,7 +99,7 @@ const ModalSegment = (props) => {
       return;
     }
     //edit
-    const result = await dispatch(actionSegment.updateTopic(param));
+    const result = await dispatch(actionSegment.updateSegment(param));
     if (result) {
       callback({ visible: false });
       Message.Success("NOTYFICATON", "UPDATE SEGMENT SUCCESS");
@@ -119,8 +111,8 @@ const ModalSegment = (props) => {
   }
   const onCancel = () => {
     callback({ visible: false });
-
   }
+
   return (
     <Modal
       width={750}

@@ -6,11 +6,8 @@
 *------------------------------------------------------- */
 require("./style.module.less");
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Router from 'next/router';
 import LayoutHome from '@/containers/Home';
 import { Button, Card, Col, Row, Space, Table, Popconfirm, Input } from 'antd';
-
 import * as Message from '@/components/message';
 import ModalWheel from '@/containers/modal-wheel'
 
@@ -23,7 +20,6 @@ import moment from 'moment';
 import __ from 'lodash';
 
 export default function Wheel(props) {
-  const [dataSearch, setDataSearch] = useState('')
   const dispatch = useDispatch();
   const listWheel = useSelector(gettersWheel.getStateLoadPageWheel) || [];
   const [filter, setFilter] = useState({
@@ -36,23 +32,19 @@ export default function Wheel(props) {
 
 
   const initPage = async () => {
-    const paramsInit = {
-
-    }
-    await dispatch(actionWheel.searchWheel(paramsInit));
+    await dispatch(actionWheel.searchWheel());
   }
   const onSearch = async () => {
     const { wheel_name } = filter;
     if (__.isNil(wheel_name)) {
       initPage();
     } else {
-      const result = await dispatch(actionWheel.filterWheel(filter));
+      await dispatch(actionWheel.filterWheel(filter));
       return;
     }
   }
   const handleDelete = async (record) => {
-    let dataRecord = { ...record }
-    const result = await dispatch(actionWheel.deleteWheelById(dataRecord));
+    const result = await dispatch(actionWheel.deleteWheelById(record));
     if (result) {
       initPage();
       Message.Success("NOTYFICATON", "DELETE WHEEL SUCCESS");
@@ -66,7 +58,7 @@ export default function Wheel(props) {
       dataIndex: 'wheel_id',
       key: 'wheel_id',
       fixed: 'left',
-      // render: text => <a>{text}</a>,
+      width: 50
     },
     {
       title: 'Tên vòng quay',
@@ -126,10 +118,14 @@ export default function Wheel(props) {
       ),
     },
   ];
-
-
+  const pagination = {
+    current: 1,
+    pageSize: 10,
+    total: listWheel.length,
+  };
 
   const [visible, setVisible] = useState(false);
+
   const [bodyModel, setBodyModel] = useState({
     isAdd: false,
     record: null
@@ -142,15 +138,13 @@ export default function Wheel(props) {
       isAdd: true
     });
   }
+
   const updateWheel = (record) => {
     setVisible(true);
     setBodyModel({
       record: record,
       isAdd: false
     });
-  }
-  const ViewsWheelDetail = (record) => {
-    // Router.push('/home');
   }
 
   const callbackModal = (params) => {
@@ -190,6 +184,7 @@ export default function Wheel(props) {
             <Table
               columns={columns}
               dataSource={listWheel}
+              pagination={pagination}
               size='large'
               loading={false}
               scroll={{ x: 1300 }}
@@ -197,7 +192,7 @@ export default function Wheel(props) {
           </Col>
         </Card>
       </Col>
-    </LayoutHome>
+    </LayoutHome >
   )
 }
 

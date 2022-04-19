@@ -4,17 +4,8 @@ import URLSERVER from '@/redux/urlServer.json';
 const setSearchSegment = (payload) => ({ type: TYPES.SEGMENT_SEARCH, payload });
 
 export const searchSegment = (payload) => async (dispatch, getState, { $http }) => {
-  const param = {
-    "topic_id": payload.topic_id ? payload.topic_id : 0,
-    "segment_id": payload.segment_id ? payload.segment_id : 0,
-    "segment_name": payload.segment_name ? payload.segment_name : "string",
-    "segment_color": payload.segment_color ? payload.segment_color : "string"  ,
-    "inactived_date": payload.inactived_date ? payload.inactived_date : "2022-04-08T04:17:56.025Z",
-    "created_date": payload.created_date ? payload.created_date : "2022-04-08T04:17:56.025Z", 
-    "datelastmaint": payload.datelastmaint ? payload.datelastmaint : "2022-04-08T04:17:56.025Z" ,
-    "is_approve": payload.is_approve ? payload.is_approve : true,
-  }
-  const result = await $http.post(URLSERVER.searchAllSegment, param);
+  // call xuống backend url + param 
+  const result = await $http.get(URLSERVER.searchAllSegment);
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
@@ -55,8 +46,8 @@ export const updateSegment = (payload) => async (dispatch, getState, { $http }) 
     "datelastmaint": "2022-04-08T09:54:19.063Z",
     "is_approve": payload.is_approve
   }
-
-  const result = await $http.post(URLSERVER.updateSegmentById, param);
+  // call xuống backend url + param
+  const result = await $http.put(URLSERVER.updateSegmentById, param);
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
@@ -66,16 +57,10 @@ export const updateSegment = (payload) => async (dispatch, getState, { $http }) 
 
 export const deleteSegmentById = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
-    "topic_id": payload.topic_id,
     "segment_id": payload.segment_id,
-    "segment_name": payload.segment_name,
-    "segment_color": payload.segment_color,
-    "inactived_date": payload.inactived_date,
-    "created_date": payload.created_date,
-    "datelastmaint": payload.datelastmaint,
-    "is_approve": payload.is_approve
   }
-  const result = await $http.post(URLSERVER.deleteSegmentById, param);
+  // call xuống backend url + param
+  const result = await $http.delete(URLSERVER.deleteSegmentById, param);
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
@@ -93,8 +78,6 @@ export const filterSegment = (payload) => async (dispatch, getState, { $http }) 
   dispatch(setSearchSegment(listSegment))
   return true
 }
-
-
 
 // function export ra ngoài
 
