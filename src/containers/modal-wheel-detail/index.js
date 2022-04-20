@@ -4,7 +4,7 @@
 * Phone 0906.918.738
 * Created: 2022-04-08
 *------------------------------------------------------- */
-require("./style.module.less");
+// require("./style.module.less");
 
 import Header from '@/components/Head';
 import Layout from '@/layout';

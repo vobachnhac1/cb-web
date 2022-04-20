@@ -4,18 +4,20 @@
 * Phone 036.847.5269
 * Created: 2022-04-07
 *------------------------------------------------------- */
-require("./style.module.less");
+// require("./style.module.less");
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Router, useRouter } from 'next/router';
-import * as styles from './style.module.less';
+// import * as styles from './style.module.less';
 import * as classnames from 'classnames';
 import LayoutHome from '@/containers/Home';
-import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Typography, Input, } from 'antd';
-import { DownOutlined, UpOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Typography, Input, InputNumber } from 'antd';
+import { ArrowLeftOutlined, SettingOutlined } from '@ant-design/icons';
 import moment from 'moment';
 const { Text } = Typography;
 import * as Message from '@/components/message';
+const classNames = require("classnames");
+const styles = require("./style.module.less");
 
 import ModalWheelDetail from '@/containers/modal-wheel-detail'
 // khai báo store
@@ -146,14 +148,14 @@ export default function WheelDetail({ query }) {
       dataIndex: 'wheel_name',
       key: 'wheel_name',
       fixed: 'left',
-      width: 400
+      width: 350
     },
     {
       title: 'Tên giải thưởng',
       dataIndex: 'segment_name',
       key: 'segment_name',
       fixed: 'center',
-      width: 400
+      width: 350
     },
     {
       title: 'STT',
@@ -317,6 +319,15 @@ export default function WheelDetail({ query }) {
               <Col className="gutter-row" span={2} style={{ marginBottom: 10 }}>
                 <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSaveListData}>Lưu lại</Button>
               </Col>
+              <Col className="gutter-row" span={5} offset={10}>
+                {/* offset={7} */}
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền: '}</Text>
+                <InputNumber disabled addonAfter={<SettingOutlined />} value={100.0000000000} />
+              </Col>
+              <Col className="gutter-row" span={5} >
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Tiền còn lại: '}</Text>
+                <InputNumber disabled addonAfter={<SettingOutlined />} defaultValue={100} />
+              </Col>
             </Row>
 
           </Col>
@@ -349,7 +360,6 @@ export default function WheelDetail({ query }) {
             <Col className="gutter-row" span={3}>
               <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>
             </Col>
-
           </Row>
           <Col span={48} style={{ marginTop: 10 }}>
             <Table

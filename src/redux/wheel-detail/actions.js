@@ -42,7 +42,7 @@ export const SaveOnListWheelDetail = (payload) => async (dispatch, getState, { $
     return false;
   }
 
-  const listData = resultDoneWheelDetail(data.data);
+  const listData = resultDoneWheelDetail(data.data.list_wheel_dt);
   dispatch(setSearchWheelDetail(listData))
 
   return {
@@ -159,7 +159,7 @@ export const filterWheelDetail = (payload) => async (dispatch, getState, { $http
   if (!success || !data.success) {
     return false;
   }
-  const listData = resultDoneWheelDetail(data.data);
+  const listData = resultDoneWheelDetail(data.data.list_wheel_dt);
 
   dispatch(setSearchWheelDetail(listData.map(item => ({ ...item, is_delete: false }))))
   return listData
@@ -201,7 +201,7 @@ export const searchWheelDetailById = (payload) => async (dispatch, getState, { $
 
 function resultDoneWheelDetail(data, listDeleted) {
   // kiem tra stt có tồn tại trong dataList.no, thì thêm 1 trường isDuplicate true/false
-  let dataList = [...data]
+  let dataList = data
   let dataListDeleted = [];
   let dataListNoDeleted = []
 
