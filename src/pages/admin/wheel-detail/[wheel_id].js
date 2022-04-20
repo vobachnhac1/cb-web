@@ -48,9 +48,13 @@ export default function WheelDetail({ query }) {
 
   const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
   const listWheelDetail = useSelector(gettersWheelDetail.getStateLoadPageWheelDetail) || [];
+  const wheelCurtValue = useSelector(gettersWheelDetail.getStateWheelCurtValue);
+  const wheelTotalValue = useSelector(gettersWheelDetail.getStateWheelTotalValue);
+  const wheelDetialTotalValue = useSelector(gettersWheelDetail.getStateWheelDetialTotalValue);
   const [listSearch, setListSearch] = useState([]);
 
   // gọi 1 function rồi theo dõi nhưng thay đổi của param đó
+
   useEffect(() => {
     initPage(); // chjay 1 lần duy nhất
   }, [])
@@ -62,8 +66,8 @@ export default function WheelDetail({ query }) {
     }
     await dispatch(actionTopic.searchTopic());
     await dispatch(actionSegment.searchSegment({}));
-    const resultDoneFilterWheelDetail = await dispatch(actionWheelDetail.filterWheelDetail(data));
-    setListSearch(resultDoneFilterWheelDetail)
+    const { listData } = await dispatch(actionWheelDetail.filterWheelDetail(data));
+    setListSearch(listData)
     setLoading(false)
   }
 
@@ -119,9 +123,10 @@ export default function WheelDetail({ query }) {
     if (success) {
       Message.Success("NOTYFICATON", "Đã lưu chi tiết vòng quay thành công.");
       setListSearch(list)
+
       return
     }
-    Message.Error("NOTYFICATON", "Lưu chi tiết vòng quay thành công thất bại");
+    Message.Error("NOTYFICATON", "Lưu chi tiết vòng quay thất bại");
 
   }
 
@@ -322,11 +327,22 @@ export default function WheelDetail({ query }) {
               <Col className="gutter-row" span={5} offset={10}>
                 {/* offset={7} */}
                 <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền: '}</Text>
-                <InputNumber disabled addonAfter={<SettingOutlined />} value={100.0000000000} />
+                <InputNumber style={{ width: '100%' }}
+                  addonAfter={"VND"}
+                  formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                  parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                  disabled
+                  value={wheelTotalValue} />
               </Col>
               <Col className="gutter-row" span={5} >
                 <Text className={classNames({ [styles['text-font']]: true })}>{'Tiền còn lại: '}</Text>
-                <InputNumber disabled addonAfter={<SettingOutlined />} defaultValue={100} />
+                <InputNumber
+                  style={{ width: '100%' }}
+                  addonAfter={"VND"}
+                  formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                  parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                  disabled
+                  value={wheelCurtValue} />
               </Col>
             </Row>
 

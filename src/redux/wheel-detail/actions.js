@@ -42,12 +42,29 @@ export const SaveOnListWheelDetail = (payload) => async (dispatch, getState, { $
     return false;
   }
 
-  const listData = resultDoneWheelDetail(data.data.list_wheel_dt);
-  dispatch(setSearchWheelDetail(listData))
+  const listData = resultDoneWheelDetail(data.data.list_wheel_dt).map(item => ({ ...item, is_delete: false }));
+  const Wheel_detail_total_value = sumTotalValueWheelDetail(data.data.list_wheel_dt)
 
-  return {
-    success: true, list: listData
+  // dispatch(setSearchWheelDetail(listData))
+
+  // return {
+  //   success: true,
+  //   list: listData,
+  //   wheel_curt_value: data.data.wheel_curt_value,
+  //   wheel_total_value: data.data.wheel_total_value
+  // }
+
+  const dataObject = {
+    'success': true,
+    'listData': listData,
+    'wheel_curt_value': data.data.wheel_curt_value,
+    'wheel_total_value': data.data.wheel_total_value,
+    'Wheel_detail_total_value': Wheel_detail_total_value
   }
+
+  dispatch(setSearchWheelDetail(dataObject))
+  return dataObject
+
 }
 
 export const insertWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
@@ -159,10 +176,25 @@ export const filterWheelDetail = (payload) => async (dispatch, getState, { $http
   if (!success || !data.success) {
     return false;
   }
-  const listData = resultDoneWheelDetail(data.data.list_wheel_dt);
+  const Wheel_detail_total_value = sumTotalValueWheelDetail(data.data.list_wheel_dt)
 
-  dispatch(setSearchWheelDetail(listData.map(item => ({ ...item, is_delete: false }))))
-  return listData
+  const listData = resultDoneWheelDetail(data.data.list_wheel_dt).map(item => ({ ...item, is_delete: false }));
+  console.log('Wheel_detail_total_value', Wheel_detail_total_value)
+  const dataObject = {
+    'listData': listData,
+    'wheel_curt_value': data.data.wheel_curt_value,
+    'wheel_total_value': data.data.wheel_total_value,
+    'Wheel_detail_total_value': Wheel_detail_total_value
+  }
+
+  // dispatch(setSearchWheelDetail(listData.map(item => ({ ...item, is_delete: false }))))
+  // return {
+  //   listData: listData,
+  //   wheel_curt_value: data.data.wheel_curt_value,
+  //   wheel_total_value: data.data.wheel_curt_value
+  // }
+  dispatch(setSearchWheelDetail(dataObject))
+  return dataObject
 }
 
 export const searchWheelDetailById = (payload) => async (dispatch, getState, { $http }) => {
@@ -199,6 +231,7 @@ export const searchWheelDetailById = (payload) => async (dispatch, getState, { $
   return listData
 }
 
+// sắp xết data và kiem tra data wheeldetail
 function resultDoneWheelDetail(data, listDeleted) {
   // kiem tra stt có tồn tại trong dataList.no, thì thêm 1 trường isDuplicate true/false
   let dataList = data
@@ -235,6 +268,15 @@ function resultDoneWheelDetail(data, listDeleted) {
     return a.no - b.no
   }).concat(dataListDeleted).map((item, index) => ({ ...item, key: index }))
   return dataResult
+}
+// total value all wheell_Detail
+function sumTotalValueWheelDetail(data) {
+  let dataList = data;
+  let total = 0;
+  for (let i = 0; i < dataList.length; i++) {
+    total += (dataList[i].remain_value * dataList[i].remain_number)
+  }
+  return total
 }
 
 

@@ -8,7 +8,7 @@
 
 import Header from '@/components/Head';
 import Layout from '@/layout';
-import { Card, Col, Form, Input, Modal, Row, Select, Typography, Radio } from 'antd';
+import { Card, Col, Form, Input, Modal, Row, Select, Typography, Radio, InputNumber } from 'antd';
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
@@ -49,9 +49,13 @@ const ModalWheelDetail = (props) => {
   const [no, setNo] = useState(record ? record.no : "")
   const [remainValue, setRemainValue] = useState(record ? record.remain_value : "")
   const [goalYn, setGoalYn] = useState(record ? record.goal_yn : 0)
+
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
   const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
   const listWheel = useSelector(gettersWheel.getStateLoadPageWheel) || [];
+  let wheelCurtValue = useSelector(gettersWheelDetail.getStateWheelCurtValue);
+  let wheelTotalValue = useSelector(gettersWheelDetail.getStateWheelTotalValue);
+  let wheelDetialTotalValue = useSelector(gettersWheelDetail.getStateWheelDetialTotalValue);
 
   useEffect(() => {
     initPage();
@@ -169,7 +173,7 @@ const ModalWheelDetail = (props) => {
     >
       <Card
         headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
-        title={isViews ? 'Xem chi tiết vòng quay' : (isAdd ? "Thêm Kết chi tiết vòng quay" : 'Cập nhật Kết chi tiết vòng quay')}
+        title={isViews ? 'Xem chi tiết vòng quay' : (isAdd ? "Thêm chi tiết vòng quay" : 'Cập nhật chi tiết vòng quay')}
         bordered={true}
         style={{ backgroundColor: '#FFFFFF' }}>
         <Form
@@ -187,9 +191,44 @@ const ModalWheelDetail = (props) => {
           labelAlign='left'
           size={'default'}
         >
+          <Row style={{ marginTop: 10 }}>
+            <Col {...layoutHeader} >
+              <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền: '}</Text>
+            </Col>
+            <Col  {...layoutContent}>
+
+              <InputNumber
+                style={{ width: '100%' }}
+                addonAfter={"VND"}
+                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                disabled
+                value={wheelTotalValue}
+
+              />
+            </Col>
+
+          </Row>
+          <Row style={{ marginTop: 10 }}>
+            <Col {...layoutHeader} >
+              <Text className={classNames({ [styles['text-font']]: true })}>{'Tiền còn lại: '}</Text>
+            </Col>
+            <Col  {...layoutContent}>
+              <InputNumber
+                style={{ width: '100%' }}
+                addonAfter={"VND"}
+                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                disabled
+                value={wheelCurtValue}
+
+              />
+            </Col>
+            {/* wheelCurtValue */}
+          </Row >
           {
             !isAdd ?
-              <Row >
+              <Row style={{ marginTop: 10 }} >
                 <Col {...layoutHeader} >
                   <Text className={classNames({ [styles['text-font']]: true })}>{'ID'}</Text>
                 </Col>
