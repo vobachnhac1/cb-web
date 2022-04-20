@@ -13,7 +13,7 @@ import * as classnames from 'classnames';
 import LayoutHome from '@/containers/Home';
 import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Typography, Input, } from 'antd';
 import { DownOutlined, UpOutlined, ArrowLeftOutlined } from '@ant-design/icons';
-;
+import moment from 'moment';
 const { Text } = Typography;
 import * as Message from '@/components/message';
 
@@ -78,10 +78,10 @@ export default function WheelDetail({ query }) {
     const result = await dispatch(actionWheelDetail.deleteWheelDetailById(dataRecord));
     setListSearch(result)
     if (result) {
-      Message.Success("NOTYFICATON", "DELETE WHEEL DETAIL");
+      Message.Success("NOTYFICATON", "Xóa thành công");
       return
     }
-    Message.Error("NOTYFICATON", "DELETE WHEEL DETAIL FAIL");
+    Message.Error("NOTYFICATON", "Xóa thất bại");
   };
 
   const handleRestore = async (record) => {
@@ -89,17 +89,21 @@ export default function WheelDetail({ query }) {
     const result = await dispatch(actionWheelDetail.restoreWheelDetailById(dataRecord));
     setListSearch(result)
     if (result) {
-      Message.Success("NOTYFICATON", "RESTORE WHEEL DETAIL");
+      Message.Success("NOTYFICATON", "Đã Khôi phục chi tiết vòng quay ");
       return
     }
-    Message.Error("NOTYFICATON", "RESTORE WHEEL DETAIL FAIL");
+    Message.Error("NOTYFICATON", "Khôi phục chi tiết vòng quay thất bại !");
   };
 
   const onSaveListData = async () => {
     // const data = listWheelDetail
     for (let i = 0; i < listWheelDetail.length; i++) {
       if (listWheelDetail[i].is_duplicated) {
-        Message.Error("NOTYFICATON", "STT WHEEL DETAIL DUPLICATED");
+        Message.Error("NOTYFICATON", "STT bị trùng !");
+        return;
+      }
+      if (listWheelDetail[i].is_lengthExceeded) {
+        Message.Error("NOTYFICATON", "STT đang bị lớn hơn số vòng quay");
         return;
       }
     }
@@ -111,11 +115,11 @@ export default function WheelDetail({ query }) {
 
     const { success, list } = await dispatch(actionWheelDetail.SaveOnListWheelDetail(data));
     if (success) {
-      Message.Success("NOTYFICATON", "SAVED WHEEL DETAIL SUCCESS");
+      Message.Success("NOTYFICATON", "Đã lưu chi tiết vòng quay thành công.");
       setListSearch(list)
       return
     }
-    Message.Error("NOTYFICATON", "SAVED WHEEL DETAIL FAIL");
+    Message.Error("NOTYFICATON", "Lưu chi tiết vòng quay thành công thất bại");
 
   }
 
@@ -130,7 +134,7 @@ export default function WheelDetail({ query }) {
       // render: text => <a>{text}</a>,
     },
     {
-      title: 'ID',
+      title: 'ID Chi tiết',
       dataIndex: 'wheel_detail_id',
       key: 'wheel_detail_id',
       fixed: 'left',
@@ -142,12 +146,14 @@ export default function WheelDetail({ query }) {
       dataIndex: 'wheel_name',
       key: 'wheel_name',
       fixed: 'left',
+      width: 400
     },
     {
       title: 'Tên giải thưởng',
       dataIndex: 'segment_name',
       key: 'segment_name',
       fixed: 'center',
+      width: 400
     },
     {
       title: 'STT',
@@ -159,14 +165,16 @@ export default function WheelDetail({ query }) {
         <p style={{
           'width': '100%',
           'display': 'flex',
-
-
         }} >
           <span> {record.no}</span>
           {record.is_duplicated ? <span style={{
             'marginLeft': '20px',
             'color': 'red'
           }}>Stt đang bị trùng </span> : ''}
+          {record.is_lengthExceeded ? <span style={{
+            'marginLeft': '20px',
+            'color': 'red'
+          }}>Stt nên nhỏ hơn sống tổng vòng quay đang có ({listWheelDetail.length}) </span> : ''}
         </p >
       ),
     },
@@ -184,11 +192,30 @@ export default function WheelDetail({ query }) {
     },
     {
       title: 'Số lần trúng còn lại',
+      dataIndex: 'remain_number',
+      key: 'remain_number',
+      fixed: 'center',
+      width: 150,
+
+    },
+    {
+      title: 'Giá trị còn lại',
       dataIndex: 'remain_value',
       key: 'remain_value',
       fixed: 'center',
       width: 150,
 
+    },
+    {
+      title: 'Ngày tạo',
+      dataIndex: 'created_date',
+      key: 'created_date',
+      width: 170,
+      render: (text, record) => {
+        return <p>
+          {moment(text).format('YYYY-MM-DD, hh:mm:ss')}
+        </p>
+      }
     },
     {
       title: 'Action',
@@ -276,12 +303,13 @@ export default function WheelDetail({ query }) {
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>
             <Row gutter={[16, 24]}>
-              <Col className="gutter-row" span={1} style={{ marginBottom: 10 }}>
+              <Col className="gutter-row" style={{ marginBottom: 10, }}>
                 <Button type='primary' size='middle' style={{ width: '100%' }} title="Quay lại" >
                   <Link href="/admin/wheel">
                     <ArrowLeftOutlined style={{
                       'fontSize': '21px',
                       'marginLeft': '-6px',
+                      'width': '15px'
                     }} />
                   </Link>
                 </Button>

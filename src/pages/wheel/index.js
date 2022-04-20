@@ -65,7 +65,7 @@ export default function Wheel() {
     console.log('Wheel value: ', value);
   }
   return (
-    <div className={styles['App']}>
+    <div className={styles['table_layout']}>
       <WheelChild items={places} onSelectItem={onSelectItem} />
       {/* <div className={classNames({ [styles["wheel-shelf-head"]]: true })} />
       <div className={classNames({ [styles["wheel-shelf-midle"]]: true })} />

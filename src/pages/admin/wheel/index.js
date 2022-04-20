@@ -5,6 +5,8 @@
 * Created: 2022-04-07
 *------------------------------------------------------- */
 require("./style.module.less");
+import * as styles from './style.module.less';
+import * as classnames from 'classnames';
 import { useState, useEffect } from 'react';
 import LayoutHome from '@/containers/Home';
 import { Button, Card, Col, Row, Space, Table, Popconfirm, Input } from 'antd';
@@ -66,6 +68,7 @@ export default function Wheel(props) {
       dataIndex: 'wheel_name',
       key: 'wheel_name',
       fixed: 'left',
+      width: 400
     },
     {
       title: 'Số kết quả',
@@ -78,11 +81,38 @@ export default function Wheel(props) {
       title: 'Tổng giá trị giải',
       dataIndex: 'total_value',
       key: 'total_value',
+      width: 300
+
     },
     {
       title: 'Giá trị còn lại',
       dataIndex: 'remain_value',
       key: 'remain_value',
+      width: 300
+    },
+    {
+      title: 'Tài khoản khách hàng',
+      dataIndex: 'account_nbr',
+      key: 'account_nbr',
+      width: 220
+    },
+    {
+      title: 'Bán kính',
+      dataIndex: 'outer_radius',
+      key: 'outer_radius',
+      width: 100
+    },
+    {
+      title: 'Kích thước chữ',
+      dataIndex: 'text_fontsize',
+      key: 'text_fontsize',
+      width: 120
+    },
+    {
+      title: 'Góc quay',
+      dataIndex: 'rotation_angle',
+      key: 'rotation_angle',
+      width: 100
     },
     {
       title: 'Ngày hết hiệu lực',
@@ -95,7 +125,17 @@ export default function Wheel(props) {
         </p>
       }
     },
-
+    {
+      title: 'Ngày tạo',
+      dataIndex: 'created_date',
+      key: 'created_date',
+      width: 170,
+      render: (text, record) => {
+        return <p>
+          {moment(text).format('YYYY-MM-DD, hh:mm:ss')}
+        </p>
+      }
+    },
     {
       title: 'Action',
       key: 'action',
@@ -182,6 +222,7 @@ export default function Wheel(props) {
         <Card>
           <Col span={48} style={{ marginTop: 10 }}>
             <Table
+              className="table_layout"
               columns={columns}
               dataSource={listWheel}
               pagination={pagination}

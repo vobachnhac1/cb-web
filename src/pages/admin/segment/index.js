@@ -85,7 +85,23 @@ export default function Segment(props) {
       dataIndex: 'topic_name',
       key: 'topic_name',
       fixed: 'center',
+    },
+    {
+      title: 'Màu sắc',
+      dataIndex: 'segment_color',
+      key: 'segment_color',
+      fixed: 'center',
+      width: 80,
+      render: (text, record) => {
+        return <p style={
+          {
+            background: text,
+            width: '30px',
+            height: '30px'
+          }}>
 
+        </p>
+      }
     },
     {
       title: 'Ngày hết hiệu lực',

@@ -1,5 +1,6 @@
 import * as TYPES from './type';
 import URLSERVER from '@/redux/urlServer.json';
+import moment from 'moment';
 
 // hàm thị thi nội bộ
 const setSearchWheelDetail = (payload) => ({ type: TYPES.WHEELDETAIL_SEARCH, payload });
@@ -59,11 +60,12 @@ export const insertWheelDetail = (payload) => async (dispatch, getState, { $http
     "no": parseInt(payload.no),
     "goal_yn": parseInt(payload.goal_yn),
     "remain_value": parseInt(payload.remain_value),
-    "inactived_date": "2022-04-13T08:32:30.059Z",
-    "created_date": "2022-04-13T08:32:30.059Z",
-    "datelastmaint": "2022-04-13T08:32:30.059Z",
+    "inactived_date": null,
+    "created_date": moment().format('YYYY-MM-DD, hh:mm:ss'),
+    "datelastmaint": null,
     "is_approve": true
   }
+
 
   let state = getState()
   let listWheelDetail = [...state.wheeldetail.listWheelDetail]
@@ -206,6 +208,7 @@ function resultDoneWheelDetail(data, listDeleted) {
   // cho tất cã data thành không trùng nhau về STT : false. lập ra 2 arr item đã xóa và item chưa xóa
   for (let i = 0; i < dataList.length; i++) {
     dataList[i].is_duplicated = false;
+    dataList[i].is_lengthExceeded = false;
     if (dataList[i].is_delete) {
       dataListDeleted.push(dataList[i])
     } else {
@@ -220,6 +223,10 @@ function resultDoneWheelDetail(data, listDeleted) {
       if (i !== j && dataListNoDeleted[i].no === dataListNoDeleted[j].no) {
         dataListNoDeleted[i].is_duplicated = true;
       }
+    }
+    // kiem tra stt của phần tử có dài hơn dataListNoDeleted.length
+    if (dataListNoDeleted[i].no > dataListNoDeleted.length) {
+      dataListNoDeleted[i].is_lengthExceeded = true
     }
   }
 
