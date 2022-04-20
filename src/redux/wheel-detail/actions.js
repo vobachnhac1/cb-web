@@ -13,6 +13,7 @@ export const searchWheelDetail = (payload) => async (dispatch, getState, { $http
     "no": 0,
     "goal_yn": 0,
     "remain_value": 0,
+    "remain_number":0,
     "inactived_date": "2022-04-11T06:06:50.653Z",
     "created_date": "2022-04-11T06:06:50.653Z",
     "datelastmaint": "2022-04-11T06:06:50.653Z",
@@ -77,6 +78,7 @@ export const insertWheelDetail = (payload) => async (dispatch, getState, { $http
     "no": parseInt(payload.no),
     "goal_yn": parseInt(payload.goal_yn),
     "remain_value": parseInt(payload.remain_value),
+    "remain_number": parseInt(payload.remain_number),
     "inactived_date": null,
     "created_date": moment().format('YYYY-MM-DD, hh:mm:ss'),
     "datelastmaint": null,
@@ -87,8 +89,17 @@ export const insertWheelDetail = (payload) => async (dispatch, getState, { $http
   let state = getState()
   let listWheelDetail = [...state.wheeldetail.listWheelDetail]
   listWheelDetail.push(param)
-  const listData = resultDoneWheelDetail(listWheelDetail);
-  dispatch(setSearchWheelDetail(listData))
+  const listData = resultDoneWheelDetail(listWheelDetail).map(item => ({ ...item, is_delete: false }));
+
+  const dataObject = {
+    'listData': listData,
+    // 'wheel_curt_value': data.data.wheel_curt_value,
+    // 'wheel_total_value': data.data.wheel_total_value,
+    // 'Wheel_detail_total_value': Wheel_detail_total_value
+  }
+
+  dispatch(setSearchWheelDetail(dataObject))
+
   return listData
 }
 
@@ -98,22 +109,31 @@ export const updateWheelDetail = (payload) => async (dispatch, getState, { $http
     "no": parseInt(payload.no),
     "goal_yn": parseInt(payload.goal_yn),
     "remain_value": parseInt(payload.remain_value),
+    "remain_number": parseInt(payload.remain_number),
     "key": payload.key
   }
 
   let state = getState()
+  // const a {}
   let listWheelDetail = [...state.wheeldetail.listWheelDetail]
 
   for (let i = 0; i < listWheelDetail.length; i++) {
     if (listWheelDetail[i].key === param.key) {
       listWheelDetail[i].no = param.no
       listWheelDetail[i].goal_yn = param.goal_yn
-      listWheelDetail[i].remain_value = param.remain_value
+      listWheelDetail[i].remain_number = param.remain_number
     }
   }
 
   const listData = resultDoneWheelDetail(listWheelDetail);
-  dispatch(setSearchWheelDetail(listData))
+  const dataObject = {
+    'listData': listData,
+    // 'wheel_curt_value': data.data.wheel_curt_value,
+    // 'wheel_total_value': data.data.wheel_total_value,
+    // 'Wheel_detail_total_value': Wheel_detail_total_value
+  }
+
+  dispatch(setSearchWheelDetail(dataObject))
   return listData
 }
 
@@ -132,9 +152,19 @@ export const deleteWheelDetailById = (payload) => async (dispatch, getState, { $
       break
     }
   }
-
   const listData = resultDoneWheelDetail(listWheelDetail);
-  dispatch(setSearchWheelDetail(listData))
+
+  const dataObject = {
+    'listData': listData,
+    // 'wheel_curt_value': data.data.wheel_curt_value,
+    // 'wheel_total_value': data.data.wheel_total_value,
+    // 'Wheel_detail_total_value': Wheel_detail_total_value
+  }
+
+  dispatch(setSearchWheelDetail(dataObject))
+
+  // const listData = resultDoneWheelDetail(listWheelDetail);
+  // dispatch(setSearchWheelDetail(listData))
   return listData
 }
 
@@ -152,8 +182,19 @@ export const restoreWheelDetailById = (payload) => async (dispatch, getState, { 
       break
     }
   }
-  const listData = resultDoneWheelDetail(listWheelDetail);
-  dispatch(setSearchWheelDetail(listData))
+  // const listData = resultDoneWheelDetail(listWheelDetail);
+  // dispatch(setSearchWheelDetail(listData))
+  const listData = resultDoneWheelDetail(listWheelDetail).map(item => ({ ...item, is_delete: false }));
+
+  const dataObject = {
+    'listData': listData,
+    // 'wheel_curt_value': data.data.wheel_curt_value,
+    // 'wheel_total_value': data.data.wheel_total_value,
+    // 'Wheel_detail_total_value': Wheel_detail_total_value
+  }
+
+  dispatch(setSearchWheelDetail(dataObject))
+
   return listData
 }
 
@@ -166,6 +207,7 @@ export const filterWheelDetail = (payload) => async (dispatch, getState, { $http
     "no": payload.no ? parseInt(payload.no) : null,
     "goal_yn": payload.goal_yn ? parseInt(payload.goal_yn) : null,
     "remain_value": payload.remain_value ? parseInt(payload.remain_value) : null,
+    "remain_number": payload.remain_number ? parseInt(payload.remain_number) : null,
     "inactived_date": null,
     "created_date": null,
     "datelastmaint": null,

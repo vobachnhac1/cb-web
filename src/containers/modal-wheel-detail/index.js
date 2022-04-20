@@ -48,6 +48,7 @@ const ModalWheelDetail = (props) => {
   const [segmentId, setSegmentId] = useState(record ? record.segment_id : "");
   const [no, setNo] = useState(record ? record.no : "")
   const [remainValue, setRemainValue] = useState(record ? record.remain_value : "")
+  const [remainNumber, setRemainNumber] = useState(record ? record.remain_number : "")
   const [goalYn, setGoalYn] = useState(record ? record.goal_yn : 0)
 
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
@@ -66,7 +67,7 @@ const ModalWheelDetail = (props) => {
     setWheelId(record ? record.wheel_id : queryWheel_id)
     setSegmentId(record ? record.segment_id : "")
     setNo(record ? record.no : "")
-    setRemainValue(record ? record.remain_value : "")
+    setRemainNumber(record ? record.remain_number : "")
     setGoalYn(record ? record.goal_yn : -1)
   }
 
@@ -91,7 +92,7 @@ const ModalWheelDetail = (props) => {
       Message.Warning("NOTYFICATON", "Trúng thưởng chưa được chọn");
       return;
     }
-    if (!remainValue || remainValue <= -1) {
+    if (!remainNumber || remainNumber <= -1) {
       Message.Warning("NOTYFICATON", "Số lần trúng thưởng chưa hợp lệ hoặc chưa có nội dung");
       return;
     }
@@ -103,7 +104,7 @@ const ModalWheelDetail = (props) => {
       segment_id: segmentId,
       no: no,
       goal_yn: goalYn,
-      remain_value: remainValue,
+      remain_number: remainNumber,
     }
 
     //get wheelname
@@ -263,7 +264,6 @@ const ModalWheelDetail = (props) => {
             <Col  {...layoutContent}>
 
               <Select
-                disabled={isAdd ? false : true}
                 style={{ width: '100%' }}
                 defaultValue=""
                 value={
@@ -301,7 +301,7 @@ const ModalWheelDetail = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Số lần trúng thưởng còn lại '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Input disabled={isViews ? true : false} type="number" min={0} style={{ width: '100%' }} value={remainValue} onChange={(text) => setRemainValue(text.target.value)} />
+              <Input disabled={isViews ? true : false} type="number" min={0} style={{ width: '100%' }} value={remainNumber} onChange={(text) => setRemainNumber(text.target.value)} />
             </Col>
           </Row>
         </Form>

@@ -104,6 +104,12 @@ export default function Segment(props) {
       }
     },
     {
+      title: 'Giá trị giải thưởng',
+      dataIndex: 'segment_value',
+      key: 'segment_value',
+      fixed: 'center',
+    },
+    {
       title: 'Ngày hết hiệu lực',
       dataIndex: 'inactived_date',
       key: 'inactived_date',

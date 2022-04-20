@@ -37,6 +37,7 @@ const ModalSegment = (props) => {
   const [topicId, setTopicId] = useState(record ? record.topic_id : "");
   const [segmentName, setSegmentName] = useState(record ? record.segment_name : "");
   const [segmentColor, setSegmentColor] = useState(record ? record.segment_color : "");
+  const [segmentValue, setSegmentValue] = useState(record ? record.segment_value : "");
   const [inactived_date, setInactived_date] = useState(record ? record.inactived_date : "");
 
   const dispatch = useDispatch();
@@ -51,6 +52,7 @@ const ModalSegment = (props) => {
     setTopicId(record ? record.topic_id : "")
     setSegmentName(record ? record.segment_name : "")
     setSegmentColor(record ? record.segment_color : "")
+    setSegmentValue(record ? record.segment_value : 0)
     setInactived_date(record ? record.inactived_date : "")
   }
 
@@ -67,10 +69,13 @@ const ModalSegment = (props) => {
       msg_error.push("- Tên kết quả trúng thưởng chưa có nội dung");
     }
     if (!segmentColor || segmentColor.lenght == 0) {
-      msg_error.push("- Màu sắc hiển thị chưa có nội dung");
+      msg_error.push("- Màu sắc hiển thị chưa chọn");
     }
     if (!inactived_date || inactived_date.lenght == 0) {
       msg_error.push("- Hãy chọn ngày kết thúc giải thưởng");
+    }
+    if (!segmentValue || segmentValue.lenght == 0) {
+      msg_error.push("- Tổng giá trị giải thưởng còn lại chưa có nội dung");
     }
     if (msg_error && msg_error.length > 0) {
       Message.WarningArr("NOTYFICATON", msg_error);
@@ -82,6 +87,7 @@ const ModalSegment = (props) => {
       topic_id: topicId,
       segment_name: segmentName,
       segment_color: segmentColor,
+      segment_value: segmentValue,
       inactived_date: inactived_date,
       is_approve: true,
       visible: false
@@ -192,11 +198,19 @@ const ModalSegment = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
+              <Text className={classNames({ [styles['text-font']]: true })}>{'Giá trị giải thưởng '}</Text>
+            </Col>
+            <Col  {...layoutContent}>
+              <Input type="number" style={{ width: '100%' }} value={segmentValue} onChange={(text) => setSegmentValue(text.target.value)} />
+            </Col>
+          </Row>
+          <Row style={{ marginTop: 10 }}>
+            <Col {...layoutHeader} >
               <Text className={classNames({ [styles['text-font']]: true })}>{'Màu sắc hiển thị '}</Text>
             </Col>
             <Col  {...layoutContent}>
 
-              <Input type="color" style={{ width: '50%' }} value={segmentColor ? segmentColor : '#00BFFF'} onChange={(text) => setSegmentColor(text.target.value)} />
+              <Input type="color" style={{ width: '50%' }} value={segmentColor ? segmentColor : '#222222'} onChange={(text) => setSegmentColor(text.target.value)} />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
