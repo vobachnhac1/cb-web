@@ -68,6 +68,7 @@ const ModalWheelDetail = (props) => {
     setSegmentId(record ? record.segment_id : "")
     setNo(record ? record.no : "")
     setRemainNumber(record ? record.remain_number : "")
+    setRemainValue(record ? record.remain_value : "")
     setGoalYn(record ? record.goal_yn : -1)
   }
 
@@ -105,6 +106,7 @@ const ModalWheelDetail = (props) => {
       no: no,
       goal_yn: goalYn,
       remain_number: remainNumber,
+      remain_value: remainValue
     }
 
     //get wheelname
@@ -115,11 +117,15 @@ const ModalWheelDetail = (props) => {
       }
     }
 
-    // segmentname
+    // segmentname, 
     for (let i = 0; i < listSegment.length; i++) {
       if (segmentId == listSegment[i].segment_id) {
+        // Thêm segment_name vào param
         param.segment_name = listSegment[i].segment_name;
-        break
+        if (!listSegment[i].remain_value) {
+          // Thêm  tổng giá trị chi tiết vòng quay vào param (remain_number * segment_value) vào param
+          param.remain_value = listSegment[i].segment_value * param.remain_number;
+        }
       }
     }
 

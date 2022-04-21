@@ -71,6 +71,7 @@ export default function WheelDetail({ query }) {
     setLoading(false)
   }
 
+  //tìm kiếm vòng quay
   const onSearch = async () => {
     setLoading(true);
     const result = await dispatch(actionWheelDetail.searchWheelDetailById(filter));
@@ -78,7 +79,7 @@ export default function WheelDetail({ query }) {
     setLoading(false)
   }
 
-
+  // xóa chi tiết vòng quay
   const handleDelete = async (record) => {
     let dataRecord = { ...record }
     const result = await dispatch(actionWheelDetail.deleteWheelDetailById(dataRecord));
@@ -90,6 +91,7 @@ export default function WheelDetail({ query }) {
     Message.Error("NOTYFICATON", "Xóa thất bại");
   };
 
+  //khôi phục dữ liệu các chi tiết vòng quay bị xóa
   const handleRestore = async (record) => {
     let dataRecord = { ...record }
     const result = await dispatch(actionWheelDetail.restoreWheelDetailById(dataRecord));
@@ -101,6 +103,7 @@ export default function WheelDetail({ query }) {
     Message.Error("NOTYFICATON", "Khôi phục chi tiết vòng quay thất bại !");
   };
 
+  // lưu lại tất cã data insert update delete gửi về api
   const onSaveListData = async () => {
     // const data = listWheelDetail
     for (let i = 0; i < listWheelDetail.length; i++) {

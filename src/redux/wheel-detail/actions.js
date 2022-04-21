@@ -13,7 +13,7 @@ export const searchWheelDetail = (payload) => async (dispatch, getState, { $http
     "no": 0,
     "goal_yn": 0,
     "remain_value": 0,
-    "remain_number":0,
+    "remain_number": 0,
     "inactived_date": "2022-04-11T06:06:50.653Z",
     "created_date": "2022-04-11T06:06:50.653Z",
     "datelastmaint": "2022-04-11T06:06:50.653Z",
@@ -84,18 +84,22 @@ export const insertWheelDetail = (payload) => async (dispatch, getState, { $http
     "datelastmaint": null,
     "is_approve": true
   }
+  console.log(' payload insertWheelDetail', payload)
+  console.log(' param insertWheelDetail', param)
 
 
   let state = getState()
-  let listWheelDetail = [...state.wheeldetail.listWheelDetail]
+  // let listWheelDetail = [...state.wheeldetail.listWheelDetail]
+  let { listWheelDetail, wheelCurtValue, wheelTotalValue } = state.wheeldetail
   listWheelDetail.push(param)
+  const wheelDetialTotalValue = sumTotalValueWheelDetail(listWheelDetail)
   const listData = resultDoneWheelDetail(listWheelDetail).map(item => ({ ...item, is_delete: false }));
 
   const dataObject = {
     'listData': listData,
-    // 'wheel_curt_value': data.data.wheel_curt_value,
-    // 'wheel_total_value': data.data.wheel_total_value,
-    // 'Wheel_detail_total_value': Wheel_detail_total_value
+    'wheel_curt_value': wheelCurtValue,
+    'wheel_total_value': wheelTotalValue,
+    'Wheel_detail_total_value': wheelDetialTotalValue
   }
 
   dispatch(setSearchWheelDetail(dataObject))
@@ -115,7 +119,7 @@ export const updateWheelDetail = (payload) => async (dispatch, getState, { $http
 
   let state = getState()
   // const a {}
-  let listWheelDetail = [...state.wheeldetail.listWheelDetail]
+  let { listWheelDetail, wheelCurtValue, wheelTotalValue } = state.wheeldetail
 
   for (let i = 0; i < listWheelDetail.length; i++) {
     if (listWheelDetail[i].key === param.key) {
@@ -125,12 +129,14 @@ export const updateWheelDetail = (payload) => async (dispatch, getState, { $http
     }
   }
 
+  const wheelDetialTotalValue = sumTotalValueWheelDetail(listWheelDetail)
+
   const listData = resultDoneWheelDetail(listWheelDetail);
   const dataObject = {
     'listData': listData,
-    // 'wheel_curt_value': data.data.wheel_curt_value,
-    // 'wheel_total_value': data.data.wheel_total_value,
-    // 'Wheel_detail_total_value': Wheel_detail_total_value
+    'wheel_curt_value': wheelCurtValue,
+    'wheel_total_value': wheelTotalValue,
+    'Wheel_detail_total_value': wheelDetialTotalValue
   }
 
   dispatch(setSearchWheelDetail(dataObject))
@@ -144,7 +150,7 @@ export const deleteWheelDetailById = (payload) => async (dispatch, getState, { $
     "key": payload.key
   }
   let state = getState()
-  let listWheelDetail = [...state.wheeldetail.listWheelDetail]
+  let { listWheelDetail, wheelCurtValue, wheelTotalValue } = state.wheeldetail
   for (let i = 0; i < listWheelDetail.length; i++) {
     if (listWheelDetail[i].key === param.key) {
       listWheelDetail[i].is_delete = true
@@ -152,13 +158,15 @@ export const deleteWheelDetailById = (payload) => async (dispatch, getState, { $
       break
     }
   }
+
+  const wheelDetialTotalValue = sumTotalValueWheelDetail(listWheelDetail)
   const listData = resultDoneWheelDetail(listWheelDetail);
 
   const dataObject = {
     'listData': listData,
-    // 'wheel_curt_value': data.data.wheel_curt_value,
-    // 'wheel_total_value': data.data.wheel_total_value,
-    // 'Wheel_detail_total_value': Wheel_detail_total_value
+    'wheel_curt_value': wheelCurtValue,
+    'wheel_total_value': wheelTotalValue,
+    'Wheel_detail_total_value': wheelDetialTotalValue
   }
 
   dispatch(setSearchWheelDetail(dataObject))
@@ -175,7 +183,7 @@ export const restoreWheelDetailById = (payload) => async (dispatch, getState, { 
     "key": payload.key
   }
   let state = getState()
-  let listWheelDetail = [...state.wheeldetail.listWheelDetail]
+  let { listWheelDetail, wheelCurtValue, wheelTotalValue } = state.wheeldetail
   for (let i = 0; i < listWheelDetail.length; i++) {
     if (listWheelDetail[i].key === param.key) {
       listWheelDetail[i].is_delete = false
@@ -184,15 +192,15 @@ export const restoreWheelDetailById = (payload) => async (dispatch, getState, { 
   }
   // const listData = resultDoneWheelDetail(listWheelDetail);
   // dispatch(setSearchWheelDetail(listData))
+  const wheelDetialTotalValue = sumTotalValueWheelDetail(listWheelDetail)
   const listData = resultDoneWheelDetail(listWheelDetail).map(item => ({ ...item, is_delete: false }));
 
   const dataObject = {
     'listData': listData,
-    // 'wheel_curt_value': data.data.wheel_curt_value,
-    // 'wheel_total_value': data.data.wheel_total_value,
-    // 'Wheel_detail_total_value': Wheel_detail_total_value
+    'wheel_curt_value': wheelCurtValue,
+    'wheel_total_value': wheelTotalValue,
+    'Wheel_detail_total_value': wheelDetialTotalValue
   }
-
   dispatch(setSearchWheelDetail(dataObject))
 
   return listData

@@ -62,6 +62,13 @@ export default function Wheel(props) {
   };
   const columns = [
     {
+      title: 'Key',
+      dataIndex: 'key',
+      key: 'key',
+      fixed: 'left',
+      width: 50
+    },
+    {
       title: 'ID',
       dataIndex: 'wheel_id',
       key: 'wheel_id',
