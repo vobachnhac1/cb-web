@@ -118,15 +118,16 @@ export default function WheelDetail({ query }) {
       'wheel_id': query.wheel_id,
       'data': listWheelDetail,
     }
-
-    const { success, list } = await dispatch(actionWheelDetail.SaveOnListWheelDetail(data));
+    setLoading(true);
+    const { success, listData } = await dispatch(actionWheelDetail.SaveOnListWheelDetail(data));
     if (success) {
       Message.Success("NOTYFICATON", "Đã lưu chi tiết vòng quay thành công.");
-      setListSearch(list)
-
-      return
+      setListSearch(listData)
+    } else {
+      Message.Error("NOTYFICATON", "Lưu chi tiết vòng quay thất bại");
     }
-    Message.Error("NOTYFICATON", "Lưu chi tiết vòng quay thất bại");
+    setLoading(false);
+
 
   }
 

@@ -42,6 +42,7 @@ export const updateSegment = (payload) => async (dispatch, getState, { $http }) 
     "segment_id": payload.segment_id,
     "segment_name": payload.segment_name,
     "segment_color": payload.segment_color,
+    "segment_value": payload.segment_value,
     "inactived_date": payload.inactived_date,
     "created_date": "2022-04-08T09:54:19.063Z",
     "datelastmaint": "2022-04-08T09:54:19.063Z",
