@@ -54,6 +54,7 @@ const ModalWheelDetail = (props) => {
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
   const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
   const listWheel = useSelector(gettersWheel.getStateLoadPageWheel) || [];
+  const noWheelDetail_length = useSelector(gettersWheelDetail.getStateWheelDetialNo);
   let wheelCurtValue = useSelector(gettersWheelDetail.getStateWheelCurtValue);
   let wheelTotalValue = useSelector(gettersWheelDetail.getStateWheelTotalValue);
   let wheelDetialTotalValue = useSelector(gettersWheelDetail.getStateWheelDetialTotalValue);
@@ -82,12 +83,12 @@ const ModalWheelDetail = (props) => {
       Message.Warning("NOTYFICATON", "Số thứ tự chưa hợp lệ hoặc chưa có nội dung");
       return;
     }
-    if (!isAdd && no > dataListSearch.length) {
-      Message.Warning("NOTYFICATON", "Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (dataListSearch.length));
+    if (!isAdd && no > noWheelDetail_length) {
+      Message.Warning("NOTYFICATON", "Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (noWheelDetail_length));
       return;
     }
-    if (isAdd && no > dataListSearch.length + 1) {
-      Message.Warning("NOTYFICATON", "Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (dataListSearch.length + 1));
+    if (isAdd && no > noWheelDetail_length + 1) {
+      Message.Warning("NOTYFICATON", "Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (noWheelDetail_length + 1));
       return;
     }
     if (goalYn === -1) {

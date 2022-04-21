@@ -4,7 +4,8 @@ import moment from 'moment';
 
 // hàm thị thi nội bộ
 const setSearchWheelDetail = (payload) => ({ type: TYPES.WHEELDETAIL_SEARCH, payload });
-// hàm xử lý được gọi từ bên ngoài
+// const setWheelDetailNo = (payload) => ({ type: TYPES.WHEELDETAIL_NO, payload });
+// // hàm xử lý được gọi từ bên ngoài
 export const searchWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
     "wheel_id": 0,
@@ -43,7 +44,7 @@ export const SaveOnListWheelDetail = (payload) => async (dispatch, getState, { $
     return false;
   }
 
-  const listData = resultDoneWheelDetail(data.data.list_wheel_dt);
+  const { listData, no } = resultDoneWheelDetail(data.data.list_wheel_dt);
   const Wheel_detail_total_value = sumTotalValueWheelDetail(data.data.list_wheel_dt)
 
   // dispatch(setSearchWheelDetail(listData))
@@ -60,7 +61,8 @@ export const SaveOnListWheelDetail = (payload) => async (dispatch, getState, { $
     'listData': listData,
     'wheel_curt_value': data.data.wheel_curt_value,
     'wheel_total_value': data.data.wheel_total_value,
-    'Wheel_detail_total_value': Wheel_detail_total_value
+    'Wheel_detail_total_value': Wheel_detail_total_value,
+    'no': no
   }
 
   dispatch(setSearchWheelDetail(dataObject))
@@ -85,8 +87,6 @@ export const insertWheelDetail = (payload) => async (dispatch, getState, { $http
     "is_approve": true,
     "is_delete": false
   }
-  console.log(' payload insertWheelDetail', payload)
-  console.log(' param insertWheelDetail', param)
 
 
   let state = getState()
@@ -94,18 +94,18 @@ export const insertWheelDetail = (payload) => async (dispatch, getState, { $http
   let { listWheelDetail, wheelCurtValue, wheelTotalValue } = state.wheeldetail
 
   listWheelDetail.push(param)
-  const listData = resultDoneWheelDetail(listWheelDetail)
+  const { listData, no } = resultDoneWheelDetail(listWheelDetail)
 
   const wheelDetialTotalValue = sumTotalValueWheelDetail(listWheelDetail)
   const wheelCurtValue_update = parseInt(wheelTotalValue) - parseInt(wheelDetialTotalValue)
 
-  console.log(' wheelDetialTotalValue insertWheelDetail', wheelDetialTotalValue)
-  console.log(' param wheelCurtValue_update', wheelCurtValue_update)
+
   const dataObject = {
     'listData': listData,
     'wheel_curt_value': wheelCurtValue_update,
     'wheel_total_value': wheelTotalValue,
-    'Wheel_detail_total_value': wheelDetialTotalValue
+    'Wheel_detail_total_value': wheelDetialTotalValue,
+    'no': no
   }
 
   dispatch(setSearchWheelDetail(dataObject))
@@ -132,20 +132,23 @@ export const updateWheelDetail = (payload) => async (dispatch, getState, { $http
       listWheelDetail[i].no = param.no
       listWheelDetail[i].goal_yn = param.goal_yn
       listWheelDetail[i].remain_number = param.remain_number
+      listWheelDetail[i].remain_value = param.remain_value
     }
   }
-
-  const wheelDetialTotalValue = sumTotalValueWheelDetail(listWheelDetail)
+ 
   const wheelCurtValue_update = parseInt(wheelTotalValue) - parseInt(wheelDetialTotalValue)
-  // test khúc này
-  console.log('wheelDetialTotalValue updateWheelDetail', wheelDetialTotalValue)
-  console.log('wheelTotalValue updateWheelDetail', wheelTotalValue)
-  const listData = resultDoneWheelDetail(listWheelDetail);
+  
+
+
+
+  const { listData, no } = resultDoneWheelDetail(listWheelDetail);
+
   const dataObject = {
     'listData': listData,
     'wheel_curt_value': wheelCurtValue_update,
     'wheel_total_value': wheelTotalValue,
-    'Wheel_detail_total_value': wheelDetialTotalValue
+    'Wheel_detail_total_value': wheelDetialTotalValue,
+    'no': no
   }
 
   dispatch(setSearchWheelDetail(dataObject))
@@ -170,19 +173,16 @@ export const deleteWheelDetailById = (payload) => async (dispatch, getState, { $
 
   const wheelDetialTotalValue = sumTotalValueWheelDetail(listWheelDetail)
   const wheelCurtValue_update = parseInt(wheelTotalValue) - parseInt(wheelDetialTotalValue)
-  const listData = resultDoneWheelDetail(listWheelDetail);
+  const { listData, no } = resultDoneWheelDetail(listWheelDetail);
 
   const dataObject = {
     'listData': listData,
     'wheel_curt_value': wheelCurtValue_update,
     'wheel_total_value': wheelTotalValue,
-    'Wheel_detail_total_value': wheelDetialTotalValue
+    'Wheel_detail_total_value': wheelDetialTotalValue,
+    'no': no
   }
-
   dispatch(setSearchWheelDetail(dataObject))
-
-  // const listData = resultDoneWheelDetail(listWheelDetail);
-  // dispatch(setSearchWheelDetail(listData))
   return listData
 }
 
@@ -192,8 +192,6 @@ export const restoreWheelDetailById = (payload) => async (dispatch, getState, { 
     "wheel_detail_id": payload.wheel_detail_id,
     "key": payload.key
   }
-  console.log('restoreWheelDetailById param', param)
-  console.log('restoreWheelDetailById payload', payload)
   let state = getState()
   let { listWheelDetail, wheelCurtValue, wheelTotalValue } = state.wheeldetail
   for (let i = 0; i < listWheelDetail.length; i++) {
@@ -206,13 +204,14 @@ export const restoreWheelDetailById = (payload) => async (dispatch, getState, { 
   // dispatch(setSearchWheelDetail(listData))
   const wheelDetialTotalValue = sumTotalValueWheelDetail(listWheelDetail)
   const wheelCurtValue_update = parseInt(wheelTotalValue) - parseInt(wheelDetialTotalValue)
-  const listData = resultDoneWheelDetail(listWheelDetail).map(item => ({ ...item }));
-
+  const { listData, no } = resultDoneWheelDetail(listWheelDetail)
+  // listData.map(item => ({ ...item }));
   const dataObject = {
     'listData': listData,
     'wheel_curt_value': wheelCurtValue_update,
     'wheel_total_value': wheelTotalValue,
-    'Wheel_detail_total_value': wheelDetialTotalValue
+    'Wheel_detail_total_value': wheelDetialTotalValue,
+    'no': no
   }
   dispatch(setSearchWheelDetail(dataObject))
 
@@ -241,98 +240,15 @@ export const filterWheelDetail = (payload) => async (dispatch, getState, { $http
   }
   const Wheel_detail_total_value = sumTotalValueWheelDetail(data.data.list_wheel_dt)
 
-  const listData = resultDoneWheelDetail(data.data.list_wheel_dt).map(item => ({ ...item, is_delete: false }));
-  console.log('Wheel_detail_total_value', Wheel_detail_total_value)
+  const { listData, no } = resultDoneWheelDetail(data.data.list_wheel_dt)
+  listData.map(item => ({ ...item, is_delete: false }));
   const dataObject = {
-    'listData': [
-      {
-        "wheel_id": 11,
-        "wheel_name": "vòng quay kỷ niệm 30/4 1/5",
-        "wheel_detail_id": 0,
-        "segment_id": 30,
-        "segment_name": "Trúng giải thưởng 10k",
-        "no": 1,
-        "goal_yn": 1,
-        "remain_value": 100000,
-        "remain_number": 10,
-        "inactived_date": null,
-        "created_date": "2022-04-21, 02:17:43",
-        "datelastmaint": null,
-        "is_approve": true,
-        "is_duplicated": false,
-        "is_lengthExceeded": false,
-        "key": 0,
-        "is_delete": false
-      },
-      {
-        "wheel_id": 11,
-        "wheel_name": "vòng quay kỷ niệm 30/4 1/5",
-        "wheel_detail_id": 0,
-        "segment_id": 31,
-        "segment_name": "Trúng giải thưởng 20k",
-        "no": 2,
-        "goal_yn": 1,
-        "remain_value": 200000,
-        "remain_number": 10,
-        "inactived_date": null,
-        "created_date": "2022-04-21, 02:17:54",
-        "datelastmaint": null,
-        "is_approve": true,
-        "is_duplicated": false,
-        "is_lengthExceeded": false,
-        "key": 1,
-        "is_delete": false
-      },
-      {
-        "wheel_id": 11,
-        "wheel_name": "vòng quay kỷ niệm 30/4 1/5",
-        "wheel_detail_id": 0,
-        "segment_id": 32,
-        "segment_name": "Trúng giải thưởng 30k",
-        "no": 3,
-        "goal_yn": 1,
-        "remain_value": 300000,
-        "remain_number": 10,
-        "inactived_date": null,
-        "created_date": "2022-04-21, 02:18:08",
-        "datelastmaint": null,
-        "is_approve": true,
-        "is_duplicated": false,
-        "is_lengthExceeded": false,
-        "key": 2,
-        "is_delete": false
-      },
-      {
-        "wheel_id": 11,
-        "wheel_name": "vòng quay kỷ niệm 30/4 1/5",
-        "wheel_detail_id": 0,
-        "segment_id": 33,
-        "segment_name": "Trúng giải thưởng 50k",
-        "no": 4,
-        "goal_yn": 1,
-        "remain_value": 500000,
-        "remain_number": 10,
-        "inactived_date": null,
-        "created_date": "2022-04-21, 02:18:20",
-        "datelastmaint": null,
-        "is_approve": true,
-        "is_duplicated": false,
-        "is_lengthExceeded": false,
-        "key": 3,
-        "is_delete": false
-      }
-    ],//listData,
-    'wheel_curt_value': 30000000, //data.data.wheel_curt_value
-    'wheel_total_value': 30000000,//data.data.wheel_total_value,
-    'Wheel_detail_total_value': Wheel_detail_total_value
+    'listData': listData,
+    'wheel_curt_value': data.data.wheel_curt_value,
+    'wheel_total_value': data.data.wheel_total_value,
+    'Wheel_detail_total_value': Wheel_detail_total_value,
+    'no': no
   }
-
-  // dispatch(setSearchWheelDetail(listData.map(item => ({ ...item, is_delete: false }))))
-  // return {
-  //   listData: listData,
-  //   wheel_curt_value: data.data.wheel_curt_value,
-  //   wheel_total_value: data.data.wheel_curt_value
-  // }
   dispatch(setSearchWheelDetail(dataObject))
   return dataObject
 }
@@ -365,14 +281,14 @@ export const searchWheelDetailById = (payload) => async (dispatch, getState, { $
         }
       }
     }
-
   }
-  const listData = resultDoneWheelDetail(fillterData);
+  const { listData } = resultDoneWheelDetail(fillterData);
   return listData
 }
 
+
 // sắp xết data và kiem tra data wheeldetail
-function resultDoneWheelDetail(data, listDeleted) {
+function resultDoneWheelDetail(data) {
   // kiem tra stt có tồn tại trong dataList.no, thì thêm 1 trường isDuplicate true/false
   let dataList = data
   let dataListDeleted = [];
@@ -388,7 +304,7 @@ function resultDoneWheelDetail(data, listDeleted) {
       dataListNoDeleted.push(dataList[i])
     }
   }
-
+  const no = dataListNoDeleted.length
   // Tìm các phần tử data trùng nhau của data chua xóa
   for (let i = 0; i < dataListNoDeleted.length; i++) {
     // dataList.includes(dataList.no)
@@ -402,13 +318,17 @@ function resultDoneWheelDetail(data, listDeleted) {
       dataListNoDeleted[i].is_lengthExceeded = true
     }
   }
-
   // sắp xếp thứ tự tứ bé đến lớn stt,
   let dataResult = dataListNoDeleted.sort(function (a, b) {
     return a.no - b.no
   }).concat(dataListDeleted).map((item, index) => ({ ...item, key: index }))
-  return dataResult
+  return {
+    'listData': dataResult,
+    'no': no
+  }
+  // return dataResult
 }
+
 // total value all wheell_Detail
 function sumTotalValueWheelDetail(data) {
   let dataList = data;
@@ -418,7 +338,6 @@ function sumTotalValueWheelDetail(data) {
       total += parseInt(dataList[i].remain_value)
       // (parseInt(dataList[i].remain_value) * parseInt(dataList[i].remain_number))
     }
-
   }
   return parseInt(total)
 }

@@ -16,6 +16,9 @@ export const getStateWheelTotalValue = ({ wheeldetail: { wheelTotalValue } }) =>
 export const getStateWheelDetialTotalValue = ({ wheeldetail: { wheelDetialTotalValue } }) => {
   return wheelDetialTotalValue ? wheelDetialTotalValue : 0
 };
+export const getStateWheelDetialNo = ({ wheeldetail: { no } }) => {
+  return no ? no : 1
+};
 
 
 

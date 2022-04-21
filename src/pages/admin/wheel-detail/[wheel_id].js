@@ -51,6 +51,7 @@ export default function WheelDetail({ query }) {
   const wheelCurtValue = useSelector(gettersWheelDetail.getStateWheelCurtValue);
   const wheelTotalValue = useSelector(gettersWheelDetail.getStateWheelTotalValue);
   const wheelDetialTotalValue = useSelector(gettersWheelDetail.getStateWheelDetialTotalValue);
+  const noWheelDetail_length = useSelector(gettersWheelDetail.getStateWheelDetialNo);
   const [listSearch, setListSearch] = useState([]);
 
   // gọi 1 function rồi theo dõi nhưng thay đổi của param đó
@@ -192,7 +193,7 @@ export default function WheelDetail({ query }) {
           {record.is_lengthExceeded ? <span style={{
             'marginLeft': '20px',
             'color': 'red'
-          }}>Stt nên nhỏ hơn sống tổng vòng quay đang có ({listWheelDetail.length}) </span> : ''}
+          }}>Stt nên nhỏ hơn sống tổng vòng quay đang có ({noWheelDetail_length}) </span> : ''}
         </p >
       ),
     },
