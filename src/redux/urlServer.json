@@ -28,5 +28,6 @@
   "updateWheelDetailById": "/wheel-detail/update-by-id",
   "updateWheelDetailUpdateList": "/wheel-detail/update-list",
   "approveWheelDetailById": "/wheel-detail/approve-by-id",
-  "deleteWheelDetailById": "/wheel-detail/delete-by-id"
+  "deleteWheelDetailById": "/wheel-detail/delete-by-id",
+  "getReward": "/wheel-detail/get-reward-with-wheel-id"
 }
