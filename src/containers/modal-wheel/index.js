@@ -85,6 +85,9 @@ const ModalSegment = (props) => {
     if (!remainValue || remainValue.lenght == 0) {
       msg_error.push("-Tổng giá trị giải thuưởng còn lại chưa có nội dung");
     }
+    if (remainValue !== totalValue) {
+      msg_error.push("-Tổng giá trị giải thưởng phải bằng tổng giá trị còn lại ");
+    }
     if (!outerRadius || outerRadius.lenght == 0) {
       msg_error.push("-Bán kính vòng quay chưa có nội dung");
     }

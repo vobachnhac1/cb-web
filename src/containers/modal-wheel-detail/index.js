@@ -4,11 +4,11 @@
 * Phone 0906.918.738
 * Created: 2022-04-08
 *------------------------------------------------------- */
-require("./style.module.less");
+// require("./style.module.less");
 
 import Header from '@/components/Head';
 import Layout from '@/layout';
-import { Card, Col, Form, Input, Modal, Row, Select, Typography, Radio } from 'antd';
+import { Card, Col, Form, Input, Modal, Row, Select, Typography, Radio, InputNumber } from 'antd';
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
@@ -48,10 +48,16 @@ const ModalWheelDetail = (props) => {
   const [segmentId, setSegmentId] = useState(record ? record.segment_id : "");
   const [no, setNo] = useState(record ? record.no : "")
   const [remainValue, setRemainValue] = useState(record ? record.remain_value : "")
+  const [remainNumber, setRemainNumber] = useState(record ? record.remain_number : "")
   const [goalYn, setGoalYn] = useState(record ? record.goal_yn : 0)
+
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
   const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
   const listWheel = useSelector(gettersWheel.getStateLoadPageWheel) || [];
+  const noWheelDetail_length = useSelector(gettersWheelDetail.getStateWheelDetialNo);
+  let wheelCurtValue = useSelector(gettersWheelDetail.getStateWheelCurtValue);
+  let wheelTotalValue = useSelector(gettersWheelDetail.getStateWheelTotalValue);
+  let wheelDetialTotalValue = useSelector(gettersWheelDetail.getStateWheelDetialTotalValue);
 
   useEffect(() => {
     initPage();
@@ -62,11 +68,13 @@ const ModalWheelDetail = (props) => {
     setWheelId(record ? record.wheel_id : queryWheel_id)
     setSegmentId(record ? record.segment_id : "")
     setNo(record ? record.no : "")
+    setRemainNumber(record ? record.remain_number : "")
     setRemainValue(record ? record.remain_value : "")
     setGoalYn(record ? record.goal_yn : -1)
   }
 
   const onCallback = async () => {
+    // kiểm tra form
     if (!segmentId) {
       Message.Warning("NOTYFICATON", "Kết quả trúng thưởng chưa được chọn");
       return;
@@ -75,23 +83,24 @@ const ModalWheelDetail = (props) => {
       Message.Warning("NOTYFICATON", "Số thứ tự chưa hợp lệ hoặc chưa có nội dung");
       return;
     }
-    if (!isAdd && no > dataListSearch.length) {
-      Message.Warning("NOTYFICATON", "Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (dataListSearch.length));
+    if (!isAdd && no > noWheelDetail_length) {
+      Message.Warning("NOTYFICATON", "Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (noWheelDetail_length));
       return;
     }
-    if (isAdd && no > dataListSearch.length + 1) {
-      Message.Warning("NOTYFICATON", "Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (dataListSearch.length + 1));
+    if (isAdd && no > noWheelDetail_length + 1) {
+      Message.Warning("NOTYFICATON", "Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (noWheelDetail_length + 1));
       return;
     }
     if (goalYn === -1) {
       Message.Warning("NOTYFICATON", "Trúng thưởng chưa được chọn");
       return;
     }
-    if (!remainValue || remainValue <= -1) {
+    if (!remainNumber || remainNumber <= -1) {
       Message.Warning("NOTYFICATON", "Số lần trúng thưởng chưa hợp lệ hoặc chưa có nội dung");
       return;
     }
 
+    // param
     let param = {
       ...record,
       wheel_detail_id: wheelDetailId ? wheelDetailId : 0,
@@ -99,9 +108,9 @@ const ModalWheelDetail = (props) => {
       segment_id: segmentId,
       no: no,
       goal_yn: goalYn,
-      remain_value: remainValue,
+      remain_number: remainNumber,
+      // remain_value: remainValue
     }
-
     //get wheelname
     for (let i = 0; i < listWheel.length; i++) {
       if (wheelId == listWheel[i].wheel_id) {
@@ -109,15 +118,24 @@ const ModalWheelDetail = (props) => {
         break
       }
     }
-
-    // segmentname
+    // segmentname, 
     for (let i = 0; i < listSegment.length; i++) {
       if (segmentId == listSegment[i].segment_id) {
+        // Thêm segment_name vào param
         param.segment_name = listSegment[i].segment_name;
+        if (!listSegment[i].remain_value) {
+          // Thêm  tổng giá trị chi tiết vòng quay vào param (remain_number * segment_value) vào param
+          param.remain_value = (listSegment[i].segment_value * param.remain_number);
+        }
         break
       }
     }
-
+    // kiểm tra số tiền remain_value có vượt quá Wheel_remain_value
+    if (param.remain_value > wheelCurtValue) {
+      Message.Warning("NOTYFICATON",
+        `Số tiền chi tiết vòng hiện tại là: ${param.remain_value} VND đã vượt quá số tiền còn lại của tổng vòng quay : ${wheelCurtValue} VND, Vui lòng chọn lại giải thưởng hoặc số lần trúng thưởng còn lại ! `);
+      return;
+    }
 
     // add
     if (isAdd) {
@@ -142,12 +160,20 @@ const ModalWheelDetail = (props) => {
       return;
     }
     Message.Error("NOTYFICATON", "UPDATE WHEELDETAIL FAILED");
-
-
   }
+
+  const validateRemainValue = (remainValue, wheelCurtValue, wheelTotalValue) => {
+    let sum = remainValue + wheelCurtValue
+    if (sum > wheelTotalValue) {
+      return true
+    }
+    return false
+  }
+
+
+
   const onCancel = () => {
     callback({ visible: false, data: dataListSearch });
-
   }
 
   function onChangeRadio(e) {
@@ -169,7 +195,7 @@ const ModalWheelDetail = (props) => {
     >
       <Card
         headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
-        title={isViews ? 'Xem chi tiết vòng quay' : (isAdd ? "Thêm Kết chi tiết vòng quay" : 'Cập nhật Kết chi tiết vòng quay')}
+        title={isViews ? 'Xem chi tiết vòng quay' : (isAdd ? "Thêm chi tiết vòng quay" : 'Cập nhật chi tiết vòng quay')}
         bordered={true}
         style={{ backgroundColor: '#FFFFFF' }}>
         <Form
@@ -187,9 +213,44 @@ const ModalWheelDetail = (props) => {
           labelAlign='left'
           size={'default'}
         >
+          <Row style={{ marginTop: 10 }}>
+            <Col {...layoutHeader} >
+              <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền vòng quay: '}</Text>
+            </Col>
+            <Col  {...layoutContent}>
+
+              <InputNumber
+                style={{ width: '100%' }}
+                addonAfter={"VND"}
+                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                disabled
+                value={wheelTotalValue}
+
+              />
+            </Col>
+
+          </Row>
+          <Row style={{ marginTop: 10 }}>
+            <Col {...layoutHeader} >
+              <Text className={classNames({ [styles['text-font']]: true })}>{'Tiền vòng quay còn lại: '}</Text>
+            </Col>
+            <Col  {...layoutContent}>
+              <InputNumber
+                style={{ width: '100%' }}
+                addonAfter={"VND"}
+                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                disabled
+                value={wheelCurtValue}
+
+              />
+            </Col>
+            {/* wheelCurtValue */}
+          </Row >
           {
             !isAdd ?
-              <Row >
+              <Row style={{ marginTop: 10 }} >
                 <Col {...layoutHeader} >
                   <Text className={classNames({ [styles['text-font']]: true })}>{'ID'}</Text>
                 </Col>
@@ -224,7 +285,6 @@ const ModalWheelDetail = (props) => {
             <Col  {...layoutContent}>
 
               <Select
-                disabled={isAdd ? false : true}
                 style={{ width: '100%' }}
                 defaultValue=""
                 value={
@@ -242,7 +302,7 @@ const ModalWheelDetail = (props) => {
             </Col>
             <Col  {...layoutContent}>
 
-              <Input disabled={isViews ? true : false} type="number" min="1" max="15" style={{ width: '100%' }} value={no} onChange={(text) => setNo(text.target.value)} />
+              <Input type="number" min="1" max="15" style={{ width: '100%' }} value={no} onChange={(text) => setNo(text.target.value)} />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
@@ -250,7 +310,7 @@ const ModalWheelDetail = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Trúng thưởng '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Radio.Group disabled={isViews ? true : false} onChange={onChangeRadio} value={goalYn ? goalYn : 0}>
+              <Radio.Group onChange={onChangeRadio} value={goalYn ? goalYn : 0}>
                 <Radio value={1}>Có</Radio>
                 <Radio value={0}>Không</Radio>
 
@@ -262,7 +322,7 @@ const ModalWheelDetail = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Số lần trúng thưởng còn lại '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Input disabled={isViews ? true : false} type="number" min={0} style={{ width: '100%' }} value={remainValue} onChange={(text) => setRemainValue(text.target.value)} />
+              <Input type="number" min={0} style={{ width: '100%' }} value={remainNumber} onChange={(text) => setRemainNumber(text.target.value)} />
             </Col>
           </Row>
         </Form>

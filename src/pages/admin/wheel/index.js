@@ -5,6 +5,8 @@
 * Created: 2022-04-07
 *------------------------------------------------------- */
 require("./style.module.less");
+import * as styles from './style.module.less';
+import * as classnames from 'classnames';
 import { useState, useEffect } from 'react';
 import LayoutHome from '@/containers/Home';
 import { Button, Card, Col, Row, Space, Table, Popconfirm, Input } from 'antd';
@@ -22,6 +24,7 @@ import Link from 'next/link';
 
 export default function Wheel(props) {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
   const listWheel = useSelector(gettersWheel.getStateLoadPageWheel) || [];
   const [filter, setFilter] = useState({
     wheel_name: null,
@@ -33,14 +36,18 @@ export default function Wheel(props) {
 
 
   const initPage = async () => {
+    setLoading(true);
     await dispatch(actionWheel.searchWheel());
+    setLoading(false);
   }
   const onSearch = async () => {
     const { wheel_name } = filter;
     if (__.isNil(wheel_name)) {
       initPage();
     } else {
+      setLoading(true);
       await dispatch(actionWheel.filterWheel(filter));
+      setLoading(false)
       return;
     }
   }
@@ -55,6 +62,13 @@ export default function Wheel(props) {
   };
   const columns = [
     {
+      title: 'Key',
+      dataIndex: 'key',
+      key: 'key',
+      fixed: 'left',
+      width: 50
+    },
+    {
       title: 'ID',
       dataIndex: 'wheel_id',
       key: 'wheel_id',
@@ -66,6 +80,7 @@ export default function Wheel(props) {
       dataIndex: 'wheel_name',
       key: 'wheel_name',
       fixed: 'left',
+      width: 400
     },
     {
       title: 'Số kết quả',
@@ -78,11 +93,38 @@ export default function Wheel(props) {
       title: 'Tổng giá trị giải',
       dataIndex: 'total_value',
       key: 'total_value',
+      width: 300
+
     },
     {
       title: 'Giá trị còn lại',
       dataIndex: 'remain_value',
       key: 'remain_value',
+      width: 300
+    },
+    {
+      title: 'Tài khoản khách hàng',
+      dataIndex: 'account_nbr',
+      key: 'account_nbr',
+      width: 220
+    },
+    {
+      title: 'Bán kính',
+      dataIndex: 'outer_radius',
+      key: 'outer_radius',
+      width: 100
+    },
+    {
+      title: 'Kích thước chữ',
+      dataIndex: 'text_fontsize',
+      key: 'text_fontsize',
+      width: 120
+    },
+    {
+      title: 'Góc quay',
+      dataIndex: 'rotation_angle',
+      key: 'rotation_angle',
+      width: 100
     },
     {
       title: 'Ngày hết hiệu lực',
@@ -95,7 +137,17 @@ export default function Wheel(props) {
         </p>
       }
     },
-
+    {
+      title: 'Ngày tạo',
+      dataIndex: 'created_date',
+      key: 'created_date',
+      width: 170,
+      render: (text, record) => {
+        return <p>
+          {moment(text).format('YYYY-MM-DD, hh:mm:ss')}
+        </p>
+      }
+    },
     {
       title: 'Action',
       key: 'action',
@@ -119,11 +171,7 @@ export default function Wheel(props) {
       ),
     },
   ];
-  const pagination = {
-    current: 1,
-    pageSize: 10,
-    total: listWheel.length,
-  };
+
 
   const [visible, setVisible] = useState(false);
 
@@ -182,11 +230,11 @@ export default function Wheel(props) {
         <Card>
           <Col span={48} style={{ marginTop: 10 }}>
             <Table
+              className="table_layout"
               columns={columns}
               dataSource={listWheel}
-              pagination={pagination}
               size='large'
-              loading={false}
+              loading={loading}
               scroll={{ x: 1300 }}
             />
           </Col>
