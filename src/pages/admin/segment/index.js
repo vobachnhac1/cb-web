@@ -26,6 +26,7 @@ import __ from 'lodash';
 
 export default function Segment(props) {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
   const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
   const [filter, setFilter] = useState({
@@ -40,18 +41,23 @@ export default function Segment(props) {
   }, [])
 
   const initPage = async () => {
+    setLoading(true);
     await dispatch(actionSegment.searchSegment());
     await dispatch(actionTopic.searchTopic());
+    setLoading(false);
   }
 
   const onSearch = async () => {
+
     const { segment_name, topic_id, from_date_act, to_date_act } = filter;
     if (__.isNil(segment_name) && __.isNil(topic_id) && __.isNil(from_date_act) && __.isNil(to_date_act)) {
       initPage();
     } else {
+      setLoading(true);
       await dispatch(actionSegment.filterSegment(filter));
-      return;
+      setLoading(false);
     }
+
   }
 
   const handleDelete = async (record) => {
@@ -66,7 +72,15 @@ export default function Segment(props) {
   };
   const columns = [
     {
-      title: 'Mã kết quả\n trúng thưởng',
+      title: 'Key',
+      dataIndex: 'key',
+      key: 'key',
+      fixed: 'left',
+      width: 50
+      // render: text => <a>{text}</a>,
+    },
+    {
+      title: 'ID',
       dataIndex: 'segment_id',
       key: 'segment_id',
       fixed: 'left',
@@ -149,12 +163,6 @@ export default function Segment(props) {
       ),
     },
   ];
-  const pagination = {
-    current: 1,
-    pageSize: 10,
-    total: listSegment.length || 0,
-
-  };
 
 
   const [visible, setVisible] = useState(false);
@@ -246,8 +254,7 @@ export default function Segment(props) {
               columns={columns}
               dataSource={listSegment}
               size='middle'
-              pagination={pagination}
-              loading={false}
+              loading={loading}
               scroll={{ x: 1300 }}
             />
           </Col>

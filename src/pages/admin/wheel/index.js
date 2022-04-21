@@ -24,6 +24,7 @@ import Link from 'next/link';
 
 export default function Wheel(props) {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
   const listWheel = useSelector(gettersWheel.getStateLoadPageWheel) || [];
   const [filter, setFilter] = useState({
     wheel_name: null,
@@ -35,14 +36,18 @@ export default function Wheel(props) {
 
 
   const initPage = async () => {
+    setLoading(true);
     await dispatch(actionWheel.searchWheel());
+    setLoading(false);
   }
   const onSearch = async () => {
     const { wheel_name } = filter;
     if (__.isNil(wheel_name)) {
       initPage();
     } else {
+      setLoading(true);
       await dispatch(actionWheel.filterWheel(filter));
+      setLoading(false)
       return;
     }
   }
@@ -159,11 +164,7 @@ export default function Wheel(props) {
       ),
     },
   ];
-  const pagination = {
-    current: 1,
-    pageSize: 10,
-    total: listWheel.length,
-  };
+
 
   const [visible, setVisible] = useState(false);
 
@@ -225,9 +226,8 @@ export default function Wheel(props) {
               className="table_layout"
               columns={columns}
               dataSource={listWheel}
-              pagination={pagination}
               size='large'
-              loading={false}
+              loading={loading}
               scroll={{ x: 1300 }}
             />
           </Col>
