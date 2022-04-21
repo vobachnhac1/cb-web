@@ -73,6 +73,7 @@ const ModalWheelDetail = (props) => {
   }
 
   const onCallback = async () => {
+    // kiểm tra form
     if (!segmentId) {
       Message.Warning("NOTYFICATON", "Kết quả trúng thưởng chưa được chọn");
       return;
@@ -98,6 +99,7 @@ const ModalWheelDetail = (props) => {
       return;
     }
 
+    // param
     let param = {
       ...record,
       wheel_detail_id: wheelDetailId ? wheelDetailId : 0,
@@ -106,9 +108,8 @@ const ModalWheelDetail = (props) => {
       no: no,
       goal_yn: goalYn,
       remain_number: remainNumber,
-      remain_value: remainValue
+      // remain_value: remainValue
     }
-
     //get wheelname
     for (let i = 0; i < listWheel.length; i++) {
       if (wheelId == listWheel[i].wheel_id) {
@@ -116,7 +117,6 @@ const ModalWheelDetail = (props) => {
         break
       }
     }
-
     // segmentname, 
     for (let i = 0; i < listSegment.length; i++) {
       if (segmentId == listSegment[i].segment_id) {
@@ -124,11 +124,17 @@ const ModalWheelDetail = (props) => {
         param.segment_name = listSegment[i].segment_name;
         if (!listSegment[i].remain_value) {
           // Thêm  tổng giá trị chi tiết vòng quay vào param (remain_number * segment_value) vào param
-          param.remain_value = listSegment[i].segment_value * param.remain_number;
+          param.remain_value = (listSegment[i].segment_value * param.remain_number);
         }
+        break
       }
     }
-
+    // kiểm tra số tiền remain_value có vượt quá Wheel_remain_value
+    if (param.remain_value > wheelCurtValue) {
+      Message.Warning("NOTYFICATON",
+        `Số tiền chi tiết vòng hiện tại là: ${param.remain_value} VND đã vượt quá số tiền còn lại của tổng vòng quay : ${wheelCurtValue} VND, Vui lòng chọn lại giải thưởng hoặc số lần trúng thưởng còn lại ! `);
+      return;
+    }
 
     // add
     if (isAdd) {
@@ -153,12 +159,20 @@ const ModalWheelDetail = (props) => {
       return;
     }
     Message.Error("NOTYFICATON", "UPDATE WHEELDETAIL FAILED");
-
-
   }
+
+  const validateRemainValue = (remainValue, wheelCurtValue, wheelTotalValue) => {
+    let sum = remainValue + wheelCurtValue
+    if (sum > wheelTotalValue) {
+      return true
+    }
+    return false
+  }
+
+
+
   const onCancel = () => {
     callback({ visible: false, data: dataListSearch });
-
   }
 
   function onChangeRadio(e) {
@@ -218,7 +232,7 @@ const ModalWheelDetail = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Số tiền còn lại: '}</Text>
+              <Text className={classNames({ [styles['text-font']]: true })}>{'Tiền vòng quay còn lại: '}</Text>
             </Col>
             <Col  {...layoutContent}>
               <InputNumber
@@ -287,7 +301,7 @@ const ModalWheelDetail = (props) => {
             </Col>
             <Col  {...layoutContent}>
 
-              <Input disabled={isViews ? true : false} type="number" min="1" max="15" style={{ width: '100%' }} value={no} onChange={(text) => setNo(text.target.value)} />
+              <Input type="number" min="1" max="15" style={{ width: '100%' }} value={no} onChange={(text) => setNo(text.target.value)} />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
@@ -295,7 +309,7 @@ const ModalWheelDetail = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Trúng thưởng '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Radio.Group disabled={isViews ? true : false} onChange={onChangeRadio} value={goalYn ? goalYn : 0}>
+              <Radio.Group onChange={onChangeRadio} value={goalYn ? goalYn : 0}>
                 <Radio value={1}>Có</Radio>
                 <Radio value={0}>Không</Radio>
 
@@ -307,7 +321,7 @@ const ModalWheelDetail = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Số lần trúng thưởng còn lại '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Input disabled={isViews ? true : false} type="number" min={0} style={{ width: '100%' }} value={remainNumber} onChange={(text) => setRemainNumber(text.target.value)} />
+              <Input type="number" min={0} style={{ width: '100%' }} value={remainNumber} onChange={(text) => setRemainNumber(text.target.value)} />
             </Col>
           </Row>
         </Form>

@@ -94,6 +94,12 @@ export default function WheelDetail({ query }) {
   //khôi phục dữ liệu các chi tiết vòng quay bị xóa
   const handleRestore = async (record) => {
     let dataRecord = { ...record }
+    // kiểm tra số tiền remain_value có vượt quá Wheel_remain_value
+    if (dataRecord.remain_value > wheelCurtValue) {
+      Message.Warning("NOTYFICATON",
+        `Vui lòng cập nhật lại giải thưởng hoặc số lần trúng thưởng còn lại trước khi khôi phục chi tiết vòng quay ! `);
+      return;
+    }
     const result = await dispatch(actionWheelDetail.restoreWheelDetailById(dataRecord));
     setListSearch(result)
     if (result) {
@@ -116,6 +122,7 @@ export default function WheelDetail({ query }) {
         return;
       }
     }
+
     // return;
     const data = {
       'wheel_id': query.wheel_id,
@@ -202,7 +209,7 @@ export default function WheelDetail({ query }) {
       )
     },
     {
-      title: 'Số lần trúng',
+      title: 'Số lần trúng còn lại',
       dataIndex: 'remain_number',
       key: 'remain_number',
       fixed: 'center',
@@ -231,21 +238,22 @@ export default function WheelDetail({ query }) {
     {
       title: 'Action',
       key: 'action',
-      width: 170,
+      width: 180,
       render: (text, record) => (
         <>
           {
             record.is_delete ?
               <Space size="middle">
-                <Button style={{ color: '#7cb305', borderColor: '#7cb305', borderWidth: 0.5 }} onClick={() => viewsDetail(record)} >Xem</Button>
-                <Popconfirm title="Sure to delete?" onConfirm={() => handleRestore(record)} >
+                {/* onClick={() => viewsDetail(record)} */}
+                <Button style={{ color: '#7cb305', borderColor: '#7cb305', borderWidth: 0.5, }} onClick={() => updateDetail(record)} >Xem</Button>
+                <Popconfirm title="Bạn có chắc?" onConfirm={() => handleRestore(record)} >
                   <Button style={{ color: '#faad14', borderColor: '#fa8c16', borderWidth: 0.5 }} >Khôi phục</Button>
                 </Popconfirm>
               </Space>
               :
               <Space size="middle">
                 <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateDetail(record)} >Cập nhật</Button>
-                <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)} >
+                <Popconfirm title="Bạn có chắc?" onConfirm={() => handleDelete(record)} >
                   <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
                 </Popconfirm>
               </Space>
@@ -328,9 +336,8 @@ export default function WheelDetail({ query }) {
               <Col className="gutter-row" span={2} style={{ marginBottom: 10 }}>
                 <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSaveListData}>Lưu lại</Button>
               </Col>
-              <Col className="gutter-row" span={5} offset={10}>
-                {/* offset={7} */}
-                <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền: '}</Text>
+              <Col className="gutter-row" span={5} offset={5}>
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền vòng quay: '}</Text>
                 <InputNumber style={{ width: '100%' }}
                   addonAfter={"VND"}
                   formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -339,7 +346,7 @@ export default function WheelDetail({ query }) {
                   value={wheelTotalValue} />
               </Col>
               <Col className="gutter-row" span={5} >
-                <Text className={classNames({ [styles['text-font']]: true })}>{'Tiền còn lại: '}</Text>
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Tiền vòng quay còn lại: '}</Text>
                 <InputNumber
                   style={{ width: '100%' }}
                   addonAfter={"VND"}
@@ -347,6 +354,16 @@ export default function WheelDetail({ query }) {
                   parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
                   disabled
                   value={wheelCurtValue} />
+              </Col>
+              <Col className="gutter-row" span={5} >
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền chi tiết vòng quay '}</Text>
+                <InputNumber
+                  style={{ width: '100%' }}
+                  addonAfter={"VND"}
+                  formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                  parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                  disabled
+                  value={wheelDetialTotalValue} />
               </Col>
             </Row>
 
