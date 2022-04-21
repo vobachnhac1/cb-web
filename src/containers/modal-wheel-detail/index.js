@@ -200,7 +200,7 @@ const ModalWheelDetail = (props) => {
         >
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền: '}</Text>
+              <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền vòng quay: '}</Text>
             </Col>
             <Col  {...layoutContent}>
 
@@ -218,7 +218,7 @@ const ModalWheelDetail = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Tiền còn lại: '}</Text>
+              <Text className={classNames({ [styles['text-font']]: true })}>{'Số tiền còn lại: '}</Text>
             </Col>
             <Col  {...layoutContent}>
               <InputNumber

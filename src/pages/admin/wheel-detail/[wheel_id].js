@@ -202,7 +202,7 @@ export default function WheelDetail({ query }) {
       )
     },
     {
-      title: 'Số lần trúng còn lại',
+      title: 'Số lần trúng',
       dataIndex: 'remain_number',
       key: 'remain_number',
       fixed: 'center',
@@ -210,11 +210,11 @@ export default function WheelDetail({ query }) {
 
     },
     {
-      title: 'Giá trị còn lại',
+      title: 'Tổng giá trị',
       dataIndex: 'remain_value',
       key: 'remain_value',
       fixed: 'center',
-      width: 150,
+      width: 200,
 
     },
     {
