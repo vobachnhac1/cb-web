@@ -59,7 +59,7 @@ export const updateSegment = (payload) => async (dispatch, getState, { $http }) 
 
 export const deleteSegmentById = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
-    "segment_id": payload.segment_id,
+    "segment_id": parseInt(payload.segment_id),
   }
   // call xuống backend url + param
   const result = await $http.delete(URLSERVER.deleteSegmentById, param);

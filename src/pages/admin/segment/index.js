@@ -64,7 +64,7 @@ export default function Segment(props) {
     let dataRecord = record
     const result = await dispatch(actionSegment.deleteSegmentById(dataRecord));
     if (result) {
-      initPage();
+      onSearch();
       Message.Success("NOTYFICATON", "DELETE TOPIC SUCCESS");
       return
     }
