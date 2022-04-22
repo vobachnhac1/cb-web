@@ -187,7 +187,7 @@ export default function Segment(props) {
   }
   const callbackModal = (params) => {
     setVisible(params.visible);
-    initPage();
+    onSearch()
   }
 
   return (
