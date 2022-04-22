@@ -82,12 +82,6 @@ const ModalSegment = (props) => {
     if (!totalValue || totalValue.lenght == 0) {
       msg_error.push("-Tổng giải thưởng chưa có nội dung");
     }
-    if (!remainValue || remainValue.lenght == 0) {
-      msg_error.push("-Tổng giá trị giải thuưởng còn lại chưa có nội dung");
-    }
-    if (remainValue !== totalValue) {
-      msg_error.push("-Tổng giá trị giải thưởng phải bằng tổng giá trị còn lại ");
-    }
     if (!outerRadius || outerRadius.lenght == 0) {
       msg_error.push("-Bán kính vòng quay chưa có nội dung");
     }
@@ -112,7 +106,7 @@ const ModalSegment = (props) => {
       "wheel_name": wheelName,
       "account_nbr": accountNbr,
       "total_value": totalValue,
-      "remain_value": remainValue,
+      "remain_value": isAdd ? totalValue : remainValue,
       "outer_radius": outerRadius,
       "text_fontsize": textFrontSize,
       "rotation_angle": ratationAngle,
@@ -122,7 +116,7 @@ const ModalSegment = (props) => {
       "is_approve": true
 
     }
-
+    
     // add
     if (isAdd) {
       const result = await dispatch(actionWheel.insertWheel(param));
@@ -206,10 +200,10 @@ const ModalSegment = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text type="number" className={classNames({ [styles['text-font']]: true })}>{'Số kết quả '}</Text>
+              <Text className={classNames({ [styles['text-font']]: true })}>{'Số kết quả '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Input style={{ width: '100%' }} value={numSegments} onChange={(text) => setNumSegments(text.target.value)} />
+              <Input type="number" style={{ width: '100%' }} value={numSegments} onChange={(text) => setNumSegments(text.target.value)} />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
@@ -234,8 +228,7 @@ const ModalSegment = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Giá trị còn lại '}</Text>
             </Col>
             <Col  {...layoutContent}>
-
-              <Input type="number" style={{ width: '100%' }} value={remainValue} onChange={(text) => setRemainValue(text.target.value)} />
+              <Input disabled type="number" style={{ width: '100%' }} value={isAdd ? totalValue : remainValue} onChange={(text) => setRemainValue(text.target.value)} />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>

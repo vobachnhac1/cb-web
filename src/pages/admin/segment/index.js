@@ -64,7 +64,7 @@ export default function Segment(props) {
     let dataRecord = record
     const result = await dispatch(actionSegment.deleteSegmentById(dataRecord));
     if (result) {
-      initPage();
+      onSearch();
       Message.Success("NOTYFICATON", "DELETE TOPIC SUCCESS");
       return
     }
@@ -92,19 +92,20 @@ export default function Segment(props) {
       dataIndex: 'segment_name',
       key: 'segment_name',
       fixed: 'left',
+      width: 300
 
     },
     {
       title: 'Chủ đề',
       dataIndex: 'topic_name',
       key: 'topic_name',
-      fixed: 'center',
+      width: 300
+
     },
     {
       title: 'Màu sắc',
       dataIndex: 'segment_color',
       key: 'segment_color',
-      fixed: 'center',
       width: 80,
       render: (text, record) => {
         return <p style={
@@ -121,7 +122,7 @@ export default function Segment(props) {
       title: 'Giá trị giải thưởng',
       dataIndex: 'segment_value',
       key: 'segment_value',
-      fixed: 'center',
+      width: 170,
     },
     {
       title: 'Ngày hết hiệu lực',
@@ -187,7 +188,7 @@ export default function Segment(props) {
   }
   const callbackModal = (params) => {
     setVisible(params.visible);
-    initPage();
+    onSearch()
   }
 
   return (
@@ -251,9 +252,10 @@ export default function Segment(props) {
         <Card>
           <Col span={48} style={{ marginTop: 10 }}>
             <Table
+              className="table_layout"
               columns={columns}
               dataSource={listSegment}
-              size='middle'
+              size='large'
               loading={loading}
               scroll={{ x: 1300 }}
             />

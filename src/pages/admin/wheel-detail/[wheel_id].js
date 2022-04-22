@@ -165,14 +165,14 @@ export default function WheelDetail({ query }) {
       dataIndex: 'wheel_name',
       key: 'wheel_name',
       fixed: 'left',
-      width: 350
+      width: 300
     },
     {
       title: 'Tên giải thưởng',
       dataIndex: 'segment_name',
       key: 'segment_name',
       fixed: 'center',
-      width: 350
+      width: 300
     },
     {
       title: 'STT',
@@ -222,7 +222,24 @@ export default function WheelDetail({ query }) {
       dataIndex: 'remain_value',
       key: 'remain_value',
       fixed: 'center',
-      width: 200,
+      width: 180,
+      render: (text, record) => (
+        <Space size="large" style={{
+          'display': 'flex',
+          'justifyContent': 'space-between'
+        }}>
+          <span>
+            {`${text}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </span>
+          <span style={{
+            'font-weight': '500'
+          }}>
+            VND
+          </span>
+        </Space>
+      )
+
+      // `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","
 
     },
     {

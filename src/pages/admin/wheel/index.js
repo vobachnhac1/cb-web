@@ -80,7 +80,7 @@ export default function Wheel(props) {
       dataIndex: 'wheel_name',
       key: 'wheel_name',
       fixed: 'left',
-      width: 400
+      width: 300
     },
     {
       title: 'Số kết quả',
@@ -93,14 +93,44 @@ export default function Wheel(props) {
       title: 'Tổng giá trị giải',
       dataIndex: 'total_value',
       key: 'total_value',
-      width: 300
+      width: 180,
+      render: (text, record) => (
+        <Space size="large" style={{
+          'display': 'flex',
+          'justifyContent': 'space-between'
+        }}>
+          <span>
+            {`${text}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </span>
+          <span style={{
+            'font-weight': '500'
+          }}>
+            VND
+          </span>
+        </Space>
+      )
 
     },
     {
       title: 'Giá trị còn lại',
       dataIndex: 'remain_value',
       key: 'remain_value',
-      width: 300
+      width: 180,
+      render: (text, record) => (
+        <Space size="large" style={{
+          'display': 'flex',
+          'justifyContent': 'space-between'
+        }}>
+          <span >
+            {`${text}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </span>
+          <span style={{
+            'font-weight': '500'
+          }}>
+            VND
+          </span>
+        </Space>
+      )
     },
     {
       title: 'Tài khoản khách hàng',

@@ -52,7 +52,7 @@ const ModalSegment = (props) => {
     setTopicId(record ? record.topic_id : "")
     setSegmentName(record ? record.segment_name : "")
     setSegmentColor(record ? record.segment_color : "")
-    setSegmentValue(record ? record.segment_value : 0)
+    setSegmentValue(record ? record.segment_value : "")
     setInactived_date(record ? record.inactived_date : "")
   }
 
@@ -68,15 +68,16 @@ const ModalSegment = (props) => {
     if (!segmentName || segmentName.lenght == 0) {
       msg_error.push("- Tên kết quả trúng thưởng chưa có nội dung");
     }
+    if (!segmentValue || segmentValue.lenght == 0) {
+      msg_error.push("- Tổng giá trị giải thưởng chưa có nội dung");
+    }
     if (!segmentColor || segmentColor.lenght == 0) {
       msg_error.push("- Màu sắc hiển thị chưa chọn");
     }
     if (!inactived_date || inactived_date.lenght == 0) {
       msg_error.push("- Hãy chọn ngày kết thúc giải thưởng");
     }
-    if (!segmentValue || segmentValue.lenght == 0) {
-      msg_error.push("- Tổng giá trị giải thưởng còn lại chưa có nội dung");
-    }
+
     if (msg_error && msg_error.length > 0) {
       Message.WarningArr("NOTYFICATON", msg_error);
       return
@@ -97,7 +98,7 @@ const ModalSegment = (props) => {
     if (isAdd) {
       const result = await dispatch(actionSegment.insertSegment(param));
       if (result) {
-        callback({ visible: false });
+        callback({ visible: false, });
         Message.Success("NOTYFICATON", "ADD NEW SEGMENT SUCCESS");
         return;
       }
