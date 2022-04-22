@@ -37,7 +37,7 @@ const ModalSegment = (props) => {
   const [topicId, setTopicId] = useState(record ? record.topic_id : "");
   const [segmentName, setSegmentName] = useState(record ? record.segment_name : "");
   const [segmentColor, setSegmentColor] = useState(record ? record.segment_color : "");
-  const [segmentValue, setSegmentValue] = useState(record ? record.segment_value : "");
+  const [segmentValue, setSegmentValue] = useState(record ? record.segment_value : 0);
   const [inactived_date, setInactived_date] = useState(record ? record.inactived_date : "");
 
   const dispatch = useDispatch();
@@ -68,15 +68,16 @@ const ModalSegment = (props) => {
     if (!segmentName || segmentName.lenght == 0) {
       msg_error.push("- Tên kết quả trúng thưởng chưa có nội dung");
     }
+    if (segmentValue == null) {
+      msg_error.push("- Tổng giá trị giải thưởng chưa có nội dung");
+    }
     if (!segmentColor || segmentColor.lenght == 0) {
       msg_error.push("- Màu sắc hiển thị chưa chọn");
     }
     if (!inactived_date || inactived_date.lenght == 0) {
       msg_error.push("- Hãy chọn ngày kết thúc giải thưởng");
     }
-    if (!segmentValue || segmentValue.lenght == 0) {
-      msg_error.push("- Tổng giá trị giải thưởng còn lại chưa có nội dung");
-    }
+
     if (msg_error && msg_error.length > 0) {
       Message.WarningArr("NOTYFICATON", msg_error);
       return
@@ -92,26 +93,8 @@ const ModalSegment = (props) => {
       is_approve: true,
       visible: false
     }
-
-    // add
-    if (isAdd) {
-      const result = await dispatch(actionSegment.insertSegment(param));
-      if (result) {
-        callback({ visible: false });
-        Message.Success("NOTYFICATON", "ADD NEW SEGMENT SUCCESS");
-        return;
-      }
-      Message.Error("NOTYFICATON", "ADD NEW SEGMENT FAILED");
-      return;
-    }
-    //edit
-    const result = await dispatch(actionSegment.updateSegment(param));
-    if (result) {
-      callback({ visible: false });
-      Message.Success("NOTYFICATON", "UPDATE SEGMENT SUCCESS");
-      return;
-    }
-    Message.Error("NOTYFICATON", "UPDATE SEGMENT FAILED");
+    console.log('param', param)
+    return
 
 
   }
