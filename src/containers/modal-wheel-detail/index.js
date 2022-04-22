@@ -179,21 +179,14 @@ const ModalWheelDetail = (props) => {
   }
 
   const onRemainNumber = (text) => {
-    // eelCurtValue_ = total - (remain_number * số tiền segment_value)
-    console.log('text.target.value', text.target.value)
     if (!text.target.value) {
       setWheelTotalValue_update(0)
       setWheelCurtValue_update(wheelCurtValue)
     } else {
       for (let i = 0; i < listSegment.length; i++) {
         if (segmentId == listSegment[i].segment_id) {
-
           let totalWheelDetailcur = parseInt(wheelTotalValue) - (parseInt(text.target.value) * parseInt(listSegment[i].segment_value))
           let totalWheelDetail = (parseInt(text.target.value) * parseInt(listSegment[i].segment_value))
-
-          // console.log(listSegment[i])
-          // console.log('setWheelCurtValue_update', listSegment[i].segment_value)
-          // console.log('setWheelCurtValue_update', total)
           setWheelCurtValue_update(totalWheelDetailcur)
           setWheelTotalValue_update(totalWheelDetail)
           break
