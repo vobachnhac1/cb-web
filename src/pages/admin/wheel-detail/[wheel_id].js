@@ -165,14 +165,14 @@ export default function WheelDetail({ query }) {
       dataIndex: 'wheel_name',
       key: 'wheel_name',
       fixed: 'left',
-      width: 350
+      width: 300
     },
     {
       title: 'Tên giải thưởng',
       dataIndex: 'segment_name',
       key: 'segment_name',
       fixed: 'center',
-      width: 350
+      width: 300
     },
     {
       title: 'STT',

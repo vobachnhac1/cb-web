@@ -49,6 +49,8 @@ const ModalWheelDetail = (props) => {
   const [no, setNo] = useState(record ? record.no : "")
   const [remainValue, setRemainValue] = useState(record ? record.remain_value : "")
   const [remainNumber, setRemainNumber] = useState(record ? record.remain_number : "")
+  const [wheelCurtValue_update, setWheelCurtValue_update] = useState(0)
+  const [wheelTotalValue_update, setWheelTotalValue_update] = useState(0)
   const [goalYn, setGoalYn] = useState(record ? record.goal_yn : 0)
 
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
@@ -64,6 +66,8 @@ const ModalWheelDetail = (props) => {
   }, [visible]);
 
   const initPage = async () => {
+    setWheelCurtValue_update(wheelCurtValue)
+    setWheelTotalValue_update(record ? record.remain_value : 0)
     setWheelDetailId(record ? record.wheel_detail_id : "")
     setWheelId(record ? record.wheel_id : queryWheel_id)
     setSegmentId(record ? record.segment_id : "")
@@ -174,14 +178,30 @@ const ModalWheelDetail = (props) => {
     Message.Error("NOTYFICATON", "UPDATE WHEELDETAIL FAILED");
   }
 
-  const validateRemainValue = (remainValue, wheelCurtValue, wheelTotalValue) => {
-    let sum = remainValue + wheelCurtValue
-    if (sum > wheelTotalValue) {
-      return true
-    }
-    return false
-  }
+  const onRemainNumber = (text) => {
+    // eelCurtValue_ = total - (remain_number * số tiền segment_value)
+    console.log('text.target.value', text.target.value)
+    if (!text.target.value) {
+      setWheelTotalValue_update(0)
+      setWheelCurtValue_update(wheelCurtValue)
+    } else {
+      for (let i = 0; i < listSegment.length; i++) {
+        if (segmentId == listSegment[i].segment_id) {
 
+          let totalWheelDetailcur = parseInt(wheelTotalValue) - (parseInt(text.target.value) * parseInt(listSegment[i].segment_value))
+          let totalWheelDetail = (parseInt(text.target.value) * parseInt(listSegment[i].segment_value))
+
+          // console.log(listSegment[i])
+          // console.log('setWheelCurtValue_update', listSegment[i].segment_value)
+          // console.log('setWheelCurtValue_update', total)
+          setWheelCurtValue_update(totalWheelDetailcur)
+          setWheelTotalValue_update(totalWheelDetail)
+          break
+        }
+      }
+    }
+    setRemainNumber(text.target.value)
+  }
 
 
   const onCancel = () => {
@@ -254,7 +274,7 @@ const ModalWheelDetail = (props) => {
                 formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                 parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
                 disabled
-                value={wheelCurtValue}
+                value={wheelCurtValue_update}
 
               />
             </Col>
@@ -334,7 +354,28 @@ const ModalWheelDetail = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Số lần trúng thưởng còn lại '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Input type="number" min={0} style={{ width: '100%' }} value={remainNumber} onChange={(text) => setRemainNumber(text.target.value)} />
+              <Input type="number" min={0} style={{ width: '100%' }} value={remainNumber} onChange={onRemainNumber} />
+            </Col>
+          </Row>
+          <Row style={{ marginTop: 10 }}>
+            <Col {...layoutHeader} >
+              <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền chi tiết vòng quay '}</Text>
+            </Col>
+            <Col  {...layoutContent}>
+
+              {/* <Input disabled type="number" style={{ width: '100%' }} value={wheelCurtValue_update === wheelCurtValue ? 0 : wheelCurtValue_update} /> */}
+
+
+              <InputNumber
+                style={{ width: '100%' }}
+                addonAfter={"VND"}
+                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                disabled
+                value={wheelTotalValue_update}
+
+              />
+
             </Col>
           </Row>
         </Form>
