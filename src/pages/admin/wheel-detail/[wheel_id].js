@@ -222,7 +222,24 @@ export default function WheelDetail({ query }) {
       dataIndex: 'remain_value',
       key: 'remain_value',
       fixed: 'center',
-      width: 200,
+      width: 180,
+      render: (text, record) => (
+        <Space size="large" style={{
+          'display': 'flex',
+          'justifyContent': 'space-between'
+        }}>
+          <span>
+            {`${text}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </span>
+          <span style={{
+            'font-weight': '500'
+          }}>
+            VND
+          </span>
+        </Space>
+      )
+
+      // `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","
 
     },
     {
