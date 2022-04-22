@@ -80,7 +80,7 @@ export default function Wheel(props) {
       dataIndex: 'wheel_name',
       key: 'wheel_name',
       fixed: 'left',
-      width: 400
+      width: 300
     },
     {
       title: 'Số kết quả',

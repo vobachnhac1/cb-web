@@ -82,12 +82,6 @@ const ModalSegment = (props) => {
     if (!totalValue || totalValue.lenght == 0) {
       msg_error.push("-Tổng giải thưởng chưa có nội dung");
     }
-    if (!remainValue || remainValue.lenght == 0) {
-      msg_error.push("-Tổng giá trị giải thuưởng còn lại chưa có nội dung");
-    }
-    if (remainValue !== totalValue) {
-      msg_error.push("-Tổng giá trị giải thưởng phải bằng tổng giá trị còn lại ");
-    }
     if (!outerRadius || outerRadius.lenght == 0) {
       msg_error.push("-Bán kính vòng quay chưa có nội dung");
     }
@@ -112,7 +106,7 @@ const ModalSegment = (props) => {
       "wheel_name": wheelName,
       "account_nbr": accountNbr,
       "total_value": totalValue,
-      "remain_value": remainValue,
+      "remain_value": isAdd ? totalValue : remainValue,
       "outer_radius": outerRadius,
       "text_fontsize": textFrontSize,
       "rotation_angle": ratationAngle,
@@ -122,7 +116,7 @@ const ModalSegment = (props) => {
       "is_approve": true
 
     }
-
+    
     // add
     if (isAdd) {
       const result = await dispatch(actionWheel.insertWheel(param));
