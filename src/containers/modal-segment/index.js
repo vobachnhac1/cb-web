@@ -176,6 +176,7 @@ const ModalSegment = (props) => {
             <Col  {...layoutContent}>
 
               <Select
+                disabled={isAdd ? false : true}
                 style={{ width: '100%' }}
                 defaultValue=""
                 value={
