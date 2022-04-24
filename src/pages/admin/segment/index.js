@@ -122,7 +122,21 @@ export default function Segment(props) {
       title: 'Giá trị giải thưởng',
       dataIndex: 'segment_value',
       key: 'segment_value',
-      width: 170,
+      width: 200,
+      render: (text, record) => (
+        <Space size="large" style={{
+          'display': 'flex',
+          'justifyContent': 'space-between',
+          'font-weight': '500'
+        }}>
+          <span>
+            {`${text}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </span>
+          <span >
+            VND
+          </span>
+        </Space>
+      )
     },
     {
       title: 'Ngày hết hiệu lực',
@@ -130,9 +144,9 @@ export default function Segment(props) {
       key: 'inactived_date',
       width: 170,
       render: (text, record) => {
-        return <p>
+        return <span>
           {!text ? '' : moment(text).format('YYYY-MM-DD, hh:mm:ss')}
-        </p>
+        </span>
       }
     },
     {
@@ -141,9 +155,9 @@ export default function Segment(props) {
       key: 'created_date',
       width: 170,
       render: (text, record) => {
-        return <p>
+        return <span>
           {moment(text).format('YYYY-MM-DD, hh:mm:ss')}
-        </p>
+        </span>
       }
     },
 

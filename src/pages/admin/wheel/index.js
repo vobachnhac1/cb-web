@@ -97,14 +97,13 @@ export default function Wheel(props) {
       render: (text, record) => (
         <Space size="large" style={{
           'display': 'flex',
-          'justifyContent': 'space-between'
+          'justifyContent': 'space-between',
+          'font-weight': '500'
         }}>
           <span>
             {`${text}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
           </span>
-          <span style={{
-            'font-weight': '500'
-          }}>
+          <span >
             VND
           </span>
         </Space>
@@ -119,14 +118,13 @@ export default function Wheel(props) {
       render: (text, record) => (
         <Space size="large" style={{
           'display': 'flex',
-          'justifyContent': 'space-between'
+          'justifyContent': 'space-between',
+          'font-weight': '500'
         }}>
           <span >
             {`${text}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
           </span>
-          <span style={{
-            'font-weight': '500'
-          }}>
+          <span >
             VND
           </span>
         </Space>
@@ -162,9 +160,9 @@ export default function Wheel(props) {
       key: 'inactived_date',
       width: 170,
       render: (text, record) => {
-        return <p>
+        return <span>
           {moment(text).format('YYYY-MM-DD, hh:mm:ss')}
-        </p>
+        </span>
       }
     },
     {
@@ -173,9 +171,9 @@ export default function Wheel(props) {
       key: 'created_date',
       width: 170,
       render: (text, record) => {
-        return <p>
+        return <span>
           {moment(text).format('YYYY-MM-DD, hh:mm:ss')}
-        </p>
+        </span>
       }
     },
     {

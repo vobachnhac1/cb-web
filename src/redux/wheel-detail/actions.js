@@ -110,6 +110,8 @@ export const updateWheelDetail = (payload) => async (dispatch, getState, { $http
     "wheel_detail_id": payload.wheel_detail_id,
     "no": parseInt(payload.no),
     "goal_yn": parseInt(payload.goal_yn),
+    "segment_id": parseInt(payload.segment_id),
+    "segment_name": payload.segment_name,
     "remain_value": parseInt(payload.remain_value),
     "remain_number": parseInt(payload.remain_number),
     "key": payload.key
@@ -125,6 +127,8 @@ export const updateWheelDetail = (payload) => async (dispatch, getState, { $http
       listWheelDetail[i].goal_yn = param.goal_yn
       listWheelDetail[i].remain_number = param.remain_number
       listWheelDetail[i].remain_value = param.remain_value
+      listWheelDetail[i].segment_id = param.segment_id
+      listWheelDetail[i].segment_name = param.segment_name
     }
   }
 
@@ -236,9 +240,6 @@ export const filterWheelDetail = (payload) => async (dispatch, getState, { $http
   // await listData.map(item => ({ ...item, is_delete: false }));
 
   const Wheel_detail_total_value = sumTotalValueWheelDetail(listData)
-
-  console.log('Wheel_detail_total_value', Wheel_detail_total_value)
-
 
   const dataObject = {
     'listData': listData,
