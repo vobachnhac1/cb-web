@@ -12,7 +12,7 @@ import moment from 'moment';
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
 import { actions as actionWheel } from '@/redux/wheel';
-
+import _ from 'lodash';
 
 const classNames = require("classnames");
 const styles = require("./style.module.less");
@@ -53,15 +53,15 @@ const ModalSegment = (props) => {
 
   const initPage = async () => {
     setWheelId(record ? record.wheel_id : "")
-    setWheelName(record ? record.wheel_name : "")
-    setNumSegments(record ? record.num_segments : "")
-    setAccountNbr(record ? record.account_nbr : "")
-    setTotalValue(record ? record.total_value : "")
-    setRemainValue(record ? record.remain_value : "")
-    setOuterRadius(record ? record.outer_radius : "")
-    setTextFrontSize(record ? record.text_fontsize : "")
-    setRatationAngle(record ? record.rotation_angle : "")
-    setInactived_date(record ? record.inactived_date : "")
+    setWheelName(record ? record.wheel_name.toString() : "")
+    setNumSegments(record ? record.num_segments.toString() : "")
+    setAccountNbr(record ? record.account_nbr.toString() : "")
+    setTotalValue(record ? record.total_value.toString() : "")
+    setRemainValue(record ? record.remain_value.toString() : "")
+    setOuterRadius(record ? record.outer_radius.toString() : "")
+    setTextFrontSize(record ? record.text_fontsize.toString() : "")
+    setRatationAngle(record ? record.rotation_angle.toString() : "")
+    setInactived_date(record ? record.inactived_date.toString() : "")
   }
 
   const onCallback = async () => {
@@ -76,19 +76,19 @@ const ModalSegment = (props) => {
     if (!numSegments || numSegments.lenght == 0) {
       msg_error.push("-Số kết quả trúng thưởng chưa có nội dung");
     }
-    if (!accountNbr || accountNbr.lenght == 0) {
+    if (!accountNbr) {
       msg_error.push("-Tài khoản trích tiền chưa có nội dung");
     }
-    if (!totalValue || totalValue.lenght == 0) {
+    if (!totalValue) {
       msg_error.push("-Tổng giải thưởng chưa có nội dung");
     }
-    if (!outerRadius || outerRadius.lenght == 0) {
+    if (!outerRadius) {
       msg_error.push("-Bán kính vòng quay chưa có nội dung");
     }
-    if (!textFrontSize || textFrontSize.lenght == 0) {
+    if (!textFrontSize) {
       msg_error.push("-Đặt kích thước chữ chưa có nội dung");
     }
-    if (!ratationAngle || ratationAngle.lenght == 0) {
+    if (!ratationAngle) {
       msg_error.push("-Đặt góc vòng quay chưa có nội dung");
     }
     if (!inactived_date || inactived_date.lenght == 0) {
@@ -116,7 +116,7 @@ const ModalSegment = (props) => {
       "is_approve": true
 
     }
-    
+
     // add
     if (isAdd) {
       const result = await dispatch(actionWheel.insertWheel(param));

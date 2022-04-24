@@ -247,9 +247,9 @@ export default function WheelDetail({ query }) {
       key: 'created_date',
       width: 170,
       render: (text, record) => {
-        return <pspan>
+        return <span>
           {moment(text).format('YYYY-MM-DD, hh:mm:ss')}
-        </pspan>
+        </span>
       }
     },
     {
