@@ -78,6 +78,9 @@ const ModalWheelDetail = (props) => {
   }
 
   const onCallback = async () => {
+    console.log('no', no)
+    console.log('noWheelDetail_length', noWheelDetail_length)
+
     let msg_error = [];
     // kiểm tra form
     if (!segmentId) {
@@ -142,7 +145,7 @@ const ModalWheelDetail = (props) => {
         break
       }
     }
-   
+
     //trường hợp thêm mới 
     if (isAdd && param.remain_value > wheelCurtValue) {
       msg_error.push(`-Số tiền chi tiết vòng hiện tại là: ${param.remain_value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} VND đã vượt quá số tiền còn lại của tổng vòng quay : ${wheelCurtValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} VND, Vui lòng chọn lại giải thưởng hoặc số lần trúng thưởng còn lại ! `)

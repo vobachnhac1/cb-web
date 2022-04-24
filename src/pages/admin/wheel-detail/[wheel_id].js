@@ -210,11 +210,11 @@ export default function WheelDetail({ query }) {
       )
     },
     {
-      title: 'Số lần trúng còn lại',
+      title: 'Số lần còn lại',
       dataIndex: 'remain_number',
       key: 'remain_number',
       fixed: 'center',
-      width: 150,
+      width: 100,
 
     },
     {

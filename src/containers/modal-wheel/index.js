@@ -228,7 +228,8 @@ const ModalSegment = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Giá trị còn lại '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Input disabled type="number" style={{ width: '100%' }} value={isAdd ? totalValue : remainValue} onChange={(text) => setRemainValue(text.target.value)} />
+              {/* value={isAdd ? totalValue : remainValue} */}
+              <Input disabled type="number" style={{ width: '100%' }} value={totalValue} onChange={(text) => setRemainValue(text.target.value)} />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
