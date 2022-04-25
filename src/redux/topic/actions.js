@@ -57,7 +57,8 @@ export const deleteTopic = (payload) => async (dispatch, getState, { $http }) =>
 
 export const approveTopic = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
-    "topic_id": payload.topic_id
+    "topic_id": payload.topic_id,
+    "status": payload.status_yn
   }
   const result = await $http.put(URLSERVER.approveTopicById, param);
   const { success, data } = result;
