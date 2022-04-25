@@ -98,7 +98,7 @@ export default function WheelDetail({ query }) {
     // kiểm tra số tiền remain_value có vượt quá Wheel_remain_value
     if (dataRecord.remain_value > wheelCurtValue) {
       Message.Warning("NOTYFICATON",
-        `Vui lòng cập nhật lại giải thưởng hoặc số lần trúng thưởng còn lại trước khi khôi phục chi tiết vòng quay ! `);
+        `Số tiền thưởng còn lại của vòng quay:${wheelCurtValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} VND không đủ để thực hiện việc khôi phục ! `);
       return;
     }
     const result = await dispatch(actionWheelDetail.restoreWheelDetailById(dataRecord));
@@ -210,11 +210,11 @@ export default function WheelDetail({ query }) {
       )
     },
     {
-      title: 'Số lần trúng còn lại',
+      title: 'Số lần còn lại',
       dataIndex: 'remain_number',
       key: 'remain_number',
       fixed: 'center',
-      width: 150,
+      width: 100,
 
     },
     {
@@ -226,14 +226,13 @@ export default function WheelDetail({ query }) {
       render: (text, record) => (
         <Space size="large" style={{
           'display': 'flex',
-          'justifyContent': 'space-between'
+          'justifyContent': 'space-between',
+          'font-weight': '500'
         }}>
           <span>
             {`${text}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
           </span>
-          <span style={{
-            'font-weight': '500'
-          }}>
+          <span>
             VND
           </span>
         </Space>
@@ -248,9 +247,9 @@ export default function WheelDetail({ query }) {
       key: 'created_date',
       width: 170,
       render: (text, record) => {
-        return <p>
+        return <span>
           {moment(text).format('YYYY-MM-DD, hh:mm:ss')}
-        </p>
+        </span>
       }
     },
     {
