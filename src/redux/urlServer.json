@@ -29,5 +29,10 @@
   "updateWheelDetailUpdateList": "/wheel-detail/update-list",
   "approveWheelDetailById": "/wheel-detail/approve-by-id",
   "deleteWheelDetailById": "/wheel-detail/delete-by-id",
-  "getReward": "/wheel-detail/get-reward-with-wheel-id"
+  "getReward": "/wheel-detail/get-reward-with-wheel-id",
+  "getRulesByFilter": "rules/select-rules-by-filter",
+  "insertRules": "rules/create",
+  "approveRules": "rules/approve",
+  "updateRules": "rules/update",
+  "deleteRules": "rules/delete"
 }
