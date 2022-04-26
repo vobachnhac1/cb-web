@@ -20,6 +20,7 @@ const classNames = require("classnames");
 const styles = require("./style.module.less");
 
 import ModalWheelDetail from '@/containers/modal-wheel-detail'
+
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
 import { actions as actionSegment } from '@/redux/segment';
@@ -307,12 +308,14 @@ export default function WheelDetail({ query }) {
     });
   }
 
-  const viewsDetail = (record) => {
+  const onViewsWheel = (record) => {
+
+    console.log('views wheel')
     setVisible(true);
     setBodyModel({
       record: record,
       isAdd: false,
-      isViews: true,
+      isViewsWheel: true,
       dataListSearch: listSearch
     });
   }
@@ -413,6 +416,9 @@ export default function WheelDetail({ query }) {
             </Col>
             <Col className="gutter-row" span={3}>
               <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>
+            </Col>
+            <Col className="gutter-row" span={3}>
+              <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onViewsWheel}>Xem vòng quay</Button>
             </Col>
           </Row>
           <Col span={48} style={{ marginTop: 10 }}>

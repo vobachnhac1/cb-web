@@ -40,7 +40,7 @@ const layoutContent = {
   lg: { span: 16, offset: 0 },
 };
 const ModalWheelDetail = (props) => {
-  const { callback, visible = false, bodyModel: { isAdd = false, record = null, queryWheel_id, dataListSearch, isViews } } = props;
+  const { callback, visible = false, bodyModel: { isAdd = false, record = null, queryWheel_id, dataListSearch, isViews, isViewsWheel } } = props;
   const dispatch = useDispatch();
 
   const [wheelDetailId, setWheelDetailId] = useState(record ? record.wheel_detail_id : "")
@@ -78,9 +78,6 @@ const ModalWheelDetail = (props) => {
   }
 
   const onCallback = async () => {
-    console.log('no', no)
-    console.log('noWheelDetail_length', noWheelDetail_length)
-
     let msg_error = [];
     // kiểm tra form
     if (!segmentId) {
@@ -98,7 +95,7 @@ const ModalWheelDetail = (props) => {
       // Message.Warning("NOTYFICATON", "Số thứ tự chưa hợp lệ hoặc chưa có nội dung");
       // return;
     }
-    if (!isAdd && no > noWheelDetail_length) {
+    if (!isAdd && no > noWheelDetail_length && !record.is_delete) {
       msg_error.push("-Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (noWheelDetail_length))
       // Message.Warning("NOTYFICATON", "Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (noWheelDetail_length));
       // return;
@@ -251,7 +248,7 @@ const ModalWheelDetail = (props) => {
     >
       <Card
         headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
-        title={isViews ? 'Xem chi tiết vòng quay' : (isAdd ? "Thêm chi tiết vòng quay" : 'Cập nhật chi tiết vòng quay')}
+        title={isViewsWheel ? 'Xem vòng quay' : (isAdd ? "Thêm chi tiết vòng quay" : 'Cập nhật chi tiết vòng quay')}
         bordered={true}
         style={{ backgroundColor: '#FFFFFF' }}>
         <Form
@@ -282,7 +279,6 @@ const ModalWheelDetail = (props) => {
                 parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
                 disabled
                 value={wheelTotalValue}
-
               />
             </Col>
 
