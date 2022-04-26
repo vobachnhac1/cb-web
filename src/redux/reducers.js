@@ -7,6 +7,7 @@ import wheelReducer from "@/redux/wheel";
 import segmentReducer from "@/redux/segment";
 import wheelDetailReducer from "@/redux/wheel-detail";
 import WheelRewardReducer from "@/redux/event-wheel";
+import RulesReducer from "@/redux/rules";
 
 const genPersistConfig = (key, properties) => ({
   key,
@@ -22,5 +23,6 @@ const rootReducer = combineReducers({
   segment: persistReducer(genPersistConfig("segment"), segmentReducer),
   wheeldetail: persistReducer(genPersistConfig("wheeldetail"), wheelDetailReducer),
   wheelreward: persistReducer(genPersistConfig("wheelreward"), WheelRewardReducer),
+  rules: persistReducer(genPersistConfig("rules"), RulesReducer),
 });
 export default rootReducer;

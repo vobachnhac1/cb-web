@@ -19,7 +19,6 @@ const { Sider } = Layout;
 import __isArray from 'lodash/isArray';
 import __isEmpty from 'lodash/isEmpty';
 import _ from 'lodash';
-import classes from './style.module.less';
 
 // qui tắc đặt tên => sub['tên'] (cha) => lấy ra con => nếu lấy 2/3 con thì ghi rõ thằng con được lấy
 
@@ -40,18 +39,18 @@ const menu = [
     title: 'Wheel',
     child: null,
   }, {
-    key: 'subWheelDetail',
-    parentKey: null,
-    path: '/admin/wheel-detail',
-    icon: <AliyunOutlined />,
-    title: 'Wheel Detail',
-    child: null,
-  }, {
     key: 'subSegment',
     parentKey: null,
     path: '/admin/segment',
     icon: <CodepenCircleOutlined />,
     title: 'Segment',
+    child: null,
+  }, {
+    key: 'subRules',
+    parentKey: null,
+    path: '/admin/rules',
+    icon: <AliyunOutlined />,
+    title: 'Rules',
     child: null,
   },
 ];
@@ -63,7 +62,7 @@ const permission = [
     parent: 'subWheel',
     child: null,
   }, {
-    parent: 'subWheelDetail',
+    parent: 'subRules',
     child: null,
   }, {
     parent: 'subSegment',

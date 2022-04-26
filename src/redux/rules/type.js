@@ -1,0 +1,7 @@
+// RULES
+export const RULES_SEARCH = 'RULES_SEARCH';
+export const RULES_INSERT = 'RULES_INSERT';
+export const RULES_UPDATE = 'RULES_UPDATE';
+export const RULES_DELETE = 'RULES_DELETE';
+export const RULES_APPROVE = 'RULES_APPROVE';
+export const RULES_SEARCH_BY_ID = 'RULES_SEARCH_BY_ID';
