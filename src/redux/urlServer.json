@@ -36,5 +36,7 @@
   "updateRules": "rules/update",
   "deleteRules": "rules/delete",
   "getWheelWithStateApprove": "rules/get-wheel-state-approve",
-  "getWheelDtStateApprove": "rules/get-wheel-detail-approve"
+  "getWheelDtStateApprove": "rules/get-wheel-detail-approve",
+  "updateWheelDetailWithRules": "wheel-detail/update-with-rules",
+  "generateRewardOfRules": "rules/generate-reward-rules"
 }

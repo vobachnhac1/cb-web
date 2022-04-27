@@ -129,6 +129,7 @@ export const getWheelWithStateApprove = (payload) => async (dispatch, getState, 
     return false
   }
 }
+
 export const getWheelDtStateApprove = (payload) => async (dispatch, getState, { $http }) => {
   try {
     const params = {
@@ -146,6 +147,31 @@ export const getWheelDtStateApprove = (payload) => async (dispatch, getState, { 
   } catch (error) {
     console.log('error: ', error);
     return []
+  }
+}
+
+export const updateWheelDetailWithRules = (payload) => async (dispatch, getState, { $http }) => {
+  try {
+    const result = await $http.post(URLSERVER.updateWheelDetailWithRules, payload);
+    const { success, data } = result;
+    if (!success || !data.success) {
+      return false;
+    }
+    return true;
+  } catch (error) {
+    return false
+  }
+}
+export const generateRewardOfRules = (payload) => async (dispatch, getState, { $http }) => {
+  try {
+    const result = await $http.post(URLSERVER.generateRewardOfRules, payload);
+    const { success, data } = result;
+    if (!success || !data.success) {
+      return false;
+    }
+    return true;
+  } catch (error) {
+    return false
   }
 }
 

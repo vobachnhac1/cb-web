@@ -31,7 +31,6 @@ export default function GenerateReward(props) {
   const [loading, setLoading] = useState(false);
   const [listWheelDt, setListWheelDt] = useState([]);
   const [listWheelDtTemp, setListWheelDtTemp] = useState([]);
-  // const listRules = useSelector(gettersRules.getStateLoadPageRules) || [];
   const listWheelApproved = useSelector(gettersRules.getListWheelApproved) || [];
   const [filter, setFilter] = useState({
     wheel_id: null,
@@ -49,7 +48,8 @@ export default function GenerateReward(props) {
     setLoading(true);
     await dispatch(actionsRules.getWheelWithStateApprove());
     setLoading(false);
-  }
+  };
+
   const onSearch = async () => {
     setEditingKey('')
     setIsEditData(false)
@@ -69,6 +69,56 @@ export default function GenerateReward(props) {
       setListWheelDtTemp([]);
     }
     setLoading(false);
+  };
+
+  const onSave = async () => {
+    setLoading(true);
+    if (listWheelDt.length > 0) {
+      const dataFormat = listWheelDt.map(item => ({
+        "wheel_id": item.wheel_id,
+        "wheel_detail_id": item.wheel_detail_id,
+        "total_reward": item.total_reward,
+      }));
+      const params = {
+        list_length: dataFormat.length,
+        wheel_id: __.head(dataFormat).wheel_id,
+        list_wheel_detail: dataFormat
+      }
+      const result = await dispatch(actionsRules.updateWheelDetailWithRules(params));
+      if (result) {
+        Message.Success("THÔNG BÁO", "CẬP NHẬT THÀNH CÔNG");
+        setIsEditData(false);
+        setListWheelDtTemp(listWheelDt);
+      } else {
+        Message.Error("THÔNG BÁO", "CẬP NHẬT THẤT BẠI");
+      }
+    }
+    setLoading(false);
+  };
+
+  const onGenerated = async () => {
+    setLoading(true);
+    const { wheel_id } = filter;
+    if (!wheel_id || wheel_id < 0) {
+      Message.Warning("THÔNG BÁO", "Vui lòng chọn vòng quay và nhấn nút 'Search'")
+      return;
+    }
+    if (!listWheelDt || listWheelDt && listWheelDt.length == 0) {
+      Message.Warning("THÔNG BÁO", "Không có dữ liệu, vui lòng chọn vòng quay và nhấn nút 'Search'")
+      return;
+    }
+    const recoreWheel = listWheelApproved.find(item => item.wheel_id == filter.wheel_id)
+    const result = await dispatch(actionsRules.generateRewardOfRules({
+      wheel_id: recoreWheel.wheel_id,
+      rules_id: recoreWheel.rules_id,
+    }));
+    if (!result) {
+      Message.Warning("THÔNG BÁO", "Vui lòng chọn thử lại")
+      return;
+    }
+    Message.Success("THÔNG BÁO", "Đã Tạo thành công");
+    onSearch();
+    setLoading(false);
   }
 
   const columns = [
@@ -77,10 +127,11 @@ export default function GenerateReward(props) {
       dataIndex: 'ord_numbers',
       key: 'ord_numbers',
       width: 30,
+      align: 'center',
       render: (text, record) => {
         return (
           <>
-            <Text> {parseInt(text)}</Text>
+            <Text style={{ flexDirection: "row", justifyContent: "center" }}> {parseInt(text)}</Text>
           </>
         )
       }
@@ -103,12 +154,14 @@ export default function GenerateReward(props) {
       title: 'Tổng số giải trúng',
       dataIndex: 'total_number',
       key: 'total_number',
+      align: 'center',
       width: 100,
       render: (text, record) => (
         <Space size="large" style={{
           'display': 'flex',
           'justifyContent': 'space-between',
-          fontWeight: '500'
+          fontWeight: '500',
+          justifyContent: 'center'
         }}>
           <Text>
             {`${text}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -119,14 +172,15 @@ export default function GenerateReward(props) {
       title: 'Giải còn lại',
       dataIndex: 'remain_number',
       key: 'remain_number',
-      editable: true,
+      align: 'center',
       width: 100,
       inputType: 'number',
       render: (text, record) => (
         <Space size="large" style={{
           'display': 'flex',
           'justifyContent': 'space-between',
-          fontWeight: '500'
+          fontWeight: '500',
+          justifyContent: 'center'
         }}>
           <Text>
             {`${text}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -138,11 +192,14 @@ export default function GenerateReward(props) {
       dataIndex: 'total_reward',
       key: 'total_reward',
       width: 100,
+      align: 'center',
+      editable: true,
       render: (text, record) => (
         <Space size="large" style={{
           'display': 'flex',
           'justifyContent': 'space-between',
-          fontWeight: '500'
+          fontWeight: '500',
+          justifyContent: 'center'
         }}>
           <Text>
             {`${text}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -175,24 +232,20 @@ export default function GenerateReward(props) {
       title: 'Action',
       width: 100,
       fixed: 'right',
+      align: 'center',
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (
-          <span>
-            <Typography.Link
-              onClick={() => save(record.key)}
-              style={{
-                marginRight: 8,
-              }}
-            >
-              Save
-            </Typography.Link>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <a>Cancel</a>
+          <div>
+            <Popconfirm title="Sure to save?" onConfirm={() => _save(record.key)}>
+              <a>Save</a>
             </Popconfirm>
-          </span>
+            <Popconfirm title="Sure to cancel?" onConfirm={_cancel} >
+              <a style={{ marginLeft: 10 }}>Cancel</a>
+            </Popconfirm>
+          </div>
         ) : (
-          <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
+          <Typography.Link disabled={editingKey !== ''} onClick={() => _edit(record)}>
             Edit
           </Typography.Link>
         );
@@ -200,7 +253,7 @@ export default function GenerateReward(props) {
     },
   ];
 
-  const onKeyPress = (event) => {
+  const _onKeyPress = (event) => {
     let code = event.keyCode || event.charCode;
     if ((code >= 48 && code <= 57) || code === 13) {
       setIsChangeText(true);
@@ -221,7 +274,7 @@ export default function GenerateReward(props) {
     ...restProps
   }) => {
     const inputNode = <Input
-      onKeyPress={onKeyPress}
+      onKeyPress={_onKeyPress}
       onChange={(text) => {
         if (!isChangeText) {
           setIsChangeText(true);
@@ -239,8 +292,19 @@ export default function GenerateReward(props) {
             rules={[
               {
                 required: true,
-                message: `Please Input ${title}!`,
+                message: `Vui lòng nhập ${title.toLowerCase()}!`,
               },
+              async () => ({
+                validator(_, value) {
+                  if (!value) {
+                    return Promise.reject();
+                  }
+                  if (value && value > record['remain_number']) {
+                    return Promise.reject("Số giải trúng > số giải còn lại");
+                  }
+                  return Promise.resolve();
+                },
+              })
             ]}
           >
             {inputNode}
@@ -258,20 +322,30 @@ export default function GenerateReward(props) {
 
   const isEditing = (record) => record.key === editingKey;
 
-  const edit = (record) => {
-    form.setFieldsValue(record);
-    setEditingKey(record.key);
+  const _edit = (record) => {
+    const { total_number } = record;
+    if (total_number > 0) {
+      form.setFieldsValue(record);
+      setEditingKey(record.key);
+    } else {
+      Message.Warning("THÔNG BÁO", "GIẢI THƯỞNG KHÔNG ĐƯỢC PHÉP CHỈNH SỬA");
+    }
   };
 
-  const cancel = () => {
+  const _cancel = () => {
     setEditingKey('');
   };
 
-  const save = async (key) => {
-    const row = await form.validateFields();
+  const _save = async (key) => {
+    const rowText = await form.validateFields();
+    if (rowText['total_reward'].trim().length === 0) {
+      return;
+    }
+    const row = {
+      total_reward: parseInt(rowText['total_reward'])
+    }
     const newData = [...listWheelDt];
     const index = newData.findIndex((item) => key === item.key);
-
     if (index > -1) {
       const item = newData[index];
       newData.splice(index, 1, { ...item, ...row });
@@ -280,14 +354,11 @@ export default function GenerateReward(props) {
       } else {
         setIsEditData(true)
       }
-      console.log('JSON.stringify(newData) == JSON.stringify(listWheelDtTemp): ', JSON.stringify(newData) == JSON.stringify(listWheelDtTemp));
       setListWheelDt(newData);
       setEditingKey('');
     } else {
       newData.push(row);
-      console.log('JSON.stringify(newData) == JSON.stringify(listWheelDtTemp): ', JSON.stringify(newData) == JSON.stringify(listWheelDtTemp));
       if (JSON.stringify(newData) == JSON.stringify(listWheelDtTemp)) {
-
         setIsEditData(false)
       } else {
         setIsEditData(true)
@@ -340,39 +411,11 @@ export default function GenerateReward(props) {
                   ))}
                 </Select>
               </Col>
-              <Col className="gutter-row" span={4}>
-                <Input
-                  placeholder='Input Rules Name'
-                  style={{ width: '100%' }}
-                  value={filter.rules_name}
-                  onChange={(text) => setFilter({ ...filter, rules_name: text.target.value })} />
-              </Col>
-              <Col className="gutter-row" span={8}>
-                <RangePicker
-                  onChange={(dates, dateString) => {
-                    if (dates) {
-                      setFilter({
-                        ...filter,
-                        from_date: dateString[0],
-                        to_date: dateString[1],
-                      });
-                    } else {
-                      setFilter({
-                        ...filter,
-                        from_date: null,
-                        to_date: null,
-                      });
-                    }
-                  }}
-                />
-              </Col>
+
             </Row>
             <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
               <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Generated</Button>
-              </Col>
-              <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Add</Button>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onGenerated}>Generated</Button>
               </Col>
               <Col className="gutter-row" span={3}>
                 <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Search</Button>
@@ -382,10 +425,13 @@ export default function GenerateReward(props) {
         </Card>
         <div style={{ marginTop: 20 }} />
         <Card>
-          <Col span={48} style={{ marginTop: 10 }}>
-            <Row gutter={[16, 24]} style={{ marginBottom: 10 }}>
-              <Col className="gutter-row" span={8}>
-                {isEditData && <Tag color={'error'}>{isEditData ? "Dữ liệu có thay đổi" : ""} </Tag>}
+          <Col span={48} >
+            <Row gutter={[16, 24]}>
+              <Col className="gutter-row" span={4} style={{ margin: 10, height: 50 }}>
+                {isEditData && <Tag style={{ fontSize: 18, padding: 10 }} color={'error'}>{isEditData ? "Dữ liệu có thay đổi" : ""} </Tag>}
+              </Col>
+              <Col className="gutter-row" span={4} style={{ margin: 10, height: 50 }}>
+                {isEditData && <Button type='primary' size='middle' style={{ width: '100%', height: 40 }} onClick={onSave}>Lưu Lại</Button>}
               </Col>
             </Row>
             <Form form={form} component={false}>
@@ -400,7 +446,7 @@ export default function GenerateReward(props) {
                 dataSource={listWheelDt}
                 size='small'
                 loading={loading}
-                scroll={{ x: 1300, y: 300 }}
+                scroll={{ x: 1300 }}
                 onRow={(record, rowIndex) => {
                   return {
                     onClick: event => { }, // click row
@@ -416,7 +462,7 @@ export default function GenerateReward(props) {
             </Form>
           </Col>
         </Card>
-      </Col>
+      </Col >
     </LayoutHome >
   )
 }
