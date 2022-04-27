@@ -11,10 +11,10 @@ export const getListWheelApproved = (state) => {
   if (listWheelApproved.length == 0) return [];
   return listWheelApproved.map((item, index) => ({ ...item, key: index })) || []
 };
-// export const getListWheelDetail = (state) => {
-//   const { rules: data } = state;
-//   const { listWheelDetail } = data;
-//   if (listWheelDetail.length == 0) return [];
-//   return listWheelDetail.map((item, index) => ({ ...item, key: index })) || []
-// };
+export const getListWheel = (state) => {
+  const { rules: data } = state;
+  const { listWheel = [] } = data;
+  if (listWheel.length == 0) return [];
+  return listWheel.map((item, index) => ({ ...item, key: index })) || []
+};
 /// lấy state

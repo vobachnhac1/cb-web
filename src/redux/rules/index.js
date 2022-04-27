@@ -11,7 +11,8 @@ export default buildReducer(
   {
     listRules: [],
     listWheelApproved: [],
-    listWheelDetail: []
+    listWheelDetail: [],
+    listWheel: []
   }, {
   [TYPES.RULES_SEARCH]: (state = listRules, payload) => {
     return {
@@ -27,6 +28,11 @@ export default buildReducer(
     return {
       ...state,
       listWheelDetail: payload
+    }
+  }, [TYPES.RULES_WHEEL]: (state, payload) => {
+    return {
+      ...state,
+      listWheel: payload
     }
   },
 });

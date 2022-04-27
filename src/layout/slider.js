@@ -60,6 +60,13 @@ const menu = [
         title: 'Rules',
         child: null,
       }, {
+        key: 'subWheelApprove',
+        parentKey: 'subRules',
+        path: '/admin/rules/wheel-approve',
+        icon: <AliyunOutlined />,
+        title: 'Wheel Approve',
+        child: null,
+      }, {
         key: 'subRulesReward',
         parentKey: 'subRules',
         path: '/admin/rules/generate-reward',
@@ -82,7 +89,7 @@ const permission = [
     child: null,
   }, {
     parent: 'subRules',
-    child: ['viewRules', 'subRulesReward']
+    child: ['viewRules', 'subWheelApprove', 'subRulesReward']
   },
 ];
 
