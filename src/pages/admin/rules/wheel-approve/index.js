@@ -204,7 +204,7 @@ export default function WheelApprove(props) {
       <Col style={{ marginBottom: 30 }}>
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
-          title="Vòng Quay"
+          title="Phê duyệt vòng quay"
           bordered={true}
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>
