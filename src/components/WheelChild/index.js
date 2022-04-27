@@ -15,29 +15,29 @@ import { getters as gettersEventWheel } from '@/redux/event-wheel';
 import * as Message from '@/components/message';
 
 const WheelChild = (props) => {
+  const { itemNumber } = props;
+
   const dispatch = useDispatch();
   const places = useSelector(gettersEventWheel.getContentReward);
   const isProcessing = useSelector(gettersEventWheel.getProccessing);
-  const [selectedItem, setSelectedItem] = useState(null);
   const wheelVars = {
     '--nb-item': places.length,
-    '--selected-item': selectedItem,
+    '--selected-item': itemNumber,
   };
-  const spinning = selectedItem !== null ? true : false;
+
+  const spinning = itemNumber !== null ? true : false;
   const selectItem = async () => {
     if (isProcessing.status) {
       Message.Warning("Thông Báo", "Đang lấy kết quả vòng quay");
       return;
     };
     Message.Info("Thông Báo", "Bắt đầu quay");
-    setSelectedItem(null);
-    props.onSelectItem();
+    props.onSelectItem(null);
     await dispatch(actionsEventWheel.setProcessing(true));
     const rsReward = await dispatch(actionsEventWheel.getRewardOfWheel());
     if (rsReward) {
-      setSelectedItem(rsReward.no);
       if (props.onSelectItem) {
-        props.onSelectItem(rsReward.no);
+        props.onSelectItem(parseInt(rsReward.no) - 1);
       }
     }
     setTimeout(async () => {

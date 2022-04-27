@@ -15,7 +15,7 @@ import { getters as gettersEventWheel } from '@/redux/event-wheel';
 import * as styles from './style.module.less';
 
 export default function Wheel() {
-  // const [places, setPlaces] = useState(arrDisplay);
+  const [selectedItem, setSelectedItem] = useState(null);
   const dispatch = useDispatch();
   useEffect(() => {
     initPage();
@@ -24,10 +24,12 @@ export default function Wheel() {
   const initPage = async () => {
     await dispatch(actionsEventWheel.getContentWheel());
   }
-  const onSelectItem = () => { }
+  const onSelectItem = (value) => {
+    setSelectedItem(value)
+  }
   return (
     <div className={styles['App']}>
-      <WheelChild onSelectItem={onSelectItem} />
+      <WheelChild onSelectItem={onSelectItem} itemNumber={selectedItem} />
     </div>
   )
 
