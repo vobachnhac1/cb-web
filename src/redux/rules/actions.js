@@ -4,6 +4,7 @@ import moment from 'moment';
 // hàm thị thi nội bộ
 const setRules = (payload) => ({ type: TYPES.RULES_SEARCH, payload });
 const setListWheelApproved = (payload) => ({ type: TYPES.RULES_WHEEL_APPROVED, payload });
+// const setListWheelDetail = (payload) => ({ type: TYPES.RULES_WHEEL_DETAIL, payload });
 
 // hàm xử lý được gọi từ bên ngoài
 
@@ -126,6 +127,25 @@ export const getWheelWithStateApprove = (payload) => async (dispatch, getState, 
   } catch (error) {
     console.log('error: ', error);
     return false
+  }
+}
+export const getWheelDtStateApprove = (payload) => async (dispatch, getState, { $http }) => {
+  try {
+    const params = {
+      wheel_id: payload
+    }
+    const result = await $http.get(URLSERVER.getWheelDtStateApprove, params);
+    const { success, data } = result;
+    if (!success || !data.success) {
+      // dispatch(setListWheelDetail([]))
+      return [];
+    }
+    const listWheelDetail = data.data;
+    // dispatch(setListWheelDetail(listWheelDetail))
+    return listWheelDetail;
+  } catch (error) {
+    console.log('error: ', error);
+    return []
   }
 }
 

@@ -35,5 +35,6 @@
   "approveRules": "rules/approve",
   "updateRules": "rules/update",
   "deleteRules": "rules/delete",
-  "getWheelWithStateApprove": "rules/get-wheel-state-approve"
+  "getWheelWithStateApprove": "rules/get-wheel-state-approve",
+  "getWheelDtStateApprove": "rules/get-wheel-detail-approve"
 }
