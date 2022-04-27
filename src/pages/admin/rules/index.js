@@ -9,10 +9,11 @@ import * as styles from './style.module.less';
 import * as classnames from 'classnames';
 import { useState, useEffect } from 'react';
 import LayoutHome from '@/containers/Home';
-import { Button, Card, Col, Row, Space, Table, Typography, Popconfirm, Input, Tag } from 'antd';
+import { Button, Card, Col, Row, Space, Table, Typography, Popconfirm, Input, Tag, DatePicker } from 'antd';
 import * as Message from '@/components/message';
 import ModalRules from '@/containers/modal-rules'
 const { Text } = Typography;
+const { RangePicker } = DatePicker;
 
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
@@ -23,7 +24,7 @@ import moment from 'moment';
 import __ from 'lodash';
 import Link from 'next/link';
 
-export default function Wheel(props) {
+export default function Rules(props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const listRules = useSelector(gettersRules.getStateLoadPageRules) || [];
@@ -41,7 +42,7 @@ export default function Wheel(props) {
 
   const initPage = async () => {
     setLoading(true);
-    await dispatch(actionsRules.filterRules(null));
+    await dispatch(actionsRules.filterRules(filter));
     setLoading(false);
   }
   const onSearch = async () => {
@@ -82,9 +83,7 @@ export default function Wheel(props) {
           </Text>
         </Space>
       )
-
     },
-
     {
       title: 'Trạng thái',
       dataIndex: 'status_rules_name',
@@ -201,6 +200,35 @@ export default function Wheel(props) {
           bordered={true}
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>
+            <Row gutter={[16, 24]}>
+              <Col className="gutter-row" span={4}>
+                <Input
+                  placeholder='Input Rules Name'
+                  style={{ width: '100%' }}
+                  value={filter.rules_name}
+                  onChange={(text) => setFilter({ ...filter, rules_name: text.target.value })} />
+              </Col>
+              <Col className="gutter-row" span={8}>
+                <RangePicker
+
+                  onChange={(dates, dateString) => {
+                    if (dates) {
+                      setFilter({
+                        ...filter,
+                        from_date: dateString[0],
+                        to_date: dateString[1],
+                      });
+                    } else {
+                      setFilter({
+                        ...filter,
+                        from_date: null,
+                        to_date: null,
+                      });
+                    }
+                  }}
+                />
+              </Col>
+            </Row>
             <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
               <Col className="gutter-row" span={3}>
                 <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addRules}>Thêm</Button>

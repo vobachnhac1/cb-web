@@ -34,5 +34,11 @@
   "insertRules": "rules/create",
   "approveRules": "rules/approve",
   "updateRules": "rules/update",
-  "deleteRules": "rules/delete"
+  "deleteRules": "rules/delete",
+  "getWheelWithStateApprove": "rules/get-wheel-state-approve",
+  "getWheelDtStateApprove": "rules/get-wheel-detail-approve",
+  "updateWheelDetailWithRules": "wheel-detail/update-with-rules",
+  "generateRewardOfRules": "rules/generate-reward-rules",
+  "selectWheelApproved": "rules/get-wheel-approve",
+  "updateStateWheel": "rules/update-status-the-wheel"
 }

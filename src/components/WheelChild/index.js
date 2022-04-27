@@ -15,33 +15,43 @@ import { getters as gettersEventWheel } from '@/redux/event-wheel';
 import * as Message from '@/components/message';
 
 const WheelChild = (props) => {
+  const { itemNumber, manager = null, arrItem = [] } = props;
+
   const dispatch = useDispatch();
-  const places = useSelector(gettersEventWheel.getContentReward);
+  const places = !manager ? useSelector(gettersEventWheel.getContentReward) : arrItem;
   const isProcessing = useSelector(gettersEventWheel.getProccessing);
-  const [selectedItem, setSelectedItem] = useState(null);
   const wheelVars = {
     '--nb-item': places.length,
-    '--selected-item': selectedItem,
+    '--selected-item': itemNumber,
   };
-  const spinning = selectedItem !== null ? true : false;
+
+  const spinning = itemNumber !== null ? true : false;
   const selectItem = async () => {
     if (isProcessing.status) {
       Message.Warning("Thông Báo", "Đang lấy kết quả vòng quay");
       return;
     };
     Message.Info("Thông Báo", "Bắt đầu quay");
-    setSelectedItem(null);
-    props.onSelectItem();
+    props.onSelectItem(null);
     await dispatch(actionsEventWheel.setProcessing(true));
-    const rsReward = await dispatch(actionsEventWheel.getRewardOfWheel());
-    if (rsReward) {
-      setSelectedItem(rsReward.no);
+    let rsReward;
+    if (!manager) {
+      rsReward = await dispatch(actionsEventWheel.getRewardOfWheel());
+      if (rsReward) {
+        if (props.onSelectItem) {
+          props.onSelectItem(parseInt(rsReward.no) - 1);
+        }
+      }
+    } else {
       if (props.onSelectItem) {
-        props.onSelectItem(rsReward.no);
+        const selectedItem = Math.floor(Math.random() * props.arrItem.length);
+        props.onSelectItem(selectedItem);
       }
     }
     setTimeout(async () => {
-      Message.Info("Thông Báo", `Bạn nhận được kết quả: ${rsReward.segment_name} `);
+      if (!manager) {
+        Message.Info("Thông Báo", `Bạn nhận được kết quả: ${rsReward.segment_name} `);
+      }
       await dispatch(actionsEventWheel.setProcessing(false));
     }, 4000);
   }
