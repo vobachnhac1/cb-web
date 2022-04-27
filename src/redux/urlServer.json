@@ -34,5 +34,6 @@
   "insertRules": "rules/create",
   "approveRules": "rules/approve",
   "updateRules": "rules/update",
-  "deleteRules": "rules/delete"
+  "deleteRules": "rules/delete",
+  "getWheelWithStateApprove": "rules/get-wheel-state-approve"
 }

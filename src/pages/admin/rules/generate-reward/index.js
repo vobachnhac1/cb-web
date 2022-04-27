@@ -9,11 +9,12 @@ import * as styles from './style.module.less';
 import * as classnames from 'classnames';
 import { useState, useEffect } from 'react';
 import LayoutHome from '@/containers/Home';
-import { Button, Card, Col, Row, Space, Table, Typography, Popconfirm, Input, Tag, DatePicker } from 'antd';
+import { Button, Card, Col, Row, Space, Table, Typography, Select, Input, Tag, DatePicker } from 'antd';
 import * as Message from '@/components/message';
 import ModalRules from '@/containers/modal-rules'
 const { Text } = Typography;
 const { RangePicker } = DatePicker;
+const { Option } = Select;
 
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
@@ -24,16 +25,16 @@ import moment from 'moment';
 import __ from 'lodash';
 import Link from 'next/link';
 
-export default function Rules(props) {
+export default function GenerateReward(props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const listRules = useSelector(gettersRules.getStateLoadPageRules) || [];
+  const listWheelApproved = useSelector(gettersRules.getListWheelApproved) || [];
   const [filter, setFilter] = useState({
-    rules_id: null,
-    rules_name: null,
+    wheel_id: null,
+    wheel_name: null,
     from_date: null,
     to_date: null,
-    status_rules: null,
   });
 
   useEffect(() => {
@@ -41,12 +42,14 @@ export default function Rules(props) {
   }, [])
 
   const initPage = async () => {
-    setLoading(true);
-    await dispatch(actionsRules.filterRules(filter));
-    setLoading(false);
+    // lấy danh sách wheel đã được Approved
+    // setLoading(true);
+    await dispatch(actionsRules.getWheelWithStateApprove());
+    // setLoading(false);
   }
   const onSearch = async () => {
-    initPage()
+    // search by filter
+
   }
   const columns = [
     {
@@ -61,14 +64,55 @@ export default function Rules(props) {
           </>
         )
       }
-    },
-    {
+    }, {
       title: 'Tên quy tắc',
       dataIndex: 'rules_name',
       key: 'rules_name',
       width: 100,
+    }, , {
+      title: 'Tên vòng quay ',
+      dataIndex: 'wheel_name',
+      key: 'wheel_name',
+      width: 100,
+    }, {
+      title: 'Tên giải thưởng',
+      dataIndex: 'segment_name',
+      key: 'segment_name',
+      width: 100,
     }, {
       title: 'Tổng số giải trúng',
+      dataIndex: 'total_number',
+      key: 'total_number',
+      width: 100,
+      render: (text, record) => (
+        <Space size="large" style={{
+          'display': 'flex',
+          'justifyContent': 'space-between',
+          fontWeight: '500'
+        }}>
+          <Text>
+            {`${text}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </Text>
+        </Space>
+      )
+    }, {
+      title: 'Giải còn lại',
+      dataIndex: 'remain_number',
+      key: 'remain_number',
+      width: 100,
+      render: (text, record) => (
+        <Space size="large" style={{
+          'display': 'flex',
+          'justifyContent': 'space-between',
+          fontWeight: '500'
+        }}>
+          <Text>
+            {`${text}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </Text>
+        </Space>
+      )
+    }, {
+      title: 'Giải được trúng theo đợt',
       dataIndex: 'total_reward',
       key: 'total_reward',
       width: 100,
@@ -84,22 +128,22 @@ export default function Rules(props) {
         </Space>
       )
     },
-    {
-      title: 'Trạng thái',
-      dataIndex: 'status_rules_name',
-      key: 'status_rules_name',
-      width: 50,
-      render: (text, record) => {
-        return (
-          // <>
-          //   <Text type={record.status_rules == 'Y' ? 'success' : "danger"} >{text}</Text>
-          // </>
-          <Tag color={record.status_rules == 'Y' ? 'green' : "red"} key={text}>
-            {text}
-          </Tag>
-        )
-      }
-    },
+    // {
+    //   title: 'Trạng thái',
+    //   dataIndex: 'status_rules_name',
+    //   key: 'status_rules_name',
+    //   width: 50,
+    //   render: (text, record) => {
+    //     return (
+    //       // <>
+    //       //   <Text type={record.status_rules == 'Y' ? 'success' : "danger"} >{text}</Text>
+    //       // </>
+    //       <Tag color={record.status_rules == 'Y' ? 'green' : "red"} key={text}>
+    //         {text}
+    //       </Tag>
+    //     )
+    //   }
+    // },
     {
       title: 'Ngày bắt đầu',
       dataIndex: 'from_date',
@@ -137,7 +181,6 @@ export default function Rules(props) {
     },
   ];
 
-
   const [visible, setVisible] = useState(false);
 
   const [bodyModel, setBodyModel] = useState({
@@ -167,6 +210,7 @@ export default function Rules(props) {
       is_delete: 'Y'
     }))
   }
+
   const approveRules = async (record) => {
     await dispatch(actionsRules.approveRules({
       rules_id: record.rules_id,
@@ -181,6 +225,7 @@ export default function Rules(props) {
       isAdd: false
     });
   }
+
   const onDoubleClick = (record, rowIndex) => {
     setVisible(true);
     setBodyModel({
@@ -193,14 +238,27 @@ export default function Rules(props) {
     <LayoutHome>
       <Col style={{ marginBottom: 30 }}>
         <ModalRules visible={visible} bodyModel={bodyModel} callback={callbackModal} />
-
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
-          title="PHÂN BỐ TỈ LỆ TRÚNG THƯỞNG"
+          title="MÀN HÌNH TẠO RANDOM GIẢI THƯỞNG"
           bordered={true}
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>
             <Row gutter={[16, 24]}>
+              <Col className="gutter-row" span={8}>
+                <Select
+                  allowClear
+                  placeholder="Tên vòng quay"
+                  style={{ width: '100%' }}
+                  defaultValue={null}
+                  value={filter.wheel_id}
+                  onChange={(value) => setFilter({ ...filter, wheel_id: value })}
+                >
+                  {listWheelApproved.map((item, key) => (
+                    <Select.Option value={item.wheel_id} key={key}> {item.wheel_name}</Select.Option>
+                  ))}
+                </Select>
+              </Col>
               <Col className="gutter-row" span={4}>
                 <Input
                   placeholder='Input Rules Name'
@@ -210,7 +268,6 @@ export default function Rules(props) {
               </Col>
               <Col className="gutter-row" span={8}>
                 <RangePicker
-
                   onChange={(dates, dateString) => {
                     if (dates) {
                       setFilter({
@@ -231,10 +288,13 @@ export default function Rules(props) {
             </Row>
             <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
               <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addRules}>Thêm</Button>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Generated</Button>
               </Col>
               <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Add</Button>
+              </Col>
+              <Col className="gutter-row" span={3}>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Search</Button>
               </Col>
             </Row>
           </Col>
@@ -245,7 +305,7 @@ export default function Rules(props) {
             <Table
               className="table_layout"
               columns={columns}
-              dataSource={listRules}
+              // dataSource={listRules}
               size='large'
               loading={loading}
               scroll={{ x: 1300 }}

@@ -3,6 +3,7 @@ import URLSERVER from '@/redux/urlServer.json';
 import moment from 'moment';
 // hàm thị thi nội bộ
 const setRules = (payload) => ({ type: TYPES.RULES_SEARCH, payload });
+const setListWheelApproved = (payload) => ({ type: TYPES.RULES_WHEEL_APPROVED, payload });
 
 // hàm xử lý được gọi từ bên ngoài
 
@@ -103,4 +104,28 @@ export const insertRules = (payload) => async (dispatch, getState, { $http }) =>
   return true;
 }
 // function export ra ngoài
+// rules-reward
+
+export const getWheelWithStateApprove = (payload) => async (dispatch, getState, { $http }) => {
+  try {
+    const params = {
+      wheel_name: null,
+      wheel_status: 'APR',
+      from_date_act: null,
+      to_date_act: null
+    }
+    const result = await $http.post(URLSERVER.getWheelWithStateApprove, params);
+    const { success, data } = result;
+    if (!success || !data.success) {
+      dispatch(setListWheelApproved([]))
+      return false;
+    }
+    const listWheel = data.data;
+    dispatch(setListWheelApproved(listWheel))
+    return true;
+  } catch (error) {
+    console.log('error: ', error);
+    return false
+  }
+}
 

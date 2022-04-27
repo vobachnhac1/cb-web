@@ -29,29 +29,45 @@ const menu = [
     parentKey: null,
     path: '/admin/topic',
     icon: <CodepenOutlined />,
-    title: 'Topic',
+    title: '1 Topic',
     child: null,
   }, {
     key: 'subWheel',
     parentKey: null,
     path: '/admin/wheel',
     icon: <CodeSandboxOutlined />,
-    title: 'Wheel',
+    title: '3 Wheel',
     child: null,
   }, {
     key: 'subSegment',
     parentKey: null,
     path: '/admin/segment',
     icon: <CodepenCircleOutlined />,
-    title: 'Segment',
+    title: '2 Segment',
     child: null,
   }, {
     key: 'subRules',
     parentKey: null,
     path: '/admin/rules',
     icon: <AliyunOutlined />,
-    title: 'Rules',
-    child: null,
+    title: '4 Rules',
+    child: [
+      {
+        key: 'viewRules',
+        parentKey: 'subRules',
+        path: '/admin/rules',
+        icon: <AliyunOutlined />,
+        title: 'Rules',
+        child: null,
+      }, {
+        key: 'subRulesReward',
+        parentKey: 'subRules',
+        path: '/admin/rules/generate-reward',
+        icon: <AliyunOutlined />,
+        title: 'Generate Reward',
+        child: null,
+      }
+    ],
   },
 ];
 const permission = [
@@ -59,14 +75,14 @@ const permission = [
     parent: 'subTopic',
     child: null,
   }, {
+    parent: 'subSegment',
+    child: null,
+  }, {
     parent: 'subWheel',
     child: null,
   }, {
     parent: 'subRules',
-    child: null,
-  }, {
-    parent: 'subSegment',
-    child: null,
+    child: ['viewRules', 'subRulesReward']
   },
 ];
 

@@ -14,11 +14,14 @@ import { actions as actionsEventWheel } from '@/redux/event-wheel';
 import { getters as gettersEventWheel } from '@/redux/event-wheel';
 import * as styles from './style.module.less';
 
-export default function Wheel() {
+export default function Wheel(props) {
+  const { manager = null, arrItem = [] } = props;
   const [selectedItem, setSelectedItem] = useState(null);
   const dispatch = useDispatch();
   useEffect(() => {
-    initPage();
+    if (!manager) {
+      initPage();
+    }
   }, []);
 
   const initPage = async () => {
@@ -29,7 +32,7 @@ export default function Wheel() {
   }
   return (
     <div className={styles['App']}>
-      <WheelChild onSelectItem={onSelectItem} itemNumber={selectedItem} />
+      <WheelChild arrItem={arrItem} onSelectItem={onSelectItem} itemNumber={selectedItem} roles={manager} />
     </div>
   )
 
