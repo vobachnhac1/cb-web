@@ -130,6 +130,11 @@ const ModalWheelDetail = (props) => {
       // Message.Warning("NOTYFICATON", "Trúng thưởng chưa được chọn");
       // return;
     }
+    if (!imgBase64) {
+      msg_error.push('-Hình chưa được chọn')
+      // Message.Warning("NOTYFICATON", "Trúng thưởng chưa được chọn");
+      // return;
+    }
 
 
     // param
@@ -295,8 +300,8 @@ const ModalWheelDetail = (props) => {
     </div>
   );
 
-  console.log('fileList', fileList)
-  console.log('setImgBase64', imgBase64)
+  // console.log('fileList', fileList)
+  // console.log('setImgBase64', imgBase64)
 
   return (
     <Modal

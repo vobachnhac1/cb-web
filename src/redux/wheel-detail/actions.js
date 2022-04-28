@@ -73,13 +73,16 @@ export const insertWheelDetail = (payload) => async (dispatch, getState, { $http
     "goal_yn": parseInt(payload.goal_yn),
     "remain_value": parseInt(payload.remain_value),
     "remain_number": parseInt(payload.remain_number),
+    "imgBase64": payload.imgBase64 ? payload.imgBase64 : null,
+    "url": payload.url ? payload.url : null,
     "inactived_date": null,
     "created_date": moment().format('YYYY-MM-DD, hh:mm:ss'),
     "datelastmaint": null,
     "is_approve": true,
     "is_delete": false
   }
-
+  console.log('payload', payload)
+  console.log('param',param)
 
   let state = getState()
   // let listWheelDetail = [...state.wheeldetail.listWheelDetail]
@@ -114,6 +117,8 @@ export const updateWheelDetail = (payload) => async (dispatch, getState, { $http
     "segment_name": payload.segment_name,
     "remain_value": parseInt(payload.remain_value),
     "remain_number": parseInt(payload.remain_number),
+    "imgBase64": payload.imgBase64 ? payload.imgBase64 : null,
+    "url": payload.url ? payload.url : null,
     "key": payload.key
   }
 
@@ -222,6 +227,8 @@ export const filterWheelDetail = (payload) => async (dispatch, getState, { $http
     "goal_yn": payload.goal_yn ? parseInt(payload.goal_yn) : null,
     "remain_value": payload.remain_value ? parseInt(payload.remain_value) : null,
     "remain_number": payload.remain_number ? parseInt(payload.remain_number) : null,
+    "imgBase64": payload.imgBase64 ? payload.imgBase64 : null,
+    "url": payload.url ? payload.url:null,
     "inactived_date": null,
     "created_date": null,
     "datelastmaint": null,
