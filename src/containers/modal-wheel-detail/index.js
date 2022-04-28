@@ -88,7 +88,9 @@ const ModalWheelDetail = (props) => {
     setRemainNumber(record ? record.remain_number : "")
     setRemainValue(record ? record.remain_value : 0)
     setGoalYn(record ? record.goal_yn : -1)
-    
+    setImgBase64(record ? record.imgBase64 : '')
+    setUrl(record ? record.url : '')
+
     //xử lý file hình
     setFileList([])
     setPreviewImage('')
@@ -139,7 +141,7 @@ const ModalWheelDetail = (props) => {
       no: no,
       goal_yn: goalYn,
       remain_number: remainNumber,
-      imgBase64: '',
+      imgBase64: imgBase64,
       url: url
     }
     //get wheelname
@@ -266,15 +268,13 @@ const ModalWheelDetail = (props) => {
   const handleChange = async ({ fileList }) => {
 
     for (let i = 0; i < fileList.length; i++) {
-      let database64 = await getBase64(fileList[i].originFileObj)
-      setImgBase64(database64)
-      break
+      //status: "done"
+      if (fileList[i].status === "done") {
+        let database64 = await getBase64(fileList[i].originFileObj)
+        setImgBase64(database64)
+        break
+      }
     }
-
-
-    // setImgBase64(fileList[0].thumbUrl)
-
-    // console.log('check file', typeof fileList[0])
 
     setFileList(fileList)
   };
