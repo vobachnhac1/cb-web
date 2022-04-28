@@ -310,14 +310,18 @@ export default function WheelDetail({ query }) {
 
   const onViewsWheel = (record) => {
 
-    console.log('views wheel')
-    setVisible(true);
-    setBodyModel({
-      record: record,
-      isAdd: false,
-      isViewsWheel: true,
-      dataListSearch: listSearch
-    });
+    if (noWheelDetail_length == 14) {
+      setVisible(true);
+      setBodyModel({
+        record: record,
+        isAdd: false,
+        isViewsWheel: true,
+      });
+    } else {
+      Message.Error("NOTYFICATON", "Vòng quay chưa đủ 14 chi tiết vòng quay !!!");
+      return;
+    }
+
   }
 
 

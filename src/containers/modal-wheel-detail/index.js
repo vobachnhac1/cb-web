@@ -12,6 +12,7 @@ import { Card, Col, Form, Input, Modal, Row, Select, Typography, Radio, InputNum
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
+import Wheel from '@/pages/wheel'
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
 import { getters as gettersTopic } from '@/redux/topic';
@@ -57,6 +58,8 @@ const ModalWheelDetail = (props) => {
   const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
   const listWheel = useSelector(gettersWheel.getStateLoadPageWheel) || [];
   const noWheelDetail_length = useSelector(gettersWheelDetail.getStateWheelDetialNo);
+  const listWheelDetail = useSelector(gettersWheelDetail.getStateLoadPageWheelDetail) || [];
+
   let wheelCurtValue = useSelector(gettersWheelDetail.getStateWheelCurtValue);
   let wheelTotalValue = useSelector(gettersWheelDetail.getStateWheelTotalValue);
   let wheelDetialTotalValue = useSelector(gettersWheelDetail.getStateWheelDetialTotalValue);
@@ -251,6 +254,8 @@ const ModalWheelDetail = (props) => {
         title={isViewsWheel ? 'Xem vòng quay' : (isAdd ? "Thêm chi tiết vòng quay" : 'Cập nhật chi tiết vòng quay')}
         bordered={true}
         style={{ backgroundColor: '#FFFFFF' }}>
+          {/* test wheel */}
+        <Wheel arrItem={listWheelDetail} manager={'manager'} />
         <Form
           labelCol={{
             span: 6,
