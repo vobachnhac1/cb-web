@@ -9,8 +9,9 @@ const setEventWheelProccessing = (proccess, message) => ({ type: TYPES.EVENT_PRO
 export const getContentWheel = (payload) => async (dispatch, getState, { $http }) => {
   // call xuống backend url + param 
   const param = {
-    wheel_id: 12,
-    rules_id: 1
+    ...payload,
+    wheel_id: payload.wheel_id,
+    rules_id: null
   }
   const result = await $http.post(URLSERVER.searchWheelDetailByfilter, param);
   const { success, data } = result;
