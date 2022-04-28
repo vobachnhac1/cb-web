@@ -19,12 +19,15 @@ const WheelChild = (props) => {
 
   const dispatch = useDispatch();
   const places = !manager ? useSelector(gettersEventWheel.getContentReward) : arrItem;
+
   const isProcessing = useSelector(gettersEventWheel.getProccessing);
   const wheelVars = {
     '--nb-item': places.length,
     '--selected-item': itemNumber,
   };
-
+  useEffect(() => {
+    dispatch(actionsEventWheel.setProcessing(false));
+  }, []);
   const spinning = itemNumber !== null ? true : false;
   const selectItem = async () => {
     if (isProcessing.status) {
@@ -39,7 +42,7 @@ const WheelChild = (props) => {
       rsReward = await dispatch(actionsEventWheel.getRewardOfWheel());
       if (rsReward) {
         if (props.onSelectItem) {
-          props.onSelectItem(parseInt(rsReward.no) - 1);
+          props.onSelectItem(places.length - (parseInt(rsReward.no)));
         }
       }
     } else {
