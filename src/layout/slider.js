@@ -19,7 +19,6 @@ const { Sider } = Layout;
 import __isArray from 'lodash/isArray';
 import __isEmpty from 'lodash/isEmpty';
 import _ from 'lodash';
-import classes from './style.module.less';
 
 // qui tắc đặt tên => sub['tên'] (cha) => lấy ra con => nếu lấy 2/3 con thì ghi rõ thằng con được lấy
 
@@ -30,29 +29,52 @@ const menu = [
     parentKey: null,
     path: '/admin/topic',
     icon: <CodepenOutlined />,
-    title: 'Topic',
+    title: '1 Topic',
     child: null,
   }, {
     key: 'subWheel',
     parentKey: null,
     path: '/admin/wheel',
     icon: <CodeSandboxOutlined />,
-    title: 'Wheel',
-    child: null,
-  }, {
-    key: 'subWheelDetail',
-    parentKey: null,
-    path: '/admin/wheel-detail',
-    icon: <AliyunOutlined />,
-    title: 'Wheel Detail',
+    title: '3 Wheel',
     child: null,
   }, {
     key: 'subSegment',
     parentKey: null,
     path: '/admin/segment',
     icon: <CodepenCircleOutlined />,
-    title: 'Segment',
+    title: '2 Segment',
     child: null,
+  }, {
+    key: 'subRules',
+    parentKey: null,
+    path: '/admin/rules',
+    icon: <AliyunOutlined />,
+    title: '4 Rules',
+    child: [
+      {
+        key: 'viewRules',
+        parentKey: 'subRules',
+        path: '/admin/rules',
+        icon: <AliyunOutlined />,
+        title: 'Rules',
+        child: null,
+      }, {
+        key: 'subWheelApprove',
+        parentKey: 'subRules',
+        path: '/admin/rules/wheel-approve',
+        icon: <AliyunOutlined />,
+        title: 'Wheel Approve',
+        child: null,
+      }, {
+        key: 'subRulesReward',
+        parentKey: 'subRules',
+        path: '/admin/rules/generate-reward',
+        icon: <AliyunOutlined />,
+        title: 'Generate Reward',
+        child: null,
+      }
+    ],
   },
 ];
 const permission = [
@@ -60,14 +82,14 @@ const permission = [
     parent: 'subTopic',
     child: null,
   }, {
+    parent: 'subSegment',
+    child: null,
+  }, {
     parent: 'subWheel',
     child: null,
   }, {
-    parent: 'subWheelDetail',
-    child: null,
-  }, {
-    parent: 'subSegment',
-    child: null,
+    parent: 'subRules',
+    child: ['viewRules', 'subWheelApprove', 'subRulesReward']
   },
 ];
 

@@ -4,72 +4,35 @@
 * Phone 0906.918.738
 * Created: 2022-04-04
 *------------------------------------------------------- */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import WheelChild from '@/components/WheelChild';
 require("./style.module.less");
 const classNames = require("classnames");
-
+// khai báo store
+import { useSelector, useDispatch } from 'react-redux';
+import { actions as actionsEventWheel } from '@/redux/event-wheel';
+import { getters as gettersEventWheel } from '@/redux/event-wheel';
 import * as styles from './style.module.less';
 
-const arrDisplay = [
-  {
-    value: 'Một',
-    url: "/images/reward/reward0.png"
-  }, {
-    value: 'Hai',
-    url: "/images/reward/reward1.png"
-  }, {
-    value: 'Ba',
-    url: "/images/reward/reward2.png"
-  }, {
-    value: 'Bốn',
-    url: "/images/reward/reward3.png"
-  }, {
-    value: 'Năm',
-    url: "/images/reward/reward4.png"
-  }, {
-    value: 'Sáu',
-    url: "/images/reward/reward5.png"
-  }, {
-    value: 'Bảy',
-    url: "/images/reward/reward6.png"
-  }, {
-    value: 'Tám',
-    url: "/images/reward/reward7.png"
-  }, {
-    value: 'Chín',
-    url: "/images/reward/reward8.png"
-  }, {
-    value: 'Mười',
-    url: "/images/reward/reward9.png"
-  }, {
-    value: 'Mười Một',
-    url: "/images/reward/reward0.png"
-  }, {
-    value: 'Mười Hai',
-    url: "/images/reward/reward1.png"
-  }, {
-    value: 'Mười Ba',
-    url: "/images/reward/reward2.png"
-  }, {
-    value: 'Mười Bốn',
-    url: "/images/reward/reward3.png"
-  },
+export default function Wheel(props) {
+  const { manager = null, arrItem = [] } = props;
+  const [selectedItem, setSelectedItem] = useState(null);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (!manager) {
+      initPage();
+    }
+  }, []);
 
-]
-export default function Wheel() {
-  const [places, setPlaces] = useState(arrDisplay);
-
-  //'Mười Một', 'Mười Hai', 'Mười Ba', 'Mười Bốn', 'Mười Lăm', 'Mười Sáu', 'Mười Bảy', 'Mười Tám', 'Mười Chín', 'Hai Mươi']);
+  const initPage = async () => {
+    await dispatch(actionsEventWheel.getContentWheel());
+  }
   const onSelectItem = (value) => {
-    console.log('Wheel value: ', value);
+    setSelectedItem(value)
   }
   return (
-    <div className={styles['table_layout']}>
-      <WheelChild items={places} onSelectItem={onSelectItem} />
-      {/* <div className={classNames({ [styles["wheel-shelf-head"]]: true })} />
-      <div className={classNames({ [styles["wheel-shelf-midle"]]: true })} />
-      <div className={classNames({ [styles["wheel-shelf-footer"]]: true })} /> */}
+    <div className={styles['App']}>
+      <WheelChild arrItem={arrItem} onSelectItem={onSelectItem} itemNumber={selectedItem} roles={manager} />
     </div>
   )
 
