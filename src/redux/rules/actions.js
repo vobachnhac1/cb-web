@@ -5,6 +5,7 @@ import moment from 'moment';
 const setRules = (payload) => ({ type: TYPES.RULES_SEARCH, payload });
 const setListWheelApproved = (payload) => ({ type: TYPES.RULES_WHEEL_APPROVED, payload });
 const setListWheel = (payload) => ({ type: TYPES.RULES_WHEEL, payload });
+const setListRulesStateYes = (payload) => ({ type: TYPES.RULES_STATE_YES, payload });
 // const setListWheelDetail = (payload) => ({ type: TYPES.RULES_WHEEL_DETAIL, payload });
 
 // hàm xử lý được gọi từ bên ngoài
@@ -193,6 +194,7 @@ export const getWheelScreenRules = (payload) => async (dispatch, getState, { $ht
     return false
   }
 }
+
 export const updateStateWheel = (payload) => async (dispatch, getState, { $http }) => {
   try {
     const { wheel_id, wheel_status } = payload;
@@ -213,4 +215,27 @@ export const updateStateWheel = (payload) => async (dispatch, getState, { $http 
   } catch (error) {
     return false
   }
+}
+
+export const getListRulesStateApprove = (payload) => async (dispatch, getState, { $http }) => {
+  // trạng thái = Y, thời gian còn hiệu lực
+  const param = {
+    status_rules: 'Y'
+  }
+  const result = await $http.post(URLSERVER.getRulesByFilter, param);
+  const { success, data } = result;
+  if (!success || !data.success) {
+    return false;
+  }
+  const listRules = data.data;
+  dispatch(setListRulesStateYes(listRules))
+  return true
+}
+export const updateWheelWithRules = (payload) => async (dispatch, getState, { $http }) => {
+  const result = await $http.post(URLSERVER.updateWheelWithRules, payload);
+  const { success, data } = result;
+  if (!success || !data.success) {
+    return false;
+  }
+  return true
 }

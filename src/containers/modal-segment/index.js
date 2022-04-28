@@ -165,7 +165,7 @@ const ModalSegment = (props) => {
                 <Input style={{ width: '100%' }} value={segmentId} onChange={(text) => setSegmentId(text.target.value)} disabled />
               </Col>
             </Row>
-              : ""
+              : null
           }
 
 

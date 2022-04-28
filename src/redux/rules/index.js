@@ -10,6 +10,7 @@ import { buildReducer } from '../wrapper';
 export default buildReducer(
   {
     listRules: [],
+    listRulesStateYes: [],
     listWheelApproved: [],
     listWheelDetail: [],
     listWheel: []
@@ -33,6 +34,11 @@ export default buildReducer(
     return {
       ...state,
       listWheel: payload
+    }
+  }, [TYPES.RULES_STATE_YES]: (state, payload) => {
+    return {
+      ...state,
+      listRulesStateYes: payload
     }
   },
 });
