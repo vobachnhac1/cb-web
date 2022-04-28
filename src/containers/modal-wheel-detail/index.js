@@ -8,7 +8,8 @@
 
 import Header from '@/components/Head';
 import Layout from '@/layout';
-import { Card, Col, Form, Input, Modal, Row, Select, Typography, Radio, InputNumber } from 'antd';
+import { Card, Col, Form, Input, Modal, Row, Select, Typography, Radio, InputNumber, Upload } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
@@ -50,9 +51,18 @@ const ModalWheelDetail = (props) => {
   const [no, setNo] = useState(record ? record.no : "")
   const [remainValue, setRemainValue] = useState(record ? record.remain_value : "")
   const [remainNumber, setRemainNumber] = useState(record ? record.remain_number : "")
+  const [url, setUrl] = useState(record ? record.url : '')
+  const [imgBase64, setImgBase64] = useState(record ? record.imgBase64 : '')
   const [wheelCurtValue_update, setWheelCurtValue_update] = useState(0)
   const [wheelDetailTotalValue_update, setWheelDetailTotalValue_update] = useState(0)
   const [goalYn, setGoalYn] = useState(record ? record.goal_yn : 0)
+
+  // state xử lý hình ảnh
+  const [previewVisible, setPreviewVisible] = useState(false)
+  const [previewImage, setPreviewImage] = useState('')
+  const [previewTitle, setPreviewTitle] = useState('')
+  const [fileList, setFileList] = useState([])
+
 
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
   const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
@@ -78,6 +88,11 @@ const ModalWheelDetail = (props) => {
     setRemainNumber(record ? record.remain_number : "")
     setRemainValue(record ? record.remain_value : 0)
     setGoalYn(record ? record.goal_yn : -1)
+    
+    //xử lý file hình
+    setFileList([])
+    setPreviewImage('')
+    setPreviewTitle('')
   }
 
   const onCallback = async () => {
@@ -124,7 +139,8 @@ const ModalWheelDetail = (props) => {
       no: no,
       goal_yn: goalYn,
       remain_number: remainNumber,
-      // remain_value: remainValue
+      imgBase64: '',
+      url: url
     }
     //get wheelname
     for (let i = 0; i < listWheel.length; i++) {
@@ -232,9 +248,55 @@ const ModalWheelDetail = (props) => {
     callback({ visible: false, data: dataListSearch });
   }
 
-  function onChangeRadio(e) {
+  const onChangeRadio = (e) => {
     setGoalYn(e.target.value);
   }
+
+  //flow xử lý hình ảnh
+
+  const getBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+  }
+
+  const handleChange = async ({ fileList }) => {
+
+    for (let i = 0; i < fileList.length; i++) {
+      let database64 = await getBase64(fileList[i].originFileObj)
+      setImgBase64(database64)
+      break
+    }
+
+
+    // setImgBase64(fileList[0].thumbUrl)
+
+    // console.log('check file', typeof fileList[0])
+
+    setFileList(fileList)
+  };
+  const handlePreview = async file => {
+    // console.log('handlePreview', file)
+    // console.log('handlePreview checkfile', typeof file)
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+    setPreviewImage(file.url || file.preview)
+    setPreviewVisible(true)
+    setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1))
+  };
+  const uploadButton = (
+    <div>
+      <PlusOutlined />
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </div>
+  );
+
+  console.log('fileList', fileList)
+  console.log('setImgBase64', imgBase64)
 
   return (
     <Modal
@@ -406,11 +468,33 @@ const ModalWheelDetail = (props) => {
                 </Radio.Group>
               </Col>
             </Row>
+            <Row style={{ marginTop: 10 }}>
+              <Col {...layoutHeader} >
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Hình ảnh '}</Text>
+              </Col>
+              <Col  {...layoutContent} style={{ height: '104px' }}>
+                <Upload
+                  listType="picture-card"
+                  fileList={fileList}
+                  onPreview={handlePreview}
+                  onChange={handleChange}
+                >
+                  {fileList.length >= 1 ? null : uploadButton}
+                </Upload>
+                <Modal
+                  visible={previewVisible}
+                  title={previewTitle}
+                  footer={null}
+                  onCancel={() => setPreviewVisible(false)}
+                >
+                  <img alt="example" style={{ width: '100%' }} src={previewImage} />
+                </Modal>
+              </Col>
+            </Row>
+
 
           </Form>
         }
-
-
 
       </Card>
     </Modal>
