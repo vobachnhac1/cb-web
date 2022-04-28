@@ -244,7 +244,7 @@ const ModalWheelDetail = (props) => {
       centered
       visible={visible}
       okText={'Comfirm'}
-      okButtonProps={{ disabled: isViews ? true : false }}
+      okButtonProps={{ disabled: isViewsWheel ? true : false }}
       cancelText={'Cancel'}
       onOk={onCallback}
       onCancel={onCancel}
@@ -254,157 +254,164 @@ const ModalWheelDetail = (props) => {
         title={isViewsWheel ? 'Xem vòng quay' : (isAdd ? "Thêm chi tiết vòng quay" : 'Cập nhật chi tiết vòng quay')}
         bordered={true}
         style={{ backgroundColor: '#FFFFFF' }}>
-          {/* test wheel */}
-        <Wheel arrItem={listWheelDetail} manager={'manager'} />
-        <Form
-          labelCol={{
-            span: 6,
-          }}
-          wrapperCol={{
-            span: 14,
-          }}
-          layout="horizontal"
-          initialValues={{
-            size: 'default',
-            value: ''
-          }}
-          labelAlign='left'
-          size={'default'}
-        >
-          <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền vòng quay: '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
+        {/* test wheel */}
+        {
+          isViewsWheel ? <Row style={{ marginTop: 10 }}>
+            <Wheel arrItem={listWheelDetail} manager={'manager'} />
+          </Row> : <Form
+            labelCol={{
+              span: 6,
+            }}
+            wrapperCol={{
+              span: 14,
+            }}
+            layout="horizontal"
+            initialValues={{
+              size: 'default',
+              value: ''
+            }}
+            labelAlign='left'
+            size={'default'}
+          >
 
-              <InputNumber
-                style={{ width: '100%' }}
-                addonAfter={"VND"}
-                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                disabled
-                value={wheelTotalValue}
-              />
-            </Col>
+            <Row style={{ marginTop: 10 }}>
+              <Col {...layoutHeader} >
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền vòng quay: '}</Text>
+              </Col>
+              <Col  {...layoutContent}>
 
-          </Row>
-          <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Tiền vòng quay còn lại: '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
-              <InputNumber
-                style={{ width: '100%' }}
-                addonAfter={"VND"}
-                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                disabled
-                value={wheelCurtValue_update}
+                <InputNumber
+                  style={{ width: '100%' }}
+                  addonAfter={"VND"}
+                  formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                  parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                  disabled
+                  value={wheelTotalValue}
+                />
+              </Col>
 
-              />
-            </Col>
-            {/* wheelCurtValue */}
-          </Row >
-          {
-            !isAdd ?
-              <Row style={{ marginTop: 10 }} >
-                <Col {...layoutHeader} >
-                  <Text className={classNames({ [styles['text-font']]: true })}>{'ID'}</Text>
-                </Col>
-                <Col  {...layoutContent}>
-                  <Input disabled style={{ width: '100%' }} value={wheelDetailId} onChange={(text) => setWheelDetailId(text.target.value)} />
-                </Col>
-              </Row>
-              : ''
-          }
-          <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Mã vòng quay '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
+            </Row>
+            <Row style={{ marginTop: 10 }}>
+              <Col {...layoutHeader} >
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Tiền vòng quay còn lại: '}</Text>
+              </Col>
+              <Col  {...layoutContent}>
+                <InputNumber
+                  style={{ width: '100%' }}
+                  addonAfter={"VND"}
+                  formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                  parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                  disabled
+                  value={wheelCurtValue_update}
 
-              <Select disabled={true}
-                style={{ width: '100%' }}
-                defaultValue=""
-                value={
-                  wheelId}
-                onChange={(value) => setWheelId(value)}>
-                {listWheel.map((Item, key) => (
-                  <Select.Option value={Item.wheel_id} key={key}>{Item.Wheel_name}</Select.Option>
-                ))}
-              </Select>
-            </Col>
-          </Row>
-          <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Kết quả trúng thưởng'}</Text>
-            </Col>
-            <Col  {...layoutContent}>
+                />
+              </Col>
+              {/* wheelCurtValue */}
+            </Row >
+            {
+              !isAdd ?
+                <Row style={{ marginTop: 10 }} >
+                  <Col {...layoutHeader} >
+                    <Text className={classNames({ [styles['text-font']]: true })}>{'ID'}</Text>
+                  </Col>
+                  <Col  {...layoutContent}>
+                    <Input disabled style={{ width: '100%' }} value={wheelDetailId} onChange={(text) => setWheelDetailId(text.target.value)} />
+                  </Col>
+                </Row>
+                : ''
+            }
+            <Row style={{ marginTop: 10 }}>
+              <Col {...layoutHeader} >
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Mã vòng quay '}</Text>
+              </Col>
+              <Col  {...layoutContent}>
 
-              <Select
-                style={{ width: '100%' }}
-                value={segmentId}
-                onChange={onChangeSegment}>
-                {listSegment.map((Item, key) => (
-                  <Select.Option value={Item.segment_id} key={key}>{Item.segment_name}</Select.Option>
-                ))}
-              </Select>
-            </Col>
-          </Row>
-          <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Số lần trúng thưởng '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
-              <Input type="number" min={0} style={{ width: '100%' }} value={remainNumber} onChange={onChangeRemainNumber} />
-            </Col>
-          </Row>
-          <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền chi tiết vòng quay '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
+                <Select disabled={true}
+                  style={{ width: '100%' }}
+                  defaultValue=""
+                  value={
+                    wheelId}
+                  onChange={(value) => setWheelId(value)}>
+                  {listWheel.map((Item, key) => (
+                    <Select.Option value={Item.wheel_id} key={key}>{Item.Wheel_name}</Select.Option>
+                  ))}
+                </Select>
+              </Col>
+            </Row>
+            <Row style={{ marginTop: 10 }}>
+              <Col {...layoutHeader} >
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Kết quả trúng thưởng'}</Text>
+              </Col>
+              <Col  {...layoutContent}>
 
-              {/* <Input disabled type="number" style={{ width: '100%' }} value={wheelCurtValue_update === wheelCurtValue ? 0 : wheelCurtValue_update} /> */}
+                <Select
+                  style={{ width: '100%' }}
+                  value={segmentId}
+                  onChange={onChangeSegment}>
+                  {listSegment.map((Item, key) => (
+                    <Select.Option value={Item.segment_id} key={key}>{Item.segment_name}</Select.Option>
+                  ))}
+                </Select>
+              </Col>
+            </Row>
+            <Row style={{ marginTop: 10 }}>
+              <Col {...layoutHeader} >
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Số lần trúng thưởng '}</Text>
+              </Col>
+              <Col  {...layoutContent}>
+                <Input type="number" min={0} style={{ width: '100%' }} value={remainNumber} onChange={onChangeRemainNumber} />
+              </Col>
+            </Row>
+            <Row style={{ marginTop: 10 }}>
+              <Col {...layoutHeader} >
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền chi tiết vòng quay '}</Text>
+              </Col>
+              <Col  {...layoutContent}>
 
-              <InputNumber
-                style={{ width: '100%' }}
-                addonAfter={"VND"}
-                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                disabled
-                value={wheelDetailTotalValue_update}
-              />
-              {/* viêt span ở đây, nếu Tổng tiền chi tiết vòng quay > wheelcur thì báo lỗi */}
-              {wheelCurtValue_update < 0 ? <span style={{ color: 'red' }}>
-                Số tiền giải thưởng hiện tại đang lớn hơn số tiền còn lại của vòng quay !
-              </span> : ""
-              }
-            </Col>
-          </Row>
-          <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Số thứ tự trên vòng quay '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
+                {/* <Input disabled type="number" style={{ width: '100%' }} value={wheelCurtValue_update === wheelCurtValue ? 0 : wheelCurtValue_update} /> */}
 
-              <Input type="number" min="1" max="15" style={{ width: '100%' }} value={no} onChange={(text) => setNo(text.target.value)} />
-            </Col>
-          </Row>
-          <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Trúng thưởng '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
-              <Radio.Group onChange={onChangeRadio} value={goalYn ? goalYn : 0}>
-                <Radio value={1}>Có</Radio>
-                <Radio value={0}>Không</Radio>
+                <InputNumber
+                  style={{ width: '100%' }}
+                  addonAfter={"VND"}
+                  formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                  parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                  disabled
+                  value={wheelDetailTotalValue_update}
+                />
+                {/* viêt span ở đây, nếu Tổng tiền chi tiết vòng quay > wheelcur thì báo lỗi */}
+                {wheelCurtValue_update < 0 ? <span style={{ color: 'red' }}>
+                  Số tiền giải thưởng hiện tại đang lớn hơn số tiền còn lại của vòng quay !
+                </span> : ""
+                }
+              </Col>
+            </Row>
+            <Row style={{ marginTop: 10 }}>
+              <Col {...layoutHeader} >
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Số thứ tự trên vòng quay '}</Text>
+              </Col>
+              <Col  {...layoutContent}>
 
-              </Radio.Group>
-            </Col>
-          </Row>
+                <Input type="number" min="1" max="15" style={{ width: '100%' }} value={no} onChange={(text) => setNo(text.target.value)} />
+              </Col>
+            </Row>
+            <Row style={{ marginTop: 10 }}>
+              <Col {...layoutHeader} >
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Trúng thưởng '}</Text>
+              </Col>
+              <Col  {...layoutContent}>
+                <Radio.Group onChange={onChangeRadio} value={goalYn ? goalYn : 0}>
+                  <Radio value={1}>Có</Radio>
+                  <Radio value={0}>Không</Radio>
 
-        </Form>
+                </Radio.Group>
+              </Col>
+            </Row>
+
+          </Form>
+        }
+
+
+
       </Card>
     </Modal>
   )

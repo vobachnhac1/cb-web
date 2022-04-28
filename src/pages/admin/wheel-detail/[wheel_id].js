@@ -124,6 +124,10 @@ export default function WheelDetail({ query }) {
         return;
       }
     }
+    if (noWheelDetail_length > 14) {
+      Message.Error("NOTYFICATON", "Vòng quay chỉ được tối đa 15 chi tiết giải thưởng !");
+      return;
+    }
 
     // return;
     const data = {
@@ -316,6 +320,7 @@ export default function WheelDetail({ query }) {
         record: record,
         isAdd: false,
         isViewsWheel: true,
+        dataListSearch: listSearch
       });
     } else {
       Message.Error("NOTYFICATON", "Vòng quay chưa đủ 14 chi tiết vòng quay !!!");
@@ -421,7 +426,7 @@ export default function WheelDetail({ query }) {
             <Col className="gutter-row" span={3}>
               <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>
             </Col>
-            <Col className="gutter-row" span={3}>
+            <Col className="gutter-row" span={4}>
               <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onViewsWheel}>Xem vòng quay</Button>
             </Col>
           </Row>
