@@ -1,7 +1,7 @@
 /* --------------------------------------------------------
-* Author Lê Quý Nam
-* Email lqn1604.dev@gmail.com
-* Phone 036.847.5269
+* Author Võ Bách Nhạc
+* Email vonhac.20394@gmail.com
+* Phone 0906.918.738
 * Created: 2022-04-07
 *------------------------------------------------------- */
 require("./style.module.less");
@@ -19,11 +19,13 @@ import { getters as gettersRules } from '@/redux/rules';
 
 import moment from 'moment';
 import __ from 'lodash';
+import ModalWheelApprove from '@/containers/modal-wheel-approve';
 
 export default function WheelApprove(props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const listWheel = useSelector(gettersRules.getListWheel) || [];
+  const listRules = useSelector(gettersRules.getListRulesStateYes) || [];
   const [filter, setFilter] = useState({
     wheel_name: null,
   });
@@ -36,6 +38,7 @@ export default function WheelApprove(props) {
   const initPage = async () => {
     setLoading(true);
     await dispatch(actionsRules.getWheelScreenRules());
+    await dispatch(actionsRules.getListRulesStateApprove());
     setLoading(false);
   }
 
@@ -196,11 +199,37 @@ export default function WheelApprove(props) {
     Message.Success("THÔNG BÁO", `MÃ VÒNG QUAY ${record.wheel_id} PHÊ DUYỆT THANH CÔNG`);
     setLoading(false);
   }
+
   const onAddRules = (record) => {
-    Message.Info("THÔNG BÁO", "TÍNH NĂNG ĐĂNG PHÁT TRIỂN")
+    // Message.Info("THÔNG BÁO", "TÍNH NĂNG ĐĂNG PHÁT TRIỂN");
+    setVisible(!visible);
+    setDataModal({
+      ...dataModal,
+      record: record
+    })
   }
+
+  // xử lý modal approve
+  const [dataModal, setDataModal] = useState({
+    isAdd: false,
+    record: null
+  });
+
+  const [visible, setVisible] = useState(false);
+
+  const callback = ({ visible }) => {
+    setVisible(visible);
+    setDataModal({
+      isAdd: false,
+      record: null
+    });
+    onSearch()
+  }
+
+
   return (
     <LayoutHome>
+      <ModalWheelApprove visible={visible} callback={callback} bodyModel={dataModal} listRules={listRules} />
       <Col style={{ marginBottom: 30 }}>
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}

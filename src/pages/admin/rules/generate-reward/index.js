@@ -114,6 +114,7 @@ export default function GenerateReward(props) {
     }));
     if (!result) {
       Message.Warning("THÔNG BÁO", "Vui lòng chọn thử lại")
+      setLoading(false);
       return;
     }
     Message.Success("THÔNG BÁO", "Đã Tạo thành công");

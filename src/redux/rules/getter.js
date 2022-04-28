@@ -4,6 +4,10 @@ export const getStateLoadPageRules = (state) => {
   const { rules: { listRules = [] } } = state;
   return listRules.map((item, index) => ({ ...item, key: index })) || []
 };
+export const getListRulesStateYes = (state) => {
+  const { rules: { listRulesStateYes = [] } } = state;
+  return listRulesStateYes.map((item, index) => ({ ...item, key: index })) || []
+};
 
 export const getListWheelApproved = (state) => {
   const { rules: data } = state;
