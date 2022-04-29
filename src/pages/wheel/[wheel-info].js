@@ -82,7 +82,7 @@ export default function DisplayWheel(props) {
     <div className={styles['App']} style={{
       backgroundImage: null
     }}>
-      {invalid ? <div /> : <WheelChild arrItem={arrItem} onSelectItem={onSelectItem} itemNumber={selectedItem} roles={manager} />}
+      {invalid ? <div /> : <WheelChild arrItem={arrItem} onSelectItem={onSelectItem} selectedItem={selectedItem} roles={manager} />}
     </div>
   )
 }

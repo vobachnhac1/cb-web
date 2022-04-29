@@ -37,7 +37,13 @@ export const approveRules = (payload) => async (dispatch, getState, { $http }) =
     return false;
   }
 
-  const getList = await $http.post(URLSERVER.getRulesByFilter);
+  const getList = await $http.post(URLSERVER.getRulesByFilter, {
+    from_date: null,
+    rules_id: null,
+    rules_name: null,
+    status_rules: null,
+    to_date: null
+  });
   const listRules = getList.data.data;
   if (listRules && listRules.length > 0) {
     dispatch(setRules(listRules))
@@ -68,7 +74,7 @@ export const updateRules = (payload) => async (dispatch, getState, { $http }) =>
     from_date: moment(payload.from_date).format('YYYY-MM-DD'),
     to_date: moment(payload.to_date).format('YYYY-MM-DD'),
     rules_name: payload.rules_name,
-    total_reward: payload.total_reward,
+    total_reward: parseInt(payload.total_reward) == 'NaN' ? 0 : parseInt(payload.total_reward),
     rules_id: payload.rules_id,
     status_rules: !payload.status_rules || payload.status_rules && payload.status_rules == 'N' ? 'N' : 'Y',
   }
