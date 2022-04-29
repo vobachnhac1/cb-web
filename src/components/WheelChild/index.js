@@ -15,11 +15,9 @@ import { getters as gettersEventWheel } from '@/redux/event-wheel';
 import * as Message from '@/components/message';
 
 const WheelChild = (props) => {
-  const { itemNumber, manager = null, arrItem = [] } = props;
-
+  const { itemNumber, roles = null, arrItem = [] } = props;
   const dispatch = useDispatch();
-  const places = !manager ? useSelector(gettersEventWheel.getContentReward) : arrItem;
-
+  const places = !roles ? useSelector(gettersEventWheel.getContentReward) : (arrItem || []);
   const isProcessing = useSelector(gettersEventWheel.getProccessing);
   const wheelVars = {
     '--nb-item': places.length,
@@ -38,7 +36,7 @@ const WheelChild = (props) => {
     props.onSelectItem(null);
     await dispatch(actionsEventWheel.setProcessing(true));
     let rsReward;
-    if (!manager) {
+    if (!roles) {
       rsReward = await dispatch(actionsEventWheel.getRewardOfWheel());
       if (rsReward) {
         if (props.onSelectItem) {
@@ -52,7 +50,7 @@ const WheelChild = (props) => {
       }
     }
     setTimeout(async () => {
-      if (!manager) {
+      if (!roles) {
         Message.Info("Thông Báo", `Bạn nhận được kết quả: ${rsReward.segment_name} `);
       }
       await dispatch(actionsEventWheel.setProcessing(false));
