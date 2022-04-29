@@ -227,7 +227,7 @@ export default function Wheel(props) {
 
   const callbackModal = (params) => {
     setVisible(params.visible);
-    initPage();
+    onSearch()
   }
 
   return (
