@@ -19,6 +19,7 @@ const WheelChild = (props) => {
   const dispatch = useDispatch();
   const places = !roles ? useSelector(gettersEventWheel.getContentReward) : (arrItem || []);
   const isProcessing = useSelector(gettersEventWheel.getProccessing);
+  const eventInfo = useSelector(gettersEventWheel.getEventInfo);
   const wheelVars = {
     '--nb-item': places.length,
     '--selected-item': itemNumber,
@@ -37,10 +38,12 @@ const WheelChild = (props) => {
     await dispatch(actionsEventWheel.setProcessing(true));
     let rsReward;
     if (!roles) {
-      rsReward = await dispatch(actionsEventWheel.getRewardOfWheel());
-      if (rsReward) {
-        if (props.onSelectItem) {
-          props.onSelectItem(places.length - (parseInt(rsReward.no)));
+      if (eventInfo) {
+        rsReward = await dispatch(actionsEventWheel.getRewardOfWheel());
+        if (rsReward) {
+          if (props.onSelectItem) {
+            props.onSelectItem(places.length - (parseInt(rsReward.no)));
+          }
         }
       }
     } else {

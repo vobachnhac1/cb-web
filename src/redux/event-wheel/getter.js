@@ -19,5 +19,10 @@ export const getProccessing = ({ wheelreward }) => {
   return data;
 };
 
+export const getEventInfo = ({ wheelreward }) => {
+  const { event_info: data = {} } = wheelreward;
+  return data;
+};
+
 
 /// lấy state
