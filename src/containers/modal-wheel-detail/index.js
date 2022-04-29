@@ -62,6 +62,7 @@ const ModalWheelDetail = (props) => {
   const [previewImage, setPreviewImage] = useState('')
   const [previewTitle, setPreviewTitle] = useState('')
   const [fileList, setFileList] = useState([])
+  const [isChanged, setIsChanged] = useState(false);
 
 
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
@@ -92,9 +93,18 @@ const ModalWheelDetail = (props) => {
     setUrl(record ? record.url : '')
 
     //xử lý file hình
-    setFileList([])
+
+    const dataImg = record && record.imgBase64 ? [{
+      uid: "-1",
+      name: 'image.png',
+      status: 'done',
+      preview: true,
+      thumbUrl: record ? record.imgBase64 : ''
+    }] : []
+    setFileList(dataImg)
     setPreviewImage('')
     setPreviewTitle('')
+    setIsChanged(false)
   }
 
   const onCallback = async () => {
@@ -270,38 +280,64 @@ const ModalWheelDetail = (props) => {
     });
   }
 
+  function beforeUpload(file, arrFile) {
+    const isPNG = file.type === 'image/png';
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isPNG) {
+      Message.Error(`${file.name} is not a png file`);
+    }
+    if (!isLt2M) {
+      Message.Error('Image must smaller than 2MB!');
+    }
+    if (isPNG && isLt2M) {
+      setIsChanged(true)
+    }
+    return isPNG && isLt2M;
+  }
+
   const handleChange = async ({ fileList }) => {
 
-    for (let i = 0; i < fileList.length; i++) {
-      //status: "done"
-      if (fileList[i].status === "done") {
-        let database64 = await getBase64(fileList[i].originFileObj)
-        setImgBase64(database64)
-        break
+    if (isChanged) {
+      for (let i = 0; i < fileList.length; i++) {
+        //status: "done"
+        if (fileList[i].status === "done") {
+          let database64 = await getBase64(fileList[i].originFileObj)
+          setImgBase64(database64)
+          break
+        }
       }
+      setFileList(fileList)
+    }
+  };
+
+  const handlePreview = async file => {
+    if (file.preview) {
+      setPreviewImage(file.thumbUrl)
+      setPreviewVisible(true)
+      setPreviewTitle(file.name)
+    } else if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+      setPreviewImage(file.url || file.preview)
+      setPreviewVisible(true)
+      setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1))
     }
 
-    setFileList(fileList)
   };
-  const handlePreview = async file => {
-    // console.log('handlePreview', file)
-    // console.log('handlePreview checkfile', typeof file)
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-    setPreviewImage(file.url || file.preview)
-    setPreviewVisible(true)
-    setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1))
+
+  const onRemove = file => {
+    setFileList([])
+    setImgBase64('')
   };
+
   const uploadButton = (
     <div>
       <PlusOutlined />
       <div style={{ marginTop: 8 }}>Upload</div>
     </div>
   );
+  useEffect(() => {
 
-  // console.log('fileList', fileList)
-  // console.log('setImgBase64', imgBase64)
+  }, [])
 
   return (
     <Modal
@@ -483,6 +519,9 @@ const ModalWheelDetail = (props) => {
                   fileList={fileList}
                   onPreview={handlePreview}
                   onChange={handleChange}
+                  beforeUpload={beforeUpload}
+                  onRemove={onRemove}
+
                 >
                   {fileList.length >= 1 ? null : uploadButton}
                 </Upload>
