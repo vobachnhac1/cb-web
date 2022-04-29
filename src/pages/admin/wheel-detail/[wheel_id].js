@@ -11,7 +11,7 @@ import { Router, useRouter } from 'next/router';
 // import * as styles from './style.module.less';
 import * as classnames from 'classnames';
 import LayoutHome from '@/containers/Home';
-import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Typography, Input, InputNumber } from 'antd';
+import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Typography, InputNumber, Image } from 'antd';
 import { ArrowLeftOutlined, SettingOutlined } from '@ant-design/icons';
 import moment from 'moment';
 const { Text } = Typography;
@@ -223,6 +223,21 @@ export default function WheelDetail({ query }) {
 
     },
     {
+      title: 'Hình ảnh',
+      dataIndex: 'imgBase64',
+      key: 'imgBase64',
+      fixed: 'center',
+      width: 80,
+      render: (text, record) => (
+        <Space size="large">
+          <span>
+            <Image alt="example" style={{ width: '40px' }} src={text} />
+          </span>
+        </Space>
+      )
+
+    },
+    {
       title: 'Tổng giá trị',
       dataIndex: 'remain_value',
       key: 'remain_value',
@@ -242,8 +257,6 @@ export default function WheelDetail({ query }) {
           </span>
         </Space>
       )
-
-      // `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","
 
     },
     {
