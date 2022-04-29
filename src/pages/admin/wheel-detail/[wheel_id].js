@@ -20,6 +20,7 @@ const classNames = require("classnames");
 const styles = require("./style.module.less");
 
 import ModalWheelDetail from '@/containers/modal-wheel-detail'
+
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
 import { actions as actionSegment } from '@/redux/segment';
@@ -122,6 +123,10 @@ export default function WheelDetail({ query }) {
         Message.Error("NOTYFICATON", "STT đang bị lớn hơn số vòng quay");
         return;
       }
+    }
+    if (noWheelDetail_length > 14) {
+      Message.Error("NOTYFICATON", "Vòng quay chỉ được tối đa 15 chi tiết giải thưởng !");
+      return;
     }
 
     // return;
@@ -307,14 +312,21 @@ export default function WheelDetail({ query }) {
     });
   }
 
-  const viewsDetail = (record) => {
-    setVisible(true);
-    setBodyModel({
-      record: record,
-      isAdd: false,
-      isViews: true,
-      dataListSearch: listSearch
-    });
+  const onViewsWheel = (record) => {
+
+    if (noWheelDetail_length == 14) {
+      setVisible(true);
+      setBodyModel({
+        record: record,
+        isAdd: false,
+        isViewsWheel: true,
+        dataListSearch: listSearch
+      });
+    } else {
+      Message.Error("NOTYFICATON", "Vòng quay chưa đủ 14 chi tiết vòng quay !!!");
+      return;
+    }
+
   }
 
 
@@ -413,6 +425,9 @@ export default function WheelDetail({ query }) {
             </Col>
             <Col className="gutter-row" span={3}>
               <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>
+            </Col>
+            <Col className="gutter-row" span={4}>
+              <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onViewsWheel}>Xem vòng quay</Button>
             </Col>
           </Row>
           <Col span={48} style={{ marginTop: 10 }}>

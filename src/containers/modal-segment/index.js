@@ -5,7 +5,7 @@
 * Created: 2022-04-08
 *------------------------------------------------------- */
 require("./style.module.less");
-import { Card, Col, Form, Input, Modal, Row, Select, Typography, DatePicker } from 'antd';
+import { Card, Col, Form, Input, Modal, Row, Select, Typography, DatePicker, InputNumber } from 'antd';
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
@@ -194,7 +194,6 @@ const ModalSegment = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Tên kết quả trúng thưởng '}</Text>
             </Col>
             <Col  {...layoutContent}>
-
               <Input style={{ width: '100%' }} value={segmentName} onChange={(text) => setSegmentName(text.target.value)} />
             </Col>
           </Row>
@@ -203,7 +202,13 @@ const ModalSegment = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Giá trị giải thưởng '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Input type="number" style={{ width: '100%' }} value={segmentValue} onChange={(text) => setSegmentValue(text.target.value)} />
+              <InputNumber style={{ width: '100%' }}
+                addonAfter={"VND"}
+                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                value={segmentValue}
+                onChange={(text) => setSegmentValue(text)}
+              />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>

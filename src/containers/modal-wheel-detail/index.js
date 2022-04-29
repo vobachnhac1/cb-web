@@ -8,10 +8,12 @@
 
 import Header from '@/components/Head';
 import Layout from '@/layout';
-import { Card, Col, Form, Input, Modal, Row, Select, Typography, Radio, InputNumber } from 'antd';
+import { Card, Col, Form, Input, Modal, Row, Select, Typography, Radio, InputNumber, Upload } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
+import Wheel from '@/pages/wheel'
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
 import { getters as gettersTopic } from '@/redux/topic';
@@ -40,7 +42,7 @@ const layoutContent = {
   lg: { span: 16, offset: 0 },
 };
 const ModalWheelDetail = (props) => {
-  const { callback, visible = false, bodyModel: { isAdd = false, record = null, queryWheel_id, dataListSearch, isViews } } = props;
+  const { callback, visible = false, bodyModel: { isAdd = false, record = null, queryWheel_id, dataListSearch, isViews, isViewsWheel } } = props;
   const dispatch = useDispatch();
 
   const [wheelDetailId, setWheelDetailId] = useState(record ? record.wheel_detail_id : "")
@@ -49,14 +51,26 @@ const ModalWheelDetail = (props) => {
   const [no, setNo] = useState(record ? record.no : "")
   const [remainValue, setRemainValue] = useState(record ? record.remain_value : "")
   const [remainNumber, setRemainNumber] = useState(record ? record.remain_number : "")
+  const [url, setUrl] = useState(record ? record.url : '')
+  const [imgBase64, setImgBase64] = useState(record ? record.imgBase64 : '')
   const [wheelCurtValue_update, setWheelCurtValue_update] = useState(0)
   const [wheelDetailTotalValue_update, setWheelDetailTotalValue_update] = useState(0)
   const [goalYn, setGoalYn] = useState(record ? record.goal_yn : 0)
+
+  // state xử lý hình ảnh
+  const [previewVisible, setPreviewVisible] = useState(false)
+  const [previewImage, setPreviewImage] = useState('')
+  const [previewTitle, setPreviewTitle] = useState('')
+  const [fileList, setFileList] = useState([])
+  const [isChanged, setIsChanged] = useState(false);
+
 
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
   const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
   const listWheel = useSelector(gettersWheel.getStateLoadPageWheel) || [];
   const noWheelDetail_length = useSelector(gettersWheelDetail.getStateWheelDetialNo);
+  const listWheelDetail = useSelector(gettersWheelDetail.getStateLoadPageWheelDetail) || [];
+
   let wheelCurtValue = useSelector(gettersWheelDetail.getStateWheelCurtValue);
   let wheelTotalValue = useSelector(gettersWheelDetail.getStateWheelTotalValue);
   let wheelDetialTotalValue = useSelector(gettersWheelDetail.getStateWheelDetialTotalValue);
@@ -75,12 +89,25 @@ const ModalWheelDetail = (props) => {
     setRemainNumber(record ? record.remain_number : "")
     setRemainValue(record ? record.remain_value : 0)
     setGoalYn(record ? record.goal_yn : -1)
+    setImgBase64(record ? record.imgBase64 : '')
+    setUrl(record ? record.url : '')
+
+    //xử lý file hình
+
+    const dataImg = record && record.imgBase64 ? [{
+      uid: "-1",
+      name: 'image.png',
+      status: 'done',
+      preview: true,
+      thumbUrl: record ? record.imgBase64 : ''
+    }] : []
+    setFileList(dataImg)
+    setPreviewImage('')
+    setPreviewTitle('')
+    setIsChanged(false)
   }
 
   const onCallback = async () => {
-    console.log('no', no)
-    console.log('noWheelDetail_length', noWheelDetail_length)
-
     let msg_error = [];
     // kiểm tra form
     if (!segmentId) {
@@ -98,7 +125,7 @@ const ModalWheelDetail = (props) => {
       // Message.Warning("NOTYFICATON", "Số thứ tự chưa hợp lệ hoặc chưa có nội dung");
       // return;
     }
-    if (!isAdd && no > noWheelDetail_length) {
+    if (!isAdd && no > noWheelDetail_length && !record.is_delete) {
       msg_error.push("-Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (noWheelDetail_length))
       // Message.Warning("NOTYFICATON", "Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (noWheelDetail_length));
       // return;
@@ -113,6 +140,11 @@ const ModalWheelDetail = (props) => {
       // Message.Warning("NOTYFICATON", "Trúng thưởng chưa được chọn");
       // return;
     }
+    if (!imgBase64) {
+      msg_error.push('-Hình chưa được chọn')
+      // Message.Warning("NOTYFICATON", "Trúng thưởng chưa được chọn");
+      // return;
+    }
 
 
     // param
@@ -124,7 +156,8 @@ const ModalWheelDetail = (props) => {
       no: no,
       goal_yn: goalYn,
       remain_number: remainNumber,
-      // remain_value: remainValue
+      imgBase64: imgBase64,
+      url: url
     }
     //get wheelname
     for (let i = 0; i < listWheel.length; i++) {
@@ -232,9 +265,79 @@ const ModalWheelDetail = (props) => {
     callback({ visible: false, data: dataListSearch });
   }
 
-  function onChangeRadio(e) {
+  const onChangeRadio = (e) => {
     setGoalYn(e.target.value);
   }
+
+  //flow xử lý hình ảnh
+
+  const getBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+  }
+
+  function beforeUpload(file, arrFile) {
+    const isPNG = file.type === 'image/png';
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isPNG) {
+      Message.Error(`${file.name} is not a png file`);
+    }
+    if (!isLt2M) {
+      Message.Error('Image must smaller than 2MB!');
+    }
+    if (isPNG && isLt2M) {
+      setIsChanged(true)
+    }
+    return isPNG && isLt2M;
+  }
+
+  const handleChange = async ({ fileList }) => {
+
+    if (isChanged) {
+      for (let i = 0; i < fileList.length; i++) {
+        //status: "done"
+        if (fileList[i].status === "done") {
+          let database64 = await getBase64(fileList[i].originFileObj)
+          setImgBase64(database64)
+          break
+        }
+      }
+      setFileList(fileList)
+    }
+  };
+
+  const handlePreview = async file => {
+    if (file.preview) {
+      setPreviewImage(file.thumbUrl)
+      setPreviewVisible(true)
+      setPreviewTitle(file.name)
+    } else if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+      setPreviewImage(file.url || file.preview)
+      setPreviewVisible(true)
+      setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1))
+    }
+
+  };
+
+  const onRemove = file => {
+    setFileList([])
+    setImgBase64('')
+  };
+
+  const uploadButton = (
+    <div>
+      <PlusOutlined />
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </div>
+  );
+  useEffect(() => {
+
+  }, [])
 
   return (
     <Modal
@@ -244,166 +347,199 @@ const ModalWheelDetail = (props) => {
       centered
       visible={visible}
       okText={'Comfirm'}
-      okButtonProps={{ disabled: isViews ? true : false }}
+      okButtonProps={{ disabled: isViewsWheel ? true : false }}
       cancelText={'Cancel'}
       onOk={onCallback}
       onCancel={onCancel}
     >
       <Card
         headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
-        title={isViews ? 'Xem chi tiết vòng quay' : (isAdd ? "Thêm chi tiết vòng quay" : 'Cập nhật chi tiết vòng quay')}
+        title={isViewsWheel ? 'Xem vòng quay' : (isAdd ? "Thêm chi tiết vòng quay" : 'Cập nhật chi tiết vòng quay')}
         bordered={true}
         style={{ backgroundColor: '#FFFFFF' }}>
-        <Form
-          labelCol={{
-            span: 6,
-          }}
-          wrapperCol={{
-            span: 14,
-          }}
-          layout="horizontal"
-          initialValues={{
-            size: 'default',
-            value: ''
-          }}
-          labelAlign='left'
-          size={'default'}
-        >
-          <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền vòng quay: '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
+        {/* test wheel */}
+        {
+          isViewsWheel ? <Row style={{ marginTop: 10 }}>
+            <Wheel arrItem={listWheelDetail} manager={'manager'} />
+          </Row> : <Form
+            labelCol={{
+              span: 6,
+            }}
+            wrapperCol={{
+              span: 14,
+            }}
+            layout="horizontal"
+            initialValues={{
+              size: 'default',
+              value: ''
+            }}
+            labelAlign='left'
+            size={'default'}
+          >
 
-              <InputNumber
-                style={{ width: '100%' }}
-                addonAfter={"VND"}
-                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                disabled
-                value={wheelTotalValue}
+            <Row style={{ marginTop: 10 }}>
+              <Col {...layoutHeader} >
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền vòng quay: '}</Text>
+              </Col>
+              <Col  {...layoutContent}>
 
-              />
-            </Col>
+                <InputNumber
+                  style={{ width: '100%' }}
+                  addonAfter={"VND"}
+                  formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                  parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                  disabled
+                  value={wheelTotalValue}
+                />
+              </Col>
 
-          </Row>
-          <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Tiền vòng quay còn lại: '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
-              <InputNumber
-                style={{ width: '100%' }}
-                addonAfter={"VND"}
-                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                disabled
-                value={wheelCurtValue_update}
+            </Row>
+            <Row style={{ marginTop: 10 }}>
+              <Col {...layoutHeader} >
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Tiền vòng quay còn lại: '}</Text>
+              </Col>
+              <Col  {...layoutContent}>
+                <InputNumber
+                  style={{ width: '100%' }}
+                  addonAfter={"VND"}
+                  formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                  parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                  disabled
+                  value={wheelCurtValue_update}
 
-              />
-            </Col>
-            {/* wheelCurtValue */}
-          </Row >
-          {
-            !isAdd ?
-              <Row style={{ marginTop: 10 }} >
-                <Col {...layoutHeader} >
-                  <Text className={classNames({ [styles['text-font']]: true })}>{'ID'}</Text>
-                </Col>
-                <Col  {...layoutContent}>
-                  <Input disabled style={{ width: '100%' }} value={wheelDetailId} onChange={(text) => setWheelDetailId(text.target.value)} />
-                </Col>
-              </Row>
-              : ''
-          }
-          <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Mã vòng quay '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
+                />
+              </Col>
+              {/* wheelCurtValue */}
+            </Row >
+            {
+              !isAdd ?
+                <Row style={{ marginTop: 10 }} >
+                  <Col {...layoutHeader} >
+                    <Text className={classNames({ [styles['text-font']]: true })}>{'ID'}</Text>
+                  </Col>
+                  <Col  {...layoutContent}>
+                    <Input disabled style={{ width: '100%' }} value={wheelDetailId} onChange={(text) => setWheelDetailId(text.target.value)} />
+                  </Col>
+                </Row>
+                : ''
+            }
+            <Row style={{ marginTop: 10 }}>
+              <Col {...layoutHeader} >
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Mã vòng quay '}</Text>
+              </Col>
+              <Col  {...layoutContent}>
 
-              <Select disabled={true}
-                style={{ width: '100%' }}
-                defaultValue=""
-                value={
-                  wheelId}
-                onChange={(value) => setWheelId(value)}>
-                {listWheel.map((Item, key) => (
-                  <Select.Option value={Item.wheel_id} key={key}>{Item.Wheel_name}</Select.Option>
-                ))}
-              </Select>
-            </Col>
-          </Row>
-          <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Kết quả trúng thưởng'}</Text>
-            </Col>
-            <Col  {...layoutContent}>
+                <Select disabled={true}
+                  style={{ width: '100%' }}
+                  defaultValue=""
+                  value={
+                    wheelId}
+                  onChange={(value) => setWheelId(value)}>
+                  {listWheel.map((Item, key) => (
+                    <Select.Option value={Item.wheel_id} key={key}>{Item.Wheel_name}</Select.Option>
+                  ))}
+                </Select>
+              </Col>
+            </Row>
+            <Row style={{ marginTop: 10 }}>
+              <Col {...layoutHeader} >
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Kết quả trúng thưởng'}</Text>
+              </Col>
+              <Col  {...layoutContent}>
 
-              <Select
-                style={{ width: '100%' }}
-                value={segmentId}
-                onChange={onChangeSegment}>
-                {listSegment.map((Item, key) => (
-                  <Select.Option value={Item.segment_id} key={key}>{Item.segment_name}</Select.Option>
-                ))}
-              </Select>
-            </Col>
-          </Row>
-          <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Số lần trúng thưởng '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
-              <Input type="number" min={0} style={{ width: '100%' }} value={remainNumber} onChange={onChangeRemainNumber} />
-            </Col>
-          </Row>
-          <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền chi tiết vòng quay '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
+                <Select
+                  style={{ width: '100%' }}
+                  value={segmentId}
+                  onChange={onChangeSegment}>
+                  {listSegment.map((Item, key) => (
+                    <Select.Option value={Item.segment_id} key={key}>{Item.segment_name}</Select.Option>
+                  ))}
+                </Select>
+              </Col>
+            </Row>
+            <Row style={{ marginTop: 10 }}>
+              <Col {...layoutHeader} >
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Số lần trúng thưởng '}</Text>
+              </Col>
+              <Col  {...layoutContent}>
+                <Input type="number" min={0} style={{ width: '100%' }} value={remainNumber} onChange={onChangeRemainNumber} />
+              </Col>
+            </Row>
+            <Row style={{ marginTop: 10 }}>
+              <Col {...layoutHeader} >
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền chi tiết vòng quay '}</Text>
+              </Col>
+              <Col  {...layoutContent}>
 
-              {/* <Input disabled type="number" style={{ width: '100%' }} value={wheelCurtValue_update === wheelCurtValue ? 0 : wheelCurtValue_update} /> */}
+                {/* <Input disabled type="number" style={{ width: '100%' }} value={wheelCurtValue_update === wheelCurtValue ? 0 : wheelCurtValue_update} /> */}
 
-              <InputNumber
-                style={{ width: '100%' }}
-                addonAfter={"VND"}
-                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                disabled
-                value={wheelDetailTotalValue_update}
-              />
-              {/* viêt span ở đây, nếu Tổng tiền chi tiết vòng quay > wheelcur thì báo lỗi */}
-              {wheelCurtValue_update < 0 ? <span style={{ color: 'red' }}>
-                Số tiền giải thưởng hiện tại đang lớn hơn số tiền còn lại của vòng quay !
-              </span> : ""
-              }
-            </Col>
-          </Row>
-          <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Số thứ tự trên vòng quay '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
+                <InputNumber
+                  style={{ width: '100%' }}
+                  addonAfter={"VND"}
+                  formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                  parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                  disabled
+                  value={wheelDetailTotalValue_update}
+                />
+                {/* viêt span ở đây, nếu Tổng tiền chi tiết vòng quay > wheelcur thì báo lỗi */}
+                {wheelCurtValue_update < 0 ? <span style={{ color: 'red' }}>
+                  Số tiền giải thưởng hiện tại đang lớn hơn số tiền còn lại của vòng quay !
+                </span> : ""
+                }
+              </Col>
+            </Row>
+            <Row style={{ marginTop: 10 }}>
+              <Col {...layoutHeader} >
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Số thứ tự trên vòng quay '}</Text>
+              </Col>
+              <Col  {...layoutContent}>
 
-              <Input type="number" min="1" max="15" style={{ width: '100%' }} value={no} onChange={(text) => setNo(text.target.value)} />
-            </Col>
-          </Row>
-          <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Trúng thưởng '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
-              <Radio.Group onChange={onChangeRadio} value={goalYn ? goalYn : 0}>
-                <Radio value={1}>Có</Radio>
-                <Radio value={0}>Không</Radio>
+                <Input type="number" min="1" max="15" style={{ width: '100%' }} value={no} onChange={(text) => setNo(text.target.value)} />
+              </Col>
+            </Row>
+            <Row style={{ marginTop: 10 }}>
+              <Col {...layoutHeader} >
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Trúng thưởng '}</Text>
+              </Col>
+              <Col  {...layoutContent}>
+                <Radio.Group onChange={onChangeRadio} value={goalYn ? goalYn : 0}>
+                  <Radio value={1}>Có</Radio>
+                  <Radio value={0}>Không</Radio>
 
-              </Radio.Group>
-            </Col>
-          </Row>
+                </Radio.Group>
+              </Col>
+            </Row>
+            <Row style={{ marginTop: 10 }}>
+              <Col {...layoutHeader} >
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Hình ảnh '}</Text>
+              </Col>
+              <Col  {...layoutContent} style={{ height: '104px' }}>
+                <Upload
+                  listType="picture-card"
+                  fileList={fileList}
+                  onPreview={handlePreview}
+                  onChange={handleChange}
+                  beforeUpload={beforeUpload}
+                  onRemove={onRemove}
 
-        </Form>
+                >
+                  {fileList.length >= 1 ? null : uploadButton}
+                </Upload>
+                <Modal
+                  visible={previewVisible}
+                  title={previewTitle}
+                  footer={null}
+                  onCancel={() => setPreviewVisible(false)}
+                >
+                  <img alt="example" style={{ width: '100%' }} src={previewImage} />
+                </Modal>
+              </Col>
+            </Row>
+
+
+          </Form>
+        }
+
       </Card>
     </Modal>
   )

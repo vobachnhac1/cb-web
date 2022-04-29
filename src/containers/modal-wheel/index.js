@@ -5,7 +5,7 @@
 * Created: 2022-04-08
 *------------------------------------------------------- */
 require("./style.module.less");
-import { Card, Col, Form, Input, Modal, Row, Typography, DatePicker } from 'antd';
+import { Card, Col, Form, Input, Modal, Row, Typography, DatePicker, InputNumber } from 'antd';
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
@@ -220,7 +220,13 @@ const ModalSegment = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng giá trị giải '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Input type="number" style={{ width: '100%' }} value={totalValue} onChange={(text) => setTotalValue(text.target.value)} />
+              <InputNumber style={{ width: '100%' }}
+                addonAfter={"VND"}
+                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                value={totalValue}
+                onChange={(text) => setTotalValue(text)}
+              />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
@@ -228,8 +234,14 @@ const ModalSegment = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Giá trị còn lại '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              {/* value={isAdd ? totalValue : remainValue} */}
-              <Input disabled type="number" style={{ width: '100%' }} value={totalValue} onChange={(text) => setRemainValue(text.target.value)} />
+              <InputNumber style={{ width: '100%' }}
+                addonAfter={"VND"}
+                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                value={totalValue}
+                onChange={(text) => setRemainValue(text)}
+                disabled
+              />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
