@@ -414,10 +414,10 @@ export default function WheelDetail({ query }) {
                 ))}
               </Select>
             </Col>
-            <Col className="gutter-row" span={6}>
+            {/* <Col className="gutter-row" span={6}>
               <Input allowClear placeholder="Thông tin cần tìm" value={filter.wheel_name} onChange={(event) => setFilter({ ...filter, wheel_name: event.target.value ? event.target.value : null })} />
-              {/* onChange={(event) => setDataSearch(event.target.value)} */}
-            </Col>
+              onChange={(event) => setDataSearch(event.target.value)}
+            </Col> */}
           </Row>
           <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
             <Col className="gutter-row" span={3}>
