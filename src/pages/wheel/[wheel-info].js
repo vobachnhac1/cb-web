@@ -16,12 +16,12 @@ import * as styles from './style.module.less';
 import __ from 'lodash';
 import * as Message from '@/components/message';
 
-export default function Wheel(props) {
+export default function DisplayWheel(props) {
   /// url mẫu http://localhost:3000/wheel/000001000012-0000000001
   const { manager = null, arrItem = [] } = props;
   const [selectedItem, setSelectedItem] = useState(null);
   const [invalid, setInvalid] = useState(false);
-  const places = !manager ? useSelector(gettersEventWheel.getContentReward) : arrItem;
+  const places = !manager ? useSelector(gettersEventWheel.getContentReward) : (arrItem || []);
   useEffect(() => {
     checkWheelDetail();
   }, [places]);
@@ -79,7 +79,9 @@ export default function Wheel(props) {
     setSelectedItem(value)
   }
   return (
-    <div className={styles['App']}>
+    <div className={styles['App']} style={{
+      backgroundImage: null
+    }}>
       {invalid ? <div /> : <WheelChild arrItem={arrItem} onSelectItem={onSelectItem} itemNumber={selectedItem} roles={manager} />}
     </div>
   )

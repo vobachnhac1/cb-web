@@ -127,7 +127,7 @@ export default function Segment(props) {
         <Space size="large" style={{
           'display': 'flex',
           'justifyContent': 'space-between',
-          'font-weight': '500'
+          'fontWeight': '500'
         }}>
           <span>
             {`${text}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -221,7 +221,7 @@ export default function Segment(props) {
                   allowClear
                   placeholder="Chủ đề"
                   style={{ width: '100%' }}
-                  defaultValue=""
+                  defaultValue={null}
                   value={filter.topic_id}
                   onChange={(value) => setFilter({ ...filter, topic_id: value })}>
                   {listTopic.map((Item, key) => (

@@ -292,28 +292,28 @@ export default function GenerateReward(props) {
             }}
             rules={[
               {
-                required: true,
-                message: `Vui lòng nhập ${title.toLowerCase()}!`,
-              },
-              async () => ({
                 validator(_, value) {
                   if (!value) {
-                    return Promise.reject();
+                    return Promise.reject(`Vui lòng nhập ${title.toLowerCase()}!`);
                   }
-                  if (value && value > record['remain_number']) {
+                  if (parseInt(value).toString() == 'NaN') {
+                    return Promise.reject("Vui lòng chỉ nhập số!");
+                  }
+                  if (value && parseInt(value).toString() != 'NaN' && (parseInt(value) > record['remain_number'])) {
                     return Promise.reject("Số giải trúng > số giải còn lại");
                   }
                   return Promise.resolve();
                 },
-              })
+              }
             ]}
           >
             {inputNode}
           </Form.Item>
         ) : (
           children
-        )}
-      </td>
+        )
+        }
+      </td >
     );
   };
 
@@ -339,7 +339,8 @@ export default function GenerateReward(props) {
 
   const _save = async (key) => {
     const rowText = await form.validateFields();
-    if (rowText['total_reward'].trim().length === 0) {
+    if (rowText['total_reward'].trim().length === 0 || parseInt(rowText['total_reward']).toString() == 'NaN') {
+      Message.Error("Thông báo", "Giá trị có kí tự chữ");
       return;
     }
     const row = {

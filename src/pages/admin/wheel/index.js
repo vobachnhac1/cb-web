@@ -98,7 +98,7 @@ export default function Wheel(props) {
         <Space size="large" style={{
           'display': 'flex',
           'justifyContent': 'space-between',
-          'font-weight': '500'
+          'fontWeight': '500'
         }}>
           <span>
             {`${text}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -119,7 +119,7 @@ export default function Wheel(props) {
         <Space size="large" style={{
           'display': 'flex',
           'justifyContent': 'space-between',
-          'font-weight': '500'
+          'fontWeight': '500'
         }}>
           <span >
             {`${text}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}

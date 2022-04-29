@@ -17,7 +17,8 @@ export default buildReducer(
     process: {
       status: false,
       message: null
-    }
+    },
+    event_info: null
   },
   {
     [TYPES.EVENT_WHEEL_SEARCH]: (state, payload) => {
@@ -37,6 +38,11 @@ export default buildReducer(
           message: payload.message
         }
       }
-    }
+    }, [TYPES.EVENT_INFO]: (state, payload) => {
+      return {
+        ...state,
+        event_info: payload
+      }
+    },
   },
 );
