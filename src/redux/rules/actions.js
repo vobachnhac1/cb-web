@@ -6,6 +6,7 @@ const setRules = (payload) => ({ type: TYPES.RULES_SEARCH, payload });
 const setListWheelApproved = (payload) => ({ type: TYPES.RULES_WHEEL_APPROVED, payload });
 const setListWheel = (payload) => ({ type: TYPES.RULES_WHEEL, payload });
 const setListRulesStateYes = (payload) => ({ type: TYPES.RULES_STATE_YES, payload });
+const setRewardHis = (payload) => ({ type: TYPES.RULES_REWARD_HIS, payload });
 // const setListWheelDetail = (payload) => ({ type: TYPES.RULES_WHEEL_DETAIL, payload });
 
 // hàm xử lý được gọi từ bên ngoài
@@ -237,6 +238,7 @@ export const getListRulesStateApprove = (payload) => async (dispatch, getState, 
   dispatch(setListRulesStateYes(listRules))
   return true
 }
+
 export const updateWheelWithRules = (payload) => async (dispatch, getState, { $http }) => {
   const result = await $http.post(URLSERVER.updateWheelWithRules, payload);
   const { success, data } = result;
@@ -245,3 +247,18 @@ export const updateWheelWithRules = (payload) => async (dispatch, getState, { $h
   }
   return true
 }
+
+export const getRewardHistory = (payload) => async (dispatch, getState, { $http }) => {
+  const result = await $http.post(URLSERVER.getRewardHistory, payload);
+  const { success, data } = result;
+  if (!success || !data.success) {
+    dispatch(setRewardHis([]))
+    return false;
+  }
+  const listRewardHis = data.data;
+  if (listRewardHis && listRewardHis.length > 0) {
+    dispatch(setRewardHis(listRewardHis))
+  }
+  return true
+}
+

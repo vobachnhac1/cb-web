@@ -22,3 +22,10 @@ export const getListWheel = (state) => {
   return listWheel.map((item, index) => ({ ...item, key: index })) || []
 };
 /// lấy state
+
+export const getListRewardHis = (state) => {
+  const { rules: data } = state;
+  const { listRewardHis = [] } = data;
+  if (listRewardHis.length == 0) return [];
+  return listRewardHis.map((item, index) => ({ ...item, key: index })) || []
+};

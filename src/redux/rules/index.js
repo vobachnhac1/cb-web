@@ -13,7 +13,8 @@ export default buildReducer(
     listRulesStateYes: [],
     listWheelApproved: [],
     listWheelDetail: [],
-    listWheel: []
+    listWheel: [],
+    listRewardHis: []
   }, {
   [TYPES.RULES_SEARCH]: (state = listRules, payload) => {
     return {
@@ -39,6 +40,11 @@ export default buildReducer(
     return {
       ...state,
       listRulesStateYes: payload
+    }
+  }, [TYPES.RULES_REWARD_HIS]: (state, payload) => {
+    return {
+      ...state,
+      listRewardHis: payload
     }
   },
 });
