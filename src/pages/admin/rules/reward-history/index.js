@@ -9,13 +9,11 @@ import * as styles from './style.module.less';
 import * as classnames from 'classnames';
 import { useState, useEffect } from 'react';
 import LayoutHome from '@/containers/Home';
-import { Button, Card, Col, Row, Space, Table, Typography, Select, Input, Form, Tag, DatePicker, Popconfirm } from 'antd';
+import { Button, Card, Col, Row, Space, Table, Typography, Tag } from 'antd';
 import * as Message from '@/components/message';
-import { v4 as uuidv4 } from 'uuid';
 
 const { Text } = Typography;
-const { RangePicker } = DatePicker;
-const { Option } = Select;
+
 
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
@@ -72,7 +70,7 @@ export default function RewardHistory(props) {
       render: (text, record) => {
         return (
           <>
-            <Text style={{ flexDirection: "row", justifyContent: "center" }}> {uuidv4(parseInt(text))}</Text>
+            <Text style={{ flexDirection: "row", justifyContent: "center" }}> {text}</Text>
           </>
         )
       }
