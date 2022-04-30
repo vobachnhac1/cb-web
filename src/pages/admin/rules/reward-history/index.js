@@ -145,6 +145,7 @@ export default function RewardHistory(props) {
   ];
 
   const onSearch = () => {
+    initPage();
     Message.Info('Thông Báo', 'Tính năng đang được phát triển')
   }
   const onComfirm = () => {
