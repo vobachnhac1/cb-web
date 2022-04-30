@@ -15,26 +15,40 @@ import { getters as gettersEventWheel } from '@/redux/event-wheel';
 import * as Message from '@/components/message';
 
 const WheelChild = (props) => {
-  const { itemNumber, roles = null, arrItem = [] } = props;
+  const { roles = null, arrItem = [], selectedItem = null } = props;
   const dispatch = useDispatch();
   const places = !roles ? useSelector(gettersEventWheel.getContentReward) : (arrItem || []);
   const isProcessing = useSelector(gettersEventWheel.getProccessing);
   const eventInfo = useSelector(gettersEventWheel.getEventInfo);
   const wheelVars = {
     '--nb-item': places.length,
-    '--selected-item': itemNumber,
+    '--selected-item': selectedItem,
   };
   useEffect(() => {
     dispatch(actionsEventWheel.setProcessing(false));
   }, []);
-  const spinning = itemNumber !== null ? true : false;
-  const selectItem = async () => {
+
+  const spinning = selectedItem !== null ? true : false;
+
+  const setup = () => {
+    props.onSelectItem(null)
+  }
+
+  const activeEvent = () => {
     if (isProcessing.status) {
       Message.Warning("Thông Báo", "Đang lấy kết quả vòng quay");
       return;
     };
+    if (selectedItem) {
+      setup();
+    }
+    setTimeout(async () => {
+      selectItem();
+    }, 50);
+  }
+  const selectItem = async () => {
+    let keyHost = 0;
     Message.Info("Thông Báo", "Bắt đầu quay");
-    props.onSelectItem(null);
     await dispatch(actionsEventWheel.setProcessing(true));
     let rsReward;
     if (!roles) {
@@ -43,18 +57,28 @@ const WheelChild = (props) => {
         if (rsReward) {
           if (props.onSelectItem) {
             props.onSelectItem(places.length - (parseInt(rsReward.no)));
+          } else {
+            setup();
           }
         }
       }
     } else {
+      const randomItem = Math.floor(Math.random() * places.length);
       if (props.onSelectItem) {
-        const selectedItem = Math.floor(Math.random() * props.arrItem.length);
-        props.onSelectItem(selectedItem);
+        props.onSelectItem(places[randomItem].key);
+        keyHost = places[randomItem].key
+      } else {
+        setup();
       }
     }
     setTimeout(async () => {
       if (!roles) {
         Message.Info("Thông Báo", `Bạn nhận được kết quả: ${rsReward.segment_name} `);
+        await dispatch(actionsEventWheel.setProcessing(false));
+        return
+      }
+      if (selectedItem && places && places.length > 0) {
+        Message.Info("Thông Báo", `Bạn nhận được kết quả: ${arrItem.find(item => item.key == keyHost).segment_name} `);
       }
       await dispatch(actionsEventWheel.setProcessing(false));
     }, 4000);
@@ -63,7 +87,7 @@ const WheelChild = (props) => {
   return (
     <div className={styles["wheel-container"]}>
       <div className={classNames({ [styles['wheel-viewbox-border']]: true })} />
-      <div className={classNames({ [styles['wheel-viewbox']]: true })} onClick={selectItem} />
+      <div className={classNames({ [styles['wheel-viewbox']]: true })} onClick={activeEvent} />
       <div className={
         classNames({ [styles["wheel"]]: true }, { [styles["spinning"]]: spinning })} //chỗ import
         style={wheelVars}>

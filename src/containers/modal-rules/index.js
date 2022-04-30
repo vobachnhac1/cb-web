@@ -199,9 +199,11 @@ const ModalRules = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Trạng thái:'}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Tag color={body.status_rules == 'Y' ? 'green' : "red"}>
-                {body.status_rules_name}
-              </Tag>
+              {
+                body.status_rules_name && <Tag color={body.status_rules == 'Y' ? 'green' : "red"}>
+                  {body.status_rules_name}
+                </Tag>
+              }
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
@@ -230,72 +232,6 @@ const ModalRules = (props) => {
               />
             </Col>
           </Row>
-          {/* <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Số kết quả '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
-              <Input type="number" style={{ width: '100%' }} value={numSegments} onChange={(text) => setNumSegments(text.target.value)} />
-            </Col>
-          </Row> */}
-          {/* <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Tài khoản trích tiền game '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
-
-              <Input style={{ width: '100%' }} value={accountNbr} onChange={(text) => setAccountNbr(text.target.value)} />
-            </Col>
-          </Row> */}
-          {/* <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng giá trị giải '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
-              <Input type="number" style={{ width: '100%' }} value={totalValue} onChange={(text) => setTotalValue(text.target.value)} />
-            </Col>
-          </Row> */}
-          {/* <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Giá trị còn lại '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
-              <Input disabled type="number" style={{ width: '100%' }} value={totalValue} onChange={(text) => setRemainValue(text.target.value)} />
-            </Col>
-          </Row> */}
-          {/* <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Bán kính vòng quay '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
-              <Input type="number" style={{ width: '100%' }} value={outerRadius} onChange={(text) => setOuterRadius(text.target.value)} />
-            </Col>
-          </Row> */}
-          {/* <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Đặt kích thước chữ '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
-              <Input type="number" style={{ width: '100%' }} value={textFrontSize} onChange={(text) => setTextFrontSize(text.target.value)} />
-            </Col>
-          </Row> */}
-          {/* <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text type="number" className={classNames({ [styles['text-font']]: true })}>{'Đặt góc vòng quay '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
-              <Input style={{ width: '100%' }} value={ratationAngle} onChange={(text) => setRatationAngle(text.target.value)} />
-            </Col>
-          </Row> */}
-          {/* <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Ngày hết hiệu lực '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
-
-              <DatePicker value={inactived_date ? moment(inactived_date) : null} onChange={(date) => setInactived_date(date)} />
-            </Col>
-          </Row> */}
         </Form>
       </Card>
     </Modal>
