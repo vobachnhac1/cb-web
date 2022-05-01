@@ -283,7 +283,7 @@ export default function Wheel(props) {
               className="table_layout"
               columns={columns}
               dataSource={listWheel}
-              size='large'
+              size='small'
               loading={loading}
               scroll={{ x: 1300 }}
             />

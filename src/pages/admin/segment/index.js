@@ -269,7 +269,7 @@ export default function Segment(props) {
               className="table_layout"
               columns={columns}
               dataSource={listSegment}
-              size='large'
+              size='small'
               loading={loading}
               scroll={{ x: 1300 }}
             />

@@ -414,7 +414,7 @@ export default function WheelDetail({ query }) {
         <div style={{ marginTop: 20 }} />
         <Card>
           <Row gutter={[16, 24]}>
-            <Col className="gutter-row" span={4}>
+            <Col className="gutter-row" span={6}>
               <Select
                 allowClear
                 placeholder="Tên giải thưởng"
@@ -447,7 +447,7 @@ export default function WheelDetail({ query }) {
             <Table
               columns={columns}
               dataSource={listSearch}
-              size='large'
+              size='small'
               loading={loading}
               scroll={{ x: 1300 }}
             />

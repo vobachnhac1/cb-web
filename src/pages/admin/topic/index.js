@@ -6,7 +6,7 @@
 *------------------------------------------------------- */
 require("./style.module.less");
 import { useEffect, useState } from 'react';
-import { Button, Card, Col, Input, Row, Space, Table, DatePicker } from 'antd';
+import { Button, Card, Col, Input, Row, Space, Table, DatePicker, Typography } from 'antd';
 import moment from 'moment';
 import __ from 'lodash';
 import * as styles from './style.module.less';
@@ -15,6 +15,7 @@ import LayoutHome from '@/containers/Home';
 import * as Message from '@/components/message';
 
 const { RangePicker } = DatePicker;
+const { Text } = Typography;
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
 import { actions as actionTopic } from
@@ -48,7 +49,7 @@ export default function Topic(props) {
       dataIndex: 'topic_id',
       key: 'topic_id',
       width: 80,
-      render: text => <a>{text}</a>,
+      render: text => <Text>{text}</Text>,
     },
     {
       width: 300,
@@ -63,7 +64,7 @@ export default function Topic(props) {
       dataIndex: 'inactived_date',
       key: 'inactived_date',
       render: (text) => (
-        <p>{text ? moment(text).format('HH:mm:ss,  YYYY-MM-DD') : ''}</p>
+        <Text>{text ? moment(text).format('HH:mm:ss,  YYYY-MM-DD') : ''}</Text>
       ),
 
     }, {
@@ -72,20 +73,27 @@ export default function Topic(props) {
       dataIndex: 'status_yn',
       key: 'status_yn',
       render: (text) => (
-        <p>{text == 'Y' ? 'YES' : 'NO'}</p>
+        <Text>{text == 'Y' ? 'YES' : 'NO'}</Text>
       ),
     },
     {
       align: 'center',
       title: 'Action',
       key: 'action',
-      render: (text, record) => (
-        <Space size="middle">
-          <Button style={{ color: 'green', borderColor: 'green', borderWidth: 0.5 }} onClick={() => approveTopic(record)} >Approve</Button>
-          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateTopic(record)} >Edit</Button>
-          <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} onClick={() => deleteTopic(record)} >Delete</Button>
-        </Space>
-      ),
+      render: (text, record) => {
+        const isShow = record.status_yn == 'Y' ? false : true;
+        const name = record.status_yn == 'Y' ? 'Reject' : 'Approve';
+        const color = record.status_yn == 'Y' ? 'blue' : 'green';
+        return (
+          <Space size="middle">
+            <Button style={{ color: color, borderColor: color, borderWidth: 0.5 }} onClick={() => approveTopic(record)} >{name}</Button>
+            {
+              isShow && <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateTopic(record)} >Edit</Button>
+            }
+            <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} onClick={() => deleteTopic(record)} >Delete</Button>
+          </Space>
+        )
+      },
     },
   ];
   // const pagination = {

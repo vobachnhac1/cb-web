@@ -2,7 +2,7 @@
 * Author Võ Bách Nhạc
 * Email vonhac.20394@gmail.com
 * Phone 0906.918.738
-* Created: 2022-04-07
+* Created: 2022-04-22
 *------------------------------------------------------- */
 require("./style.module.less");
 import * as styles from './style.module.less';
@@ -251,7 +251,7 @@ export default function Rules(props) {
               className="table_layout"
               columns={columns}
               dataSource={listRules}
-              size='large'
+              size='small'
               loading={loading}
               scroll={{ x: 1300 }}
               onRow={(record, rowIndex) => {
