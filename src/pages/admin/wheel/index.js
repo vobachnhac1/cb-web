@@ -9,7 +9,8 @@ import * as styles from './style.module.less';
 import * as classnames from 'classnames';
 import { useState, useEffect } from 'react';
 import LayoutHome from '@/containers/Home';
-import { Button, Card, Col, Row, Space, Table, Popconfirm, Input } from 'antd';
+import { Button, Card, Col, Row, Space, Table, Popconfirm, Input, DatePicker } from 'antd';
+const { RangePicker } = DatePicker;
 import * as Message from '@/components/message';
 import ModalWheel from '@/containers/modal-wheel'
 
@@ -28,6 +29,8 @@ export default function Wheel(props) {
   const listWheel = useSelector(gettersWheel.getStateLoadPageWheel) || [];
   const [filter, setFilter] = useState({
     wheel_name: null,
+    from_date_act: null,
+    to_date_act: null
   });
 
   useEffect(() => {
@@ -41,8 +44,8 @@ export default function Wheel(props) {
     setLoading(false);
   }
   const onSearch = async () => {
-    const { wheel_name } = filter;
-    if (__.isNil(wheel_name)) {
+    const { wheel_name, from_date_act, to_date_act } = filter;
+    if (__.isNil(wheel_name) && __.isNil(from_date_act) && __.isNil(to_date_act)) {
       initPage();
     } else {
       setLoading(true);
@@ -188,7 +191,6 @@ export default function Wheel(props) {
             </Link>
           </Button>
           <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateWheel(record)} >Cập nhật</Button>
-
           {listWheel.length >= 1 ? (
             <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)} >
               <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
@@ -225,7 +227,7 @@ export default function Wheel(props) {
 
   const callbackModal = (params) => {
     setVisible(params.visible);
-    initPage();
+    onSearch()
   }
 
   return (
@@ -240,9 +242,29 @@ export default function Wheel(props) {
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>
             <Row gutter={[16, 24]}>
-              <Col className="gutter-row" span={12}>
+              <Col className="gutter-row" span={5}>
+                <RangePicker
+                  onChange={(dates, dateString) => {
+                    if (dates) {
+                      setFilter({
+                        ...filter,
+                        from_date_act: dateString[0],
+                        to_date_act: dateString[1],
+                      });
+                    } else {
+                      setFilter({
+                        ...filter,
+                        from_date_act: null,
+                        to_date_act: null,
+                      });
+                    }
+                  }}
+                />
+              </Col>
+              <Col className="gutter-row" span={8}>
                 <Input allowClear placeholder="Tên vòng quay cần tìm" value={filter.wheel_name} onChange={(event) => setFilter({ ...filter, wheel_name: event.target.value })} />
               </Col>
+
             </Row>
             <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
               <Col className="gutter-row" span={3}>

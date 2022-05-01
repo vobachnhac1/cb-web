@@ -13,7 +13,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
-import Wheel from '@/pages/wheel/[wheel-info]'
+import DisplayWheel from '@/pages/wheel/[wheel-info]';
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
 import { getters as gettersTopic } from '@/redux/topic';
@@ -360,7 +360,7 @@ const ModalWheelDetail = (props) => {
         {/* test wheel */}
         {
           isViewsWheel ? <Row style={{ marginTop: 10 }}>
-            <Wheel arrItem={listWheelDetail} manager={'manager'} />
+            <DisplayWheel arrItem={listWheelDetail} manager={'manager'} />
           </Row> : <Form
             labelCol={{
               span: 6,
