@@ -127,13 +127,18 @@ export default function Rules(props) {
       title: 'Action',
       key: 'action',
       width: 200,
-      render: (text, record) => (
-        <Space size="middle">
-          <Button style={{ color: 'green', borderColor: 'green', borderWidth: 0.5 }} onClick={() => approveRules(record)} >Approve</Button>
-          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateRules(record)} >Edit</Button>
-          <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} onClick={() => deleteRules(record)} >Delete</Button>
-        </Space>
-      ),
+      render: (text, record) => {
+        const color = record.status_rules == 'N' ? 'green' : 'red';
+        const tagName = record.status_rules == 'N' ? 'Approve' : 'Reject';
+        return (
+          <Space size="middle">
+            <Button style={{ color: color, borderColor: color, borderWidth: 0.5 }} onClick={() => approveRules(record)} >{tagName}</Button>
+            <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateRules(record)} >Edit</Button>
+            <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} onClick={() => deleteRules(record)} >Delete</Button>
+          </Space>
+        );
+      }
+
     },
   ];
 

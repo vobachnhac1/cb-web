@@ -69,14 +69,22 @@ const menu = [
       }, {
         key: 'subRulesReward',
         parentKey: 'subRules',
-        path: '/admin/rules/generate-reward',
+        path: '/admin/rules/reward-generate',
         icon: <AliyunOutlined />,
-        title: 'Generate Reward',
+        title: 'Reward Generate',
+        child: null,
+      }, {
+        key: 'subRewardHistory',
+        parentKey: 'subRules',
+        path: '/admin/rules/reward-history',
+        icon: <AliyunOutlined />,
+        title: 'Reward History',
         child: null,
       }
     ],
   },
 ];
+
 const permission = [
   {
     parent: 'subTopic',
@@ -89,7 +97,7 @@ const permission = [
     child: null,
   }, {
     parent: 'subRules',
-    child: ['viewRules', 'subWheelApprove', 'subRulesReward']
+    child: ['viewRules', 'subWheelApprove', 'subRulesReward', , 'subRewardHistory']
   },
 ];
 

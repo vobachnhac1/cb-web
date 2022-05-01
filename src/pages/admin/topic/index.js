@@ -38,6 +38,12 @@ export default function Topic(props) {
   const columns = [
     {
       align: 'center',
+      title: 'STT',
+      dataIndex: 'ord_numbers',
+      key: 'ord_numbers',
+      width: 50,
+    }, {
+      align: 'center',
       title: 'Topic ID',
       dataIndex: 'topic_id',
       key: 'topic_id',
@@ -82,10 +88,10 @@ export default function Topic(props) {
       ),
     },
   ];
-  const pagination = {
-    current: 1,
-    pageSize: 10,
-  };
+  // const pagination = {
+  //   current: 1,
+  //   pageSize: 10,
+  // };
 
   // gọi 1 function rồi theo dõi nhưng thay đổi của param đó
   useEffect(() => {
@@ -158,7 +164,7 @@ export default function Topic(props) {
         <ModalTopic visible={visible} bodyModel={bodyModel} callback={callbackModal} />
         <Card
           headStyle={{
-            fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: '#0C74CF'
+            fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)"
           }}
           title="TOPIC MANAGEMENT"
           bordered={true}
@@ -209,8 +215,8 @@ export default function Topic(props) {
             <Table
               columns={columns}
               dataSource={listTopic}
-              size='large'
-              pagination={pagination}
+              size='small'
+              // pagination={pagination}
               loading={false}
             />
           </Col>

@@ -41,5 +41,6 @@
   "generateRewardOfRules": "rules/generate-reward-rules",
   "selectWheelApproved": "rules/get-wheel-approve",
   "updateStateWheel": "rules/update-status-the-wheel",
-  "updateWheelWithRules": "wheel/update-wheel-with-rules-id"
+  "updateWheelWithRules": "wheel/update-wheel-with-rules-id",
+  "getRewardHistory": "rules/get-reward-history"
 }
