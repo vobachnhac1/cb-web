@@ -17,9 +17,6 @@ export default buildReducer(
   },
   {
     [TYPES.WHEELDETAIL_SEARCH]: (state, payload) => {
-      console.log(' redux state WheelDetail', state)
-      console.log(' redux payload WheelDetail', payload)
-
       return {
         ...state,
         listWheelDetail: payload.listData,

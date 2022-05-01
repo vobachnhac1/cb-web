@@ -39,7 +39,6 @@ WheelDetail.getInitialProps = async ({ query }) => {
 }
 
 export default function WheelDetail({ query }) {
-  // const { query } = useRouter();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState({

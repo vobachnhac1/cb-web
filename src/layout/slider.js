@@ -57,9 +57,9 @@ const menu = [
       {
         key: 'viewRules',
         parentKey: 'subRules',
-        path: '/admin/rules',
+        path: '/admin/rules/management',
         icon: <AliyunOutlined />,
-        title: 'Quy tắc',
+        title: 'Quản lý quy tắc',
         child: null,
       }, {
         key: 'subWheelApprove',

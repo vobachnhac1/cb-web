@@ -14,7 +14,6 @@ export default function HomeWheel() {
 
   return (
     <LayoutHome />
-    // <DisplayWheel manager={true} arrItem={[]} />
   )
 }
 

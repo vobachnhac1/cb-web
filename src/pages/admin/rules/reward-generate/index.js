@@ -359,8 +359,6 @@ export default function GenerateReward(props) {
       setListWheelDt(newData);
       setEditingKey('');
     }
-    // console.log('key: ', key);
-    // setEditingKey('');
   }
 
   const mergedColumns = columns.map((col) => {

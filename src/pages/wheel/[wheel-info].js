@@ -15,11 +15,16 @@ import { getters as gettersEventWheel } from '@/redux/event-wheel';
 import * as styles from './style.module.less';
 import __ from 'lodash';
 import * as Message from '@/components/message';
+import { useRouter } from 'next/router';
+import { PathTitle } from "@/constants/url-name";
+import Header from '@/components/Head';
 
 export default function DisplayWheel(props) {
   /// url mẫu http://localhost:3000/wheel/000001000012-0000000001
+  const router = useRouter()
   const { manager = null, arrItem = [] } = props;
   const [selectedItem, setSelectedItem] = useState(null);
+  const [path, setPath] = useState(router.pathname);
   const [invalid, setInvalid] = useState(false);
   const places = !manager ? useSelector(gettersEventWheel.getContentReward) : (arrItem || []);
   useEffect(() => {
@@ -45,6 +50,9 @@ export default function DisplayWheel(props) {
   useEffect(() => {
     if (!manager) {
       initPage();
+    }
+    if (path.includes("/wheel/", 0)) {
+      setPath('/wheel/')
     }
   }, []);
 
@@ -82,6 +90,8 @@ export default function DisplayWheel(props) {
     <div className={styles['App']} style={{
       backgroundImage: null
     }}>
+      <Header title={PathTitle[`${path}`]} />
+
       {invalid ? <div /> : <WheelChild arrItem={arrItem} onSelectItem={onSelectItem} selectedItem={selectedItem} roles={manager} />}
     </div>
   )
