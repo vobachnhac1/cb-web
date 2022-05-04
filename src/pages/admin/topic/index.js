@@ -80,11 +80,21 @@ export default function Topic(props) {
       title: 'Action',
       key: 'action',
       render: (text, record) => (
+
         <Space size="middle">
-          <Button style={{ color: 'green', borderColor: 'green', borderWidth: 0.5 }} onClick={() => approveTopic(record)} >Approve</Button>
-          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateTopic(record)} >Edit</Button>
-          <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} onClick={() => deleteTopic(record)} >Delete</Button>
+          {record.wheel_id_apr === 1
+            ?
+            <span style={{ color: 'green', }} >
+              Đã phê duyệt
+            </span>
+            : <>
+              <Button style={{ color: 'green', borderColor: 'green', borderWidth: 0.5 }} onClick={() => approveTopic(record)} >Approve</Button>
+              <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateTopic(record)} >Edit</Button>
+              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} onClick={() => deleteTopic(record)} >Delete</Button>
+            </>}
+
         </Space>
+
       ),
     },
   ];
