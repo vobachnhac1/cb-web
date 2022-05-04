@@ -7,6 +7,7 @@ import moment from 'moment';
 
 // hàm thị thi nội bộ
 const setSearchWheelDetail = (payload) => ({ type: TYPES.WHEELDETAIL_SEARCH, payload });
+const setNumberSegmentWheel = (payload) => ({ type: TYPES.WHEELDETAIL_NUMBERSEGMENTWHEEL, payload })
 // const setWheelDetailNo = (payload) => ({ type: TYPES.WHEELDETAIL_NO, payload });
 // // hàm xử lý được gọi từ bên ngoài
 export const searchWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
@@ -59,6 +60,9 @@ export const SaveOnListWheelDetail = (payload) => async (dispatch, getState, { $
   }
 
   dispatch(setSearchWheelDetail(dataObject))
+  dispatch(setNumberSegmentWheel({
+    'num_segment_wheel': data.data.num_segment_wheel
+  }))
   return dataObject
 
 }
@@ -251,9 +255,13 @@ export const filterWheelDetail = (payload) => async (dispatch, getState, { $http
     'wheel_curt_value': data.data.wheel_curt_value,
     'wheel_total_value': data.data.wheel_total_value,
     'Wheel_detail_total_value': Wheel_detail_total_value,
-    'no': no
+    'no': no,
   }
+
   dispatch(setSearchWheelDetail(dataObject))
+  dispatch(setNumberSegmentWheel({
+    'num_segment_wheel': data.data.num_segment_wheel
+  }))
   return dataObject
 }
 

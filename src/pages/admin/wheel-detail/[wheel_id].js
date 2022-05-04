@@ -53,6 +53,7 @@ export default function WheelDetail({ query }) {
   const wheelTotalValue = useSelector(gettersWheelDetail.getStateWheelTotalValue);
   const wheelDetialTotalValue = useSelector(gettersWheelDetail.getStateWheelDetialTotalValue);
   const noWheelDetail_length = useSelector(gettersWheelDetail.getStateWheelDetialNo);
+  const WheelNumbersegment = useSelector(gettersWheelDetail.getStateWheelNumbersegment);
   const [listSearch, setListSearch] = useState([]);
 
   // gọi 1 function rồi theo dõi nhưng thay đổi của param đó
@@ -124,8 +125,8 @@ export default function WheelDetail({ query }) {
         return;
       }
     }
-    if (noWheelDetail_length > 14) {
-      Message.Error("NOTYFICATON", "Vòng quay chỉ được tối đa 15 chi tiết giải thưởng !");
+    if (noWheelDetail_length > WheelNumbersegment) {
+      Message.Error("NOTYFICATON", `Vòng quay chỉ được tối đa ${WheelNumbersegment} chi tiết giải thưởng !`);
       return;
     }
 
