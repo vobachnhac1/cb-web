@@ -85,7 +85,7 @@ export default function Topic(props) {
           {record.wheel_id_apr === 1
             ?
             <span style={{ color: 'green', }} >
-              Đã phê duyệt
+              Có vòng quay đã duyệt và đang sử dụng chủ đề này !
             </span>
             : <>
               <Button style={{ color: 'green', borderColor: 'green', borderWidth: 0.5 }} onClick={() => approveTopic(record)} >Approve</Button>
