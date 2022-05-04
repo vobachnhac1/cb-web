@@ -76,9 +76,10 @@ export default function Topic(props) {
       ),
     },
     {
-      align: 'center',
+
       title: 'Action',
       key: 'action',
+      width: 200,
       render: (text, record) => (
 
         <Space size="middle">

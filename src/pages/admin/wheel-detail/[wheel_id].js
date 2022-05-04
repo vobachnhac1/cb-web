@@ -54,6 +54,7 @@ export default function WheelDetail({ query }) {
   const wheelDetialTotalValue = useSelector(gettersWheelDetail.getStateWheelDetialTotalValue);
   const noWheelDetail_length = useSelector(gettersWheelDetail.getStateWheelDetialNo);
   const WheelNumbersegment = useSelector(gettersWheelDetail.getStateWheelNumbersegment);
+  const WheelStatus = useSelector(gettersWheelDetail.getStateWheelStatus);
   const [listSearch, setListSearch] = useState([]);
 
   // gọi 1 function rồi theo dõi nhưng thay đổi của param đó
@@ -134,6 +135,10 @@ export default function WheelDetail({ query }) {
     const data = {
       'wheel_id': query.wheel_id,
       'data': listWheelDetail,
+      'wheel_curt_value': wheelCurtValue,
+      'wheel_total_value': wheelTotalValue,
+      'num_segment_wheel': WheelNumbersegment,
+      'wheel_status': WheelStatus
     }
     setLoading(true);
     const { success, listData } = await dispatch(actionWheelDetail.SaveOnListWheelDetail(data));
@@ -278,21 +283,28 @@ export default function WheelDetail({ query }) {
       render: (text, record) => (
         <>
           {
-            record.is_delete ?
-              <Space size="middle">
-                {/* onClick={() => viewsDetail(record)} */}
-                <Button style={{ color: '#7cb305', borderColor: '#7cb305', borderWidth: 0.5, }} onClick={() => updateDetail(record)} >Xem</Button>
-                <Popconfirm title="Bạn có chắc?" onConfirm={() => handleRestore(record)} >
-                  <Button style={{ color: '#faad14', borderColor: '#fa8c16', borderWidth: 0.5 }} >Khôi phục</Button>
-                </Popconfirm>
-              </Space>
+            // disabled = { WheelStatus === 'APR' ? true : false}
+            WheelStatus === 'APR'
+              ?
+              <span style={{ color: 'green', }} >
+                Đã được duyệt !
+              </span>
               :
-              <Space size="middle">
-                <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateDetail(record)} >Cập nhật</Button>
-                <Popconfirm title="Bạn có chắc?" onConfirm={() => handleDelete(record)} >
-                  <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
-                </Popconfirm>
-              </Space>
+              record.is_delete ?
+                <Space size="middle">
+                  {/* onClick={() => viewsDetail(record)} */}
+                  <Button style={{ color: '#7cb305', borderColor: '#7cb305', borderWidth: 0.5, }} onClick={() => updateDetail(record)} >Xem</Button>
+                  <Popconfirm title="Bạn có chắc?" onConfirm={() => handleRestore(record)} >
+                    <Button style={{ color: '#faad14', borderColor: '#fa8c16', borderWidth: 0.5 }} >Khôi phục</Button>
+                  </Popconfirm>
+                </Space>
+                :
+                <Space size="middle">
+                  <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateDetail(record)}  >Cập nhật</Button>
+                  <Popconfirm title="Bạn có chắc?" onConfirm={() => handleDelete(record)} >
+                    <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
+                  </Popconfirm>
+                </Space>
           }
         </>
       ),
@@ -328,7 +340,7 @@ export default function WheelDetail({ query }) {
 
   const onViewsWheel = (record) => {
 
-    if (noWheelDetail_length == 14) {
+    if (noWheelDetail_length == WheelNumbersegment) {
       setVisible(true);
       setBodyModel({
         record: record,
@@ -337,7 +349,7 @@ export default function WheelDetail({ query }) {
         dataListSearch: listSearch
       });
     } else {
-      Message.Error("NOTYFICATON", "Vòng quay chưa đủ 14 chi tiết vòng quay !!!");
+      Message.Error("NOTYFICATON", `Vòng quay chưa đủ ${WheelNumbersegment} chi tiết vòng quay !!!`);
       return;
     }
 
@@ -377,7 +389,7 @@ export default function WheelDetail({ query }) {
                 </Button>
               </Col>
               <Col className="gutter-row" span={2} style={{ marginBottom: 10 }}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSaveListData}>Lưu lại</Button>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSaveListData} disabled={WheelStatus === 'APR' ? true : false}>Lưu lại</Button>
               </Col>
               <Col className="gutter-row" span={5} offset={5}>
                 <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền vòng quay: '}</Text>
@@ -435,7 +447,7 @@ export default function WheelDetail({ query }) {
           </Row>
           <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
             <Col className="gutter-row" span={3}>
-              <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewWheelDetail}>Thêm</Button>
+              <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewWheelDetail} disabled={WheelStatus === 'APR' ? true : false}>Thêm</Button>
             </Col>
             <Col className="gutter-row" span={3}>
               <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>

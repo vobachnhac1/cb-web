@@ -22,6 +22,9 @@ export const getStateWheelDetialNo = ({ wheeldetail: { no } }) => {
 export const getStateWheelNumbersegment = ({ wheeldetail: { num_segment_wheel } }) => {
   return num_segment_wheel ? num_segment_wheel : 0
 };
+export const getStateWheelStatus = ({ wheeldetail: { wheel_status } }) => {
+  return wheel_status ? wheel_status : ''
+};
 
 
 

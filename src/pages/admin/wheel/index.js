@@ -184,19 +184,29 @@ export default function Wheel(props) {
       key: 'action',
       width: 320,
       render: (text, record) => (
+
         <Space size="middle">
           <Button style={{ color: '#7cb305', borderColor: '#7cb305', borderWidth: 0.5 }}>
             <Link href={`/admin/wheel-detail/${record.wheel_id}`}>
               Chi tiết vòng quay
             </Link>
           </Button>
-          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateWheel(record)} >Cập nhật</Button>
-          {listWheel.length >= 1 ? (
-            <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)} >
-              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
-            </Popconfirm>
-          ) : null
+          {
+            record.wheel_status === "APR" ?
+              <span style={{ color: 'green', }} >
+                Vòng quay đã duyệt !
+              </span>
+              : <>
+                <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateWheel(record)} >Cập nhật</Button>
+                {listWheel.length >= 1 ? (
+                  <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)} >
+                    <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
+                  </Popconfirm>
+                ) : null
+                }
+              </>
           }
+
         </Space>
       ),
     },
