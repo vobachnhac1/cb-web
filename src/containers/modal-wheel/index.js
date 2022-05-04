@@ -76,6 +76,9 @@ const ModalSegment = (props) => {
     if (!numSegments || numSegments.lenght == 0) {
       msg_error.push("-Số kết quả trúng thưởng chưa có nội dung");
     }
+    if (parseInt(numSegments) > 14) {
+      msg_error.push("-Số kết quả trúng thưởng không được lớn hơn 14");
+    }
     if (!accountNbr) {
       msg_error.push("-Tài khoản trích tiền chưa có nội dung");
     }
@@ -203,7 +206,7 @@ const ModalSegment = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Số kết quả '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Input type="number" style={{ width: '100%' }} value={numSegments} onChange={(text) => setNumSegments(text.target.value)} />
+              <Input type="number" min="1" max="14" style={{ width: '100%' }} value={numSegments} onChange={(text) => setNumSegments(text.target.value)} />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
