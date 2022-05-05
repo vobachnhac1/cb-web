@@ -115,22 +115,31 @@ export default function WheelDetail({ query }) {
 
   // lưu lại tất cã data insert update delete gửi về api
   const onSaveListData = async () => {
-    // const data = listWheelDetail
+    let msg_error = [];
     for (let i = 0; i < listWheelDetail.length; i++) {
       if (listWheelDetail[i].is_duplicated) {
-        Message.Error("NOTYFICATON", "STT bị trùng !");
-        return;
+        msg_error.push('-STT bị trùng !')
       }
       if (listWheelDetail[i].is_lengthExceeded) {
-        Message.Error("NOTYFICATON", "STT đang bị lớn hơn số vòng quay");
-        return;
+        msg_error.push('-STT đang bị lớn hơn số vòng quay')
       }
     }
-    if (noWheelDetail_length > WheelNumbersegment) {
-      Message.Error("NOTYFICATON", `Vòng quay chỉ được tối đa ${WheelNumbersegment} chi tiết giải thưởng !`);
-      return;
+
+    if (noWheelDetail_length < WheelNumbersegment) {
+      msg_error.push(`-Vòng quay đang có số giải thưởng là: ${noWheelDetail_length} nhỏ hơn vòng quay mặt định ${WheelNumbersegment} chi tiết giải thưởng `)
     }
 
+    if (noWheelDetail_length > WheelNumbersegment) {
+      msg_error.push(`-Vòng quay chỉ được tối đa ${WheelNumbersegment} chi tiết giải thưởng `)
+    }
+    if (parseInt(wheelCurtValue) !== 0) {
+      msg_error.push(`-Giá trị còn lại vòng quay phải bằng 0 VND `)
+    }
+    if (msg_error && msg_error.length > 0) {
+      Message.WarningArr("Thông Báo", msg_error);
+      return
+    }
+    
     // return;
     const data = {
       'wheel_id': query.wheel_id,
@@ -200,11 +209,11 @@ export default function WheelDetail({ query }) {
           {record.is_duplicated ? <span style={{
             'marginLeft': '20px',
             'color': 'red'
-          }}>Stt đang bị trùng </span> : ''}
+          }}>*Stt đang bị trùng </span> : ''}
           {record.is_lengthExceeded ? <span style={{
             'marginLeft': '20px',
             'color': 'red'
-          }}>Stt nên nhỏ hơn sống tổng vòng quay đang có ({noWheelDetail_length}) </span> : ''}
+          }}>*Stt nên nhỏ hơn sống tổng vòng quay đang có ({noWheelDetail_length}) </span> : ''}
         </p >
       ),
     },
@@ -388,9 +397,6 @@ export default function WheelDetail({ query }) {
                   </Link>
                 </Button>
               </Col>
-              <Col className="gutter-row" span={2} style={{ marginBottom: 10 }}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSaveListData} disabled={WheelStatus === 'APR' ? true : false}>Lưu lại</Button>
-              </Col>
               <Col className="gutter-row" span={5} offset={5}>
                 <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền vòng quay: '}</Text>
                 <InputNumber style={{ width: '100%' }}
@@ -440,10 +446,6 @@ export default function WheelDetail({ query }) {
                 ))}
               </Select>
             </Col>
-            {/* <Col className="gutter-row" span={6}>
-              <Input allowClear placeholder="Thông tin cần tìm" value={filter.wheel_name} onChange={(event) => setFilter({ ...filter, wheel_name: event.target.value ? event.target.value : null })} />
-              onChange={(event) => setDataSearch(event.target.value)}
-            </Col> */}
           </Row>
           <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
             <Col className="gutter-row" span={3}>
@@ -454,6 +456,9 @@ export default function WheelDetail({ query }) {
             </Col>
             <Col className="gutter-row" span={4}>
               <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onViewsWheel}>Xem vòng quay</Button>
+            </Col>
+            <Col className="gutter-row" span={2}>
+              <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSaveListData} disabled={WheelStatus === 'APR' ? true : false}>Lưu lại</Button>
             </Col>
           </Row>
           <Col span={48} style={{ marginTop: 10 }}>
