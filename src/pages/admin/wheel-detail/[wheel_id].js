@@ -197,7 +197,7 @@ export default function WheelDetail({ query }) {
       width: 300
     },
     {
-      title: 'STT',
+      title: 'Số thứ tự',
       dataIndex: 'no',
       key: 'no',
       fixed: 'center',
