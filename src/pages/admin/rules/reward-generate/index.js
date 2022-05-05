@@ -124,7 +124,7 @@ export default function GenerateReward(props) {
 
   const columns = [
     {
-      title: 'STT',
+      title: 'Key',
       dataIndex: 'ord_numbers',
       key: 'ord_numbers',
       width: 30,
@@ -136,12 +136,14 @@ export default function GenerateReward(props) {
           </>
         )
       }
-    }, {
+    },
+    {
       title: 'Tên giải thưởng',
       dataIndex: 'segment_name',
       key: 'segment_name',
-      width: 100,
-    }, {
+      width: 145,
+    },
+    {
       title: 'Tên vòng quay ',
       dataIndex: 'wheel_name',
       key: 'wheel_name',
@@ -174,7 +176,7 @@ export default function GenerateReward(props) {
       dataIndex: 'remain_number',
       key: 'remain_number',
       align: 'center',
-      width: 100,
+      width: 65,
       inputType: 'number',
       render: (text, record) => (
         <Space size="large" style={{
@@ -189,7 +191,7 @@ export default function GenerateReward(props) {
         </Space>
       )
     }, {
-      title: 'Giải được trúng theo đợt',
+      title: 'Giải trúng theo đợt',
       dataIndex: 'total_reward',
       key: 'total_reward',
       width: 100,
@@ -207,11 +209,13 @@ export default function GenerateReward(props) {
           </Text>
         </Space>
       )
-    }, {
+    },
+    {
       title: 'Ngày bắt đầu',
       dataIndex: 'from_date',
       key: 'from_date',
-      width: 100,
+      width: 110,
+      align: 'center',
       render: (text, record) => {
         return <Text>
           {moment(text).format('YYYY-MM-DD, HH:mm:ss')}
@@ -222,7 +226,8 @@ export default function GenerateReward(props) {
       title: 'Ngày kết thúc',
       dataIndex: 'to_date',
       key: 'to_date',
-      width: 100,
+      width: 110,
+      align: 'center',
       render: (text, record) => {
         return <Text>
           {moment(text).format('YYYY-MM-DD, HH:mm:ss')}
@@ -247,7 +252,9 @@ export default function GenerateReward(props) {
           </div>
         ) : (
           <Typography.Link disabled={editingKey !== ''} onClick={() => _edit(record)}>
-            Edit
+            <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }}>
+              Edit
+            </Button>
           </Typography.Link>
         );
       },
@@ -446,7 +453,7 @@ export default function GenerateReward(props) {
                 }}
                 columns={mergedColumns}
                 dataSource={listWheelDt}
-                size='small'
+                size='large'
                 loading={loading}
                 scroll={{ x: 1300 }}
                 onRow={(record, rowIndex) => {
