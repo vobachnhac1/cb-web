@@ -191,7 +191,7 @@ export default function GenerateReward(props) {
         </Space>
       )
     }, {
-      title: 'Giải trúng theo đợt',
+      title: 'Giải được trúng',
       dataIndex: 'total_reward',
       key: 'total_reward',
       width: 100,
@@ -243,11 +243,17 @@ export default function GenerateReward(props) {
         const editable = isEditing(record);
         return editable ? (
           <div>
-            <Popconfirm title="Sure to save?" onConfirm={() => _save(record.key)}>
-              <a>Save</a>
+            <Popconfirm title="Bạn có lưu?" onConfirm={() => _save(record.key)}>
+              {/* <a>Lưu</a> */}
+              <Button style={{ color: 'green', borderColor: 'green', borderWidth: 0.5 }}>
+                Lưu
+              </Button>
             </Popconfirm>
-            <Popconfirm title="Sure to cancel?" onConfirm={_cancel} >
-              <a style={{ marginLeft: 10 }}>Cancel</a>
+            <Popconfirm title="Bạn muốn thoát?" onConfirm={_cancel} >
+              {/* <a style={{ marginLeft: 10 }}>Thoát</a> */}
+              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5, marginLeft: 10 }}>
+                Thoát
+              </Button>
             </Popconfirm>
           </div>
         ) : (
@@ -255,6 +261,7 @@ export default function GenerateReward(props) {
             <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }}>
               Edit
             </Button>
+            {/* edit */}
           </Typography.Link>
         );
       },
@@ -401,7 +408,7 @@ export default function GenerateReward(props) {
         {/* <ModalRules visible={visible} bodyModel={bodyModel} callback={callbackModal} /> */}
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
-          title="MÀN HÌNH TẠO RANDOM GIẢI THƯỞNG"
+          title="Tạo giải thưởng ngẩu nhiên"
           bordered={true}
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>
@@ -423,11 +430,11 @@ export default function GenerateReward(props) {
 
             </Row>
             <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
-              <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onGenerated}>Generated</Button>
+              <Col className="gutter-row" span={4}>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onGenerated}>Tạo giải ngẩu nhiên</Button>
               </Col>
               <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Search</Button>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>
               </Col>
             </Row>
           </Col>
