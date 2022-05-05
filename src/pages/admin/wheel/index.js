@@ -96,8 +96,8 @@ export default function Wheel(props) {
       width: 100,
     },
     {
-      align: 'center',
-      title: 'Tổng giá trị giải',
+      align: 'end',
+      title: 'Tổng giá trị giải(VNĐ)',
       dataIndex: 'total_value',
       key: 'total_value',
       width: 180,
@@ -110,16 +110,13 @@ export default function Wheel(props) {
           <span>
             {`${text}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
           </span>
-          <span >
-            VND
-          </span>
         </Space>
       )
 
     },
     {
-      align: 'center',
-      title: 'Giá trị còn lại',
+      align: 'end',
+      title: 'Giá trị còn lại(VNĐ)',
       dataIndex: 'remain_value',
       key: 'remain_value',
       width: 180,
@@ -131,9 +128,6 @@ export default function Wheel(props) {
         }}>
           <span >
             {`${text}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          </span>
-          <span >
-            VND
           </span>
         </Space>
       )
@@ -173,6 +167,7 @@ export default function Wheel(props) {
       )
     },
     {
+      align: 'center',
       title: 'Ngày hết hiệu lực',
       dataIndex: 'inactived_date',
       key: 'inactived_date',
@@ -184,6 +179,7 @@ export default function Wheel(props) {
       }
     },
     {
+      align: 'center',
       title: 'Ngày tạo',
       dataIndex: 'created_date',
       key: 'created_date',

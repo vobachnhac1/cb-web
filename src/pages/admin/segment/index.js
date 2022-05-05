@@ -77,7 +77,6 @@ export default function Segment(props) {
       key: 'key',
       fixed: 'left',
       width: 50
-      // render: text => <a>{text}</a>,
     },
     {
       title: 'ID',
@@ -85,7 +84,6 @@ export default function Segment(props) {
       key: 'segment_id',
       fixed: 'left',
       width: 100
-      // render: text => <a>{text}</a>,
     },
     {
       title: 'Tên kết quả \n trúng thưởng',
@@ -120,7 +118,7 @@ export default function Segment(props) {
     },
     {
       align: 'end',
-      title: 'Giá trị giải thưởng',
+      title: 'Giá trị giải thưởng(VNĐ)',
       dataIndex: 'segment_value',
       key: 'segment_value',
       width: 200,
@@ -133,9 +131,7 @@ export default function Segment(props) {
           <span>
             {`${text}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
           </span>
-          <span >
-            VND
-          </span>
+
         </Space>
       )
     },

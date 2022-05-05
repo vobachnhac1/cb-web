@@ -255,28 +255,26 @@ export default function WheelDetail({ query }) {
 
     },
     {
-      title: 'Tổng giá trị',
+      title: 'Tổng giá trị(VNĐ)',
       dataIndex: 'remain_value',
       key: 'remain_value',
-      fixed: 'center',
+      align: 'end',
       width: 180,
       render: (text, record) => (
         <Space size="large" style={{
           'display': 'flex',
-          'justifyContent': 'space-between',
+          'justifyContent': 'flex-end',
           'fontWeight': '500'
         }}>
           <span>
             {`${text}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          </span>
-          <span>
-            VND
           </span>
         </Space>
       )
 
     },
     {
+      align: 'center',
       title: 'Ngày tạo',
       dataIndex: 'created_date',
       key: 'created_date',
