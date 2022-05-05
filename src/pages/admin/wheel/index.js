@@ -140,22 +140,10 @@ export default function Wheel(props) {
       width: 220
     },
     {
-      title: 'Bán kính',
-      dataIndex: 'outer_radius',
-      key: 'outer_radius',
-      width: 100
-    },
-    {
       title: 'Kích thước chữ',
       dataIndex: 'text_fontsize',
       key: 'text_fontsize',
       width: 120
-    },
-    {
-      title: 'Góc quay',
-      dataIndex: 'rotation_angle',
-      key: 'rotation_angle',
-      width: 100
     },
     {
       title: 'Ngày hết hiệu lực',

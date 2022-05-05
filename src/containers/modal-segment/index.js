@@ -57,10 +57,6 @@ const ModalSegment = (props) => {
   }
 
   const onCallback = async () => {
-    // if (!segmentId || segmentId.lenght == 0) {
-    //   Message.Warning("NOTYFICATON", "Mã kết quả chưa điền nội dung");
-    //   return;
-    // }
     let msg_error = [];
     if (!topicId) {
       msg_error.push("- Chủ đề chưa được chọn");
@@ -74,7 +70,7 @@ const ModalSegment = (props) => {
     if (!segmentColor || segmentColor.lenght == 0) {
       msg_error.push("- Màu sắc hiển thị chưa chọn");
     }
-   
+
     if (msg_error && msg_error.length > 0) {
       Message.WarningArr("NOTYFICATON", msg_error);
       return
@@ -149,23 +145,19 @@ const ModalSegment = (props) => {
           labelAlign='left'
           size={'default'}
 
-
         >
-          {/*  */}
+         
           {
             segmentId ? <Row >
               <Col {...layoutHeader} >
                 <Text className={classNames({ [styles['text-font']]: true })}>{'Mã kết quả trúng thưởng :'}</Text>
               </Col>
               <Col  {...layoutContent}>
-
                 <Input style={{ width: '100%' }} value={segmentId} onChange={(text) => setSegmentId(text.target.value)} disabled />
               </Col>
             </Row>
               : null
           }
-
-
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
               <Text className={classNames({ [styles['text-font']]: true })}>{'Chủ đề :'}</Text>
@@ -181,7 +173,6 @@ const ModalSegment = (props) => {
                 onChange={(value) => setTopicId(value)}>
                 {listTopic.map((Item, key) => (
                   <Select.Option value={Item.topic_id} key={key}>{Item.topic_name}</Select.Option>
-                  // <option value={option.value}>{option.label}</option>
                 ))}
               </Select>
             </Col>
@@ -213,7 +204,6 @@ const ModalSegment = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Màu sắc hiển thị '}</Text>
             </Col>
             <Col  {...layoutContent}>
-
               <Input type="color" style={{ width: '50%' }} value={segmentColor ? segmentColor : '#222222'} onChange={(text) => setSegmentColor(text.target.value)} />
             </Col>
           </Row>
@@ -222,8 +212,7 @@ const ModalSegment = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Ngày hết hiệu lực '}</Text>
             </Col>
             <Col  {...layoutContent}>
-
-              <DatePicker disabledDate={d => !d || d.isSameOrBefore("2022-03-31")} style={{ width: '50%' }} value={inactived_date ? moment(inactived_date) : null} onChange={(date) => setInactived_date(date)} />
+              <DatePicker disabledDate={d => !d || d.isSameOrBefore(moment().set('date', (moment().date() - 1)))} style={{ width: '50%' }} value={inactived_date ? moment(inactived_date) : null} onChange={(date) => setInactived_date(date)} />
             </Col>
           </Row>
         </Form>
