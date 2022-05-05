@@ -139,7 +139,7 @@ export default function WheelDetail({ query }) {
       Message.WarningArr("Thông Báo", msg_error);
       return
     }
-    
+
     // return;
     const data = {
       'wheel_id': query.wheel_id,
@@ -169,8 +169,10 @@ export default function WheelDetail({ query }) {
       dataIndex: 'key',
       key: 'key',
       fixed: 'left',
-      width: 100
-      // render: text => <a>{text}</a>,
+      width: 100,
+      render: (text, record) => {
+        return parseInt(text) + 1
+      }
     },
     {
       title: 'ID Chi tiết',

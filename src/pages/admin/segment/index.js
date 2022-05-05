@@ -119,6 +119,7 @@ export default function Segment(props) {
       }
     },
     {
+      align: 'end',
       title: 'Giá trị giải thưởng',
       dataIndex: 'segment_value',
       key: 'segment_value',
@@ -126,7 +127,7 @@ export default function Segment(props) {
       render: (text, record) => (
         <Space size="large" style={{
           'display': 'flex',
-          'justifyContent': 'space-between',
+          'justifyContent': 'flex-end',
           'fontWeight': '500'
         }}>
           <span>

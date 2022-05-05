@@ -69,7 +69,10 @@ export default function Wheel(props) {
       dataIndex: 'key',
       key: 'key',
       fixed: 'left',
-      width: 50
+      width: 50,
+      render: (text, record) => {
+        return parseInt(text) + 1
+      }
     },
     {
       title: 'ID',
@@ -93,6 +96,7 @@ export default function Wheel(props) {
       width: 100,
     },
     {
+      align: 'center',
       title: 'Tổng giá trị giải',
       dataIndex: 'total_value',
       key: 'total_value',
@@ -100,7 +104,7 @@ export default function Wheel(props) {
       render: (text, record) => (
         <Space size="large" style={{
           'display': 'flex',
-          'justifyContent': 'space-between',
+          'justifyContent': 'flex-end',
           'fontWeight': '500'
         }}>
           <span>
@@ -114,6 +118,7 @@ export default function Wheel(props) {
 
     },
     {
+      align: 'center',
       title: 'Giá trị còn lại',
       dataIndex: 'remain_value',
       key: 'remain_value',
@@ -121,7 +126,7 @@ export default function Wheel(props) {
       render: (text, record) => (
         <Space size="large" style={{
           'display': 'flex',
-          'justifyContent': 'space-between',
+          'justifyContent': 'flex-end',
           'fontWeight': '500'
         }}>
           <span >
@@ -134,16 +139,38 @@ export default function Wheel(props) {
       )
     },
     {
+      align: 'center',
       title: 'Tài khoản khách hàng',
       dataIndex: 'account_nbr',
       key: 'account_nbr',
-      width: 220
+      width: 220,
+      render: (text, record) => (
+        <Space size="large" style={{
+          'display': 'flex',
+          'justifyContent': 'flex-end',
+        }}>
+          <span>
+            {text}
+          </span>
+        </Space>
+      )
+
     },
     {
       title: 'Kích thước chữ',
       dataIndex: 'text_fontsize',
       key: 'text_fontsize',
-      width: 120
+      width: 120,
+      render: (text, record) => (
+        <Space size="large" style={{
+          'display': 'flex',
+          'justifyContent': 'flex-end',
+        }}>
+          <span>
+            {text}
+          </span>
+        </Space>
+      )
     },
     {
       title: 'Ngày hết hiệu lực',
@@ -172,7 +199,6 @@ export default function Wheel(props) {
       key: 'action',
       width: 320,
       render: (text, record) => (
-
         <Space size="middle">
           <Button style={{ color: '#7cb305', borderColor: '#7cb305', borderWidth: 0.5 }}>
             <Link href={`/admin/wheel-detail/${record.wheel_id}`}>
