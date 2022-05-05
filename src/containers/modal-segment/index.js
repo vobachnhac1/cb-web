@@ -74,10 +74,7 @@ const ModalSegment = (props) => {
     if (!segmentColor || segmentColor.lenght == 0) {
       msg_error.push("- Màu sắc hiển thị chưa chọn");
     }
-    if (!inactived_date || inactived_date.lenght == 0) {
-      msg_error.push("- Hãy chọn ngày kết thúc giải thưởng");
-    }
-
+   
     if (msg_error && msg_error.length > 0) {
       Message.WarningArr("NOTYFICATON", msg_error);
       return
@@ -226,7 +223,7 @@ const ModalSegment = (props) => {
             </Col>
             <Col  {...layoutContent}>
 
-              <DatePicker style={{ width: '50%' }} value={inactived_date ? moment(inactived_date) : null} onChange={(date) => setInactived_date(date)} />
+              <DatePicker disabledDate={d => !d || d.isSameOrBefore("2022-03-31")} style={{ width: '50%' }} value={inactived_date ? moment(inactived_date) : null} onChange={(date) => setInactived_date(date)} />
             </Col>
           </Row>
         </Form>
