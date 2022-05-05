@@ -9,7 +9,7 @@ import * as styles from './style.module.less';
 import * as classnames from 'classnames';
 import { useState, useEffect } from 'react';
 import LayoutHome from '@/containers/Home';
-import { Button, Card, Col, Row, Space, Table, Typography, Popconfirm, Input, Tag, DatePicker } from 'antd';
+import { Button, Card, Col, Row, Space, Table, Typography, Input, Tag, DatePicker } from 'antd';
 import * as Message from '@/components/message';
 import ModalRules from '@/containers/modal-rules'
 const { Text } = Typography;
@@ -208,14 +208,13 @@ export default function Rules(props) {
             <Row gutter={[16, 24]}>
               <Col className="gutter-row" span={4}>
                 <Input
-                  placeholder='Input Rules Name'
+                  placeholder='Tên quy tắc'
                   style={{ width: '100%' }}
                   value={filter.rules_name}
                   onChange={(text) => setFilter({ ...filter, rules_name: text.target.value })} />
               </Col>
               <Col className="gutter-row" span={8}>
                 <RangePicker
-
                   onChange={(dates, dateString) => {
                     if (dates) {
                       setFilter({
