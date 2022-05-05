@@ -244,26 +244,22 @@ export default function GenerateReward(props) {
         return editable ? (
           <div>
             <Popconfirm title="Bạn có lưu?" onConfirm={() => _save(record.key)}>
-              {/* <a>Lưu</a> */}
+
               <Button style={{ color: 'green', borderColor: 'green', borderWidth: 0.5 }}>
                 Lưu
               </Button>
             </Popconfirm>
             <Popconfirm title="Bạn muốn thoát?" onConfirm={_cancel} >
-              {/* <a style={{ marginLeft: 10 }}>Thoát</a> */}
               <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5, marginLeft: 10 }}>
                 Thoát
               </Button>
             </Popconfirm>
           </div>
-        ) : (
-          <Typography.Link disabled={editingKey !== ''} onClick={() => _edit(record)}>
-            <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }}>
-              Edit
-            </Button>
-            {/* edit */}
+        ) :
+          record.total_number != 0 && <Typography.Link disabled={editingKey !== ''} onClick={() => _edit(record)}> <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }}>
+            Edit
+          </Button>
           </Typography.Link>
-        );
       },
     },
   ];
@@ -353,7 +349,8 @@ export default function GenerateReward(props) {
 
   const _save = async (key) => {
     const rowText = await form.validateFields();
-    if (rowText['total_reward'].trim().length === 0 || parseInt(rowText['total_reward']).toString() == 'NaN') {
+    console.log('rowText', rowText)
+    if (rowText['total_reward'].toString().trim().length === 0 || parseInt(rowText['total_reward']).toString() == 'NaN') {
       Message.Error("Thông báo", "Giá trị có kí tự chữ");
       return;
     }
