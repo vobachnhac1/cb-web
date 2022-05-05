@@ -64,10 +64,10 @@ const ModalTopic = (props) => {
         setIsApprove('N');
         setTopicName('');
         callback({ visible: false });
-        Message.Success("NOTYFICATON", "ADD NEW TOPIC SUCCESS");
+        Message.Success("NOTYFICATON", "Thêm chủ đề thành công");
         return;
       }
-      Message.Error("NOTYFICATON", "ADD NEW TOPIC FAILED");
+      Message.Error("NOTYFICATON", "Thêm chủ đề thất bại");
       return;
     }
     const result = await dispatch(actionTopic.updateTopic(param));
@@ -75,10 +75,10 @@ const ModalTopic = (props) => {
       setIsApprove('N');
       setTopicName('');
       callback({ visible: false });
-      Message.Success("NOTYFICATON", "UPDATE TOPIC SUCCESS");
+      Message.Success("NOTYFICATON", "Cập nhật chủ đề thành công");
       return;
     }
-    Message.Error("NOTYFICATON", "UPDATE TOPIC FAILED");
+    Message.Error("NOTYFICATON", "Cập nhật chủ đề thất bại");
   }
   const onCancel = () => {
     callback({ visible: false });
@@ -96,8 +96,8 @@ const ModalTopic = (props) => {
       onCancel={onCancel}
     >
       <Card
-        headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'center', backgroundColor: "#0C74CF" }}
-        title={isAdd ? "ADD TOPIC" : 'EDIT TOPIC'}
+        headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'center', backgroundColor: "rgb(3, 77, 162)" }}
+        title={isAdd ? "Thêm chủ đề" : 'Cập nhật chủ đề'}
         bordered={true}
         style={{ backgroundColor: '#FFFFFF' }}>
         <Form
@@ -107,7 +107,7 @@ const ModalTopic = (props) => {
         >
           <Row >
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'TOPIC NAME'}</Text>
+              <Text className={classNames({ [styles['text-font']]: true })}>{'Tên chủ đề'}</Text>
             </Col>
             <Col  {...layoutContent}>
               <Input
@@ -118,7 +118,7 @@ const ModalTopic = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'APPROVE'}</Text>
+              <Text className={classNames({ [styles['text-font']]: true })}>{'Phê Duyệt'}</Text>
             </Col>
             <Col  {...layoutContent}>
               <Select

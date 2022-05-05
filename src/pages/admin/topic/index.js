@@ -17,8 +17,7 @@ import * as Message from '@/components/message';
 const { RangePicker } = DatePicker;
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
-import { actions as actionTopic } from
-  '@/redux/topic';
+import { actions as actionTopic } from '@/redux/topic';
 import { getters as gettersTopic } from '@/redux/topic';
 import ModalTopic from '@/containers/modal-topic';
 
@@ -38,28 +37,27 @@ export default function Topic(props) {
   const columns = [
     {
       align: 'center',
-      title: 'STT',
+      title: 'Key',
       dataIndex: 'ord_numbers',
       key: 'ord_numbers',
       width: 50,
     }, {
       align: 'center',
-      title: 'Topic ID',
+      title: 'ID',
       dataIndex: 'topic_id',
       key: 'topic_id',
       width: 80,
-      render: text => <a>{text}</a>,
     },
     {
       width: 300,
-      title: 'Topic Name',
+      title: 'Tên chủ đề',
       dataIndex: 'topic_name',
       key: 'topic_name',
     },
     {
       align: 'center',
       width: 200,
-      title: 'InActive Date',
+      title: 'Ngày khởi tạo',
       dataIndex: 'inactived_date',
       key: 'inactived_date',
       render: (text) => (
@@ -68,20 +66,20 @@ export default function Topic(props) {
 
     }, {
       align: 'center',
-      title: 'Status',
+      title: 'Trạng thái',
       dataIndex: 'status_yn',
       key: 'status_yn',
+      width: 100,
       render: (text) => (
         <p>{text == 'Y' ? 'YES' : 'NO'}</p>
       ),
     },
     {
-
+      align: 'center',
       title: 'Action',
       key: 'action',
       width: 200,
       render: (text, record) => (
-
         <Space size="middle">
           {record.wheel_id_apr === 1
             ?
@@ -89,20 +87,15 @@ export default function Topic(props) {
               Có vòng quay đã duyệt và đang sử dụng chủ đề này !
             </span>
             : <>
-              <Button style={{ color: 'green', borderColor: 'green', borderWidth: 0.5 }} onClick={() => approveTopic(record)} >Approve</Button>
-              <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateTopic(record)} >Edit</Button>
-              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} onClick={() => deleteTopic(record)} >Delete</Button>
+              <Button style={{ color: 'green', borderColor: 'green', borderWidth: 0.5 }} onClick={() => approveTopic(record)} >Phê duyệt</Button>
+              <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateTopic(record)} >Cập nhật</Button>
+              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} onClick={() => deleteTopic(record)} >Xóa</Button>
             </>}
-
         </Space>
 
       ),
     },
   ];
-  // const pagination = {
-  //   current: 1,
-  //   pageSize: 10,
-  // };
 
   // gọi 1 function rồi theo dõi nhưng thay đổi của param đó
   useEffect(() => {
@@ -133,20 +126,20 @@ export default function Topic(props) {
     const result = await dispatch(actionTopic.deleteTopic(record));
     if (result) {
       initPage();
-      Message.Success("NOTYFICATON", "DELETE TOPIC SUCCESS");
+      Message.Success("NOTYFICATON", "Xóa thành công");
       return
     }
-    Message.Error("NOTYFICATON", "DELETE TOPIC FAIL");
+    Message.Error("NOTYFICATON", "Xóa không thành công");
   }
 
   const approveTopic = async (record) => {
     const result = await dispatch(actionTopic.approveTopic(record));
     if (result) {
       initPage();
-      Message.Success("NOTYFICATON", "APPROVE TOPIC SUCCESS");
+      Message.Success("NOTYFICATON", "Phê duyệt thành công");
       return
     }
-    Message.Error("NOTYFICATON", "APPROVE TOPIC FAILED");
+    Message.Error("NOTYFICATON", "Phê duyệt thất bại");
   }
 
   const callbackModal = (params) => {
@@ -177,7 +170,7 @@ export default function Topic(props) {
           headStyle={{
             fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)"
           }}
-          title="TOPIC MANAGEMENT"
+          title="Tất cả chủ đề"
           bordered={true}
           style={{ backgroundColor: '#FFFFFF' }}>
           <Col span={48} >
@@ -212,10 +205,10 @@ export default function Topic(props) {
             </Row>
             <Row gutter={[16, 24]} style={{ marginTop: 10 }}>
               <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewTopic}>Add</Button>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewTopic}>Thêm</Button>
               </Col>
               <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch} >Search</Button>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch} >Tìm kiếm</Button>
               </Col>
             </Row>
           </Col>
