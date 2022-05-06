@@ -109,9 +109,6 @@ const ModalWheelDetail = (props) => {
   }
 
   const onCallback = async () => {
-    console.log('remainNumber1:', remainNumber)
-    console.log('remainNumber2:', !remainNumber)
-    console.log('remainNumber3:', parseInt(remainNumber) < 0)
     let msg_error = [];
     // kiểm tra form
     if (!segmentId) {
