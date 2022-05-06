@@ -6,7 +6,7 @@
 *------------------------------------------------------- */
 require("./style.module.less");
 import { useEffect, useState } from 'react';
-import { Button, Card, Col, Input, Row, Space, Table, DatePicker, Typography } from 'antd';
+import { Button, Card, Col, Input, Row, Space, Table, DatePicker, Typography, Popconfirm } from 'antd';
 import moment from 'moment';
 import __ from 'lodash';
 import * as styles from './style.module.less';
@@ -90,7 +90,9 @@ export default function Topic(props) {
             : <>
               <Button style={{ color: 'green', borderColor: 'green', borderWidth: 0.5 }} onClick={() => approveTopic(record)} >Phê duyệt</Button>
               <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateTopic(record)} >Cập nhật</Button>
-              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} onClick={() => deleteTopic(record)} >Xóa</Button>
+              <Popconfirm title="Bạn có muốn?" onConfirm={() => deleteTopic(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom" >
+                <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
+              </Popconfirm>
             </>}
         </Space>
 

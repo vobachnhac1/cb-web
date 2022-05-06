@@ -21,8 +21,6 @@ import { getters as gettersTopic } from '@/redux/topic';
 
 import moment from 'moment';
 import __ from 'lodash';
-// handhandleDelete
-
 
 export default function Segment(props) {
   const dispatch = useDispatch();
@@ -65,10 +63,10 @@ export default function Segment(props) {
     const result = await dispatch(actionSegment.deleteSegmentById(dataRecord));
     if (result) {
       onSearch();
-      Message.Success("NOTYFICATON", "DELETE TOPIC SUCCESS");
+      Message.Success("NOTYFICATON", "Xóa thành công");
       return
     }
-    Message.Error("NOTYFICATON", "DELETE TOPIC FAIL");
+    Message.Error("NOTYFICATON", "Xóa thất bại!");
   };
   const columns = [
     {
