@@ -133,9 +133,17 @@ export default function RulesManagement(props) {
         const tagName = record.status_rules == 'N' ? 'Phê duyệt' : 'Từ chối';
         return (
           <Space size="middle">
-            <Button style={{ color: color, borderColor: color, borderWidth: 0.5 }} onClick={() => approveRules(record)} >{tagName}</Button>
+            <Popconfirm title="Bạn có muốn?" onConfirm={() => {
+              setTimeout(() => {
+                approveRules(record)
+              }, 50)
+            }} okText="Xác nhận" cancelText="Thoát" placement="leftBottom" >
+              <Button style={{ color: color, borderColor: color, borderWidth: 0.5 }} >{tagName}</Button>
+            </Popconfirm>
             {isShow && <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateRules(record)} >Cập nhật</Button>}
-            {isShow && <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} onClick={() => deleteRules(record)} >Xóa</Button>}
+            {isShow && <Popconfirm title="Bạn có muốn?" onConfirm={() => deleteRules(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom" >
+              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
+            </Popconfirm>}
           </Space>
         );
       }
@@ -209,7 +217,7 @@ export default function RulesManagement(props) {
             <Row gutter={[16, 24]}>
               <Col className="gutter-row" span={4}>
                 <Input
-                  placeholder='Input Rules Name'
+                  placeholder='Nhập tên quy tắc'
                   style={{ width: '100%' }}
                   value={filter.rules_name}
                   onChange={(text) => setFilter({ ...filter, rules_name: text.target.value })} />

@@ -213,6 +213,7 @@ const ModalRules = (props) => {
             <Col  {...layoutContent}>
               <RangePicker
                 // defaultValue={[moment(body.from_date, 'YYYY/MM/DD'), moment(body.to_date, 'YYYY/MM/DD')]}
+                disabledDate={d => !d || d.isSameOrBefore(moment().set('date', (moment().date() - 1)))}
                 value={body.from_date ? [moment(body.from_date, 'YYYY/MM/DD'), moment(body.to_date, 'YYYY/MM/DD')] : []}
                 onChange={(dates, dateString) => {
                   if (dates) {
