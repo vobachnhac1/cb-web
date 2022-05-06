@@ -105,15 +105,18 @@ export default function Segment(props) {
       dataIndex: 'segment_color',
       key: 'segment_color',
       width: 80,
+      align: 'center',
       render: (text, record) => {
-        return <p style={
-          {
-            background: text,
-            width: '30px',
-            height: '30px'
-          }}>
+        return <Space size="large">
+          <p style={
+            {
+              background: text,
+              width: '30px',
+              height: '30px'
+            }}>
 
-        </p>
+          </p>
+        </Space>
       }
     },
     {
@@ -140,9 +143,10 @@ export default function Segment(props) {
       dataIndex: 'inactived_date',
       key: 'inactived_date',
       width: 170,
+      align: 'center',
       render: (text, record) => {
         return <span>
-          {!text ? '' : moment(text).format('YYYY-MM-DD, hh:mm:ss')}
+          {!text || text == "0000-00-00 00:00:00" ? 'Không giới hạn' : moment(text).format('YYYY-MM-DD, hh:mm:ss')}
         </span>
       }
     },
@@ -151,6 +155,7 @@ export default function Segment(props) {
       dataIndex: 'created_date',
       key: 'created_date',
       width: 170,
+      align: 'center',
       render: (text, record) => {
         return <span>
           {moment(text).format('YYYY-MM-DD, hh:mm:ss')}

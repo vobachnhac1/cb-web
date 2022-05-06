@@ -212,7 +212,7 @@ const ModalSegment = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Ngày hết hiệu lực '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <DatePicker disabledDate={d => !d || d.isSameOrBefore(moment().set('date', (moment().date() - 1)))} style={{ width: '50%' }} value={inactived_date ? moment(inactived_date) : null} onChange={(date) => setInactived_date(date)} />
+              <DatePicker disabledDate={d => !d || d.isSameOrBefore(moment().set('date', (moment().date() - 1)))} style={{ width: '50%' }} value={!inactived_date || inactived_date === "0000-00-00 00:00:00" ? null : moment(inactived_date)} onChange={(date) => setInactived_date(date)} />
             </Col>
           </Row>
         </Form>

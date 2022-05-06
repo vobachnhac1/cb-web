@@ -130,12 +130,12 @@ export default function RulesManagement(props) {
       render: (text, record) => {
         const isShow = record.status_rules == 'N' ? true : false;
         const color = record.status_rules == 'N' ? 'green' : 'red';
-        const tagName = record.status_rules == 'N' ? 'Approve' : 'Reject';
+        const tagName = record.status_rules == 'N' ? 'Phê duyệt' : 'Từ chối';
         return (
           <Space size="middle">
             <Button style={{ color: color, borderColor: color, borderWidth: 0.5 }} onClick={() => approveRules(record)} >{tagName}</Button>
-            {isShow && <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateRules(record)} >Edit</Button>}
-            {isShow && <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} onClick={() => deleteRules(record)} >Delete</Button>}
+            {isShow && <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateRules(record)} >Cập nhật</Button>}
+            {isShow && <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} onClick={() => deleteRules(record)} >Xóa</Button>}
           </Space>
         );
       }

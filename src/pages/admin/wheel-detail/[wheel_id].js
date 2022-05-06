@@ -157,8 +157,6 @@ export default function WheelDetail({ query }) {
       Message.Error("NOTYFICATON", "Lưu chi tiết vòng quay thất bại");
     }
     setLoading(false);
-
-
   }
 
   // define colums
@@ -179,14 +177,13 @@ export default function WheelDetail({ query }) {
       key: 'wheel_detail_id',
       fixed: 'left',
       width: 100
-      // render: text => <a>{text}</a>,
     },
     {
       title: 'Tên vòng quay',
       dataIndex: 'wheel_name',
       key: 'wheel_name',
       fixed: 'left',
-      width: 300
+      width: 250
     },
     {
       title: 'Tên giải thưởng',
@@ -242,7 +239,7 @@ export default function WheelDetail({ query }) {
       title: 'Hình ảnh',
       dataIndex: 'imgBase64',
       key: 'imgBase64',
-      fixed: 'center',
+      align: 'center',
       width: 80,
       render: (text, record) => (
         <Space size="large">
@@ -447,13 +444,13 @@ export default function WheelDetail({ query }) {
             </Col>
           </Row>
           <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
-            <Col className="gutter-row" span={3}>
+            <Col className="gutter-row" span={2}>
               <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewWheelDetail} disabled={WheelStatus === 'APR' ? true : false}>Thêm</Button>
             </Col>
-            <Col className="gutter-row" span={3}>
+            <Col className="gutter-row" span={2}>
               <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>
             </Col>
-            <Col className="gutter-row" span={4}>
+            <Col className="gutter-row" span={3}>
               <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onViewsWheel}>Xem vòng quay</Button>
             </Col>
             <Col className="gutter-row" span={2}>
