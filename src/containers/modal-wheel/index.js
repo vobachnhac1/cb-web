@@ -150,8 +150,8 @@ const ModalSegment = (props) => {
       closable={false}
       centered
       visible={visible}
-      okText={'Comfirm'}
-      cancelText={'Cancel'}
+      okText={'Xác nhận'}
+      cancelText={'Thoát'}
       onOk={onCallback}
       onCancel={onCancel}
     >

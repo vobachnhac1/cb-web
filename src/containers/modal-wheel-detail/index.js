@@ -351,9 +351,9 @@ const ModalWheelDetail = (props) => {
       closable={false}
       centered
       visible={visible}
-      okText={'Comfirm'}
+      okText={'Xác nhận'}
       okButtonProps={{ disabled: isViewsWheel ? true : false }}
-      cancelText={'Cancel'}
+      cancelText={'Thoát'}
       onOk={onCallback}
       onCancel={onCancel}
     >
