@@ -7,12 +7,10 @@
 // require("./style.module.less");
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Router, useRouter } from 'next/router';
-// import * as styles from './style.module.less';
-import * as classnames from 'classnames';
+import { Router } from 'next/router';
 import LayoutHome from '@/containers/Home';
 import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Typography, InputNumber, Image } from 'antd';
-import { ArrowLeftOutlined, SettingOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment';
 const { Text } = Typography;
 import * as Message from '@/components/message';
@@ -31,8 +29,6 @@ import { actions as actionWheel } from '@/redux/wheel';
 import { getters as gettersWheel } from '@/redux/wheel';
 import { actions as actionWheelDetail } from '@/redux/wheel-detail';
 import { getters as gettersWheelDetail } from '@/redux/wheel-detail';
-
-
 
 WheelDetail.getInitialProps = async ({ query }) => {
   return { query }
@@ -322,7 +318,6 @@ export default function WheelDetail({ query }) {
     record: null
   });
 
-
   const addNewWheelDetail = () => {
     const wheel_id = query.wheel_id;
     setVisible(true);
@@ -344,7 +339,6 @@ export default function WheelDetail({ query }) {
   }
 
   const onViewsWheel = (record) => {
-
     if (noWheelDetail_length == WheelNumbersegment) {
       setVisible(true);
       setBodyModel({
@@ -360,7 +354,6 @@ export default function WheelDetail({ query }) {
 
   }
 
-
   const callbackModal = (params) => {
     setVisible(params.visible);
     setListSearch(params.data)
@@ -368,7 +361,6 @@ export default function WheelDetail({ query }) {
   const backToWheel = () => {
     Router.push('/admin/wheel')
   }
-
 
   return (
     <LayoutHome>
