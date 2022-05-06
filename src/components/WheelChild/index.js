@@ -95,7 +95,7 @@ const WheelChild = (props) => {
           <div
             className={classNames({ [styles["wheel-item"]]: true })}
             key={item.no}
-            style={{ '--item-nb': index, '--item-reward-url': `url('/images/reward/reward${index > 9 ? 2 : index}.png'` }}>
+            style={{ '--item-nb': index, '--item-reward-url': `url("${item.imgBase64}")` }}>
             <div
               className={classNames({ [styles["wheel-item-icon"]]: true })}
             />

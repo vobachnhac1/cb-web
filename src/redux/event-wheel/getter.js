@@ -6,6 +6,7 @@ export const getContentReward = (state) => {
   if (!arrContentReward) return [];
   return arrContentReward.map((item) => ({
     no: item.no,
+    imgBase64: item.imgBase64,
     remain_value: item.remain_value,
     segment_name: item.segment_name,
     segment_value: item.segment_value,
