@@ -56,10 +56,10 @@ export default function WheelApprove(props) {
 
   const columns = [
     {
-      title: 'STT',
+      title: 'Key',
       dataIndex: 'ord_numbers',
       key: 'ord_numbers',
-      width: 30,
+      width: 40,
       align: 'center'
     },
     {
@@ -77,7 +77,7 @@ export default function WheelApprove(props) {
       width: 300
     },
     {
-      title: 'Kết quả hiển thị trên vòng quay',
+      title: 'Số kết quả',
       dataIndex: 'num_segments',
       key: 'num_segments',
       align: 'center',
@@ -162,22 +162,27 @@ export default function WheelApprove(props) {
     {
       title: 'Action',
       key: 'action',
-      width: 200,
+      width: 210,
       fixed: 'right',
       align: 'center',
       render: (text, record) => {
-        const color = record.is_valid == 1 && record.wheel_status === 'APR' ? 'red' : 'blue'
+        const color = record.is_valid == 1 && record.wheel_status === 'APR' ? 'red' : 'green'
         return (
           <Space size="middle">
             {
-              record.is_valid == 1 ? <Button style={{ width: 80, color: color, borderColor: color, borderWidth: 0.5 }}
-                onClick={() => onApproved(record)} > {record.wheel_status === 'APR' ? 'Reject' : 'Approve'}</Button> : null
+              record.is_valid != 1 ?
+                <span style={{ color: '#d46b08' }} >
+                  Vui lòng kiểm tra lại vòng quay!
+                </span> : null
             }
             {
-              record.is_valid == 1 && record.wheel_status === 'APR' && <Button style={{ width: 80, color: 'green', borderColor: 'green', borderWidth: 0.5 }}
-                onClick={() => onAddRules(record)} >Add Rules</Button>
+              record.is_valid == 1 ? <Button style={{ width: 80, color: color, borderColor: color, borderWidth: 0.5 }}
+                onClick={() => onApproved(record)} > {record.wheel_status === 'APR' ? 'Từ chối' : 'Phê duyệt'}</Button> : null
             }
-
+            {
+              record.is_valid == 1 && record.wheel_status === 'APR' && <Button style={{ width: '100%', color: 'blue', borderColor: 'blue', borderWidth: 0.5 }}
+                onClick={() => onAddRules(record)} >Thêm quy tắc</Button>
+            }
           </Space>
         )
       },

@@ -13,7 +13,9 @@ export default buildReducer(
     wheelCurtValue: 0,
     wheelTotalValue: 0,
     wheelDetialTotalValue: 0,
-    no: 0
+    no: 0,
+    num_segment_wheel: 0,
+    wheel_status:''
   },
   {
     [TYPES.WHEELDETAIL_SEARCH]: (state, payload) => {
@@ -26,27 +28,13 @@ export default buildReducer(
         no: payload.no
       }
     },
-    // [TYPES.WHEELDETAIL_NO]: (state, payload) => {
-    //   console.log('state WHEELDETAIL_NO', state)
-    //   console.log('payload WHEELDETAIL_NO', payload)
-    //   return {
-    //     ...state,
-    //     no: payload.no
-    //   }
-    // },
-    // [TYPES.WHEELDETAIL_WHEELTOTALVALUE]: (state, payload) => {
+    [TYPES.WHEELDETAIL_DATACHECKWHEEL]: (state, payload) => {
+      return {
+        ...state,
+        num_segment_wheel: payload.num_segment_wheel,
+        wheel_status: payload.wheel_status
 
-    //   return {
-    //     ...state,
-    //     listWheelDetail: payload //.sort(function (a, b) { return a.no - b.no })
-    //   }
-    // },
-    // [TYPES.WHEELDETAIL_WHEELDETAILTOTALVALUE]: (state, payload) => {
-    //   // = listWheelDetail
-    //   return {
-    //     ...state,
-    //     listWheelDetail: payload //.sort(function (a, b) { return a.no - b.no })
-    //   }
-    // }
+      }
+    },
   },
 );

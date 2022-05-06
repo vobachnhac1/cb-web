@@ -10,7 +10,7 @@ import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
 // khai báo store
-import { useSelector, useDispatch } from 'react-redux';
+import {  useDispatch } from 'react-redux';
 import { actions as actionWheel } from '@/redux/wheel';
 import _ from 'lodash';
 
@@ -59,7 +59,7 @@ const ModalSegment = (props) => {
     setTotalValue(record ? record.total_value.toString() : "")
     setRemainValue(record ? record.remain_value.toString() : "")
     setOuterRadius(record ? record.outer_radius.toString() : "")
-    setTextFrontSize(record ? record.text_fontsize.toString() : "")
+    setTextFrontSize(record ? record.text_fontsize.toString() : "10")
     setRatationAngle(record ? record.rotation_angle.toString() : "")
     setInactived_date(record ? record.inactived_date.toString() : "")
   }
@@ -76,20 +76,20 @@ const ModalSegment = (props) => {
     if (!numSegments || numSegments.lenght == 0) {
       msg_error.push("-Số kết quả trúng thưởng chưa có nội dung");
     }
+    if (parseInt(numSegments) > 14) {
+      msg_error.push("-Số kết quả trúng thưởng không được lớn hơn 14");
+    }
     if (!accountNbr) {
       msg_error.push("-Tài khoản trích tiền chưa có nội dung");
     }
     if (!totalValue) {
       msg_error.push("-Tổng giải thưởng chưa có nội dung");
     }
-    if (!outerRadius) {
-      msg_error.push("-Bán kính vòng quay chưa có nội dung");
-    }
     if (!textFrontSize) {
       msg_error.push("-Đặt kích thước chữ chưa có nội dung");
     }
-    if (!ratationAngle) {
-      msg_error.push("-Đặt góc vòng quay chưa có nội dung");
+    if (parseInt(textFrontSize) < 0) {
+      msg_error.push("-Kích thước chữ đang là giá trị bé hơn 0");
     }
     if (!inactived_date || inactived_date.lenght == 0) {
       msg_error.push("-Hãy chọn ngày kết thúc giải thưởng");
@@ -203,7 +203,7 @@ const ModalSegment = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Số kết quả '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Input type="number" style={{ width: '100%' }} value={numSegments} onChange={(text) => setNumSegments(text.target.value)} />
+              <Input type="number" min="1" max="14" style={{ width: '100%' }} value={numSegments} onChange={(text) => setNumSegments(text.target.value)} />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
@@ -246,14 +246,6 @@ const ModalSegment = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Bán kính vòng quay '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
-              <Input type="number" style={{ width: '100%' }} value={outerRadius} onChange={(text) => setOuterRadius(text.target.value)} />
-            </Col>
-          </Row>
-          <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
               <Text className={classNames({ [styles['text-font']]: true })}>{'Đặt kích thước chữ '}</Text>
             </Col>
             <Col  {...layoutContent}>
@@ -262,19 +254,11 @@ const ModalSegment = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text type="number" className={classNames({ [styles['text-font']]: true })}>{'Đặt góc vòng quay '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
-              <Input style={{ width: '100%' }} value={ratationAngle} onChange={(text) => setRatationAngle(text.target.value)} />
-            </Col>
-          </Row>
-          <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
               <Text className={classNames({ [styles['text-font']]: true })}>{'Ngày hết hiệu lực '}</Text>
             </Col>
             <Col  {...layoutContent}>
 
-              <DatePicker value={inactived_date ? moment(inactived_date) : null} onChange={(date) => setInactived_date(date)} />
+              <DatePicker disabledDate={d => !d || d.isSameOrBefore(moment().set('date', (moment().date() - 1)))} value={inactived_date ? moment(inactived_date) : null} onChange={(date) => setInactived_date(date)} />
             </Col>
           </Row>
         </Form>

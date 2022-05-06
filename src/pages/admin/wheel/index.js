@@ -69,7 +69,10 @@ export default function Wheel(props) {
       dataIndex: 'key',
       key: 'key',
       fixed: 'left',
-      width: 50
+      width: 50,
+      render: (text, record) => {
+        return parseInt(text) + 1
+      }
     },
     {
       title: 'ID',
@@ -93,71 +96,78 @@ export default function Wheel(props) {
       width: 100,
     },
     {
-      title: 'Tổng giá trị giải',
+      align: 'end',
+      title: 'Tổng giá trị giải(VNĐ)',
       dataIndex: 'total_value',
       key: 'total_value',
       width: 180,
       render: (text, record) => (
         <Space size="large" style={{
           'display': 'flex',
-          'justifyContent': 'space-between',
+          'justifyContent': 'flex-end',
           'fontWeight': '500'
         }}>
           <span>
             {`${text}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          </span>
-          <span >
-            VND
           </span>
         </Space>
       )
 
     },
     {
-      title: 'Giá trị còn lại',
+      align: 'end',
+      title: 'Giá trị còn lại(VNĐ)',
       dataIndex: 'remain_value',
       key: 'remain_value',
       width: 180,
       render: (text, record) => (
         <Space size="large" style={{
           'display': 'flex',
-          'justifyContent': 'space-between',
+          'justifyContent': 'flex-end',
           'fontWeight': '500'
         }}>
           <span >
             {`${text}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
           </span>
-          <span >
-            VND
-          </span>
         </Space>
       )
     },
     {
+      align: 'center',
       title: 'Tài khoản khách hàng',
       dataIndex: 'account_nbr',
       key: 'account_nbr',
-      width: 220
-    },
-    {
-      title: 'Bán kính',
-      dataIndex: 'outer_radius',
-      key: 'outer_radius',
-      width: 100
+      width: 220,
+      render: (text, record) => (
+        <Space size="large" style={{
+          'display': 'flex',
+          'justifyContent': 'flex-end',
+        }}>
+          <span>
+            {text}
+          </span>
+        </Space>
+      )
+
     },
     {
       title: 'Kích thước chữ',
       dataIndex: 'text_fontsize',
       key: 'text_fontsize',
-      width: 120
+      width: 120,
+      render: (text, record) => (
+        <Space size="large" style={{
+          'display': 'flex',
+          'justifyContent': 'flex-end',
+        }}>
+          <span>
+            {text}
+          </span>
+        </Space>
+      )
     },
     {
-      title: 'Góc quay',
-      dataIndex: 'rotation_angle',
-      key: 'rotation_angle',
-      width: 100
-    },
-    {
+      align: 'center',
       title: 'Ngày hết hiệu lực',
       dataIndex: 'inactived_date',
       key: 'inactived_date',
@@ -169,6 +179,7 @@ export default function Wheel(props) {
       }
     },
     {
+      align: 'center',
       title: 'Ngày tạo',
       dataIndex: 'created_date',
       key: 'created_date',
@@ -190,13 +201,22 @@ export default function Wheel(props) {
               Chi tiết vòng quay
             </Link>
           </Button>
-          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateWheel(record)} >Cập nhật</Button>
-          {listWheel.length >= 1 ? (
-            <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)} >
-              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
-            </Popconfirm>
-          ) : null
+          {
+            record.wheel_status === "APR" ?
+              <span style={{ color: 'green', }} >
+                Vòng quay đã duyệt !
+              </span>
+              : <>
+                <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateWheel(record)} >Cập nhật</Button>
+                {listWheel.length >= 1 ? (
+                  <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)} >
+                    <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
+                  </Popconfirm>
+                ) : null
+                }
+              </>
           }
+
         </Space>
       ),
     },

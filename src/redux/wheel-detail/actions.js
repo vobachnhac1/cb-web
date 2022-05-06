@@ -7,6 +7,8 @@ import moment from 'moment';
 
 // hàm thị thi nội bộ
 const setSearchWheelDetail = (payload) => ({ type: TYPES.WHEELDETAIL_SEARCH, payload });
+const setDataCheckWheel = (payload) => ({ type: TYPES.WHEELDETAIL_DATACHECKWHEEL, payload })
+
 // const setWheelDetailNo = (payload) => ({ type: TYPES.WHEELDETAIL_NO, payload });
 // // hàm xử lý được gọi từ bên ngoài
 export const searchWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
@@ -39,7 +41,11 @@ export const SaveOnListWheelDetail = (payload) => async (dispatch, getState, { $
   const param = {
     "wheel_id": payload.wheel_id,
     "list_wheel_detail": payload.data,
-    "list_length": payload.data.length
+    "list_length": payload.data.length,
+    'wheel_curt_value': payload.wheel_curt_value,
+    "wheel_total_value": payload.wheel_total_value,
+    "num_segment_wheel": payload.num_segment_wheel,
+    "wheel_status": payload.wheel_status
   }
   const result = await $http.post(URLSERVER.updateWheelDetailUpdateList, param);
   const { success, data } = result;
@@ -59,6 +65,10 @@ export const SaveOnListWheelDetail = (payload) => async (dispatch, getState, { $
   }
 
   dispatch(setSearchWheelDetail(dataObject))
+  dispatch(setDataCheckWheel({
+    'num_segment_wheel': data.data.num_segment_wheel,
+    'wheel_status': data.data.wheel_status
+  }))
   return dataObject
 
 }
@@ -251,9 +261,14 @@ export const filterWheelDetail = (payload) => async (dispatch, getState, { $http
     'wheel_curt_value': data.data.wheel_curt_value,
     'wheel_total_value': data.data.wheel_total_value,
     'Wheel_detail_total_value': Wheel_detail_total_value,
-    'no': no
+    'no': no,
   }
+
   dispatch(setSearchWheelDetail(dataObject))
+  dispatch(setDataCheckWheel({
+    'num_segment_wheel': data.data.num_segment_wheel,
+    'wheel_status': data.data.wheel_status
+  }))
   return dataObject
 }
 

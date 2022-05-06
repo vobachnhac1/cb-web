@@ -121,18 +121,26 @@ export default function GenerateReward(props) {
 
   const columns = [
     {
-      title: 'STT',
+      title: 'Key',
       dataIndex: 'ord_numbers',
       key: 'ord_numbers',
       width: 30,
       align: 'center',
-      render: (text, record) => <Text style={{ flexDirection: "row", justifyContent: "center" }}> {parseInt(text)}</Text>
-    }, {
+      render: (text, record) => {
+        return (
+          <>
+            <Text style={{ flexDirection: "row", justifyContent: "center" }}> {parseInt(text)}</Text>
+          </>
+        )
+      }
+    },
+    {
       title: 'Tên giải thưởng',
       dataIndex: 'segment_name',
       key: 'segment_name',
-      width: 100,
-    }, {
+      width: 145,
+    },
+    {
       title: 'Tên vòng quay ',
       dataIndex: 'wheel_name',
       key: 'wheel_name',
@@ -165,7 +173,7 @@ export default function GenerateReward(props) {
       dataIndex: 'remain_number',
       key: 'remain_number',
       align: 'center',
-      width: 100,
+      width: 65,
       inputType: 'number',
       render: (text, record) => (
         <Space size="large" style={{
@@ -180,7 +188,7 @@ export default function GenerateReward(props) {
         </Space>
       )
     }, {
-      title: 'Giải được trúng theo đợt',
+      title: 'Giải được trúng',
       dataIndex: 'total_reward',
       key: 'total_reward',
       width: 100,
@@ -198,11 +206,13 @@ export default function GenerateReward(props) {
           </Text>
         </Space>
       )
-    }, {
+    },
+    {
       title: 'Ngày bắt đầu',
       dataIndex: 'from_date',
       key: 'from_date',
-      width: 100,
+      width: 110,
+      align: 'center',
       render: (text, record) => {
         return <Text>
           {moment(text).format('YYYY-MM-DD, HH:mm:ss')}
@@ -213,7 +223,8 @@ export default function GenerateReward(props) {
       title: 'Ngày kết thúc',
       dataIndex: 'to_date',
       key: 'to_date',
-      width: 100,
+      width: 110,
+      align: 'center',
       render: (text, record) => {
         return <Text>
           {moment(text).format('YYYY-MM-DD, HH:mm:ss')}
@@ -229,18 +240,23 @@ export default function GenerateReward(props) {
         const editable = isEditing(record);
         return editable ? (
           <div>
-            <Popconfirm title="Sure to save?" onConfirm={() => _save(record.key)}>
-              <a>Save</a>
+            <Popconfirm title="Bạn có lưu?" onConfirm={() => _save(record.key)}>
+
+              <Button style={{ color: 'green', borderColor: 'green', borderWidth: 0.5 }}>
+                Lưu
+              </Button>
             </Popconfirm>
-            <Popconfirm title="Sure to cancel?" onConfirm={_cancel} >
-              <a style={{ marginLeft: 10 }}>Cancel</a>
+            <Popconfirm title="Bạn muốn thoát?" onConfirm={_cancel} >
+              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5, marginLeft: 10 }}>
+                Thoát
+              </Button>
             </Popconfirm>
           </div>
-        ) : (
-          <Typography.Link disabled={editingKey !== ''} onClick={() => _edit(record)}>
+        ) :
+          record.total_number != 0 && <Typography.Link disabled={editingKey !== ''} onClick={() => _edit(record)}> <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }}>
             Edit
+          </Button>
           </Typography.Link>
-        );
       },
     },
   ];
@@ -330,7 +346,8 @@ export default function GenerateReward(props) {
 
   const _save = async (key) => {
     const rowText = await form.validateFields();
-    if (rowText['total_reward'].trim().length === 0 || parseInt(rowText['total_reward']).toString() == 'NaN') {
+    console.log('rowText', rowText)
+    if (rowText['total_reward'].toString().trim().length === 0 || parseInt(rowText['total_reward']).toString() == 'NaN') {
       Message.Error("Thông báo", "Giá trị có kí tự chữ");
       return;
     }
@@ -383,7 +400,7 @@ export default function GenerateReward(props) {
         {/* <ModalRules visible={visible} bodyModel={bodyModel} callback={callbackModal} /> */}
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
-          title="MÀN HÌNH TẠO RANDOM GIẢI THƯỞNG"
+          title="Tạo giải thưởng ngẩu nhiên"
           bordered={true}
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>
@@ -405,11 +422,11 @@ export default function GenerateReward(props) {
 
             </Row>
             <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
-              <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onGenerated}>Generated</Button>
+              <Col className="gutter-row" span={4}>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onGenerated}>Tạo giải ngẩu nhiên</Button>
               </Col>
               <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Search</Button>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>
               </Col>
             </Row>
           </Col>
@@ -435,7 +452,7 @@ export default function GenerateReward(props) {
                 }}
                 columns={mergedColumns}
                 dataSource={listWheelDt}
-                size='small'
+                size='large'
                 loading={loading}
                 scroll={{ x: 1300 }}
                 onRow={(record, rowIndex) => {

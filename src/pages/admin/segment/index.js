@@ -77,7 +77,6 @@ export default function Segment(props) {
       key: 'key',
       fixed: 'left',
       width: 50
-      // render: text => <a>{text}</a>,
     },
     {
       title: 'ID',
@@ -85,7 +84,6 @@ export default function Segment(props) {
       key: 'segment_id',
       fixed: 'left',
       width: 100
-      // render: text => <a>{text}</a>,
     },
     {
       title: 'Tên kết quả \n trúng thưởng',
@@ -119,22 +117,21 @@ export default function Segment(props) {
       }
     },
     {
-      title: 'Giá trị giải thưởng',
+      align: 'end',
+      title: 'Giá trị giải thưởng(VNĐ)',
       dataIndex: 'segment_value',
       key: 'segment_value',
       width: 200,
       render: (text, record) => (
         <Space size="large" style={{
           'display': 'flex',
-          'justifyContent': 'space-between',
+          'justifyContent': 'flex-end',
           'fontWeight': '500'
         }}>
           <span>
             {`${text}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
           </span>
-          <span >
-            VND
-          </span>
+
         </Space>
       )
     },
@@ -166,15 +163,20 @@ export default function Segment(props) {
       key: 'action',
       width: 170,
       render: (text, record) => (
-        <Space size="middle">
-          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateSegment(record)} >Cập nhật</Button>
-          {listSegment.length >= 1 ? (
-            <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)} >
-              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
-            </Popconfirm>
-          ) : null
-          }
-        </Space>
+        record.number_segment_used === 1 ?
+          <span style={{ color: 'green', }} >
+            Có vòng quay đã duyệt và đang sử dụng giải thưởng này !
+          </span>
+          :
+          <Space size="middle">
+            <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateSegment(record)} >Cập nhật</Button>
+            {listSegment.length >= 1 ? (
+              <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)} >
+                <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
+              </Popconfirm>
+            ) : null
+            }
+          </Space>
       ),
     },
   ];

@@ -52,6 +52,8 @@ export default function WheelDetail({ query }) {
   const wheelTotalValue = useSelector(gettersWheelDetail.getStateWheelTotalValue);
   const wheelDetialTotalValue = useSelector(gettersWheelDetail.getStateWheelDetialTotalValue);
   const noWheelDetail_length = useSelector(gettersWheelDetail.getStateWheelDetialNo);
+  const WheelNumbersegment = useSelector(gettersWheelDetail.getStateWheelNumbersegment);
+  const WheelStatus = useSelector(gettersWheelDetail.getStateWheelStatus);
   const [listSearch, setListSearch] = useState([]);
 
   // gọi 1 function rồi theo dõi nhưng thay đổi của param đó
@@ -112,26 +114,39 @@ export default function WheelDetail({ query }) {
 
   // lưu lại tất cã data insert update delete gửi về api
   const onSaveListData = async () => {
-    // const data = listWheelDetail
+    let msg_error = [];
     for (let i = 0; i < listWheelDetail.length; i++) {
       if (listWheelDetail[i].is_duplicated) {
-        Message.Error("NOTYFICATON", "STT bị trùng !");
-        return;
+        msg_error.push('-STT bị trùng !')
       }
       if (listWheelDetail[i].is_lengthExceeded) {
-        Message.Error("NOTYFICATON", "STT đang bị lớn hơn số vòng quay");
-        return;
+        msg_error.push('-STT đang bị lớn hơn số vòng quay')
       }
     }
-    if (noWheelDetail_length > 14) {
-      Message.Error("NOTYFICATON", "Vòng quay chỉ được tối đa 15 chi tiết giải thưởng !");
-      return;
+
+    if (noWheelDetail_length < WheelNumbersegment) {
+      msg_error.push(`-Vòng quay đang có số giải thưởng là: ${noWheelDetail_length} nhỏ hơn vòng quay mặt định ${WheelNumbersegment} chi tiết giải thưởng `)
+    }
+
+    if (noWheelDetail_length > WheelNumbersegment) {
+      msg_error.push(`-Vòng quay chỉ được tối đa ${WheelNumbersegment} chi tiết giải thưởng `)
+    }
+    if (parseInt(wheelCurtValue) !== 0) {
+      msg_error.push(`-Giá trị còn lại vòng quay phải bằng 0 VND `)
+    }
+    if (msg_error && msg_error.length > 0) {
+      Message.WarningArr("Thông Báo", msg_error);
+      return
     }
 
     // return;
     const data = {
       'wheel_id': query.wheel_id,
       'data': listWheelDetail,
+      'wheel_curt_value': wheelCurtValue,
+      'wheel_total_value': wheelTotalValue,
+      'num_segment_wheel': WheelNumbersegment,
+      'wheel_status': WheelStatus
     }
     setLoading(true);
     const { success, listData } = await dispatch(actionWheelDetail.SaveOnListWheelDetail(data));
@@ -153,8 +168,10 @@ export default function WheelDetail({ query }) {
       dataIndex: 'key',
       key: 'key',
       fixed: 'left',
-      width: 100
-      // render: text => <a>{text}</a>,
+      width: 100,
+      render: (text, record) => {
+        return parseInt(text) + 1
+      }
     },
     {
       title: 'ID Chi tiết',
@@ -179,7 +196,7 @@ export default function WheelDetail({ query }) {
       width: 300
     },
     {
-      title: 'STT',
+      title: 'Số thứ tự',
       dataIndex: 'no',
       key: 'no',
       fixed: 'center',
@@ -193,11 +210,11 @@ export default function WheelDetail({ query }) {
           {record.is_duplicated ? <span style={{
             'marginLeft': '20px',
             'color': 'red'
-          }}>Stt đang bị trùng </span> : ''}
+          }}>*Stt đang bị trùng </span> : ''}
           {record.is_lengthExceeded ? <span style={{
             'marginLeft': '20px',
             'color': 'red'
-          }}>Stt nên nhỏ hơn sống tổng vòng quay đang có ({noWheelDetail_length}) </span> : ''}
+          }}>*Stt nên nhỏ hơn sống tổng vòng quay đang có ({noWheelDetail_length}) </span> : ''}
         </p >
       ),
     },
@@ -237,28 +254,26 @@ export default function WheelDetail({ query }) {
 
     },
     {
-      title: 'Tổng giá trị',
+      title: 'Tổng giá trị(VNĐ)',
       dataIndex: 'remain_value',
       key: 'remain_value',
-      fixed: 'center',
+      align: 'end',
       width: 180,
       render: (text, record) => (
         <Space size="large" style={{
           'display': 'flex',
-          'justifyContent': 'space-between',
+          'justifyContent': 'flex-end',
           'fontWeight': '500'
         }}>
           <span>
             {`${text}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          </span>
-          <span>
-            VND
           </span>
         </Space>
       )
 
     },
     {
+      align: 'center',
       title: 'Ngày tạo',
       dataIndex: 'created_date',
       key: 'created_date',
@@ -276,21 +291,28 @@ export default function WheelDetail({ query }) {
       render: (text, record) => (
         <>
           {
-            record.is_delete ?
-              <Space size="middle">
-                {/* onClick={() => viewsDetail(record)} */}
-                <Button style={{ color: '#7cb305', borderColor: '#7cb305', borderWidth: 0.5, }} onClick={() => updateDetail(record)} >Xem</Button>
-                <Popconfirm title="Bạn có chắc?" onConfirm={() => handleRestore(record)} >
-                  <Button style={{ color: '#faad14', borderColor: '#fa8c16', borderWidth: 0.5 }} >Khôi phục</Button>
-                </Popconfirm>
-              </Space>
+            // disabled = { WheelStatus === 'APR' ? true : false}
+            WheelStatus === 'APR'
+              ?
+              <span style={{ color: 'green', }} >
+                Đã được duyệt !
+              </span>
               :
-              <Space size="middle">
-                <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateDetail(record)} >Cập nhật</Button>
-                <Popconfirm title="Bạn có chắc?" onConfirm={() => handleDelete(record)} >
-                  <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
-                </Popconfirm>
-              </Space>
+              record.is_delete ?
+                <Space size="middle">
+                  {/* onClick={() => viewsDetail(record)} */}
+                  <Button style={{ color: '#7cb305', borderColor: '#7cb305', borderWidth: 0.5, }} onClick={() => updateDetail(record)} >Xem</Button>
+                  <Popconfirm title="Bạn có chắc?" onConfirm={() => handleRestore(record)} >
+                    <Button style={{ color: '#faad14', borderColor: '#fa8c16', borderWidth: 0.5 }} >Khôi phục</Button>
+                  </Popconfirm>
+                </Space>
+                :
+                <Space size="middle">
+                  <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateDetail(record)}  >Cập nhật</Button>
+                  <Popconfirm title="Bạn có chắc?" onConfirm={() => handleDelete(record)} >
+                    <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
+                  </Popconfirm>
+                </Space>
           }
         </>
       ),
@@ -326,7 +348,7 @@ export default function WheelDetail({ query }) {
 
   const onViewsWheel = (record) => {
 
-    if (noWheelDetail_length == 14) {
+    if (noWheelDetail_length == WheelNumbersegment) {
       setVisible(true);
       setBodyModel({
         record: record,
@@ -335,7 +357,7 @@ export default function WheelDetail({ query }) {
         dataListSearch: listSearch
       });
     } else {
-      Message.Error("NOTYFICATON", "Vòng quay chưa đủ 14 chi tiết vòng quay !!!");
+      Message.Error("NOTYFICATON", `Vòng quay chưa đủ ${WheelNumbersegment} chi tiết vòng quay !!!`);
       return;
     }
 
@@ -373,9 +395,6 @@ export default function WheelDetail({ query }) {
                     }} />
                   </Link>
                 </Button>
-              </Col>
-              <Col className="gutter-row" span={2} style={{ marginBottom: 10 }}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSaveListData}>Lưu lại</Button>
               </Col>
               <Col className="gutter-row" span={5} offset={5}>
                 <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền vòng quay: '}</Text>
@@ -426,20 +445,19 @@ export default function WheelDetail({ query }) {
                 ))}
               </Select>
             </Col>
-            {/* <Col className="gutter-row" span={6}>
-              <Input allowClear placeholder="Thông tin cần tìm" value={filter.wheel_name} onChange={(event) => setFilter({ ...filter, wheel_name: event.target.value ? event.target.value : null })} />
-              onChange={(event) => setDataSearch(event.target.value)}
-            </Col> */}
           </Row>
           <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
             <Col className="gutter-row" span={3}>
-              <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewWheelDetail}>Thêm</Button>
+              <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewWheelDetail} disabled={WheelStatus === 'APR' ? true : false}>Thêm</Button>
             </Col>
             <Col className="gutter-row" span={3}>
               <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>
             </Col>
             <Col className="gutter-row" span={4}>
               <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onViewsWheel}>Xem vòng quay</Button>
+            </Col>
+            <Col className="gutter-row" span={2}>
+              <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSaveListData} disabled={WheelStatus === 'APR' ? true : false}>Lưu lại</Button>
             </Col>
           </Row>
           <Col span={48} style={{ marginTop: 10 }}>

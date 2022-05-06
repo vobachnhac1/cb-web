@@ -12,7 +12,7 @@ import { Card, Col, Form, Input, Modal, Row, Select, Typography, Radio, InputNum
 import { PlusOutlined } from '@ant-design/icons';
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
-import moment from 'moment';
+// import moment from 'moment';
 import DisplayWheel from '@/pages/wheel/[wheel-info]';
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';

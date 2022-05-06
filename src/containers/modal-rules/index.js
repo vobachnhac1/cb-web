@@ -115,10 +115,10 @@ const ModalRules = (props) => {
       const result = await dispatch(actionsRules.insertRules(body));
       if (result) {
         callback({ visible: false });
-        Message.Success("NOTYFICATON", "ADD NEW RULES SUCCESS");
+        Message.Success("NOTYFICATON", "Thêm quy tắc thành công");
         return;
       }
-      Message.Error("NOTYFICATON", "ADD NEW RULES FAILED");
+      Message.Error("NOTYFICATON", "Thêm quy tắc thất bại");
       return;
     }
 
@@ -126,10 +126,10 @@ const ModalRules = (props) => {
     const result = await dispatch(actionsRules.updateRules(body));
     if (result) {
       callback({ visible: false });
-      Message.Success("NOTYFICATON", "UPDATE RULES SUCCESS");
+      Message.Success("NOTYFICATON", "Cập nhật quy tắc thành công");
       return;
     }
-    Message.Error("NOTYFICATON", "UPDATE RULES FAILED");
+    Message.Error("NOTYFICATON", "Cập nhật quy tắc thất bại");
   }
 
   return (
