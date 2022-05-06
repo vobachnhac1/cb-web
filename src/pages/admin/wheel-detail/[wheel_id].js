@@ -168,7 +168,7 @@ export default function WheelDetail({ query }) {
       dataIndex: 'key',
       key: 'key',
       fixed: 'left',
-      width: 100,
+      width: 40,
       render: (text, record) => {
         return parseInt(text) + 1
       }

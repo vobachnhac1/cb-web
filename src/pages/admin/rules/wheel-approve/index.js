@@ -201,7 +201,7 @@ export default function WheelApprove(props) {
       Message.Error("THÔNG BÁO", `MÃ VÒNG QUAY ${record.wheel_id} PHÊ DUYỆT THẤT BẠI`);
       return;
     }
-    Message.Success("THÔNG BÁO", `MÃ VÒNG QUAY ${record.wheel_id} PHÊ DUYỆT THANH CÔNG`);
+    Message.Success("THÔNG BÁO", `MÃ VÒNG QUAY ${record.wheel_id} PHÊ DUYỆT THÀNH CÔNG`);
     setLoading(false);
   }
 
