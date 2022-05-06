@@ -21,8 +21,6 @@ import { getters as gettersTopic } from '@/redux/topic';
 
 import moment from 'moment';
 import __ from 'lodash';
-// handhandleDelete
-
 
 export default function Segment(props) {
   const dispatch = useDispatch();
@@ -65,10 +63,10 @@ export default function Segment(props) {
     const result = await dispatch(actionSegment.deleteSegmentById(dataRecord));
     if (result) {
       onSearch();
-      Message.Success("NOTYFICATON", "DELETE TOPIC SUCCESS");
+      Message.Success("NOTYFICATON", "Xóa thành công");
       return
     }
-    Message.Error("NOTYFICATON", "DELETE TOPIC FAIL");
+    Message.Error("NOTYFICATON", "Xóa thất bại!");
   };
   const columns = [
     {
@@ -76,7 +74,10 @@ export default function Segment(props) {
       dataIndex: 'key',
       key: 'key',
       fixed: 'left',
-      width: 50
+      width: 50,
+      render: (text, record) => {
+        return parseInt(text) + 1
+      }
     },
     {
       title: 'ID',
@@ -105,15 +106,18 @@ export default function Segment(props) {
       dataIndex: 'segment_color',
       key: 'segment_color',
       width: 80,
+      align: 'center',
       render: (text, record) => {
-        return <p style={
-          {
-            background: text,
-            width: '30px',
-            height: '30px'
-          }}>
+        return <Space size="large">
+          <p style={
+            {
+              background: text,
+              width: '30px',
+              height: '30px'
+            }}>
 
-        </p>
+          </p>
+        </Space>
       }
     },
     {
@@ -140,9 +144,10 @@ export default function Segment(props) {
       dataIndex: 'inactived_date',
       key: 'inactived_date',
       width: 170,
+      align: 'center',
       render: (text, record) => {
         return <span>
-          {!text ? '' : moment(text).format('YYYY-MM-DD, hh:mm:ss')}
+          {!text || text == "0000-00-00 00:00:00" ? 'Không giới hạn' : moment(text).format('YYYY-MM-DD, hh:mm:ss')}
         </span>
       }
     },
@@ -151,6 +156,7 @@ export default function Segment(props) {
       dataIndex: 'created_date',
       key: 'created_date',
       width: 170,
+      align: 'center',
       render: (text, record) => {
         return <span>
           {moment(text).format('YYYY-MM-DD, hh:mm:ss')}
@@ -171,7 +177,7 @@ export default function Segment(props) {
           <Space size="middle">
             <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateSegment(record)} >Cập nhật</Button>
             {listSegment.length >= 1 ? (
-              <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)} >
+              <Popconfirm title="Bạn có muốn?" onConfirm={() => handleDelete(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom" >
                 <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
               </Popconfirm>
             ) : null

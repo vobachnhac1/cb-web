@@ -10,7 +10,7 @@ import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
 // khai báo store
-import {  useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { actions as actionWheel } from '@/redux/wheel';
 import _ from 'lodash';
 
@@ -150,8 +150,8 @@ const ModalSegment = (props) => {
       closable={false}
       centered
       visible={visible}
-      okText={'Comfirm'}
-      cancelText={'Cancel'}
+      okText={'Xác nhận'}
+      cancelText={'Thoát'}
       onOk={onCallback}
       onCancel={onCancel}
     >

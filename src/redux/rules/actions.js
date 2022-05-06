@@ -62,7 +62,13 @@ export const deleteRules = (payload) => async (dispatch, getState, { $http }) =>
   if (!success || !data.success) {
     return false;
   }
-  const getList = await $http.post(URLSERVER.getRulesByFilter);
+  const getList = await $http.post(URLSERVER.getRulesByFilter, {
+    from_date: null,
+    rules_id: null,
+    rules_name: null,
+    status_rules: null,
+    to_date: null
+  });
   const listRules = getList.data.data;
   if (listRules && listRules.length > 0) {
     dispatch(setRules(listRules))
@@ -106,7 +112,13 @@ export const insertRules = (payload) => async (dispatch, getState, { $http }) =>
     return false;
   }
 
-  const getList = await $http.post(URLSERVER.getRulesByFilter);
+  const getList = await $http.post(URLSERVER.getRulesByFilter, {
+    from_date: null,
+    rules_id: null,
+    rules_name: null,
+    status_rules: null,
+    to_date: null
+  });
   const listRules = getList.data.data;
   if (listRules && listRules.length > 0) {
     dispatch(setRules(listRules))

@@ -48,6 +48,7 @@ const ModalWheelDetail = (props) => {
   const [wheelDetailId, setWheelDetailId] = useState(record ? record.wheel_detail_id : "")
   const [wheelId, setWheelId] = useState(record ? record.wheel_id : "")
   const [segmentId, setSegmentId] = useState(record ? record.segment_id : "");
+  const [segmentValue, setSegmentValue] = useState("");
   const [no, setNo] = useState(record ? record.no : "")
   const [remainValue, setRemainValue] = useState(record ? record.remain_value : "")
   const [remainNumber, setRemainNumber] = useState(record ? record.remain_number : "")
@@ -115,7 +116,7 @@ const ModalWheelDetail = (props) => {
       // Message.Warning("NOTYFICATON", "Kết quả trúng thưởng chưa được chọn");
       // return;
     }
-    if (!remainNumber || remainNumber <= -1) {
+    if (!remainNumber.toString() || parseInt(remainNumber) < 0) {
       msg_error.push('-Số lần trúng thưởng chưa hợp lệ hoặc chưa có nội dung')
       // Message.Warning("NOTYFICATON", "Số lần trúng thưởng chưa hợp lệ hoặc chưa có nội dung");
       // return;
@@ -223,9 +224,11 @@ const ModalWheelDetail = (props) => {
   //tính toán giá trị  CurtValue_update ,DetailTotalValue_update
   const calculator = (value, segment_id) => {
     const segment_id_value = segment_id ? segment_id : segmentId
+    let remainNumber_value = '';
     if (!value || value == 0 && isAdd) {
       setWheelDetailTotalValue_update(0)
       setWheelCurtValue_update(parseInt(wheelCurtValue))
+      remainNumber_value = value == '' ? '' : 0
     } else {
       for (let i = 0; i < listSegment.length; i++) {
         if (parseInt(segment_id_value) === parseInt(listSegment[i].segment_id)) {
@@ -239,20 +242,22 @@ const ModalWheelDetail = (props) => {
             totalWheelDetailcur = parseInt(wheelTotalValue) - ((parseInt(wheelDetialTotalValue) - parseInt(remainValue)) + parseInt(totalWheelDetail))
           }
           // thay đổi giá trị state curtvalue && total chi tiet
+          remainNumber_value = listSegment[i].segment_value == 0 ? 0 : value
+
           setWheelCurtValue_update(totalWheelDetailcur)
           setWheelDetailTotalValue_update(totalWheelDetail)
+          setSegmentValue(listSegment[i].segment_value)
           break
         }
       }
     }
-    setRemainNumber(value)
+    setRemainNumber(remainNumber_value)
   }
 
   const onChangeRemainNumber = (text) => {
     //khi text.target.value  = null || == 0, && trường hợp là thêm thì sẽ lấy giá trị value hiện tại trên state redux
     const value = text.target.value;
     calculator(value, segmentId)
-
   }
 
   const onChangeSegment = async (value) => {
@@ -346,9 +351,9 @@ const ModalWheelDetail = (props) => {
       closable={false}
       centered
       visible={visible}
-      okText={'Comfirm'}
+      okText={'Xác nhận'}
       okButtonProps={{ disabled: isViewsWheel ? true : false }}
-      cancelText={'Cancel'}
+      cancelText={'Thoát'}
       onOk={onCallback}
       onCancel={onCancel}
     >
@@ -462,7 +467,7 @@ const ModalWheelDetail = (props) => {
                 <Text className={classNames({ [styles['text-font']]: true })}>{'Số lần trúng thưởng '}</Text>
               </Col>
               <Col  {...layoutContent}>
-                <Input type="number" min={0} style={{ width: '100%' }} value={remainNumber} onChange={onChangeRemainNumber} />
+                <Input type="number" style={{ width: '100%' }} value={remainNumber} disabled={segmentValue == 0 ? true : false} onChange={onChangeRemainNumber} />
               </Col>
             </Row>
             <Row style={{ marginTop: 10 }}>

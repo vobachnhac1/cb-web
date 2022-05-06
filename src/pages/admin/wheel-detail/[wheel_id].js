@@ -7,12 +7,10 @@
 // require("./style.module.less");
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Router, useRouter } from 'next/router';
-// import * as styles from './style.module.less';
-import * as classnames from 'classnames';
+import { Router } from 'next/router';
 import LayoutHome from '@/containers/Home';
 import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Typography, InputNumber, Image } from 'antd';
-import { ArrowLeftOutlined, SettingOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment';
 const { Text } = Typography;
 import * as Message from '@/components/message';
@@ -31,8 +29,6 @@ import { actions as actionWheel } from '@/redux/wheel';
 import { getters as gettersWheel } from '@/redux/wheel';
 import { actions as actionWheelDetail } from '@/redux/wheel-detail';
 import { getters as gettersWheelDetail } from '@/redux/wheel-detail';
-
-
 
 WheelDetail.getInitialProps = async ({ query }) => {
   return { query }
@@ -157,8 +153,6 @@ export default function WheelDetail({ query }) {
       Message.Error("NOTYFICATON", "Lưu chi tiết vòng quay thất bại");
     }
     setLoading(false);
-
-
   }
 
   // define colums
@@ -168,7 +162,7 @@ export default function WheelDetail({ query }) {
       dataIndex: 'key',
       key: 'key',
       fixed: 'left',
-      width: 100,
+      width: 40,
       render: (text, record) => {
         return parseInt(text) + 1
       }
@@ -179,14 +173,13 @@ export default function WheelDetail({ query }) {
       key: 'wheel_detail_id',
       fixed: 'left',
       width: 100
-      // render: text => <a>{text}</a>,
     },
     {
       title: 'Tên vòng quay',
       dataIndex: 'wheel_name',
       key: 'wheel_name',
       fixed: 'left',
-      width: 300
+      width: 250
     },
     {
       title: 'Tên giải thưởng',
@@ -242,7 +235,7 @@ export default function WheelDetail({ query }) {
       title: 'Hình ảnh',
       dataIndex: 'imgBase64',
       key: 'imgBase64',
-      fixed: 'center',
+      align: 'center',
       width: 80,
       render: (text, record) => (
         <Space size="large">
@@ -302,14 +295,14 @@ export default function WheelDetail({ query }) {
                 <Space size="middle">
                   {/* onClick={() => viewsDetail(record)} */}
                   <Button style={{ color: '#7cb305', borderColor: '#7cb305', borderWidth: 0.5, }} onClick={() => updateDetail(record)} >Xem</Button>
-                  <Popconfirm title="Bạn có chắc?" onConfirm={() => handleRestore(record)} >
+                  <Popconfirm title="Bạn có muốn?" onConfirm={() => handleRestore(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom">
                     <Button style={{ color: '#faad14', borderColor: '#fa8c16', borderWidth: 0.5 }} >Khôi phục</Button>
                   </Popconfirm>
                 </Space>
                 :
                 <Space size="middle">
                   <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateDetail(record)}  >Cập nhật</Button>
-                  <Popconfirm title="Bạn có chắc?" onConfirm={() => handleDelete(record)} >
+                  <Popconfirm title="Bạn có muốn?" onConfirm={() => handleDelete(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom">
                     <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
                   </Popconfirm>
                 </Space>
@@ -324,7 +317,6 @@ export default function WheelDetail({ query }) {
     isAdd: false,
     record: null
   });
-
 
   const addNewWheelDetail = () => {
     const wheel_id = query.wheel_id;
@@ -347,7 +339,6 @@ export default function WheelDetail({ query }) {
   }
 
   const onViewsWheel = (record) => {
-
     if (noWheelDetail_length == WheelNumbersegment) {
       setVisible(true);
       setBodyModel({
@@ -363,7 +354,6 @@ export default function WheelDetail({ query }) {
 
   }
 
-
   const callbackModal = (params) => {
     setVisible(params.visible);
     setListSearch(params.data)
@@ -371,7 +361,6 @@ export default function WheelDetail({ query }) {
   const backToWheel = () => {
     Router.push('/admin/wheel')
   }
-
 
   return (
     <LayoutHome>
@@ -447,13 +436,13 @@ export default function WheelDetail({ query }) {
             </Col>
           </Row>
           <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
-            <Col className="gutter-row" span={3}>
+            <Col className="gutter-row" span={2}>
               <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewWheelDetail} disabled={WheelStatus === 'APR' ? true : false}>Thêm</Button>
             </Col>
-            <Col className="gutter-row" span={3}>
+            <Col className="gutter-row" span={2}>
               <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>
             </Col>
-            <Col className="gutter-row" span={4}>
+            <Col className="gutter-row" span={3}>
               <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onViewsWheel}>Xem vòng quay</Button>
             </Col>
             <Col className="gutter-row" span={2}>
