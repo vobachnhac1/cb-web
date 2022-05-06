@@ -422,11 +422,11 @@ export default function GenerateReward(props) {
 
             </Row>
             <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
-              <Col className="gutter-row" span={4}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onGenerated}>Tạo giải ngẩu nhiên</Button>
-              </Col>
               <Col className="gutter-row" span={3}>
                 <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>
+              </Col>
+              <Col className="gutter-row" span={4}>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onGenerated}>Tạo giải ngẩu nhiên</Button>
               </Col>
             </Row>
           </Col>
