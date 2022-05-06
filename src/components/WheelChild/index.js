@@ -39,13 +39,14 @@ const WheelChild = (props) => {
       Message.Warning("Thông Báo", "Đang lấy kết quả vòng quay");
       return;
     };
-    if (selectedItem) {
+    if (selectedItem != null) {
       setup();
     }
     setTimeout(async () => {
       selectItem();
     }, 50);
   }
+
   const selectItem = async () => {
     let keyHost = 0;
     Message.Info("Thông Báo", "Bắt đầu quay");
@@ -71,6 +72,7 @@ const WheelChild = (props) => {
         setup();
       }
     }
+
     setTimeout(async () => {
       if (!roles) {
         Message.Info("Thông Báo", `Bạn nhận được kết quả: ${rsReward.segment_name} `);
