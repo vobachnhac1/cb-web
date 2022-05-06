@@ -6,7 +6,7 @@
 *------------------------------------------------------- */
 require("./style.module.less");
 import { useEffect, useState } from 'react';
-import { Button, Card, Col, Input, Row, Space, Table, DatePicker } from 'antd';
+import { Button, Card, Col, Input, Row, Space, Table, DatePicker, Typography } from 'antd';
 import moment from 'moment';
 import __ from 'lodash';
 import * as styles from './style.module.less';
@@ -15,6 +15,7 @@ import LayoutHome from '@/containers/Home';
 import * as Message from '@/components/message';
 
 const { RangePicker } = DatePicker;
+const { Text } = Typography;
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
 import { actions as actionTopic } from '@/redux/topic';
@@ -61,7 +62,7 @@ export default function Topic(props) {
       dataIndex: 'inactived_date',
       key: 'inactived_date',
       render: (text) => (
-        <p>{text ? moment(text).format('HH:mm:ss,  YYYY-MM-DD') : ''}</p>
+        <Text>{text ? moment(text).format('HH:mm:ss,  YYYY-MM-DD') : ''}</Text>
       ),
 
     }, {
@@ -71,7 +72,7 @@ export default function Topic(props) {
       key: 'status_yn',
       width: 100,
       render: (text) => (
-        <p>{text == 'Y' ? 'YES' : 'NO'}</p>
+        <Text>{text == 'Y' ? 'YES' : 'NO'}</Text>
       ),
     },
     {

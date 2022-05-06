@@ -9,17 +9,15 @@ let initialState = {
   server: '',
   client: '',
   counter: 0,
-  access_token:''
+  access_token: ''
 };
 
 // Creating my reducer
-export default function reducer(state = initialState, {type, payload}) {
+export default function reducer(state = initialState, { type, payload }) {
   switch (type) {
     case TYPES.LOGIN_ADMIN:
-      console.log("test",state,payload)
-     
       return {
-        ...state, 
+        ...state,
         access_token: payload
       }
     default:

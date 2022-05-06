@@ -12,10 +12,11 @@ import Router from 'next/router';
 import React from 'react';
 import Logo from '@/components/Layout/Logo';
 import classes from './style.module.less';
-import { useDispatch,useSelector } from 'react-redux';
-import { actions,getters } from '@/redux/global'
-
-
+import { useDispatch, useSelector } from 'react-redux';
+import { actions, getters } from '@/redux/global'
+import { useRouter } from 'next/router';
+import HeadShare from '@/components/Head';
+import { PathTitle } from '@/constants/url-name'
 const propTypes = {
 	// classes: PropTypes.object.isRequired,
 };
@@ -25,10 +26,7 @@ const defaultProps = {
 };
 
 const Login = (props) => {
-	const {namelist1='ppp'} = props;
-console.log(namelist1);
-
-
+	const router = useRouter();
 	const dispatch = useDispatch();
 	const [loading, setLoading] = React.useState(false);
 
@@ -44,18 +42,18 @@ console.log(namelist1);
 			setLoading(true);
 			const result = await dispatch(actions.loginAdmin(values));
 
-			if(result){
+			if (result) {
 				Router.push('/home');
 			}
 		} finally {
 			setLoading(false);
 		}
 	};
-
 	return (
 		<div
 			className={classes.wrapper}
 		>
+			<HeadShare title={PathTitle[`${router.pathname}`]} />
 			<div className={classes.left}>
 				<div className={classes.leftOverlay} />
 				<div className={classes.leftContent}>

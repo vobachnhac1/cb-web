@@ -4,16 +4,9 @@
 * Phone 0906.918.738
 * Created: 2022-03-10
 *------------------------------------------------------- */
-import Header from '@/components/Head';
-import Layout from '@/layout';
-import ChangePassword from '@/containers/Auth/ChangePassword'
+import LayoutHome from '@/containers/Home';
 export default function Home() {
   return (
-    <>
-      <Header />
-      <Layout>
-        {/* <ChangePassword /> */}
-      </Layout>
-    </>
+    <LayoutHome />
   )
 }

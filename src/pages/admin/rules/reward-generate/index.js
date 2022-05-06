@@ -2,7 +2,7 @@
 * Author Võ Bách Nhạc
 * Email vonhac.20394@gmail.com
 * Phone 0906.918.738
-* Created: 2022-04-07
+* Created: 2022-04-29
 *------------------------------------------------------- */
 require("./style.module.less");
 import * as styles from './style.module.less';
@@ -11,7 +11,6 @@ import { useState, useEffect } from 'react';
 import LayoutHome from '@/containers/Home';
 import { Button, Card, Col, Row, Space, Table, Typography, Select, Input, Form, Tag, DatePicker, Popconfirm } from 'antd';
 import * as Message from '@/components/message';
-import ModalRules from '@/containers/modal-rules'
 const { Text } = Typography;
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -23,8 +22,6 @@ import { getters as gettersRules } from '@/redux/rules';
 
 import moment from 'moment';
 import __ from 'lodash';
-import Link from 'next/link';
-
 
 export default function GenerateReward(props) {
   const dispatch = useDispatch();
@@ -379,8 +376,6 @@ export default function GenerateReward(props) {
       setListWheelDt(newData);
       setEditingKey('');
     }
-    // console.log('key: ', key);
-    // setEditingKey('');
   }
 
   const mergedColumns = columns.map((col) => {
