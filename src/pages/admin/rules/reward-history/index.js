@@ -137,7 +137,7 @@ export default function RewardHistory(props) {
         return (
           <Space size="middle">
             <Button style={{ width: 200, color: 'green', borderColor: 'green', borderWidth: 0.5 }}
-              onClick={() => onComfirm(record)} >Admin Comfirm</Button>
+              onClick={() => onComfirm(record)} >Xác nhận trao giải</Button>
           </Space>
         )
       },
@@ -158,13 +158,13 @@ export default function RewardHistory(props) {
         {/* <ModalRules visible={visible} bodyModel={bodyModel} callback={callbackModal} /> */}
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
-          title="MÀN HÌNH QUẢN LÝ THÔNG TIN TRÚNG THƯỞNG"
+          title="Màn hình quản lý thông tin trúng thưởng"
           bordered={true}
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>
             <Row gutter={[16, 24]}>
               <Col className="gutter-row" span={5}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Search</Button>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>
               </Col>
             </Row>
           </Col>
