@@ -209,7 +209,7 @@ export default function Wheel(props) {
               : <>
                 <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateWheel(record)} >Cập nhật</Button>
                 {listWheel.length >= 1 ? (
-                  <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)} >
+                  <Popconfirm title="Bạn có muốn?" onConfirm={() => handleDelete(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom">
                     <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
                   </Popconfirm>
                 ) : null

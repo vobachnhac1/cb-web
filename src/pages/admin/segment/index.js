@@ -76,7 +76,10 @@ export default function Segment(props) {
       dataIndex: 'key',
       key: 'key',
       fixed: 'left',
-      width: 50
+      width: 50,
+      render: (text, record) => {
+        return parseInt(text) + 1
+      }
     },
     {
       title: 'ID',
@@ -176,7 +179,7 @@ export default function Segment(props) {
           <Space size="middle">
             <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateSegment(record)} >Cập nhật</Button>
             {listSegment.length >= 1 ? (
-              <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)} >
+              <Popconfirm title="Bạn có muốn?" onConfirm={() => handleDelete(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom" >
                 <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
               </Popconfirm>
             ) : null

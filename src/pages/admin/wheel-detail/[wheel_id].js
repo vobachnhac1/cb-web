@@ -299,14 +299,14 @@ export default function WheelDetail({ query }) {
                 <Space size="middle">
                   {/* onClick={() => viewsDetail(record)} */}
                   <Button style={{ color: '#7cb305', borderColor: '#7cb305', borderWidth: 0.5, }} onClick={() => updateDetail(record)} >Xem</Button>
-                  <Popconfirm title="Bạn có chắc?" onConfirm={() => handleRestore(record)} >
+                  <Popconfirm title="Bạn có muốn?" onConfirm={() => handleRestore(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom">
                     <Button style={{ color: '#faad14', borderColor: '#fa8c16', borderWidth: 0.5 }} >Khôi phục</Button>
                   </Popconfirm>
                 </Space>
                 :
                 <Space size="middle">
                   <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateDetail(record)}  >Cập nhật</Button>
-                  <Popconfirm title="Bạn có chắc?" onConfirm={() => handleDelete(record)} >
+                  <Popconfirm title="Bạn có muốn?" onConfirm={() => handleDelete(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom">
                     <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
                   </Popconfirm>
                 </Space>
