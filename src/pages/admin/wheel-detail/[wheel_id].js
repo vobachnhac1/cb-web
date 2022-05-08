@@ -84,10 +84,10 @@ export default function WheelDetail({ query }) {
     const result = await dispatch(actionWheelDetail.deleteWheelDetailById(dataRecord));
     setListSearch(result)
     if (result) {
-      Message.Success("NOTYFICATON", "Xóa thành công");
+      Message.Success("Thông Báo", "Xóa thành công");
       return
     }
-    Message.Error("NOTYFICATON", "Xóa thất bại");
+    Message.Error("Thông Báo", "Xóa thất bại");
   };
 
   //khôi phục dữ liệu các chi tiết vòng quay bị xóa
@@ -95,17 +95,17 @@ export default function WheelDetail({ query }) {
     let dataRecord = { ...record }
     // kiểm tra số tiền remain_value có vượt quá Wheel_remain_value
     if (dataRecord.remain_value > wheelCurtValue) {
-      Message.Warning("NOTYFICATON",
+      Message.Warning("Thông Báo",
         `Số tiền thưởng còn lại của vòng quay:${wheelCurtValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} VND không đủ để thực hiện việc khôi phục ! `);
       return;
     }
     const result = await dispatch(actionWheelDetail.restoreWheelDetailById(dataRecord));
     setListSearch(result)
     if (result) {
-      Message.Success("NOTYFICATON", "Đã Khôi phục chi tiết vòng quay ");
+      Message.Success("Thông Báo", "Đã Khôi phục chi tiết vòng quay ");
       return
     }
-    Message.Error("NOTYFICATON", "Khôi phục chi tiết vòng quay thất bại !");
+    Message.Error("Thông Báo", "Khôi phục chi tiết vòng quay thất bại !");
   };
 
   // lưu lại tất cã data insert update delete gửi về api
@@ -147,10 +147,10 @@ export default function WheelDetail({ query }) {
     setLoading(true);
     const { success, listData } = await dispatch(actionWheelDetail.SaveOnListWheelDetail(data));
     if (success) {
-      Message.Success("NOTYFICATON", "Đã lưu chi tiết vòng quay thành công.");
+      Message.Success("Thông Báo", "Đã lưu chi tiết vòng quay thành công.");
       setListSearch(listData)
     } else {
-      Message.Error("NOTYFICATON", "Lưu chi tiết vòng quay thất bại");
+      Message.Error("Thông Báo", "Lưu chi tiết vòng quay thất bại");
     }
     setLoading(false);
   }
@@ -348,7 +348,7 @@ export default function WheelDetail({ query }) {
         dataListSearch: listSearch
       });
     } else {
-      Message.Error("NOTYFICATON", `Vòng quay chưa đủ ${WheelNumbersegment} chi tiết vòng quay !!!`);
+      Message.Error("Thông Báo", `Vòng quay chưa đủ ${WheelNumbersegment} chi tiết vòng quay !!!`);
       return;
     }
 

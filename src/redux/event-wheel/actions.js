@@ -32,7 +32,7 @@ export const getRewardOfWheel = (payload) => async (dispatch, getState, { $http 
   const { event_info = null } = wheelreward;
   // call xuống backend url + param 
   const param = {
-    wheel_id: 12,
+    wheel_id: event_info.wheel_id,
     rules_id: null,
     user_id: event_info.usr_info.user_id,
     num: event_info.usr_info.num

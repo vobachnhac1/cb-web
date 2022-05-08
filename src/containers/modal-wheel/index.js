@@ -122,20 +122,20 @@ const ModalSegment = (props) => {
       const result = await dispatch(actionWheel.insertWheel(param));
       if (result) {
         callback({ visible: false });
-        Message.Success("NOTYFICATON", "ADD NEW WHEEL SUCCESS");
+        Message.Success("Thông Báo", "Thêm mới thành công");
         return;
       }
-      Message.Error("NOTYFICATON", "ADD NEW WHEEL FAILED");
+      Message.Error("Thông Báo", "Thêm mới thất bại");
       return;
     }
     //edit
     const result = await dispatch(actionWheel.updateWheel(param));
     if (result) {
       callback({ visible: false });
-      Message.Success("NOTYFICATON", "UPDATE SEGMENT SUCCESS");
+      Message.Success("Thông Báo", "Cập nhật thành công");
       return;
     }
-    Message.Error("NOTYFICATON", "UPDATE SEGMENT FAILED");
+    Message.Error("Thông Báo", "Cập nhật thất bại");
 
 
   }

@@ -63,14 +63,14 @@ export default function Segment(props) {
     const result = await dispatch(actionSegment.deleteSegmentById(dataRecord));
     if (result) {
       onSearch();
-      Message.Success("NOTYFICATON", "Xóa thành công");
+      Message.Success("Thông Báo", "Xóa thành công");
       return
     }
-    Message.Error("NOTYFICATON", "Xóa thất bại!");
+    Message.Error("Thông Báo", "Xóa thất bại!");
   };
   const columns = [
     {
-      title: 'Key',
+      title: 'STT',
       dataIndex: 'key',
       key: 'key',
       fixed: 'left',
@@ -80,7 +80,7 @@ export default function Segment(props) {
       }
     },
     {
-      title: 'ID',
+      title: 'Mã',
       dataIndex: 'segment_id',
       key: 'segment_id',
       fixed: 'left',

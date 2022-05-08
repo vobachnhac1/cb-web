@@ -58,10 +58,10 @@ export default function Wheel(props) {
     const result = await dispatch(actionWheel.deleteWheelById(record));
     if (result) {
       initPage();
-      Message.Success("NOTYFICATON", "DELETE WHEEL SUCCESS");
+      Message.Success("Thông Báo", "Xóa Vòng Quay Thành Công");
       return
     }
-    Message.Error("NOTYFICATON", "DELETE WHEEL FAIL");
+    Message.Error("Thông Báo", "DELETE WHEEL FAIL");
   };
   const columns = [
     {

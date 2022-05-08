@@ -61,18 +61,19 @@ const ModalSegment = (props) => {
     if (!topicId) {
       msg_error.push("- Chủ đề chưa được chọn");
     }
-    if (!segmentName || segmentName.lenght == 0) {
+    if (!segmentName || segmentName.length == 0) {
       msg_error.push("- Tên kết quả trúng thưởng chưa có nội dung");
     }
-    if (!segmentValue || segmentValue.lenght == 0) {
-      msg_error.push("- Tổng giá trị giải thưởng chưa có nội dung");
-    }
+    // if (!segmentValue || segmentValue.length == 0) {
+    // if (!segmentValue) {
+    //   msg_error.push("- Tổng giá trị giải thưởng chưa có nội dung");
+    // }
     if (!segmentColor || segmentColor.lenght == 0) {
       msg_error.push("- Màu sắc hiển thị chưa chọn");
     }
 
     if (msg_error && msg_error.length > 0) {
-      Message.WarningArr("NOTYFICATON", msg_error);
+      Message.WarningArr("Thông Báo", msg_error);
       return
     }
     const param = {
@@ -92,20 +93,20 @@ const ModalSegment = (props) => {
       const result = await dispatch(actionSegment.insertSegment(param));
       if (result) {
         callback({ visible: false, });
-        Message.Success("NOTYFICATON", "ADD NEW SEGMENT SUCCESS");
+        Message.Success("Thông Báo", "ADD NEW SEGMENT SUCCESS");
         return;
       }
-      Message.Error("NOTYFICATON", "ADD NEW SEGMENT FAILED");
+      Message.Error("Thông Báo", "ADD NEW SEGMENT FAILED");
       return;
     }
     //edit
     const result = await dispatch(actionSegment.updateSegment(param));
     if (result) {
       callback({ visible: false });
-      Message.Success("NOTYFICATON", "UPDATE SEGMENT SUCCESS");
+      Message.Success("Thông Báo", "UPDATE SEGMENT SUCCESS");
       return;
     }
-    Message.Error("NOTYFICATON", "UPDATE SEGMENT FAILED");
+    Message.Error("Thông Báo", "UPDATE SEGMENT FAILED");
 
 
   }
@@ -121,7 +122,7 @@ const ModalSegment = (props) => {
       centered
       visible={visible}
       okText={'Xác nhận'}
-      cancelText={'Thất bại'}
+      cancelText={'Quay lại'}
       onOk={onCallback}
       onCancel={onCancel}
     >
@@ -195,7 +196,10 @@ const ModalSegment = (props) => {
                 formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                 parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
                 value={segmentValue}
-                onChange={(text) => setSegmentValue(text)}
+                onChange={(text) => {
+                  console.log('text: ', text);
+                  setSegmentValue(text ? text : 0);
+                }}
               />
             </Col>
           </Row>

@@ -72,13 +72,13 @@ const ModalWheelApprove = (props) => {
     const result = await dispatch(actionsRules.updateWheelWithRules(param));
     if (result) {
       callback({ visible: false });
-      Message.Success("NOTYFICATON", "ADD NEW RULES SUCCESS");
+      Message.Success("Thông Báo", "Thêm mới thành công");
       setRules(null);
       setBody(null);
       setListRules([]);
       return;
     }
-    Message.Error("NOTYFICATON", "ADD NEW RULES FAILED");
+    Message.Error("Thông Báo", "Thêm mới thất bại");
   }
 
   return (

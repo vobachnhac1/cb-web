@@ -113,37 +113,37 @@ const ModalWheelDetail = (props) => {
     // kiểm tra form
     if (!segmentId) {
       msg_error.push('-Kết quả trúng thưởng chưa được chọn')
-      // Message.Warning("NOTYFICATON", "Kết quả trúng thưởng chưa được chọn");
+      // Message.Warning("Thông Báo", "Kết quả trúng thưởng chưa được chọn");
       // return;
     }
     if (!remainNumber.toString() || parseInt(remainNumber) < 0) {
       msg_error.push('-Số lần trúng thưởng chưa hợp lệ hoặc chưa có nội dung')
-      // Message.Warning("NOTYFICATON", "Số lần trúng thưởng chưa hợp lệ hoặc chưa có nội dung");
+      // Message.Warning("Thông Báo", "Số lần trúng thưởng chưa hợp lệ hoặc chưa có nội dung");
       // return;
     }
     if (!no || no <= 0) {
       msg_error.push('-Số thứ tự chưa hợp lệ hoặc chưa có nội dung')
-      // Message.Warning("NOTYFICATON", "Số thứ tự chưa hợp lệ hoặc chưa có nội dung");
+      // Message.Warning("Thông Báo", "Số thứ tự chưa hợp lệ hoặc chưa có nội dung");
       // return;
     }
     if (!isAdd && no > noWheelDetail_length && !record.is_delete) {
       msg_error.push("-Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (noWheelDetail_length))
-      // Message.Warning("NOTYFICATON", "Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (noWheelDetail_length));
+      // Message.Warning("Thông Báo", "Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (noWheelDetail_length));
       // return;
     }
     if (isAdd && no > noWheelDetail_length + 1) {
       msg_error.push("-Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (noWheelDetail_length + 1))
-      // Message.Warning("NOTYFICATON", "Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (noWheelDetail_length + 1));
+      // Message.Warning("Thông Báo", "Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (noWheelDetail_length + 1));
       // return;
     }
     if (goalYn === -1) {
       msg_error.push('-Trúng thưởng chưa được chọn')
-      // Message.Warning("NOTYFICATON", "Trúng thưởng chưa được chọn");
+      // Message.Warning("Thông Báo", "Trúng thưởng chưa được chọn");
       // return;
     }
     if (!imgBase64) {
       msg_error.push('-Hình chưa được chọn')
-      // Message.Warning("NOTYFICATON", "Trúng thưởng chưa được chọn");
+      // Message.Warning("Thông Báo", "Trúng thưởng chưa được chọn");
       // return;
     }
 
@@ -202,10 +202,10 @@ const ModalWheelDetail = (props) => {
       let data = result
       if (result) {
         callback({ visible: false, data: data });
-        Message.Success("NOTYFICATON", "ADD NEW WHEEL DETAIL SUCCESS");
+        Message.Success("Thông Báo", "Thêm mới thành công");
         return;
       }
-      Message.Error("NOTYFICATON", "ADD NEW WHEEL DETAIL FAILED");
+      Message.Error("Thông Báo", "Thêm mới thất bại");
       return;
     }
     //edit
@@ -215,10 +215,10 @@ const ModalWheelDetail = (props) => {
       callback({
         visible: false, data: data
       });
-      Message.Success("NOTYFICATON", "UPDATE WHEELDETAIL SUCCESS");
+      Message.Success("Thông Báo", "Cập nhật thành công");
       return;
     }
-    Message.Error("NOTYFICATON", "UPDATE WHEELDETAIL FAILED");
+    Message.Error("Thông Báo", "Cập nhật thất bại");
   }
 
   //tính toán giá trị  CurtValue_update ,DetailTotalValue_update

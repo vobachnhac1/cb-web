@@ -48,7 +48,7 @@ const ModalTopic = (props) => {
 
   const onCallback = async () => {
     if (!topicName || topicName.lenght == 0) {
-      Message.Warning("NOTYFICATON", "Topic Name blank");
+      Message.Warning("Thông Báo", "Tên chủ đề không được để trống!");
       return;
     }
     const param = {
@@ -64,10 +64,10 @@ const ModalTopic = (props) => {
         setIsApprove('N');
         setTopicName('');
         callback({ visible: false });
-        Message.Success("NOTYFICATON", "Thêm chủ đề thành công");
+        Message.Success("Thông Báo", "Thêm chủ đề thành công");
         return;
       }
-      Message.Error("NOTYFICATON", "Thêm chủ đề thất bại");
+      Message.Error("Thông Báo", "Thêm chủ đề thất bại");
       return;
     }
     const result = await dispatch(actionTopic.updateTopic(param));
@@ -75,10 +75,10 @@ const ModalTopic = (props) => {
       setIsApprove('N');
       setTopicName('');
       callback({ visible: false });
-      Message.Success("NOTYFICATON", "Cập nhật chủ đề thành công");
+      Message.Success("Thông Báo", "Cập nhật chủ đề thành công");
       return;
     }
-    Message.Error("NOTYFICATON", "Cập nhật chủ đề thất bại");
+    Message.Error("Thông Báo", "Cập nhật chủ đề thất bại");
   }
   const onCancel = () => {
     callback({ visible: false });
@@ -123,13 +123,13 @@ const ModalTopic = (props) => {
             <Col  {...layoutContent}>
               <Select
                 disabled={isAdd}
-                defaultValue={isApprove == 'Y' ? 'YES' : 'NO'}
-                value={isApprove == 'Y' ? 'YES' : 'NO'}
+                defaultValue={isApprove == 'Y' ? 'Phê duyệt' : 'Không'}
+                value={isApprove == 'Y' ? 'Phê duyệt' : 'Không'}
                 style={{ width: '100%' }}
                 onChange={onChangeSelect}
               >
-                <Option key='Y'>YES</Option>
-                <Option key='N'>NO</Option>
+                <Option key='Y'>{"Phê duyệt"}</Option>
+                <Option key='N'>{"Không"}</Option>
               </Select>
             </Col>
           </Row>
