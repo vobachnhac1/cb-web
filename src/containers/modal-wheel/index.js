@@ -211,7 +211,6 @@ const ModalSegment = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Tài khoản trích tiền game '}</Text>
             </Col>
             <Col  {...layoutContent}>
-
               <Input style={{ width: '100%' }} value={accountNbr} onChange={(text) => setAccountNbr(text.target.value)} />
             </Col>
           </Row>
@@ -258,7 +257,7 @@ const ModalSegment = (props) => {
             </Col>
             <Col  {...layoutContent}>
 
-              <DatePicker disabledDate={d => !d || d.isSameOrBefore(moment().set('date', (moment().date() - 1)))} value={inactived_date ? moment(inactived_date) : null} onChange={(date) => setInactived_date(date)} />
+              <DatePicker disabledDate={d => !d || d.isSameOrBefore(moment().set('date', (moment().date())))} value={inactived_date ? moment(inactived_date) : null} onChange={(date) => setInactived_date(date)} />
             </Col>
           </Row>
         </Form>
