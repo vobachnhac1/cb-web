@@ -10,6 +10,7 @@ export const getContentReward = (state) => {
     remain_value: item.remain_value,
     segment_name: item.segment_name,
     segment_value: item.segment_value,
+    segment_color: item.segment_color,
     wheel_detail_id: item.wheel_detail_id,
     wheel_name: item.wheel_name,
   }))

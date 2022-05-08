@@ -86,6 +86,19 @@ const WheelChild = (props) => {
     }, 4000);
   }
 
+  var stringToColour = function (str) {
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    var colour = '#';
+    for (var i = 0; i < 3; i++) {
+      var value = (hash >> (i * 8)) & 0xFF;
+      colour += ('00' + value.toString(16)).substr(-2);
+    }
+    return colour;
+  }
+
   return (
     <div className={styles["wheel-container"]}>
       <div className={classNames({ [styles['wheel-viewbox-border']]: true })} />
@@ -97,7 +110,12 @@ const WheelChild = (props) => {
           <div
             className={classNames({ [styles["wheel-item"]]: true })}
             key={item.no}
-            style={{ '--item-nb': index, '--item-reward-url': `url("${item.imgBase64}")` }}>
+            style={{
+              '--item-nb': index,
+              '--item-reward-url': `url("${item.imgBase64}")`,
+              // '--neutral-color': stringToColour(item.segment_color),
+              // '--background-color': stringToColour('#a8cef0')
+            }}>
             <div
               className={classNames({ [styles["wheel-item-icon"]]: true })}
             />
