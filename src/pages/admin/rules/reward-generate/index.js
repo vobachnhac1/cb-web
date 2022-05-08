@@ -400,7 +400,7 @@ export default function GenerateReward(props) {
         {/* <ModalRules visible={visible} bodyModel={bodyModel} callback={callbackModal} /> */}
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
-          title="Tạo giải thưởng ngẩu nhiên"
+          title="Tạo giải thưởng ngẫu nhiên"
           bordered={true}
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>
@@ -426,7 +426,7 @@ export default function GenerateReward(props) {
                 <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>
               </Col>
               <Col className="gutter-row" span={4}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onGenerated}>Tạo giải ngẩu nhiên</Button>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onGenerated}>Tạo giải ngẫu nhiên</Button>
               </Col>
             </Row>
           </Col>
