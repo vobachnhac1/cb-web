@@ -270,7 +270,17 @@ export const getRewardHistory = (payload) => async (dispatch, getState, { $http 
   const listRewardHis = data.data;
   if (listRewardHis && listRewardHis.length > 0) {
     dispatch(setRewardHis(listRewardHis))
+  } else {
+    dispatch(setRewardHis([]))
   }
   return true
 }
 
+export const comfirmReceived = (payload) => async (dispatch, getState, { $http }) => {
+  const result = await $http.get(URLSERVER.comfirmReceived, payload);
+  const { success, data } = result;
+  if (!success || !data.success) {
+    return false;
+  }
+  return true
+}

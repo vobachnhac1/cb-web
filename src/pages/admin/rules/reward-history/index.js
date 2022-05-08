@@ -146,10 +146,16 @@ export default function RewardHistory(props) {
 
   const onSearch = () => {
     initPage();
-    Message.Info('Thông Báo', 'Tính năng đang được phát triển')
+    // Message.Info('Thông Báo', 'Tính năng đang được phát triển')
   }
-  const onComfirm = () => {
-    Message.Info('Thông Báo', 'Tính năng đang được phát triển')
+  const onComfirm = async (record) => {
+    const result = await dispatch(actionsRules.comfirmReceived({ reward_id: record.reward_id }));
+    if (result) {
+      Message.Success('Thông Báo', 'Đã xác nhận trao thưởng thành công')
+      initPage();
+    } else {
+      Message.Error('Thông Báo', 'Đã xác nhận trao thưởng thất bại')
+    }
   }
 
   return (
