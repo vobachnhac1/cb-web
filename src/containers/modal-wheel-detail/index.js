@@ -54,6 +54,7 @@ const ModalWheelDetail = (props) => {
   const [remainNumber, setRemainNumber] = useState(record ? record.remain_number : "")
   const [url, setUrl] = useState(record ? record.url : '')
   const [imgBase64, setImgBase64] = useState(record ? record.imgBase64 : '')
+  const [topicId, setTopicId] = useState('')
   const [wheelCurtValue_update, setWheelCurtValue_update] = useState(0)
   const [wheelDetailTotalValue_update, setWheelDetailTotalValue_update] = useState(0)
   const [goalYn, setGoalYn] = useState(record ? record.goal_yn : 0)
@@ -252,6 +253,11 @@ const ModalWheelDetail = (props) => {
     calculator(1, value)
   }
 
+  const onChangeTopic = async (value) => {
+    setTopicId(value)
+
+  }
+
 
   const onCancel = () => {
     callback({ visible: false, data: dataListSearch });
@@ -429,6 +435,21 @@ const ModalWheelDetail = (props) => {
                   onChange={(value) => setWheelId(value)}>
                   {listWheel.map((Item, key) => (
                     <Select.Option value={Item.wheel_id} key={key}>{Item.Wheel_name}</Select.Option>
+                  ))}
+                </Select>
+              </Col>
+            </Row>
+            <Row style={{ marginTop: 10 }}>
+              <Col {...layoutHeader} >
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Chủ đề'}</Text>
+              </Col>
+              <Col  {...layoutContent}>
+                <Select
+                  style={{ width: '100%' }}
+                  value={topicId}
+                  onChange={onChangeTopic}>
+                  {listTopic.map((Item, key) => (
+                    <Select.Option value={Item.topic_id} key={key}>{Item.topic_name}</Select.Option>
                   ))}
                 </Select>
               </Col>
