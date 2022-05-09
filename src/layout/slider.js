@@ -193,7 +193,7 @@ const SliderCustom = (props) => {
 
   return (
     <Sider
-      onMouseLeave={() => toggleCollapsed(true)}
+      // onMouseLeave={() => toggleCollapsed(true)}
       width={250}
       collapsible
       collapsed={collapsed}
