@@ -78,7 +78,21 @@ export const filterSegment = (payload) => async (dispatch, getState, { $http }) 
   }
   const listSegment = data.data;
   dispatch(setSearchSegment(listSegment))
-  return true
+  let segment_id;
+
+  if (listSegment !== []) {
+    for (let i = 0; i < listSegment.length; i++) {
+      segment_id = listSegment[i].segment_id
+      break
+    }
+  }
+
+  return {
+    "success": true,
+    "data": {
+      "segment_id": segment_id
+    }
+  }
 }
 
 // function export ra ngoài

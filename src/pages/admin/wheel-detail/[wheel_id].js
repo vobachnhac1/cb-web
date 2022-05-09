@@ -64,7 +64,7 @@ export default function WheelDetail({ query }) {
       'wheel_id': query.wheel_id
     }
     await dispatch(actionTopic.searchTopic());
-    await dispatch(actionSegment.searchSegment({}));
+    // await dispatch(actionSegment.searchSegment({}));
     const { listData } = await dispatch(actionWheelDetail.filterWheelDetail(data));
     setListSearch(listData)
     setLoading(false)

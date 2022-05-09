@@ -72,7 +72,7 @@ const ModalSegment = (props) => {
       msg_error.push("- Tên kết quả trúng thưởng chưa có nội dung");
     }
 
-    if (!segmentColor || segmentColor.lenght == 0) {
+    if (!segmentColor || segmentColor.length == 0) {
       msg_error.push("- Màu sắc hiển thị chưa chọn");
     }
 

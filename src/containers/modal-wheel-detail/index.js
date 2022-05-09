@@ -23,6 +23,7 @@ import { actions as actionWheel } from '@/redux/wheel';
 import { getters as gettersWheel } from '@/redux/wheel';
 import { actions as actionWheelDetail } from '@/redux/wheel-detail';
 import { getters as gettersWheelDetail } from '@/redux/wheel-detail';
+import { isBuffer } from 'lodash';
 
 const classNames = require("classnames");
 const styles = require("./style.module.less");
@@ -54,7 +55,7 @@ const ModalWheelDetail = (props) => {
   const [remainNumber, setRemainNumber] = useState(record ? record.remain_number : "")
   const [url, setUrl] = useState(record ? record.url : '')
   const [imgBase64, setImgBase64] = useState(record ? record.imgBase64 : '')
-  const [topicId, setTopicId] = useState('')
+  const [topicId, setTopicId] = useState(record ? record.topic_id : '')
   const [wheelCurtValue_update, setWheelCurtValue_update] = useState(0)
   const [wheelDetailTotalValue_update, setWheelDetailTotalValue_update] = useState(0)
   const [goalYn, setGoalYn] = useState(record ? record.goal_yn : 0)
@@ -87,6 +88,7 @@ const ModalWheelDetail = (props) => {
     setWheelDetailId(record ? record.wheel_detail_id : "")
     setWheelId(record ? record.wheel_id : queryWheel_id)
     setSegmentId(record ? record.segment_id : "")
+    setTopicId(record ? record.topic_id : '')
     setNo(record ? record.no : "")
     setRemainNumber(record ? record.remain_number : "")
     setRemainValue(record ? record.remain_value : 0)
@@ -146,7 +148,8 @@ const ModalWheelDetail = (props) => {
       goal_yn: goalYn,
       remain_number: remainNumber,
       imgBase64: imgBase64,
-      url: url
+      url: url,
+      topic_id: topicId
     }
     //get wheelname
     for (let i = 0; i < listWheel.length; i++) {
@@ -235,10 +238,12 @@ const ModalWheelDetail = (props) => {
           setWheelCurtValue_update(totalWheelDetailcur)
           setWheelDetailTotalValue_update(totalWheelDetail)
           setSegmentValue(listSegment[i].segment_value)
+
           break
         }
       }
     }
+    console.log('remainNumber_value', remainNumber_value)
     setRemainNumber(remainNumber_value)
   }
 
@@ -249,13 +254,19 @@ const ModalWheelDetail = (props) => {
   }
 
   const onChangeSegment = async (value) => {
-    setSegmentId(value)
     calculator(1, value)
+    setSegmentId(value)
   }
 
   const onChangeTopic = async (value) => {
+    const filter = {
+      topic_id: value,
+    }
+    const { success, data } = await dispatch(actionSegment.filterSegment(filter));
+    if (success) {
+      onChangeSegment(data.segment_id)
+    }
     setTopicId(value)
-
   }
 
 
@@ -462,6 +473,7 @@ const ModalWheelDetail = (props) => {
 
                 <Select
                   style={{ width: '100%' }}
+                  disabled={topicId ? false : true}
                   value={segmentId}
                   onChange={onChangeSegment}>
                   {listSegment.map((Item, key) => (
