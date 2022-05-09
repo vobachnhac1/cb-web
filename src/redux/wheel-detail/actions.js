@@ -50,7 +50,9 @@ export const SaveOnListWheelDetail = (payload) => async (dispatch, getState, { $
   const result = await $http.post(URLSERVER.updateWheelDetailUpdateList, param);
   const { success, data } = result;
   if (!success || !data.success) {
-    return false;
+    return {
+      'success': false,
+    };
   }
   const { listData, no } = resultDoneWheelDetail(data.data.list_wheel_dt.map(item => ({ ...item, is_delete: false })));
   const Wheel_detail_total_value = sumTotalValueWheelDetail(listData)
@@ -69,6 +71,20 @@ export const SaveOnListWheelDetail = (payload) => async (dispatch, getState, { $
     'num_segment_wheel': data.data.num_segment_wheel,
     'wheel_status': data.data.wheel_status
   }))
+
+  // call api status 
+  const data_api_wheel_status = {
+    wheel_id: payload.wheel_id,
+    wheel_status: "ADD"
+  }
+  const result_status = await $http.post(URLSERVER.updateStateWheel, data_api_wheel_status);
+
+  if (!result_status.success || !result_status.data.success) {
+    return {
+      'success': false,
+    };
+  }
+
   return dataObject
 
 }

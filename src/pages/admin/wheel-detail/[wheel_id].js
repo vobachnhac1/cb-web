@@ -288,8 +288,8 @@ export default function WheelDetail({ query }) {
             // disabled = { WheelStatus === 'APR' ? true : false} WheelStatus === 'SAVE'
             WheelStatus === 'APR' || WheelStatus === 'SAVE'
               ?
-              <span style={{ color: 'green', }} >
-                Đã được duyệt !
+              <span style={{ color: WheelStatus === "APR" ? "green" : "#faad14", }} >
+                {WheelStatus === 'APR' ? 'Đã được duyệt !' : 'Đang gửi phê duyệt'}
               </span>
               :
               record.is_delete ?
