@@ -12,7 +12,7 @@ import { Card, Col, Form, Input, Modal, Row, Select, Typography, Radio, InputNum
 import { PlusOutlined } from '@ant-design/icons';
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
-// import moment from 'moment';
+import moment from 'moment';
 import DisplayWheel from '@/pages/wheel/[wheel-info]';
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
@@ -70,6 +70,7 @@ const ModalWheelDetail = (props) => {
 
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
   const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
+  const [listSegmentSearch, setListSegmentSearch] = useState([])
   const listWheel = useSelector(gettersWheel.getStateLoadPageWheel) || [];
   const noWheelDetail_length = useSelector(gettersWheelDetail.getStateWheelDetialNo);
   const listWheelDetail = useSelector(gettersWheelDetail.getStateLoadPageWheelDetail) || [];
@@ -95,7 +96,8 @@ const ModalWheelDetail = (props) => {
     setGoalYn(record ? record.goal_yn : -1)
     setImgBase64(record ? record.imgBase64 : '')
     setUrl(record ? record.url : '')
-    setSegmentValue(1)
+    setSegmentValue(record ? record.remain_value : 1)
+    setListSegmentSearch(listSegment)
 
     //xử lý file hình
 
@@ -189,6 +191,7 @@ const ModalWheelDetail = (props) => {
 
     // add
     if (isAdd) {
+      param.created_date = moment().format('YYYY-MM-DD, hh:mm:ss')
       const result = await dispatch(actionWheelDetail.insertWheelDetail(param));
       let data = result
       if (result) {
@@ -234,7 +237,6 @@ const ModalWheelDetail = (props) => {
           }
           // thay đổi giá trị state curtvalue && total chi tiet
           remainNumber_value = listSegment[i].segment_value == 0 ? 0 : value
-
           setWheelCurtValue_update(totalWheelDetailcur)
           setWheelDetailTotalValue_update(totalWheelDetail)
           setSegmentValue(listSegment[i].segment_value)
@@ -243,12 +245,10 @@ const ModalWheelDetail = (props) => {
         }
       }
     }
-    console.log('remainNumber_value', remainNumber_value)
     setRemainNumber(remainNumber_value)
   }
 
   const onChangeRemainNumber = (text) => {
-    //khi text.target.value  = null || == 0, && trường hợp là thêm thì sẽ lấy giá trị value hiện tại trên state redux
     const value = text.target.value;
     calculator(value, segmentId)
   }
@@ -262,8 +262,9 @@ const ModalWheelDetail = (props) => {
     const filter = {
       topic_id: value,
     }
-    const { success, data } = await dispatch(actionSegment.filterSegment(filter));
+    const { success, data } = await dispatch(actionSegment.filterSegmentByIdTopic(filter));
     if (success) {
+      setListSegmentSearch(data.listSegmentSearch)
       onChangeSegment(data.segment_id)
     }
     setTopicId(value)
@@ -470,13 +471,12 @@ const ModalWheelDetail = (props) => {
                 <Text className={classNames({ [styles['text-font']]: true })}>{'Kết quả trúng thưởng'}</Text>
               </Col>
               <Col  {...layoutContent}>
-
                 <Select
                   style={{ width: '100%' }}
                   disabled={topicId ? false : true}
                   value={segmentId}
                   onChange={onChangeSegment}>
-                  {listSegment.map((Item, key) => (
+                  {listSegmentSearch.map((Item, key) => (
                     <Select.Option value={Item.segment_id} key={key}>{Item.segment_name}</Select.Option>
                   ))}
                 </Select>

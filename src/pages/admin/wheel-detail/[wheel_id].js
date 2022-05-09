@@ -64,7 +64,7 @@ export default function WheelDetail({ query }) {
       'wheel_id': query.wheel_id
     }
     await dispatch(actionTopic.searchTopic());
-    // await dispatch(actionSegment.searchSegment({}));
+    await dispatch(actionSegment.searchSegment({}));
     const { listData } = await dispatch(actionWheelDetail.filterWheelDetail(data));
     setListSearch(listData)
     setLoading(false)
@@ -386,7 +386,7 @@ export default function WheelDetail({ query }) {
                   </Link>
                 </Button>
               </Col>
-              <Col className="gutter-row" span={5} offset={5}>
+              <Col className="gutter-row" span={5} offset={1}>
                 <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền vòng quay: '}</Text>
                 <InputNumber style={{ width: '100%' }}
                   addonAfter={"VND"}

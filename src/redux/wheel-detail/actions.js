@@ -103,7 +103,7 @@ export const insertWheelDetail = (payload) => async (dispatch, getState, { $http
     "remain_number": parseInt(payload.remain_number),
     "imgBase64": payload.imgBase64 ? payload.imgBase64 : null,
     "inactived_date": null,
-    "created_date": moment().format('YYYY-MM-DD, hh:mm:ss'),
+    "created_date": payload.created_date,
     "datelastmaint": null,
     "is_approve": true,
     "is_delete": false
@@ -134,6 +134,7 @@ export const insertWheelDetail = (payload) => async (dispatch, getState, { $http
 }
 
 export const updateWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
+  console.log('updateWheelDetail payload', payload)
   const param = {
     "wheel_detail_id": payload.wheel_detail_id,
     "no": parseInt(payload.no),
@@ -158,6 +159,7 @@ export const updateWheelDetail = (payload) => async (dispatch, getState, { $http
       listWheelDetail[i].remain_number = param.remain_number
       listWheelDetail[i].remain_value = param.remain_value
       listWheelDetail[i].segment_id = param.segment_id
+      listWheelDetail[i].topic_id = param.topic_id
       listWheelDetail[i].segment_name = param.segment_name
       listWheelDetail[i].imgBase64 = param.imgBase64
     }
