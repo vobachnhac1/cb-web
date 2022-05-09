@@ -99,20 +99,27 @@ export default function GenerateReward(props) {
 
   const onGenerated = async () => {
     setLoading(true);
-    const { wheel_id } = filter;
+    const { wheel_id, rules_id } = filter;
     if (!wheel_id || wheel_id < 0) {
-      Message.Warning("THÔNG BÁO", "Vui lòng chọn vòng quay và nhấn nút 'Search'")
+      Message.Warning("THÔNG BÁO", "Vui lòng chọn vòng quay và nhấn nút 'Search'");
+      setLoading(false);
+      return;
+    }
+    if (!rules_id || rules_id <= 0) {
+      Message.Warning("THÔNG BÁO", "Vui lòng chọn quy tắc áp dụng");
+      setLoading(false);
       return;
     }
     if (!listWheelDt || listWheelDt && listWheelDt.length == 0) {
-      Message.Warning("THÔNG BÁO", "Không có dữ liệu, vui lòng chọn vòng quay và nhấn nút 'Search'")
+      Message.Warning("THÔNG BÁO", "Không có dữ liệu, vui lòng chọn vòng quay và nhấn nút 'Search'");
+      setLoading(false);
       return;
     }
     const recoreWheel = listWheelApproved.find(item => item.wheel_id == filter.wheel_id)
 
     const result = await dispatch(actionsRules.generateRewardOfRules({
       wheel_id: recoreWheel.wheel_id,
-      rules_id: filter.rules_id,
+      rules_id: filter.rules_id > 0 ? filter.rules_id : recoreWheel.rules_id,
     }));
     if (!result) {
       Message.Warning("THÔNG BÁO", "Vui lòng chọn thử lại")
@@ -398,6 +405,40 @@ export default function GenerateReward(props) {
     };
   });
 
+  // add function phê duyệt 
+  const onApproved = async () => {
+    // phải có wheel_id, rules_id, listApporve có data
+    // lấy tổng giải so với tổng giải của rules
+    const { rules_id, wheel_id } = filter;
+    if (!rules_id || rules_id <= 0) {
+      return;
+    }
+    if (!wheel_id || wheel_id <= 0) {
+      return;
+    }
+    const rules = listRules.find(item => item.rules_id == rules_id);
+    const total_reward_list = listWheelDt.map(item => item.total_reward).reduce((a, b) => a + b);
+    if (total_reward_list != rules.total_reward) {
+      Message.Warning("Thông Báo", "Vui lòng thực hiện tạo ngẫu nhiên trước");
+      return;
+    }
+    // call API change status 'SAVE' => 'APR'
+    setLoading(true);
+    const param = {
+      wheel_id: wheel_id,
+      wheel_status: 'APR',
+
+    }
+    const result = await dispatch(actionsRules.updateStateWheel(param))
+    if (!result) {
+      Message.Error("THÔNG BÁO", `MÃ VÒNG QUAY ${wheel_id} PHÊ DUYỆT THẤT BẠI`);
+      setLoading(false);
+      return;
+    }
+    Message.Success("THÔNG BÁO", `MÃ VÒNG QUAY ${wheel_id} PHÊ DUYỆT THÀNH CÔNG`);
+    setLoading(false);
+  }
+
   return (
     <LayoutHome>
       <Col style={{ marginBottom: 30 }}>
@@ -457,23 +498,29 @@ export default function GenerateReward(props) {
             </Row>
             <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
               <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>
+                <Button disabled={filter.wheel_id == null} type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>
               </Col>
               <Col className="gutter-row" span={4}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onGenerated}>Tạo giải ngẫu nhiên</Button>
+                <Button disabled={filter.wheel_id == null || listWheelDt.length == 0} type='primary' size='middle' style={{ width: '100%' }} onClick={onGenerated}>Tạo giải ngẫu nhiên</Button>
               </Col>
+
             </Row>
           </Col>
         </Card>
         <div style={{ marginTop: 20 }} />
         <Card>
           <Col span={48} >
-            <Row gutter={[16, 24]}>
-              <Col className="gutter-row" span={4} style={{ margin: 10, height: 50 }}>
-                {isEditData && <Tag style={{ fontSize: 18, padding: 10 }} color={'error'}>{isEditData ? "Dữ liệu có thay đổi" : ""} </Tag>}
-              </Col>
-              <Col className="gutter-row" span={4} style={{ margin: 10, height: 50 }}>
-                {isEditData && <Button type='primary' size='middle' style={{ width: '100%', height: 40 }} onClick={onSave}>Lưu Lại</Button>}
+            <Row gutter={[16, 24]} style={{ justifyContent: "space-between" }}>
+              <Row gutter={[16, 24]}>
+                <Col className="gutter-row" span={4} style={{ margin: 10, height: 50 }}>
+                  {isEditData && <Tag style={{ fontSize: 18, padding: 10 }} color={'error'}>{isEditData ? "Dữ liệu có thay đổi" : ""} </Tag>}
+                </Col>
+                <Col className="gutter-row" span={4} style={{ margin: 10, height: 50 }}>
+                  {isEditData && <Button type='primary' size='middle' style={{ width: '100%', height: 40 }} onClick={onSave}>Lưu Lại</Button>}
+                </Col>
+              </Row>
+              <Col className="gutter-row" span={6}>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onApproved}>Phê duyệt Vòng quay</Button>
               </Col>
             </Row>
             <Form form={form} component={false}>
