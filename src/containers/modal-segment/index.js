@@ -36,7 +36,7 @@ const ModalSegment = (props) => {
   const [segmentId, setSegmentId] = useState(record ? record.segment_id : "");
   const [topicId, setTopicId] = useState(record ? record.topic_id : "");
   const [segmentName, setSegmentName] = useState(record ? record.segment_name : "");
-  const [segmentColor, setSegmentColor] = useState(record ? record.segment_color : "");
+  const [segmentColor, setSegmentColor] = useState(record ? record.segment_color : "#659bc9");
   const [segmentValue, setSegmentValue] = useState(record ? record.segment_value : "");
   const [inactived_date, setInactived_date] = useState(record ? record.inactived_date : "");
 
@@ -51,12 +51,19 @@ const ModalSegment = (props) => {
     setSegmentId(record ? record.segment_id : "")
     setTopicId(record ? record.topic_id : "")
     setSegmentName(record ? record.segment_name : "")
-    setSegmentColor(record ? record.segment_color : "")
+    setSegmentColor(record ? record.segment_color : "#659bc9")
     setSegmentValue(record ? record.segment_value : "")
     setInactived_date(record ? record.inactived_date : "")
   }
 
   const onCallback = async () => {
+
+    // state loading true/false
+    /*
+      if(loading) return;
+          // bật true
+    */
+
     let msg_error = [];
     if (!topicId) {
       msg_error.push("- Chủ đề chưa được chọn");
@@ -64,10 +71,7 @@ const ModalSegment = (props) => {
     if (!segmentName || segmentName.length == 0) {
       msg_error.push("- Tên kết quả trúng thưởng chưa có nội dung");
     }
-    // if (!segmentValue || segmentValue.length == 0) {
-    // if (!segmentValue) {
-    //   msg_error.push("- Tổng giá trị giải thưởng chưa có nội dung");
-    // }
+
     if (!segmentColor || segmentColor.lenght == 0) {
       msg_error.push("- Màu sắc hiển thị chưa chọn");
     }
@@ -93,22 +97,22 @@ const ModalSegment = (props) => {
       const result = await dispatch(actionSegment.insertSegment(param));
       if (result) {
         callback({ visible: false, });
-        Message.Success("Thông Báo", "ADD NEW SEGMENT SUCCESS");
+        Message.Success("Thông Báo", "Thêm thành công");
         return;
       }
-      Message.Error("Thông Báo", "ADD NEW SEGMENT FAILED");
+      Message.Error("Thông Báo", "Thêm thất bại");
       return;
     }
     //edit
     const result = await dispatch(actionSegment.updateSegment(param));
     if (result) {
       callback({ visible: false });
-      Message.Success("Thông Báo", "UPDATE SEGMENT SUCCESS");
+      Message.Success("Thông Báo", "Cập nhật thành công");
       return;
     }
-    Message.Error("Thông Báo", "UPDATE SEGMENT FAILED");
+    Message.Error("Thông Báo", "Cập nhật thất bại");
 
-
+    // false
   }
   const onCancel = () => {
     callback({ visible: false });
@@ -197,7 +201,6 @@ const ModalSegment = (props) => {
                 parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
                 value={segmentValue}
                 onChange={(text) => {
-                  console.log('text: ', text);
                   setSegmentValue(text ? text : 0);
                 }}
               />
@@ -208,7 +211,7 @@ const ModalSegment = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Màu sắc hiển thị '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Input type="color" style={{ width: '50%' }} value={segmentColor ? segmentColor : '#222222'} onChange={(text) => setSegmentColor(text.target.value)} />
+              <Input type="color" style={{ width: '50%' }} value={segmentColor} onChange={(text) => setSegmentColor(text.target.value)} />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>

@@ -114,6 +114,7 @@ export default function WheelDetail({ query }) {
     for (let i = 0; i < listWheelDetail.length; i++) {
       if (listWheelDetail[i].is_duplicated) {
         msg_error.push('-STT bị trùng !')
+        break
       }
       if (listWheelDetail[i].is_lengthExceeded) {
         msg_error.push('-STT đang bị lớn hơn số vòng quay')
@@ -284,8 +285,8 @@ export default function WheelDetail({ query }) {
       render: (text, record) => (
         <>
           {
-            // disabled = { WheelStatus === 'APR' ? true : false}
-            WheelStatus === 'APR'
+            // disabled = { WheelStatus === 'APR' ? true : false} WheelStatus === 'SAVE'
+            WheelStatus === 'APR' || WheelStatus === 'SAVE'
               ?
               <span style={{ color: 'green', }} >
                 Đã được duyệt !
@@ -437,7 +438,7 @@ export default function WheelDetail({ query }) {
           </Row>
           <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
             <Col className="gutter-row" span={2}>
-              <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewWheelDetail} disabled={WheelStatus === 'APR' ? true : false}>Thêm</Button>
+              <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewWheelDetail} disabled={WheelStatus === 'APR' || WheelStatus === 'SAVE' ? true : false}>Thêm</Button>
             </Col>
             <Col className="gutter-row" span={2}>
               <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>
@@ -446,7 +447,7 @@ export default function WheelDetail({ query }) {
               <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onViewsWheel}>Xem vòng quay</Button>
             </Col>
             <Col className="gutter-row" span={2}>
-              <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSaveListData} disabled={WheelStatus === 'APR' ? true : false}>Lưu lại</Button>
+              <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSaveListData} disabled={WheelStatus === 'APR' || WheelStatus === 'SAVE' ? true : false}>Lưu lại</Button>
             </Col>
           </Row>
           <Col span={48} style={{ marginTop: 10 }}>

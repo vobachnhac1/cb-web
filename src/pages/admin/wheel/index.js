@@ -193,7 +193,7 @@ export default function Wheel(props) {
     {
       title: 'Action',
       key: 'action',
-      width: 320,
+      width: 450,
       render: (text, record) => (
         <Space size="middle">
           <Button style={{ color: '#7cb305', borderColor: '#7cb305', borderWidth: 0.5 }}>
@@ -202,9 +202,9 @@ export default function Wheel(props) {
             </Link>
           </Button>
           {
-            record.wheel_status === "APR" ?
-              <span style={{ color: 'green', }} >
-                Vòng quay đã duyệt !
+            record.wheel_status === "APR" || record.wheel_status === "SAVE" ?
+              <span style={{ color: record.wheel_status === "APR" ? "green" : "#faad14", }} >
+                {record.wheel_status === "APR" ? "Vòng quay đã duyệt !" : "Vòng quay đang gửi phê duyệt !"}
               </span>
               : <>
                 <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateWheel(record)} >Cập nhật</Button>
@@ -214,6 +214,7 @@ export default function Wheel(props) {
                   </Popconfirm>
                 ) : null
                 }
+                <Button style={{ color: '#faad14', borderColor: '#faad14', borderWidth: 0.5 }} onClick={() => sendApprove(record)} >Gửi phê duyệt</Button>
               </>
           }
 
@@ -244,6 +245,23 @@ export default function Wheel(props) {
       isAdd: false
     });
   }
+
+  const sendApprove = async (record) => {
+    const param = {
+      wheel_id: record.wheel_id,
+      wheel_status: "SAVE"
+    }
+
+    const result = await dispatch(actionWheel.sendAppove(param));
+    if (result) {
+      Message.Success("Thông Báo", "Gửi phê duyệt thành công");
+      onSearch()
+      return;
+    }
+    Message.Error("Thông Báo", "Gửi phê duyệt thất bại");
+
+  }
+
 
   const callbackModal = (params) => {
     setVisible(params.visible);

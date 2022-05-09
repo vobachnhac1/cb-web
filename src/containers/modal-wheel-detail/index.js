@@ -48,7 +48,7 @@ const ModalWheelDetail = (props) => {
   const [wheelDetailId, setWheelDetailId] = useState(record ? record.wheel_detail_id : "")
   const [wheelId, setWheelId] = useState(record ? record.wheel_id : "")
   const [segmentId, setSegmentId] = useState(record ? record.segment_id : "");
-  const [segmentValue, setSegmentValue] = useState("");
+  const [segmentValue, setSegmentValue] = useState(1);
   const [no, setNo] = useState(record ? record.no : "")
   const [remainValue, setRemainValue] = useState(record ? record.remain_value : "")
   const [remainNumber, setRemainNumber] = useState(record ? record.remain_number : "")
@@ -92,6 +92,7 @@ const ModalWheelDetail = (props) => {
     setGoalYn(record ? record.goal_yn : -1)
     setImgBase64(record ? record.imgBase64 : '')
     setUrl(record ? record.url : '')
+    setSegmentValue(1)
 
     //xử lý file hình
 
@@ -113,38 +114,24 @@ const ModalWheelDetail = (props) => {
     // kiểm tra form
     if (!segmentId) {
       msg_error.push('-Kết quả trúng thưởng chưa được chọn')
-      // Message.Warning("Thông Báo", "Kết quả trúng thưởng chưa được chọn");
-      // return;
     }
     if (!remainNumber.toString() || parseInt(remainNumber) < 0) {
       msg_error.push('-Số lần trúng thưởng chưa hợp lệ hoặc chưa có nội dung')
-      // Message.Warning("Thông Báo", "Số lần trúng thưởng chưa hợp lệ hoặc chưa có nội dung");
-      // return;
     }
     if (!no || no <= 0) {
       msg_error.push('-Số thứ tự chưa hợp lệ hoặc chưa có nội dung')
-      // Message.Warning("Thông Báo", "Số thứ tự chưa hợp lệ hoặc chưa có nội dung");
-      // return;
     }
     if (!isAdd && no > noWheelDetail_length && !record.is_delete) {
       msg_error.push("-Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (noWheelDetail_length))
-      // Message.Warning("Thông Báo", "Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (noWheelDetail_length));
-      // return;
     }
     if (isAdd && no > noWheelDetail_length + 1) {
       msg_error.push("-Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (noWheelDetail_length + 1))
-      // Message.Warning("Thông Báo", "Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (noWheelDetail_length + 1));
-      // return;
     }
     if (goalYn === -1) {
       msg_error.push('-Trúng thưởng chưa được chọn')
-      // Message.Warning("Thông Báo", "Trúng thưởng chưa được chọn");
-      // return;
     }
     if (!imgBase64) {
       msg_error.push('-Hình chưa được chọn')
-      // Message.Warning("Thông Báo", "Trúng thưởng chưa được chọn");
-      // return;
     }
 
 
