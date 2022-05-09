@@ -84,6 +84,7 @@ export const updateRules = (payload) => async (dispatch, getState, { $http }) =>
     total_reward: parseInt(payload.total_reward) == 'NaN' ? 0 : parseInt(payload.total_reward),
     rules_id: payload.rules_id,
     status_rules: !payload.status_rules || payload.status_rules && payload.status_rules == 'N' ? 'N' : 'Y',
+    wheel_id: payload.wheel_id,
   }
   const result = await $http.post(URLSERVER.updateRules, param);
   const { success, data } = result;
@@ -91,7 +92,13 @@ export const updateRules = (payload) => async (dispatch, getState, { $http }) =>
     return false;
   }
 
-  const getList = await $http.post(URLSERVER.getRulesByFilter);
+  const getList = await $http.post(URLSERVER.getRulesByFilter, {
+    from_date: null,
+    rules_id: null,
+    rules_name: null,
+    status_rules: null,
+    to_date: null
+  });
   const listRules = getList.data.data;
   if (listRules && listRules.length > 0) {
     dispatch(setRules(listRules))
@@ -105,6 +112,7 @@ export const insertRules = (payload) => async (dispatch, getState, { $http }) =>
     "to_date": moment(payload.to_date).format('YYYY-MM-DD'),
     "rules_name": payload.rules_name,
     "total_reward": payload.total_reward,
+    "wheel_id": payload.wheel_id,
   }
   const result = await $http.post(URLSERVER.insertRules, param);
   const { success, data } = result;
@@ -132,7 +140,8 @@ export const getWheelWithStateApprove = (payload) => async (dispatch, getState, 
   try {
     const params = {
       wheel_name: null,
-      wheel_status: 'APR',
+      wheel_status: null,
+      wheel_status_arr: ['APR', 'SAVE'],
       from_date_act: null,
       to_date_act: null
     }

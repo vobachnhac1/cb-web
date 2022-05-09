@@ -99,8 +99,9 @@ const permission = [
     child: null,
   }, {
     parent: 'subRules',
-    child: ['viewRules', 'subWheelApprove', 'subRulesReward', , 'subRewardHistory']
+    child: ['viewRules', 'subRulesReward', , 'subRewardHistory']
   },
+  // 'subWheelApprove',
 ];
 
 

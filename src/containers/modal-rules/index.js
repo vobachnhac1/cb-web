@@ -5,13 +5,15 @@
 * Created: 2022-04-08
 *------------------------------------------------------- */
 require("./style.module.less");
-import { Card, Col, Form, Input, Modal, Row, Typography, DatePicker, Tag } from 'antd';
+import { Card, Col, Form, Input, Modal, Row, Typography, DatePicker, Tag, Select } from 'antd';
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
 import { actions as actionsRules } from '@/redux/rules';
+import { getters as gettersRules } from '@/redux/rules';
+
 import _ from 'lodash';
 
 const classNames = require("classnames");
@@ -34,6 +36,7 @@ const layoutContent = {
 const ModalRules = (props) => {
   const dispatch = useDispatch();
   const { callback, visible = false, bodyModel: { isAdd = false, record = null } } = props;
+  const listWheel = useSelector(gettersRules.getListWheel) || [];
 
   const [body, setBody] = useState(record ? record : {
     created_date: null,
@@ -68,13 +71,22 @@ const ModalRules = (props) => {
       status_rules_name: null,
       to_date: null,
       total_reward: null,
-    })
+    });
+    if (!isAdd) {
+      const res = listWheel.filter(item => record && item.rules_id == record.rules_id);
+      if (res.length > 0) {
+        setWheel(res[0].wheel_id);
+      } else {
+        setWheel(null)
+      }
+    }
   }
 
   const onCancel = () => {
     callback({ visible: false });
   }
   const [isChangeText, setIsChangeText] = useState(false)
+  const [chooseWheel, setWheel] = useState(null)
 
   const onKeyPress = (event) => {
     let code = event.keyCode || event.charCode;
@@ -106,13 +118,19 @@ const ModalRules = (props) => {
     if (!from_date) {
       msg_error.push("- Vui lòng nhập thời gian hiệu lực \n");
     }
+    if (!chooseWheel) {
+      msg_error.push("- Vui lòng chọn vòng quay \n");
+    }
     if (msg_error && msg_error.length > 0) {
       Message.WarningArr("Thông Báo", msg_error);
       return
     }
     //   // add
     if (isAdd) {
-      const result = await dispatch(actionsRules.insertRules(body));
+      const result = await dispatch(actionsRules.insertRules({
+        ...body,
+        wheel_id: chooseWheel
+      }));
       if (result) {
         callback({ visible: false });
         Message.Success("Thông Báo", "Thêm quy tắc thành công");
@@ -123,7 +141,10 @@ const ModalRules = (props) => {
     }
 
     //edit
-    const result = await dispatch(actionsRules.updateRules(body));
+    const result = await dispatch(actionsRules.updateRules({
+      ...body,
+      wheel_id: chooseWheel
+    }));
     if (result) {
       callback({ visible: false });
       Message.Success("Thông Báo", "Cập nhật quy tắc thành công");
@@ -194,6 +215,28 @@ const ModalRules = (props) => {
               />
             </Col>
           </Row>
+          {
+            // select option wheel
+            <Row style={{ marginTop: 10 }}>
+              <Col {...layoutHeader} >
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Vòng quay:'}</Text>
+              </Col>
+              <Col  {...layoutContent}>
+                <Select
+                  allowClear
+                  // disabled={isAdd ? false : true}
+                  style={{ width: '100%' }}
+                  defaultValue=""
+                  value={chooseWheel}
+                  onChange={(value) => setWheel(value)}>
+                  {listWheel.map((item, key) => (
+                    <Select.Option value={item.wheel_id} key={key}>{item.wheel_name}</Select.Option>
+                  ))}
+                </Select>
+              </Col>
+            </Row>
+
+          }
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
               <Text className={classNames({ [styles['text-font']]: true })}>{'Trạng thái:'}</Text>

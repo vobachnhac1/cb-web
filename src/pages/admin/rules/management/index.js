@@ -43,6 +43,9 @@ export default function RulesManagement(props) {
   const initPage = async () => {
     setLoading(true);
     await dispatch(actionsRules.filterRules(filter));
+    await dispatch(actionsRules.getWheelScreenRules({
+      wheel_status: 'SAVE'
+    }));
     setLoading(false);
   }
   const onSearch = async () => {

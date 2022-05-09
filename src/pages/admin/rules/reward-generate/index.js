@@ -29,21 +29,25 @@ export default function GenerateReward(props) {
   const [listWheelDt, setListWheelDt] = useState([]);
   const [listWheelDtTemp, setListWheelDtTemp] = useState([]);
   const listWheelApproved = useSelector(gettersRules.getListWheelApproved) || [];
+  const listRules = useSelector(gettersRules.getListRulesStateYes) || [];
   const [filter, setFilter] = useState({
     wheel_id: null,
     wheel_name: null,
     from_date: null,
     to_date: null,
+    rules_id: null
   });
 
   useEffect(() => {
     initPage();
   }, [])
 
+
   const initPage = async () => {
     // lấy danh sách wheel đã được Approved
     setLoading(true);
     await dispatch(actionsRules.getWheelWithStateApprove());
+    await dispatch(actionsRules.getListRulesStateApprove());
     setLoading(false);
   };
 
@@ -105,9 +109,10 @@ export default function GenerateReward(props) {
       return;
     }
     const recoreWheel = listWheelApproved.find(item => item.wheel_id == filter.wheel_id)
+
     const result = await dispatch(actionsRules.generateRewardOfRules({
       wheel_id: recoreWheel.wheel_id,
-      rules_id: recoreWheel.rules_id,
+      rules_id: filter.rules_id,
     }));
     if (!result) {
       Message.Warning("THÔNG BÁO", "Vui lòng chọn thử lại")
@@ -346,7 +351,6 @@ export default function GenerateReward(props) {
 
   const _save = async (key) => {
     const rowText = await form.validateFields();
-    console.log('rowText', rowText)
     if (rowText['total_reward'].toString().trim().length === 0 || parseInt(rowText['total_reward']).toString() == 'NaN') {
       Message.Error("Thông báo", "Giá trị có kí tự chữ");
       return;
@@ -412,14 +416,44 @@ export default function GenerateReward(props) {
                   style={{ width: '100%' }}
                   defaultValue={null}
                   value={filter.wheel_id}
-                  onChange={(value) => setFilter({ ...filter, wheel_id: value })}
+                  onChange={(value) => {
+                    if (value) {
+                      const rules_id = listWheelApproved.find(ele => ele.wheel_id == value).rules_id;
+                      setFilter({
+                        ...filter,
+                        wheel_id: value,
+                        rules_id: rules_id ? rules_id : null
+                      })
+                      return;
+                    }
+                    setFilter({
+                      ...filter,
+                      wheel_id: value,
+                      rules_id: null
+                    })
+                    setListWheelDt([]);
+                    setListWheelDtTemp([]);
+                  }}
                 >
                   {listWheelApproved.map((item, key) => (
                     <Select.Option value={item.wheel_id} key={key}> {item.wheel_name}</Select.Option>
                   ))}
                 </Select>
               </Col>
-
+              <Col className="gutter-row" span={8}>
+                <Select
+                  allowClear
+                  placeholder="Danh sách Quy tắc"
+                  style={{ width: '100%' }}
+                  defaultValue={null}
+                  value={filter.rules_id}
+                  onChange={(value) => setFilter({ ...filter, rules_id: value })}
+                >
+                  {listRules.map((item, key) => (
+                    <Select.Option value={item.rules_id} key={key}> {item.rules_name}</Select.Option>
+                  ))}
+                </Select>
+              </Col>
             </Row>
             <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
               <Col className="gutter-row" span={3}>
