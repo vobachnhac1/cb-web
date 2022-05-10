@@ -177,14 +177,14 @@ export default function WheelDetail({ query }) {
       dataIndex: 'wheel_name',
       key: 'wheel_name',
       fixed: 'left',
-      width: 250
+      width: 200
     },
     {
       title: 'Tên giải thưởng',
       dataIndex: 'segment_name',
       key: 'segment_name',
       fixed: 'center',
-      width: 300
+      width: 200
     },
     {
       title: 'Số thứ tự',
@@ -371,46 +371,63 @@ export default function WheelDetail({ query }) {
           bordered={true}
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>
-            <Row gutter={[16, 24]}>
+
+            <Row gutter={[16, 24]} style={{
+              'display': 'flex',
+              'justifyContent': 'space-between'
+            }}>
               <Col className="gutter-row" style={{ marginBottom: 10, }}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} title="Quay lại" >
-                  <Link href="/admin/wheel">
+                <Link href="/admin/wheel">
+                  <Button type='primary' size='middle' style={{ width: '100%' }} title="Quay lại" >
                     <ArrowLeftOutlined style={{
                       'fontSize': '21px',
                       'marginLeft': '-6px',
                       'width': '15px'
                     }} />
-                  </Link>
-                </Button>
+                  </Button>
+                </Link>
               </Col>
-              <Col className="gutter-row" span={5} offset={1}>
-                <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền vòng quay: '}</Text>
-                <InputNumber style={{ width: '100%' }}
-                  addonAfter={"VND"}
-                  formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                  parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                  disabled
-                  value={wheelTotalValue} />
-              </Col>
-              <Col className="gutter-row" span={5} >
-                <Text className={classNames({ [styles['text-font']]: true })}>{'Tiền vòng quay còn lại: '}</Text>
-                <InputNumber
-                  style={{ width: '100%' }}
-                  addonAfter={"VND"}
-                  formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                  parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                  disabled
-                  value={wheelCurtValue} />
-              </Col>
-              <Col className="gutter-row" span={5} >
-                <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền chi tiết vòng quay '}</Text>
-                <InputNumber
-                  style={{ width: '100%' }}
-                  addonAfter={"VND"}
-                  formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                  parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                  disabled
-                  value={wheelDetialTotalValue} />
+              
+              <Col style={{
+                'display': 'flex',
+                'flexWrap': 'nowrap'
+              }}
+              >
+                <Col className="gutter-row" style={{
+                  'width': '225px'
+                }}>
+                  <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền vòng quay: '}</Text>
+                  <InputNumber style={{ width: '100%' }}
+                    addonAfter={"VND"}
+                    formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                    parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                    disabled
+                    value={wheelTotalValue} />
+                </Col>
+                <Col className="gutter-row" style={{
+                  'width': '225px'
+                }}>
+                  <Text className={classNames({ [styles['text-font']]: true })}>{'Tiền vòng quay còn lại: '}</Text>
+                  <InputNumber
+                    style={{ width: '100%' }}
+                    addonAfter={"VND"}
+                    formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                    parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                    disabled
+                    value={wheelCurtValue} />
+                </Col>
+                <Col className="gutter-row" style={{
+                  'width': '225px'
+                }}>
+                  <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền chi tiết vòng quay '}</Text>
+                  <InputNumber
+                    style={{ width: '100%' }}
+                    addonAfter={"VND"}
+                    formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                    parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                    disabled
+                    value={wheelDetialTotalValue} />
+                </Col>
               </Col>
             </Row>
 
@@ -433,17 +450,17 @@ export default function WheelDetail({ query }) {
               </Select>
             </Col>
           </Row>
-          <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
-            <Col className="gutter-row" span={2}>
+          <Row gutter={[12, 24]} style={{ marginTop: '10px' }}>
+            <Col className="gutter-row" span={3}>
               <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewWheelDetail} disabled={WheelStatus === 'APR' || WheelStatus === 'SAVE' ? true : false}>Thêm</Button>
             </Col>
-            <Col className="gutter-row" span={2}>
+            <Col className="gutter-row" span={3}>
               <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>
             </Col>
-            <Col className="gutter-row" span={3}>
+            <Col className="gutter-row" span={4}>
               <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onViewsWheel}>Xem vòng quay</Button>
             </Col>
-            <Col className="gutter-row" span={2}>
+            <Col className="gutter-row" span={3}>
               <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSaveListData} disabled={WheelStatus === 'APR' || WheelStatus === 'SAVE' ? true : false}>Lưu lại</Button>
             </Col>
           </Row>

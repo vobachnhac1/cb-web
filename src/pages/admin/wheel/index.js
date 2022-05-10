@@ -87,14 +87,14 @@ export default function Wheel(props) {
       dataIndex: 'wheel_name',
       key: 'wheel_name',
       fixed: 'left',
-      width: 300
+      width: 200
     },
     {
       title: 'Số kết quả',
       dataIndex: 'num_segments',
       key: 'num_segments',
       fixed: 'center',
-      width: 100,
+      width: 75,
     },
     {
       align: 'end',
@@ -215,7 +215,7 @@ export default function Wheel(props) {
                   </Popconfirm>
                 ) : null
                 }
-                <Button style={{ color: '#faad14', borderColor: '#faad14', borderWidth: 0.5 }} disabled={record.wheel_status === "ADD" ? false : true} onClick={() => sendApprove(record)} >Gửi phê duyệt</Button>
+                <Button style={{ color: record.wheel_status !== "ADD" ? "" : '#faad14', borderColor: record.wheel_status !== "ADD" ? "" : '#faad14', borderWidth: 0.5 }} disabled={record.wheel_status !== "ADD" ? true : false} onClick={() => sendApprove(record)} >Gửi phê duyệt</Button>
               </>
           }
 
