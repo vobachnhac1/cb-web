@@ -116,9 +116,6 @@ export default function WheelDetail({ query }) {
         msg_error.push('-STT bị trùng !')
         break
       }
-      if (listWheelDetail[i].is_lengthExceeded) {
-        msg_error.push('-STT đang bị lớn hơn số vòng quay')
-      }
     }
 
     if (noWheelDetail_length < WheelNumbersegment) {
@@ -205,10 +202,10 @@ export default function WheelDetail({ query }) {
             'marginLeft': '20px',
             'color': 'red'
           }}>*Stt đang bị trùng </span> : ''}
-          {record.is_lengthExceeded ? <span style={{
+          {record.no > WheelNumbersegment ? <span style={{
             'marginLeft': '20px',
             'color': 'red'
-          }}>*Stt nên nhỏ hơn sống tổng vòng quay đang có ({noWheelDetail_length}) </span> : ''}
+          }}>*Stt nên nhỏ hơn sống tổng vòng quay đang có ({WheelNumbersegment}) </span> : ''}
         </p >
       ),
     },

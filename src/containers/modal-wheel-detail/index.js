@@ -74,6 +74,7 @@ const ModalWheelDetail = (props) => {
   const listWheel = useSelector(gettersWheel.getStateLoadPageWheel) || [];
   const noWheelDetail_length = useSelector(gettersWheelDetail.getStateWheelDetialNo);
   const listWheelDetail = useSelector(gettersWheelDetail.getStateLoadPageWheelDetail) || [];
+  const WheelNumbersegment = useSelector(gettersWheelDetail.getStateWheelNumbersegment);
 
   let wheelCurtValue = useSelector(gettersWheelDetail.getStateWheelCurtValue);
   let wheelTotalValue = useSelector(gettersWheelDetail.getStateWheelTotalValue);
@@ -126,11 +127,11 @@ const ModalWheelDetail = (props) => {
     if (!no || no <= 0) {
       msg_error.push('-Số thứ tự chưa hợp lệ hoặc chưa có nội dung')
     }
-    if (!isAdd && no > noWheelDetail_length && !record.is_delete) {
-      msg_error.push("-Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (noWheelDetail_length))
+    if (!isAdd && no > WheelNumbersegment && !record.is_delete) {
+      msg_error.push("-Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (WheelNumbersegment))
     }
-    if (isAdd && no > noWheelDetail_length + 1) {
-      msg_error.push("-Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (noWheelDetail_length + 1))
+    if (isAdd && no > WheelNumbersegment) {
+      msg_error.push("-Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (WheelNumbersegment))
     }
     if (goalYn === -1) {
       msg_error.push('-Trúng thưởng chưa được chọn')
