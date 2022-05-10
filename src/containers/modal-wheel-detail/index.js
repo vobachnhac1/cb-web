@@ -90,7 +90,7 @@ const ModalWheelDetail = (props) => {
     setWheelId(record ? record.wheel_id : queryWheel_id)
     setSegmentId(record ? record.segment_id : "")
     setTopicId(record ? record.topic_id : '')
-    setNo(record ? record.no : "")
+    setNo(record ? record.no : noWheelDetail_length + 1)
     setRemainNumber(record ? record.remain_number : "")
     setRemainValue(record ? record.remain_value : 0)
     setGoalYn(record ? record.goal_yn : -1)

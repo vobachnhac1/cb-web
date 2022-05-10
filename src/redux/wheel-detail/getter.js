@@ -17,7 +17,7 @@ export const getStateWheelDetialTotalValue = ({ wheeldetail: { wheelDetialTotalV
   return wheelDetialTotalValue ? wheelDetialTotalValue : 0
 };
 export const getStateWheelDetialNo = ({ wheeldetail: { no } }) => {
-  return no ? no : 1
+  return no ? no : 0
 };
 export const getStateWheelNumbersegment = ({ wheeldetail: { num_segment_wheel } }) => {
   return num_segment_wheel ? num_segment_wheel : 0
