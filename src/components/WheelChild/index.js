@@ -113,8 +113,9 @@ const WheelChild = (props) => {
             style={{
               '--item-nb': index,
               '--item-reward-url': `url("${item.imgBase64}")`,
-              // '--neutral-color': stringToColour(item.segment_color),
-              // '--background-color': stringToColour('#a8cef0')
+              '--neutral-color': stringToColour(item.segment_color),
+              '--background-color': stringToColour(item.segment_color),
+              // '--neutral-color-text': stringToColour(item.segment_color)
             }}>
             <div
               className={classNames({ [styles["wheel-item-icon"]]: true })}
