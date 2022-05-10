@@ -13,6 +13,7 @@ import { Button, Card, Col, Row, Space, Table, Popconfirm, Input, DatePicker } f
 const { RangePicker } = DatePicker;
 import * as Message from '@/components/message';
 import ModalWheel from '@/containers/modal-wheel'
+import router from 'next/router';
 
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
@@ -268,6 +269,15 @@ export default function Wheel(props) {
     onSearch()
   }
 
+  const onDoubleClick = (record, rowIndex) => {
+    // setVisible(true);
+    // setBodyModel({
+    //   record: record,
+    //   isAdd: false
+    // });
+    router.push(`/admin/wheel-detail/${record.wheel_id}`)
+  }
+
   return (
     <LayoutHome>
       <Col style={{ marginBottom: 30 }}>
@@ -324,6 +334,17 @@ export default function Wheel(props) {
               size='small'
               loading={loading}
               scroll={{ x: 1300 }}
+              onRow={(record, rowIndex) => {
+                return {
+                  onClick: event => { }, // click row
+                  onDoubleClick: event => {
+                    onDoubleClick(record, rowIndex)
+                  }, // double click row { }
+                  onContextMenu: event => { }, // right button click row
+                  onMouseEnter: event => { }, // mouse enter row
+                  onMouseLeave: event => { }, // mouse leave row
+                };
+              }}
             />
           </Col>
         </Card>
