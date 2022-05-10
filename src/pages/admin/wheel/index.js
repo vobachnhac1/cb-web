@@ -87,14 +87,14 @@ export default function Wheel(props) {
       dataIndex: 'wheel_name',
       key: 'wheel_name',
       fixed: 'left',
-      width: 300
+      width: 200
     },
     {
       title: 'Số kết quả',
       dataIndex: 'num_segments',
       key: 'num_segments',
       fixed: 'center',
-      width: 100,
+      width: 75,
     },
     {
       align: 'end',

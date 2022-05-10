@@ -177,14 +177,14 @@ export default function WheelDetail({ query }) {
       dataIndex: 'wheel_name',
       key: 'wheel_name',
       fixed: 'left',
-      width: 250
+      width: 200
     },
     {
       title: 'Tên giải thưởng',
       dataIndex: 'segment_name',
       key: 'segment_name',
       fixed: 'center',
-      width: 300
+      width: 200
     },
     {
       title: 'Số thứ tự',
