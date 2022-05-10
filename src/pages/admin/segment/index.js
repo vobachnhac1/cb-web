@@ -52,8 +52,9 @@ export default function Segment(props) {
       initPage();
     } else {
       setLoading(true);
-      await dispatch(actionSegment.filterSegment(filter));
-      setLoading(false);
+      const { success } = await dispatch(actionSegment.filterSegment(filter));
+      if (success)
+        setLoading(false);
     }
 
   }

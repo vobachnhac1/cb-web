@@ -67,13 +67,13 @@ const ModalSegment = (props) => {
   const onCallback = async () => {
     let msg_error = [];
 
-    if ((!wheelId || wheelId.lenght == 0) && !isAdd) {
+    if ((!wheelId || wheelId.length == 0) && !isAdd) {
       msg_error.push("-ID chưa điền nội dung");
     }
-    if (!wheelName || wheelName.lenght == 0) {
+    if (!wheelName || wheelName.length == 0) {
       msg_error.push("-Tên vòng quay chưa điền nội dung");
     }
-    if (!numSegments || numSegments.lenght == 0) {
+    if (!numSegments || numSegments.length == 0) {
       msg_error.push("-Số kết quả trúng thưởng chưa có nội dung");
     }
     if (parseInt(numSegments) > 14) {
@@ -91,7 +91,7 @@ const ModalSegment = (props) => {
     if (parseInt(textFrontSize) < 0) {
       msg_error.push("-Kích thước chữ đang là giá trị bé hơn 0");
     }
-    if (!inactived_date || inactived_date.lenght == 0) {
+    if (!inactived_date || inactived_date.length == 0) {
       msg_error.push("-Hãy chọn ngày kết thúc giải thưởng");
     }
     if (msg_error && msg_error.length > 0) {

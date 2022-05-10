@@ -78,7 +78,34 @@ export const filterSegment = (payload) => async (dispatch, getState, { $http }) 
   }
   const listSegment = data.data;
   dispatch(setSearchSegment(listSegment))
-  return true
+
+  return {
+    "success": true,
+  }
+}
+
+export const filterSegmentByIdTopic = (payload) => async (dispatch, getState, { $http }) => {
+  const result = await $http.post(URLSERVER.searchSegmentById, payload);
+  const { success, data } = result;
+  if (!success || !data.success) {
+    return false;
+  }
+  const listSegment = data.data;
+  let segment_id;
+
+  if (listSegment !== []) {
+    for (let i = 0; i < listSegment.length; i++) {
+      segment_id = listSegment[i].segment_id
+      break
+    }
+  }
+  return {
+    "success": true,
+    "data": {
+      "segment_id": segment_id,
+      "listSegmentSearch": listSegment
+    }
+  }
 }
 
 // function export ra ngoài
