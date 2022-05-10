@@ -12,7 +12,7 @@ import { Card, Col, Form, Input, Modal, Row, Select, Typography, Radio, InputNum
 import { PlusOutlined } from '@ant-design/icons';
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
-// import moment from 'moment';
+import moment from 'moment';
 import DisplayWheel from '@/pages/wheel/[wheel-info]';
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
@@ -23,6 +23,7 @@ import { actions as actionWheel } from '@/redux/wheel';
 import { getters as gettersWheel } from '@/redux/wheel';
 import { actions as actionWheelDetail } from '@/redux/wheel-detail';
 import { getters as gettersWheelDetail } from '@/redux/wheel-detail';
+import { isBuffer } from 'lodash';
 
 const classNames = require("classnames");
 const styles = require("./style.module.less");
@@ -48,12 +49,13 @@ const ModalWheelDetail = (props) => {
   const [wheelDetailId, setWheelDetailId] = useState(record ? record.wheel_detail_id : "")
   const [wheelId, setWheelId] = useState(record ? record.wheel_id : "")
   const [segmentId, setSegmentId] = useState(record ? record.segment_id : "");
-  const [segmentValue, setSegmentValue] = useState("");
+  const [segmentValue, setSegmentValue] = useState(1);
   const [no, setNo] = useState(record ? record.no : "")
   const [remainValue, setRemainValue] = useState(record ? record.remain_value : "")
   const [remainNumber, setRemainNumber] = useState(record ? record.remain_number : "")
   const [url, setUrl] = useState(record ? record.url : '')
   const [imgBase64, setImgBase64] = useState(record ? record.imgBase64 : '')
+  const [topicId, setTopicId] = useState(record ? record.topic_id : '')
   const [wheelCurtValue_update, setWheelCurtValue_update] = useState(0)
   const [wheelDetailTotalValue_update, setWheelDetailTotalValue_update] = useState(0)
   const [goalYn, setGoalYn] = useState(record ? record.goal_yn : 0)
@@ -68,9 +70,11 @@ const ModalWheelDetail = (props) => {
 
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
   const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
+  const [listSegmentSearch, setListSegmentSearch] = useState([])
   const listWheel = useSelector(gettersWheel.getStateLoadPageWheel) || [];
   const noWheelDetail_length = useSelector(gettersWheelDetail.getStateWheelDetialNo);
   const listWheelDetail = useSelector(gettersWheelDetail.getStateLoadPageWheelDetail) || [];
+  const WheelNumbersegment = useSelector(gettersWheelDetail.getStateWheelNumbersegment);
 
   let wheelCurtValue = useSelector(gettersWheelDetail.getStateWheelCurtValue);
   let wheelTotalValue = useSelector(gettersWheelDetail.getStateWheelTotalValue);
@@ -86,12 +90,15 @@ const ModalWheelDetail = (props) => {
     setWheelDetailId(record ? record.wheel_detail_id : "")
     setWheelId(record ? record.wheel_id : queryWheel_id)
     setSegmentId(record ? record.segment_id : "")
-    setNo(record ? record.no : "")
+    setTopicId(record ? record.topic_id : '')
+    setNo(record ? record.no : noWheelDetail_length + 1)
     setRemainNumber(record ? record.remain_number : "")
     setRemainValue(record ? record.remain_value : 0)
     setGoalYn(record ? record.goal_yn : -1)
     setImgBase64(record ? record.imgBase64 : '')
     setUrl(record ? record.url : '')
+    setSegmentValue(record ? record.remain_value : 1)
+    setListSegmentSearch(listSegment)
 
     //xử lý file hình
 
@@ -113,38 +120,24 @@ const ModalWheelDetail = (props) => {
     // kiểm tra form
     if (!segmentId) {
       msg_error.push('-Kết quả trúng thưởng chưa được chọn')
-      // Message.Warning("Thông Báo", "Kết quả trúng thưởng chưa được chọn");
-      // return;
     }
     if (!remainNumber.toString() || parseInt(remainNumber) < 0) {
       msg_error.push('-Số lần trúng thưởng chưa hợp lệ hoặc chưa có nội dung')
-      // Message.Warning("Thông Báo", "Số lần trúng thưởng chưa hợp lệ hoặc chưa có nội dung");
-      // return;
     }
     if (!no || no <= 0) {
       msg_error.push('-Số thứ tự chưa hợp lệ hoặc chưa có nội dung')
-      // Message.Warning("Thông Báo", "Số thứ tự chưa hợp lệ hoặc chưa có nội dung");
-      // return;
     }
-    if (!isAdd && no > noWheelDetail_length && !record.is_delete) {
-      msg_error.push("-Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (noWheelDetail_length))
-      // Message.Warning("Thông Báo", "Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (noWheelDetail_length));
-      // return;
+    if (!isAdd && no > WheelNumbersegment && !record.is_delete) {
+      msg_error.push("-Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (WheelNumbersegment))
     }
-    if (isAdd && no > noWheelDetail_length + 1) {
-      msg_error.push("-Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (noWheelDetail_length + 1))
-      // Message.Warning("Thông Báo", "Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (noWheelDetail_length + 1));
-      // return;
+    if (isAdd && no > WheelNumbersegment) {
+      msg_error.push("-Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (WheelNumbersegment))
     }
     if (goalYn === -1) {
       msg_error.push('-Trúng thưởng chưa được chọn')
-      // Message.Warning("Thông Báo", "Trúng thưởng chưa được chọn");
-      // return;
     }
     if (!imgBase64) {
       msg_error.push('-Hình chưa được chọn')
-      // Message.Warning("Thông Báo", "Trúng thưởng chưa được chọn");
-      // return;
     }
 
 
@@ -158,7 +151,8 @@ const ModalWheelDetail = (props) => {
       goal_yn: goalYn,
       remain_number: remainNumber,
       imgBase64: imgBase64,
-      url: url
+      url: url,
+      topic_id: topicId
     }
     //get wheelname
     for (let i = 0; i < listWheel.length; i++) {
@@ -198,6 +192,7 @@ const ModalWheelDetail = (props) => {
 
     // add
     if (isAdd) {
+      param.created_date = moment().format('YYYY-MM-DD, hh:mm:ss')
       const result = await dispatch(actionWheelDetail.insertWheelDetail(param));
       let data = result
       if (result) {
@@ -243,10 +238,10 @@ const ModalWheelDetail = (props) => {
           }
           // thay đổi giá trị state curtvalue && total chi tiet
           remainNumber_value = listSegment[i].segment_value == 0 ? 0 : value
-
           setWheelCurtValue_update(totalWheelDetailcur)
           setWheelDetailTotalValue_update(totalWheelDetail)
           setSegmentValue(listSegment[i].segment_value)
+
           break
         }
       }
@@ -255,14 +250,25 @@ const ModalWheelDetail = (props) => {
   }
 
   const onChangeRemainNumber = (text) => {
-    //khi text.target.value  = null || == 0, && trường hợp là thêm thì sẽ lấy giá trị value hiện tại trên state redux
     const value = text.target.value;
     calculator(value, segmentId)
   }
 
   const onChangeSegment = async (value) => {
-    setSegmentId(value)
     calculator(1, value)
+    setSegmentId(value)
+  }
+
+  const onChangeTopic = async (value) => {
+    const filter = {
+      topic_id: value,
+    }
+    const { success, data } = await dispatch(actionSegment.filterSegmentByIdTopic(filter));
+    if (success) {
+      setListSegmentSearch(data.listSegmentSearch)
+      onChangeSegment(data.segment_id)
+    }
+    setTopicId(value)
   }
 
 
@@ -448,15 +454,30 @@ const ModalWheelDetail = (props) => {
             </Row>
             <Row style={{ marginTop: 10 }}>
               <Col {...layoutHeader} >
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Chủ đề'}</Text>
+              </Col>
+              <Col  {...layoutContent}>
+                <Select
+                  style={{ width: '100%' }}
+                  value={topicId}
+                  onChange={onChangeTopic}>
+                  {listTopic.map((Item, key) => (
+                    <Select.Option value={Item.topic_id} key={key}>{Item.topic_name}</Select.Option>
+                  ))}
+                </Select>
+              </Col>
+            </Row>
+            <Row style={{ marginTop: 10 }}>
+              <Col {...layoutHeader} >
                 <Text className={classNames({ [styles['text-font']]: true })}>{'Kết quả trúng thưởng'}</Text>
               </Col>
               <Col  {...layoutContent}>
-
                 <Select
                   style={{ width: '100%' }}
+                  disabled={topicId ? false : true}
                   value={segmentId}
                   onChange={onChangeSegment}>
-                  {listSegment.map((Item, key) => (
+                  {listSegmentSearch.map((Item, key) => (
                     <Select.Option value={Item.segment_id} key={key}>{Item.segment_name}</Select.Option>
                   ))}
                 </Select>

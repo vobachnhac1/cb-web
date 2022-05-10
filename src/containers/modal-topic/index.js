@@ -47,7 +47,7 @@ const ModalTopic = (props) => {
   }
 
   const onCallback = async () => {
-    if (!topicName || topicName.lenght == 0) {
+    if (!topicName || topicName.length == 0) {
       Message.Warning("Thông Báo", "Tên chủ đề không được để trống!");
       return;
     }

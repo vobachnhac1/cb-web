@@ -61,6 +61,15 @@ export const filterWheel = (payload) => async (dispatch, getState, { $http }) =>
   return true
 }
 
+export const sendAppove = (payload) => async (dispatch, getState, { $http }) => {
+  const result = await $http.post(URLSERVER.updateStateWheel, payload);
+  const { success, data } = result;
+  if (!success || !data.success) {
+    return false;
+  }
+  return true
+}
+
 
 // function export ra ngoài
 

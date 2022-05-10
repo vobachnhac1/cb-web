@@ -13,6 +13,7 @@ import { Button, Card, Col, Row, Space, Table, Popconfirm, Input, DatePicker } f
 const { RangePicker } = DatePicker;
 import * as Message from '@/components/message';
 import ModalWheel from '@/containers/modal-wheel'
+import router from 'next/router';
 
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
@@ -193,7 +194,7 @@ export default function Wheel(props) {
     {
       title: 'Action',
       key: 'action',
-      width: 320,
+      width: 450,
       render: (text, record) => (
         <Space size="middle">
           <Button style={{ color: '#7cb305', borderColor: '#7cb305', borderWidth: 0.5 }}>
@@ -202,9 +203,9 @@ export default function Wheel(props) {
             </Link>
           </Button>
           {
-            record.wheel_status === "APR" ?
-              <span style={{ color: 'green', }} >
-                Vòng quay đã duyệt !
+            record.wheel_status === "APR" || record.wheel_status === "SAVE" ?
+              <span style={{ color: record.wheel_status === "APR" ? "green" : "#faad14", }} >
+                {record.wheel_status === "APR" ? "Vòng quay đã duyệt !" : "Vòng quay đang gửi phê duyệt !"}
               </span>
               : <>
                 <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateWheel(record)} >Cập nhật</Button>
@@ -214,6 +215,7 @@ export default function Wheel(props) {
                   </Popconfirm>
                 ) : null
                 }
+                <Button style={{ color: '#faad14', borderColor: '#faad14', borderWidth: 0.5 }} disabled={record.wheel_status === "ADD" ? false : true} onClick={() => sendApprove(record)} >Gửi phê duyệt</Button>
               </>
           }
 
@@ -245,9 +247,35 @@ export default function Wheel(props) {
     });
   }
 
+  const sendApprove = async (record) => {
+    const param = {
+      wheel_id: record.wheel_id,
+      wheel_status: "SAVE"
+    }
+
+    const result = await dispatch(actionWheel.sendAppove(param));
+    if (result) {
+      Message.Success("Thông Báo", "Gửi phê duyệt thành công");
+      onSearch()
+      return;
+    }
+    Message.Error("Thông Báo", "Gửi phê duyệt thất bại");
+
+  }
+
+
   const callbackModal = (params) => {
     setVisible(params.visible);
     onSearch()
+  }
+
+  const onDoubleClick = (record, rowIndex) => {
+    // setVisible(true);
+    // setBodyModel({
+    //   record: record,
+    //   isAdd: false
+    // });
+    router.push(`/admin/wheel-detail/${record.wheel_id}`)
   }
 
   return (
@@ -306,6 +334,17 @@ export default function Wheel(props) {
               size='small'
               loading={loading}
               scroll={{ x: 1300 }}
+              onRow={(record, rowIndex) => {
+                return {
+                  onClick: event => { }, // click row
+                  onDoubleClick: event => {
+                    onDoubleClick(record, rowIndex)
+                  }, // double click row { }
+                  onContextMenu: event => { }, // right button click row
+                  onMouseEnter: event => { }, // mouse enter row
+                  onMouseLeave: event => { }, // mouse leave row
+                };
+              }}
             />
           </Col>
         </Card>

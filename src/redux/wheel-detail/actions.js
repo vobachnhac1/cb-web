@@ -50,9 +50,11 @@ export const SaveOnListWheelDetail = (payload) => async (dispatch, getState, { $
   const result = await $http.post(URLSERVER.updateWheelDetailUpdateList, param);
   const { success, data } = result;
   if (!success || !data.success) {
-    return false;
+    return {
+      'success': false,
+    };
   }
-  const { listData, no } = resultDoneWheelDetail(data.data.list_wheel_dt.map(item => ({ ...item, is_delete: false })));
+  const { listData, no } = resultDoneWheelDetail(data.data.list_wheel_dt.map(item => ({ ...item, is_delete: 0 })));
   const Wheel_detail_total_value = sumTotalValueWheelDetail(listData)
 
   const dataObject = {
@@ -69,6 +71,20 @@ export const SaveOnListWheelDetail = (payload) => async (dispatch, getState, { $
     'num_segment_wheel': data.data.num_segment_wheel,
     'wheel_status': data.data.wheel_status
   }))
+
+  // call api status 
+  const data_api_wheel_status = {
+    wheel_id: payload.wheel_id,
+    wheel_status: "ADD"
+  }
+  const result_status = await $http.post(URLSERVER.updateStateWheel, data_api_wheel_status);
+
+  if (!result_status.success || !result_status.data.success) {
+    return {
+      'success': false,
+    };
+  }
+
   return dataObject
 
 }
@@ -79,6 +95,7 @@ export const insertWheelDetail = (payload) => async (dispatch, getState, { $http
     "wheel_name": payload.wheel_name,
     "wheel_detail_id": payload.wheel_detail_id,
     "segment_id": parseInt(payload.segment_id),
+    "topic_id": parseInt(payload.topic_id),
     "segment_name": payload.segment_name,
     "no": parseInt(payload.no),
     "goal_yn": parseInt(payload.goal_yn),
@@ -86,10 +103,10 @@ export const insertWheelDetail = (payload) => async (dispatch, getState, { $http
     "remain_number": parseInt(payload.remain_number),
     "imgBase64": payload.imgBase64 ? payload.imgBase64 : null,
     "inactived_date": null,
-    "created_date": moment().format('YYYY-MM-DD, hh:mm:ss'),
+    "created_date": payload.created_date,
     "datelastmaint": null,
     "is_approve": true,
-    "is_delete": false
+    "is_delete": 0
   }
 
 
@@ -117,11 +134,13 @@ export const insertWheelDetail = (payload) => async (dispatch, getState, { $http
 }
 
 export const updateWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
+  console.log('updateWheelDetail payload', payload)
   const param = {
     "wheel_detail_id": payload.wheel_detail_id,
     "no": parseInt(payload.no),
     "goal_yn": parseInt(payload.goal_yn),
     "segment_id": parseInt(payload.segment_id),
+    "topic_id": parseInt(payload.topic_id),
     "segment_name": payload.segment_name,
     "remain_value": parseInt(payload.remain_value),
     "remain_number": parseInt(payload.remain_number),
@@ -140,6 +159,7 @@ export const updateWheelDetail = (payload) => async (dispatch, getState, { $http
       listWheelDetail[i].remain_number = param.remain_number
       listWheelDetail[i].remain_value = param.remain_value
       listWheelDetail[i].segment_id = param.segment_id
+      listWheelDetail[i].topic_id = param.topic_id
       listWheelDetail[i].segment_name = param.segment_name
       listWheelDetail[i].imgBase64 = param.imgBase64
     }
@@ -162,7 +182,7 @@ export const updateWheelDetail = (payload) => async (dispatch, getState, { $http
   return listData
 }
 
-// xóa phần tử trong state wheelDetail bằng is_delete = true
+// xóa phần tử trong state wheelDetail bằng is_delete = 1
 export const deleteWheelDetailById = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
     "wheel_detail_id": payload.wheel_detail_id,
@@ -172,7 +192,7 @@ export const deleteWheelDetailById = (payload) => async (dispatch, getState, { $
   let { listWheelDetail, wheelCurtValue, wheelTotalValue } = state.wheeldetail
   for (let i = 0; i < listWheelDetail.length; i++) {
     if (listWheelDetail[i].key === param.key) {
-      listWheelDetail[i].is_delete = true
+      listWheelDetail[i].is_delete = 1
       // listDeleted.push(listWheelDetail[i])
       break
     }
@@ -193,7 +213,7 @@ export const deleteWheelDetailById = (payload) => async (dispatch, getState, { $
   return listData
 }
 
-// phục hồi phần tử trong state wheelDetail bằng is_delete = false
+// phục hồi phần tử trong state wheelDetail bằng is_delete = 0
 export const restoreWheelDetailById = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
     "wheel_detail_id": payload.wheel_detail_id,
@@ -203,7 +223,7 @@ export const restoreWheelDetailById = (payload) => async (dispatch, getState, { 
   let { listWheelDetail, wheelCurtValue, wheelTotalValue } = state.wheeldetail
   for (let i = 0; i < listWheelDetail.length; i++) {
     if (listWheelDetail[i].key === param.key) {
-      listWheelDetail[i].is_delete = false
+      listWheelDetail[i].is_delete = 0
       break
     }
   }
@@ -249,10 +269,10 @@ export const filterWheelDetail = (payload) => async (dispatch, getState, { $http
   }
 
 
-  const { listData, no } = resultDoneWheelDetail(data.data.list_wheel_dt.map(item => ({ ...item, is_delete: false })))
+  const { listData, no } = resultDoneWheelDetail(data.data.list_wheel_dt.map(item => ({ ...item, is_delete: 0 })))
 
 
-  // await listData.map(item => ({ ...item, is_delete: false }));
+  // await listData.map(item => ({ ...item, is_delete: 0 }));
 
   const Wheel_detail_total_value = sumTotalValueWheelDetail(listData)
 
@@ -313,7 +333,7 @@ function resultDoneWheelDetail(data) {
   let dataListDeleted = [];
   let dataListNoDeleted = []
 
-  // cho tất cã data thành không trùng nhau về STT : false. lập ra 2 arr item đã xóa và item chưa xóa
+  // cho tất cã data thành không trùng nhau về STT : 0. lập ra 2 arr item đã xóa và item chưa xóa
   for (let i = 0; i < dataList.length; i++) {
     dataList[i].is_duplicated = false;
     dataList[i].is_lengthExceeded = false;
@@ -353,7 +373,7 @@ function sumTotalValueWheelDetail(data) {
   let dataList = data;
   let total = 0;
   for (let i = 0; i < dataList.length; i++) {
-    if (dataList[i].is_delete === false) {
+    if (dataList[i].is_delete == 0) {
       total += parseInt(dataList[i].remain_value)
       // (parseInt(dataList[i].remain_value) * parseInt(dataList[i].remain_number))
     }
