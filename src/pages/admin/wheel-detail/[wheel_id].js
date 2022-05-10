@@ -377,17 +377,17 @@ export default function WheelDetail({ query }) {
               'justifyContent': 'space-between'
             }}>
               <Col className="gutter-row" style={{ marginBottom: 10, }}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} title="Quay lại" >
-                  <Link href="/admin/wheel">
+                <Link href="/admin/wheel">
+                  <Button type='primary' size='middle' style={{ width: '100%' }} title="Quay lại" >
                     <ArrowLeftOutlined style={{
                       'fontSize': '21px',
                       'marginLeft': '-6px',
                       'width': '15px'
                     }} />
-                  </Link>
-                </Button>
+                  </Button>
+                </Link>
               </Col>
-
+              
               <Col style={{
                 'display': 'flex',
                 'flexWrap': 'nowrap'
