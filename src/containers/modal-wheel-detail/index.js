@@ -354,7 +354,7 @@ const ModalWheelDetail = (props) => {
     <Modal
       width={750}
       maskClosable={false}
-      closable={false}
+      closable={ isViewsWheel ? true : false }
       centered
       visible={visible}
       okText={'Xác nhận'}
@@ -367,7 +367,7 @@ const ModalWheelDetail = (props) => {
         headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
         title={isViewsWheel ? 'Xem vòng quay' : (isAdd ? "Thêm chi tiết vòng quay" : 'Cập nhật chi tiết vòng quay')}
         bordered={true}
-        style={{ backgroundColor: '#FFFFFF' }}>
+        style={{ backgroundColor: '#FFFFFF', marginTop: '20px' }}>
         {/* test wheel */}
         {
           isViewsWheel ? <Row style={{ marginTop: 10 }}>
