@@ -97,6 +97,7 @@ export const insertWheelDetail = (payload) => async (dispatch, getState, { $http
     "segment_id": parseInt(payload.segment_id),
     "topic_id": parseInt(payload.topic_id),
     "segment_name": payload.segment_name,
+    "segment_color": payload.segment_color,
     "no": parseInt(payload.no),
     "goal_yn": parseInt(payload.goal_yn),
     "remain_value": parseInt(payload.remain_value),
@@ -142,6 +143,7 @@ export const updateWheelDetail = (payload) => async (dispatch, getState, { $http
     "segment_id": parseInt(payload.segment_id),
     "topic_id": parseInt(payload.topic_id),
     "segment_name": payload.segment_name,
+    "segment_color": payload.segment_color,
     "remain_value": parseInt(payload.remain_value),
     "remain_number": parseInt(payload.remain_number),
     "imgBase64": payload.imgBase64 ? payload.imgBase64 : null,
@@ -161,6 +163,7 @@ export const updateWheelDetail = (payload) => async (dispatch, getState, { $http
       listWheelDetail[i].segment_id = param.segment_id
       listWheelDetail[i].topic_id = param.topic_id
       listWheelDetail[i].segment_name = param.segment_name
+      listWheelDetail[i].segment_color = param.segment_name
       listWheelDetail[i].imgBase64 = param.imgBase64
     }
   }
