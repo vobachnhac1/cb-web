@@ -280,7 +280,7 @@ export default function Segment(props) {
               dataSource={listSegment}
               size='small'
               loading={loading}
-              scroll={{ x: 1300 }}
+              scroll={{ x: 1300, y: '45vh' }}
             />
           </Col>
         </Card>

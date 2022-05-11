@@ -78,9 +78,9 @@ export default function Rules(props) {
               className="table_layout"
               columns={columns}
               dataSource={listRules}
-              size='large'
+              size='smalls'
               loading={loading}
-              scroll={{ x: 1300 }}
+              scroll={{ x: 1300, y: '48vh' }}
               onRow={(record, rowIndex) => {
                 return {
                   onClick: event => { }, // click row

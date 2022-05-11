@@ -333,7 +333,7 @@ export default function Wheel(props) {
               dataSource={listWheel}
               size='small'
               loading={loading}
-              scroll={{ x: 1300 }}
+              scroll={{ x: 1300, y: '45vh' }}
               onRow={(record, rowIndex) => {
                 return {
                   onClick: event => { }, // click row

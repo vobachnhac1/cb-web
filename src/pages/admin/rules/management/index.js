@@ -134,6 +134,14 @@ export default function RulesManagement(props) {
         const isShow = record.status_rules == 'N' ? true : false;
         const color = record.status_rules == 'N' ? 'green' : 'red';
         const tagName = record.status_rules == 'N' ? 'Phê duyệt' : 'Từ chối';
+        const no_remove = record.no_remove == 1 ? true : false;
+        if (no_remove) {
+          return (
+            <Text style={{ color: "red", fontWeight: "bold" }}>
+              {'Quy tắc được sử dụng cho vòng quay đã phê duyệt'}
+            </Text>
+          )
+        }
         return (
           <Space size="middle">
             <Popconfirm title="Bạn có muốn?" onConfirm={() => {
@@ -265,12 +273,12 @@ export default function RulesManagement(props) {
               dataSource={listRules}
               size='small'
               loading={loading}
-              scroll={{ x: 1300 }}
+              scroll={{ x: 1300, y: '48vh' }}
               onRow={(record, rowIndex) => {
                 return {
                   onClick: event => { }, // click row
                   onDoubleClick: event => {
-                    onDoubleClick(record, rowIndex)
+                    // onDoubleClick(record, rowIndex)
                   }, // double click row { }
                   onContextMenu: event => { }, // right button click row
                   onMouseEnter: event => { }, // mouse enter row

@@ -183,7 +183,7 @@ export default function RewardHistory(props) {
             dataSource={listRewardHis}
             size='small'
             loading={loading}
-            scroll={{ x: 1500 }}
+            scroll={{ x: 1300, y: '48vh' }}
             onRow={(record, rowIndex) => {
               return {
                 onClick: event => { }, // click row

@@ -561,25 +561,28 @@ export default function GenerateReward(props) {
         <div style={{ marginTop: 20 }} />
         <Card>
           <Col span={48} >
-            <Row gutter={[12]} style={{ justifyContent: "space-between" }}>
-              <Col className="gutter-row" span={4} style={{ margin: 10, height: 40 }}>
-                {isEditData && <Tag style={{ fontSize: 12, padding: 5, height: 30 }} color={'error'}>{isEditData ? "Dữ liệu có thay đổi" : ""} </Tag>}
+            <Row style={{ justifyContent: "space-between" }}>
+              <Col span={4}>
+                <Col className="gutter-row" span={4} style={{ margin: 10, height: 40 }}>
+                  {isEditData && <Tag style={{ fontSize: 12, padding: 5, height: 30 }} color={'error'}>{isEditData ? "Dữ liệu có thay đổi" : ""} </Tag>}
+                </Col>
               </Col>
-              <Row gutter={[10]} >
-                <Col className="gutter-row" span={6} style={{ margin: 10, height: 40 }}>
-                  {isEditData && <Button type='primary' size='middle' style={{ width: '100%', height: 30 }} onClick={onSave}>Lưu Lại</Button>}
-                </Col>
-                <Col className="gutter-row" span={6} style={{ margin: 10, height: 40 }}>
-                  <Button disabled={filter.wheel_id == null || listWheelDt.length == 0} type='primary' size='middle' style={{ width: '100%', height: 30 }} onClick={onGenerated}>Tạo giải ngẫu nhiên</Button>
-                </Col>
-                <Col className="gutter-row" span={6} style={{ margin: 10, height: 40 }}>
-                  <Button type='primary' size='middle' style={{ width: '100%', height: 30 }} onClick={onApproved}>Phê duyệt Vòng quay</Button>
-                </Col>
-
-                <Col className="gutter-row" span={6} style={{ margin: 10, height: 40 }}>
-                  <Button type='primary' size='middle' style={{ width: '100%', height: 30 }} onClick={onReject}>Từ Chối</Button>
-                </Col>
-              </Row>
+              <Col span={20}>
+                <Row style={{ justifyContent: "space-between" }}>
+                  <Col className="gutter-row" span={4} style={{ margin: 10, height: 40 }}>
+                    {isEditData && <Button type='primary' size='middle' style={{ width: '100%', height: 30 }} onClick={onSave}>Lưu Lại</Button>}
+                  </Col>
+                  <Col className="gutter-row" span={6} style={{ margin: 10, height: 40 }}>
+                    <Button disabled={filter.wheel_id == null || listWheelDt.length == 0} type='primary' size='middle' style={{ width: '100%', height: 30 }} onClick={onGenerated}>Tạo giải ngẫu nhiên</Button>
+                  </Col>
+                  <Col className="gutter-row" span={6} style={{ margin: 10, height: 40 }}>
+                    <Button type='primary' size='middle' style={{ width: '100%', height: 30 }} onClick={onApproved}>Phê duyệt Vòng quay</Button>
+                  </Col>
+                  <Col className="gutter-row" span={4} style={{ margin: 10, height: 40 }}>
+                    <Button type='primary' size='middle' style={{ width: '100%', height: 30 }} onClick={onReject}>Từ Chối</Button>
+                  </Col>
+                </Row>
+              </Col>
             </Row>
             <Form form={form} component={false}>
               <Table
@@ -591,9 +594,9 @@ export default function GenerateReward(props) {
                 }}
                 columns={mergedColumns}
                 dataSource={listWheelDt}
-                size='large'
+                size='small'
                 loading={loading}
-                scroll={{ x: 1300 }}
+                scroll={{ x: 1300, y: '45vh' }}
                 onRow={(record, rowIndex) => {
                   return {
                     onClick: event => { }, // click row

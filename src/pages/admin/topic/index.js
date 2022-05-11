@@ -228,6 +228,8 @@ export default function Topic(props) {
               columns={columns}
               dataSource={listTopic}
               size='small'
+              scroll={{ x: 1300, y: '45vh' }}
+
               // pagination={pagination}
               loading={false}
             />
