@@ -92,14 +92,14 @@ export default function Segment(props) {
       dataIndex: 'segment_name',
       key: 'segment_name',
       fixed: 'left',
-      width: 300
+      width: 200
 
     },
     {
       title: 'Chủ đề',
       dataIndex: 'topic_name',
       key: 'topic_name',
-      width: 300
+      width: 200
 
     },
     {
@@ -172,7 +172,7 @@ export default function Segment(props) {
       render: (text, record) => (
         record.number_segment_used === 1 ?
           <span style={{ color: 'green', }} >
-            Có vòng quay đã duyệt và đang sử dụng giải thưởng này !
+            Có vòng quay đang sử dụng giải thưởng này !
           </span>
           :
           <Space size="middle">
