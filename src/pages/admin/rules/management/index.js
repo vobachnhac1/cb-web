@@ -127,7 +127,7 @@ export default function RulesManagement(props) {
     },
     {
       align: 'center',
-      title: 'Action',
+      title: 'Actions',
       key: 'action',
       width: 200,
       render: (text, record) => {
@@ -139,7 +139,7 @@ export default function RulesManagement(props) {
             <Popconfirm title="Bạn có muốn?" onConfirm={() => {
               setTimeout(() => {
                 approveRules(record)
-              }, 50)
+              }, 25)
             }} okText="Xác nhận" cancelText="Thoát" placement="leftBottom" >
               <Button style={{ color: color, borderColor: color, borderWidth: 0.5 }} >{tagName}</Button>
             </Popconfirm>
