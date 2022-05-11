@@ -187,29 +187,6 @@ export default function WheelDetail({ query }) {
       width: 200
     },
     {
-      title: 'Số thứ tự',
-      dataIndex: 'no',
-      key: 'no',
-      fixed: 'center',
-      width: 180,
-      render: (text, record) => (
-        <p style={{
-          'width': '100%',
-          'display': 'flex',
-        }} >
-          <span> {record.no}</span>
-          {record.is_duplicated ? <span style={{
-            'marginLeft': '20px',
-            'color': 'red'
-          }}>*Stt đang bị trùng </span> : ''}
-          {record.no > WheelNumbersegment ? <span style={{
-            'marginLeft': '20px',
-            'color': 'red'
-          }}>*Stt nên nhỏ hơn sống tổng vòng quay đang có ({WheelNumbersegment}) </span> : ''}
-        </p >
-      ),
-    },
-    {
       title: 'Trúng thưởng',
       dataIndex: 'goal_yn',
       key: 'goal_yn',
@@ -274,6 +251,28 @@ export default function WheelDetail({ query }) {
           {moment(text).format('YYYY-MM-DD, hh:mm:ss')}
         </span>
       }
+    },
+    {
+      title: 'Số thứ tự',
+      dataIndex: 'no',
+      key: 'no',
+      width: 180,
+      render: (text, record) => (
+        <p style={{
+          'width': '100%',
+          'display': 'flex',
+        }} >
+          <span> {record.no}</span>
+          {record.is_duplicated ? <span style={{
+            'marginLeft': '20px',
+            'color': 'red'
+          }}>*Stt đang bị trùng </span> : ''}
+          {record.no > WheelNumbersegment ? <span style={{
+            'marginLeft': '20px',
+            'color': 'red'
+          }}>*Stt nên nhỏ hơn sống tổng vòng quay đang có ({WheelNumbersegment}) </span> : ''}
+        </p >
+      ),
     },
     {
       title: 'Action',
@@ -387,7 +386,7 @@ export default function WheelDetail({ query }) {
                   </Button>
                 </Link>
               </Col>
-              
+
               <Col style={{
                 'display': 'flex',
                 'flexWrap': 'nowrap'
