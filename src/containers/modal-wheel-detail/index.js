@@ -50,6 +50,7 @@ const ModalWheelDetail = (props) => {
   const [wheelId, setWheelId] = useState(record ? record.wheel_id : "")
   const [segmentId, setSegmentId] = useState(record ? record.segment_id : "");
   const [segmentValue, setSegmentValue] = useState(1);
+  // const [segmentColor, setSegmentColor] = useState(record ? record.segment_color : "#659bc9");
   const [no, setNo] = useState(record ? record.no : "")
   const [remainValue, setRemainValue] = useState(record ? record.remain_value : "")
   const [remainNumber, setRemainNumber] = useState(record ? record.remain_number : "")
@@ -166,6 +167,7 @@ const ModalWheelDetail = (props) => {
       if (segmentId == listSegment[i].segment_id) {
         // Thêm segment_name vào param
         param.segment_name = listSegment[i].segment_name;
+        param.segment_color = listSegment[i].segment_color;
         if (!listSegment[i].remain_value) {
           // Thêm  tổng giá trị chi tiết vòng quay vào param (remain_number * segment_value) vào param
           param.remain_value = (listSegment[i].segment_value * param.remain_number);
@@ -354,7 +356,7 @@ const ModalWheelDetail = (props) => {
     <Modal
       width={750}
       maskClosable={false}
-      closable={ isViewsWheel ? true : false }
+      closable={isViewsWheel ? true : false}
       centered
       visible={visible}
       okText={'Xác nhận'}
