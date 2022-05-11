@@ -118,9 +118,9 @@ const ModalRules = (props) => {
     if (!from_date) {
       msg_error.push("- Vui lòng nhập thời gian hiệu lực \n");
     }
-    if (!chooseWheel) {
-      msg_error.push("- Vui lòng chọn vòng quay \n");
-    }
+    // if (!chooseWheel) {
+    //   msg_error.push("- Vui lòng chọn vòng quay \n");
+    // }
     if (msg_error && msg_error.length > 0) {
       Message.WarningArr("Thông Báo", msg_error);
       return
