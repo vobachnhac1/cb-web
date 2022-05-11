@@ -417,8 +417,11 @@ export default function GenerateReward(props) {
       return;
     }
     const rules = listRules.find(item => item.rules_id == rules_id);
-    const total_reward_list = listWheelDt.map(item => item.total_reward).reduce((a, b) => a + b);
-    if (total_reward_list != rules.total_reward) {
+    let total_reward_list = null;
+    if (listWheelDt && listWheelDt.length > 0) {
+      total_reward_list = listWheelDt.map(item => item.total_reward).reduce((a, b) => a + b);
+    }
+    if (!total_reward_list || total_reward_list != rules.total_reward) {
       Message.Warning("Thông Báo", "Vui lòng thực hiện tạo ngẫu nhiên trước");
       return;
     }
@@ -439,6 +442,44 @@ export default function GenerateReward(props) {
     setLoading(false);
   }
 
+  const onReject = async () => {
+    const { wheel_id } = filter;
+    // change status = "ADD"
+    // set state filter null là dc
+    try {// call API change status 'SAVE' => 'APR'
+      setLoading(true);
+      const param = {
+        wheel_id: wheel_id,
+        wheel_status: 'ADD',
+
+      }
+      const result = await dispatch(actionsRules.updateStateWheel(param))
+      if (!result) {
+        Message.Error("THÔNG BÁO", `MÃ VÒNG QUAY ${wheel_id} Từ chối thất bại`);
+        setLoading(false);
+        return;
+      }
+      Message.Success("THÔNG BÁO", `MÃ VÒNG QUAY ${wheel_id} Từ chối thành công`);
+      setFilter({
+        wheel_id: null,
+        wheel_name: null,
+        from_date: null,
+        to_date: null,
+        rules_id: null
+      });
+      setListWheelDt([]);
+      setListWheelDtTemp([]);
+      setLoading(false);
+
+      // từ chối có nghĩa chrnh lại wheel detail
+
+
+    } catch (error) {
+      Message.Error("THÔNG BÁO", `MÃ VÒNG QUAY ${wheel_id} Từ chối thất bại`);
+      setLoading(false);
+    }
+  }
+
   return (
     <LayoutHome>
       <Col style={{ marginBottom: 30 }}>
@@ -457,14 +498,24 @@ export default function GenerateReward(props) {
                   style={{ width: '100%' }}
                   defaultValue={null}
                   value={filter.wheel_id}
-                  onChange={(value) => {
+                  onChange={async (value) => {
                     if (value) {
-                      const rules_id = listWheelApproved.find(ele => ele.wheel_id == value).rules_id;
+                      const { rules_id, wheel_id } = listWheelApproved.find(ele => ele.wheel_id == value);
+                      setLoading(true);
+                      const result = await dispatch(actionsRules.getWheelDtStateApprove(wheel_id));
+                      if (result.length > 0) {
+                        setListWheelDt(result.map((item, index) => ({ ...item, key: index })))
+                        setListWheelDtTemp(result.map((item, index) => ({ ...item, key: index })))
+                      } else {
+                        setListWheelDt([]);
+                        setListWheelDtTemp([]);
+                      }
                       setFilter({
                         ...filter,
                         wheel_id: value,
                         rules_id: rules_id ? rules_id : null
                       })
+                      setLoading(false);
                       return;
                     }
                     setFilter({
@@ -497,12 +548,12 @@ export default function GenerateReward(props) {
               </Col>
             </Row>
             <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
-              <Col className="gutter-row" span={3}>
+              {/* <Col className="gutter-row" span={3}>
                 <Button disabled={filter.wheel_id == null} type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>
-              </Col>
-              <Col className="gutter-row" span={4}>
+              </Col> */}
+              {/* <Col className="gutter-row" span={4}>
                 <Button disabled={filter.wheel_id == null || listWheelDt.length == 0} type='primary' size='middle' style={{ width: '100%' }} onClick={onGenerated}>Tạo giải ngẫu nhiên</Button>
-              </Col>
+              </Col> */}
 
             </Row>
           </Col>
@@ -510,18 +561,25 @@ export default function GenerateReward(props) {
         <div style={{ marginTop: 20 }} />
         <Card>
           <Col span={48} >
-            <Row gutter={[16, 24]} style={{ justifyContent: "space-between" }}>
-              <Row gutter={[16, 24]}>
-                <Col className="gutter-row" span={4} style={{ margin: 10, height: 50 }}>
-                  {isEditData && <Tag style={{ fontSize: 18, padding: 10 }} color={'error'}>{isEditData ? "Dữ liệu có thay đổi" : ""} </Tag>}
+            <Row gutter={[12]} style={{ justifyContent: "space-between" }}>
+              <Col className="gutter-row" span={4} style={{ margin: 10, height: 40 }}>
+                {isEditData && <Tag style={{ fontSize: 12, padding: 5, height: 30 }} color={'error'}>{isEditData ? "Dữ liệu có thay đổi" : ""} </Tag>}
+              </Col>
+              <Row gutter={[10]} >
+                <Col className="gutter-row" span={6} style={{ margin: 10, height: 40 }}>
+                  {isEditData && <Button type='primary' size='middle' style={{ width: '100%', height: 30 }} onClick={onSave}>Lưu Lại</Button>}
                 </Col>
-                <Col className="gutter-row" span={4} style={{ margin: 10, height: 50 }}>
-                  {isEditData && <Button type='primary' size='middle' style={{ width: '100%', height: 40 }} onClick={onSave}>Lưu Lại</Button>}
+                <Col className="gutter-row" span={6} style={{ margin: 10, height: 40 }}>
+                  <Button disabled={filter.wheel_id == null || listWheelDt.length == 0} type='primary' size='middle' style={{ width: '100%', height: 30 }} onClick={onGenerated}>Tạo giải ngẫu nhiên</Button>
+                </Col>
+                <Col className="gutter-row" span={6} style={{ margin: 10, height: 40 }}>
+                  <Button type='primary' size='middle' style={{ width: '100%', height: 30 }} onClick={onApproved}>Phê duyệt Vòng quay</Button>
+                </Col>
+
+                <Col className="gutter-row" span={6} style={{ margin: 10, height: 40 }}>
+                  <Button type='primary' size='middle' style={{ width: '100%', height: 30 }} onClick={onReject}>Từ Chối</Button>
                 </Col>
               </Row>
-              <Col className="gutter-row" span={6}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onApproved}>Phê duyệt Vòng quay</Button>
-              </Col>
             </Row>
             <Form form={form} component={false}>
               <Table
