@@ -472,11 +472,11 @@ export default function GenerateReward(props) {
       setLoading(false);
 
       // từ chối có nghĩa chrnh lại wheel detail
-
-
+      initPage();
     } catch (error) {
       Message.Error("THÔNG BÁO", `MÃ VÒNG QUAY ${wheel_id} Từ chối thất bại`);
       setLoading(false);
+      initPage();
     }
   }
 
