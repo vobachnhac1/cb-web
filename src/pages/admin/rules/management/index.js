@@ -137,7 +137,7 @@ export default function RulesManagement(props) {
         const no_remove = record.no_remove == 1 ? true : false;
         if (no_remove) {
           return (
-            <Text style={{ color: "red", fontWeight: "bold" }}>
+            <Text style={{ color: "green", fontWeight: "bold" }}>
               {'Quy tắc được sử dụng cho vòng quay đã phê duyệt'}
             </Text>
           )
