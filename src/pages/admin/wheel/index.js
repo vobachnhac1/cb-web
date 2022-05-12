@@ -282,7 +282,6 @@ export default function Wheel(props) {
     <LayoutHome>
       <Col style={{ marginBottom: 30 }}>
         <ModalWheel visible={visible} bodyModel={bodyModel} callback={callbackModal} />
-
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
           title="Vòng Quay"

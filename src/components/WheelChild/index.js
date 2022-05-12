@@ -61,6 +61,8 @@ const WheelChild = (props) => {
           } else {
             setup();
           }
+        } else {
+          setup();
         }
       }
     } else {
@@ -75,7 +77,11 @@ const WheelChild = (props) => {
 
     setTimeout(async () => {
       if (!roles) {
-        Message.Info("Thông Báo", `Bạn nhận được kết quả: ${rsReward.segment_name} `);
+        if (rsReward) {
+          Message.Info("Thông Báo", `Bạn nhận được kết quả: ${rsReward.segment_name} `);
+        } else {
+          Message.Info("Thông Báo", `Chúc bạn may mắn lần sau!`);
+        }
         await dispatch(actionsEventWheel.setProcessing(false));
         return
       }

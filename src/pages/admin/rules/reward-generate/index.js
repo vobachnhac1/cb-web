@@ -72,64 +72,8 @@ export default function GenerateReward(props) {
     setLoading(false);
   };
 
-  const onSave = async () => {
-    setLoading(true);
-    if (listWheelDt.length > 0) {
-      const dataFormat = listWheelDt.map(item => ({
-        "wheel_id": item.wheel_id,
-        "wheel_detail_id": item.wheel_detail_id,
-        "total_reward": item.total_reward,
-      }));
-      const params = {
-        list_length: dataFormat.length,
-        wheel_id: __.head(dataFormat).wheel_id,
-        list_wheel_detail: dataFormat
-      }
-      const result = await dispatch(actionsRules.updateWheelDetailWithRules(params));
-      if (result) {
-        Message.Success("THÔNG BÁO", "CẬP NHẬT THÀNH CÔNG");
-        setIsEditData(false);
-        setListWheelDtTemp(listWheelDt);
-      } else {
-        Message.Error("THÔNG BÁO", "CẬP NHẬT THẤT BẠI");
-      }
-    }
-    setLoading(false);
-  };
 
-  const onGenerated = async () => {
-    setLoading(true);
-    const { wheel_id, rules_id } = filter;
-    if (!wheel_id || wheel_id < 0) {
-      Message.Warning("THÔNG BÁO", "Vui lòng chọn vòng quay và nhấn nút 'Search'");
-      setLoading(false);
-      return;
-    }
-    if (!rules_id || rules_id <= 0) {
-      Message.Warning("THÔNG BÁO", "Vui lòng chọn quy tắc áp dụng");
-      setLoading(false);
-      return;
-    }
-    if (!listWheelDt || listWheelDt && listWheelDt.length == 0) {
-      Message.Warning("THÔNG BÁO", "Không có dữ liệu, vui lòng chọn vòng quay và nhấn nút 'Search'");
-      setLoading(false);
-      return;
-    }
-    const recoreWheel = listWheelApproved.find(item => item.wheel_id == filter.wheel_id)
 
-    const result = await dispatch(actionsRules.generateRewardOfRules({
-      wheel_id: recoreWheel.wheel_id,
-      rules_id: filter.rules_id > 0 ? filter.rules_id : recoreWheel.rules_id,
-    }));
-    if (!result) {
-      Message.Warning("THÔNG BÁO", "Vui lòng chọn thử lại")
-      setLoading(false);
-      return;
-    }
-    Message.Success("THÔNG BÁO", "Đã Tạo thành công");
-    onSearch();
-    setLoading(false);
-  }
 
   const columns = [
     {
@@ -405,7 +349,67 @@ export default function GenerateReward(props) {
     };
   });
 
-  // add function phê duyệt 
+  // add function phê duyệt
+  const onSave = async () => {
+    setLoading(true);
+    if (listWheelDt.length > 0) {
+      const dataFormat = listWheelDt.map(item => ({
+        "wheel_id": item.wheel_id,
+        "wheel_detail_id": item.wheel_detail_id,
+        "total_reward": item.total_reward,
+      }));
+      const params = {
+        list_length: dataFormat.length,
+        wheel_id: __.head(dataFormat).wheel_id,
+        list_wheel_detail: dataFormat
+      }
+      const result = await dispatch(actionsRules.updateWheelDetailWithRules(params));
+      if (result) {
+        Message.Success("THÔNG BÁO", "CẬP NHẬT THÀNH CÔNG");
+        setIsEditData(false);
+        setListWheelDtTemp(listWheelDt);
+      } else {
+        Message.Error("THÔNG BÁO", "CẬP NHẬT THẤT BẠI");
+      }
+    }
+    setLoading(false);
+  };
+
+  const onGenerated = async () => {
+    setLoading(true);
+    const { wheel_id, rules_id } = filter;
+    if (!wheel_id || wheel_id < 0) {
+      Message.Warning("THÔNG BÁO", "Vui lòng chọn vòng quay và nhấn nút 'Search'");
+      setLoading(false);
+      return;
+    }
+    if (!rules_id || rules_id <= 0) {
+      Message.Warning("THÔNG BÁO", "Vui lòng chọn quy tắc áp dụng");
+      setLoading(false);
+      return;
+    }
+    if (!listWheelDt || listWheelDt && listWheelDt.length == 0) {
+      Message.Warning("THÔNG BÁO", "Không có dữ liệu, vui lòng chọn vòng quay và nhấn nút 'Search'");
+      setLoading(false);
+      return;
+    }
+    const recoreWheel = listWheelApproved.find(item => item.wheel_id == filter.wheel_id)
+
+    const result = await dispatch(actionsRules.generateRewardOfRules({
+      wheel_id: recoreWheel.wheel_id,
+      rules_id: filter.rules_id > 0 ? filter.rules_id : recoreWheel.rules_id,
+    }));
+    if (!result) {
+      Message.Warning("THÔNG BÁO", "Vui lòng chọn thử lại")
+      setLoading(false);
+      return;
+    }
+    Message.Success("THÔNG BÁO", "Đã Tạo thành công");
+    initPage();
+    onSearch();
+    setLoading(false);
+  }
+
   const onApproved = async () => {
     // phải có wheel_id, rules_id, listApporve có data
     // lấy tổng giải so với tổng giải của rules
@@ -436,10 +440,12 @@ export default function GenerateReward(props) {
     if (!result) {
       Message.Error("THÔNG BÁO", `MÃ VÒNG QUAY ${wheel_id} PHÊ DUYỆT THẤT BẠI`);
       setLoading(false);
+      initPage();
       return;
     }
     Message.Success("THÔNG BÁO", `MÃ VÒNG QUAY ${wheel_id} PHÊ DUYỆT THÀNH CÔNG`);
     setLoading(false);
+    initPage();
   }
 
   const onReject = async () => {
@@ -457,6 +463,7 @@ export default function GenerateReward(props) {
       if (!result) {
         Message.Error("THÔNG BÁO", `MÃ VÒNG QUAY ${wheel_id} Từ chối thất bại`);
         setLoading(false);
+        initPage();
         return;
       }
       Message.Success("THÔNG BÁO", `MÃ VÒNG QUAY ${wheel_id} Từ chối thành công`);
@@ -469,14 +476,12 @@ export default function GenerateReward(props) {
       });
       setListWheelDt([]);
       setListWheelDtTemp([]);
-      setLoading(false);
-
-      // từ chối có nghĩa chrnh lại wheel detail
       initPage();
+      setLoading(false);
+      // từ chối có nghĩa chrnh lại wheel detail
     } catch (error) {
       Message.Error("THÔNG BÁO", `MÃ VÒNG QUAY ${wheel_id} Từ chối thất bại`);
       setLoading(false);
-      initPage();
     }
   }
 

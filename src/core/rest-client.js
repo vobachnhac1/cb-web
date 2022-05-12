@@ -20,7 +20,7 @@ export class RestClientCreator {
       baseURL: URLSERVER.server//'http://localhost:22222' // 'https://weathermanagementdev.azurewebsites.net'
     });
     this.axiosInstance.defaults.headers.common[CONST.REQ_HEADER_CONTENT_TYPE] = CONST.REQ_CONTENT_TYPE.JSON;
-    this.axiosInstance.defaults.timeout = 20000;
+    this.axiosInstance.defaults.timeout = 60000;
   }
 
   setAccessToken = (token) => {
