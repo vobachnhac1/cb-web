@@ -72,9 +72,6 @@ export default function GenerateReward(props) {
     setLoading(false);
   };
 
-
-
-
   const columns = [
     {
       title: 'Key',
@@ -485,6 +482,75 @@ export default function GenerateReward(props) {
     }
   }
 
+  const onChangeSelectRules = (value) => {
+    if (!value) {
+      setFilter({ ...filter, rules_id: value });
+      return;
+    }
+    const rule = listRules.find(item => item.rules_id == value);
+    const wheel = listWheelApproved.find(item => item.wheel_id == filter.wheel_id);
+    let num_date_wheel = 0;
+    if (!wheel) {
+      Message.Warning("Thông báo", "Vui lòng chọn Vòng Quay");
+      return;
+    } else {
+      const a = moment(wheel.inactived_date);
+      const current_time = moment();
+      num_date_wheel = a.diff(current_time, 'days')
+    }
+    const rule_to_date = moment(rule.to_date);
+    const current_time_rule = moment();
+    const num_date_rule = rule_to_date.diff(current_time_rule, 'days');
+    if (num_date_wheel < 0) {
+      Message.Warning("Thông báo", "Vòng quay hết hiệu lực");
+      return;
+    }
+    if (num_date_rule < 0) {
+      Message.Warning("Thông báo", "Quy tắc hết hiệu lực");
+      return;
+    }
+
+    if (num_date_rule > num_date_wheel) {
+      // console.log("Thời hạn quy tắc không phù hợp vòng quay hiện tại");
+      Message.Warning("Thông báo", "Thời hạn quy tắc không phù hợp vòng quay hiện tại");
+      return;
+    }
+    if (num_date_rule <= num_date_wheel) {
+      console.log("Phù hợp");
+    }
+    setFilter({ ...filter, rules_id: value })
+  }
+
+  const onChangeSelectWheel = async (value) => {
+    if (value) {
+      setLoading(true);
+      const { rules_id, wheel_id } = listWheelApproved.find(ele => ele.wheel_id == value);
+      const result = await dispatch(actionsRules.getWheelDtStateApprove(wheel_id));
+      console.log('rules_id: ', rules_id, listRules);
+      if (result.length > 0) {
+        setListWheelDt(result.map((item, index) => ({ ...item, key: index })))
+        setListWheelDtTemp(result.map((item, index) => ({ ...item, key: index })))
+      } else {
+        setListWheelDt([]);
+        setListWheelDtTemp([]);
+      }
+      setFilter({
+        ...filter,
+        wheel_id: value,
+        rules_id: rules_id ? rules_id : null
+      })
+      setLoading(false);
+      return;
+    }
+    setFilter({
+      ...filter,
+      wheel_id: value,
+      rules_id: null
+    })
+    setListWheelDt([]);
+    setListWheelDtTemp([]);
+  }
+
   return (
     <LayoutHome>
       <Col style={{ marginBottom: 30 }}>
@@ -503,34 +569,7 @@ export default function GenerateReward(props) {
                   style={{ width: '100%' }}
                   defaultValue={null}
                   value={filter.wheel_id}
-                  onChange={async (value) => {
-                    if (value) {
-                      const { rules_id, wheel_id } = listWheelApproved.find(ele => ele.wheel_id == value);
-                      setLoading(true);
-                      const result = await dispatch(actionsRules.getWheelDtStateApprove(wheel_id));
-                      if (result.length > 0) {
-                        setListWheelDt(result.map((item, index) => ({ ...item, key: index })))
-                        setListWheelDtTemp(result.map((item, index) => ({ ...item, key: index })))
-                      } else {
-                        setListWheelDt([]);
-                        setListWheelDtTemp([]);
-                      }
-                      setFilter({
-                        ...filter,
-                        wheel_id: value,
-                        rules_id: rules_id ? rules_id : null
-                      })
-                      setLoading(false);
-                      return;
-                    }
-                    setFilter({
-                      ...filter,
-                      wheel_id: value,
-                      rules_id: null
-                    })
-                    setListWheelDt([]);
-                    setListWheelDtTemp([]);
-                  }}
+                  onChange={onChangeSelectWheel}
                 >
                   {listWheelApproved.map((item, key) => (
                     <Select.Option value={item.wheel_id} key={key}> {item.wheel_name}</Select.Option>
@@ -544,7 +583,7 @@ export default function GenerateReward(props) {
                   style={{ width: '100%' }}
                   defaultValue={null}
                   value={filter.rules_id}
-                  onChange={(value) => setFilter({ ...filter, rules_id: value })}
+                  onChange={onChangeSelectRules}
                 >
                   {listRules.map((item, key) => (
                     <Select.Option value={item.rules_id} key={key}> {item.rules_name}</Select.Option>
