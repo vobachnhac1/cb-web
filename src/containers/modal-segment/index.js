@@ -36,7 +36,7 @@ const ModalSegment = (props) => {
   const [segmentId, setSegmentId] = useState(record ? record.segment_id : "");
   const [topicId, setTopicId] = useState(record ? record.topic_id : "");
   const [segmentName, setSegmentName] = useState(record ? record.segment_name : "");
-  const [segmentColor, setSegmentColor] = useState(record ? record.segment_color : "#659bc9");
+  // const [segmentColor, setSegmentColor] = useState(record ? record.segment_color : "#659bc9");
   const [segmentValue, setSegmentValue] = useState(record ? record.segment_value : "");
   const [inactived_date, setInactived_date] = useState(record ? record.inactived_date : "");
 
@@ -51,7 +51,7 @@ const ModalSegment = (props) => {
     setSegmentId(record ? record.segment_id : "")
     setTopicId(record ? record.topic_id : "")
     setSegmentName(record ? record.segment_name : "")
-    setSegmentColor(record ? record.segment_color : "#659bc9")
+    // setSegmentColor(record ? record.segment_color : "#659bc9")
     setSegmentValue(record ? record.segment_value : "")
     setInactived_date(record ? record.inactived_date : "")
   }
@@ -72,9 +72,9 @@ const ModalSegment = (props) => {
       msg_error.push("- Tên kết quả trúng thưởng chưa có nội dung");
     }
 
-    if (!segmentColor || segmentColor.length == 0) {
-      msg_error.push("- Màu sắc hiển thị chưa chọn");
-    }
+    // if (!segmentColor || segmentColor.length == 0) {
+    //   msg_error.push("- Màu sắc hiển thị chưa chọn");
+    // }
 
     if (msg_error && msg_error.length > 0) {
       Message.WarningArr("Thông Báo", msg_error);
@@ -85,7 +85,7 @@ const ModalSegment = (props) => {
       segment_id: segmentId,
       topic_id: topicId,
       segment_name: segmentName,
-      segment_color: segmentColor,
+      // segment_color: segmentColor,
       segment_value: segmentValue,
       inactived_date: inactived_date,
       is_approve: true,
@@ -206,14 +206,14 @@ const ModalSegment = (props) => {
               />
             </Col>
           </Row>
-          <Row style={{ marginTop: 10 }}>
+          {/* <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
               <Text className={classNames({ [styles['text-font']]: true })}>{'Màu sắc hiển thị '}</Text>
             </Col>
             <Col  {...layoutContent}>
               <Input type="color" style={{ width: '50%' }} value={segmentColor} onChange={(text) => setSegmentColor(text.target.value)} />
             </Col>
-          </Row>
+          </Row> */}
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
               <Text className={classNames({ [styles['text-font']]: true })}>{'Ngày hết hiệu lực '}</Text>

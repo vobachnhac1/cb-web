@@ -253,6 +253,25 @@ export default function WheelDetail({ query }) {
       }
     },
     {
+      title: 'Màu sắc',
+      dataIndex: 'wheel_color',
+      key: 'wheel_color',
+      width: 80,
+      align: 'center',
+      render: (text, record) => {
+        return <Space size="large">
+          <p style={
+            {
+              background: text,
+              width: '30px',
+              height: '30px'
+            }}>
+
+          </p>
+        </Space>
+      }
+    },
+    {
       title: 'Số thứ tự',
       dataIndex: 'no',
       key: 'no',

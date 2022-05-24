@@ -50,7 +50,7 @@ const ModalWheelDetail = (props) => {
   const [wheelId, setWheelId] = useState(record ? record.wheel_id : "")
   const [segmentId, setSegmentId] = useState(record ? record.segment_id : "");
   const [segmentValue, setSegmentValue] = useState(1);
-  // const [segmentColor, setSegmentColor] = useState(record ? record.segment_color : "#659bc9");
+  const [wheelColor, setWheelColor] = useState(record ? record.wheel_color : "#659bc9");
   const [no, setNo] = useState(record ? record.no : "")
   const [remainValue, setRemainValue] = useState(record ? record.remain_value : "")
   const [remainNumber, setRemainNumber] = useState(record ? record.remain_number : "")
@@ -95,6 +95,7 @@ const ModalWheelDetail = (props) => {
     setNo(record ? record.no : noWheelDetail_length + 1)
     setRemainNumber(record ? record.remain_number : "")
     setRemainValue(record ? record.remain_value : 0)
+    setWheelColor(record ? record.wheel_color : "#659bc9")
     setGoalYn(record ? record.goal_yn : -1)
     setImgBase64(record ? record.imgBase64 : '')
     setUrl(record ? record.url : '')
@@ -137,6 +138,9 @@ const ModalWheelDetail = (props) => {
     if (goalYn === -1) {
       msg_error.push('-Trúng thưởng chưa được chọn')
     }
+    if (!wheelColor || wheelColor.length == 0) {
+      msg_error.push("- Màu sắc hiển thị chưa chọn");
+    }
     if (!imgBase64) {
       msg_error.push('-Hình chưa được chọn')
     }
@@ -150,6 +154,7 @@ const ModalWheelDetail = (props) => {
       segment_id: segmentId,
       no: no,
       goal_yn: goalYn,
+      wheel_color: wheelColor,
       remain_number: remainNumber,
       imgBase64: imgBase64,
       url: url,
@@ -535,6 +540,14 @@ const ModalWheelDetail = (props) => {
                   <Radio value={0}>Không</Radio>
 
                 </Radio.Group>
+              </Col>
+            </Row>
+            <Row style={{ marginTop: 10 }}>
+              <Col {...layoutHeader} >
+                <Text className={classNames({ [styles['text-font']]: true })}>{'Màu sắc hiển thị '}</Text>
+              </Col>
+              <Col  {...layoutContent}>
+                <Input type="color" style={{ width: '26%' }} value={wheelColor} onChange={(text) => setWheelColor(text.target.value)} />
               </Col>
             </Row>
             <Row style={{ marginTop: 10 }}>

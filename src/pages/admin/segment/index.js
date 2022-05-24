@@ -102,25 +102,25 @@ export default function Segment(props) {
       width: 200
 
     },
-    {
-      title: 'Màu sắc',
-      dataIndex: 'segment_color',
-      key: 'segment_color',
-      width: 80,
-      align: 'center',
-      render: (text, record) => {
-        return <Space size="large">
-          <p style={
-            {
-              background: text,
-              width: '30px',
-              height: '30px'
-            }}>
+    // {
+    //   title: 'Màu sắc',
+    //   dataIndex: 'segment_color',
+    //   key: 'segment_color',
+    //   width: 80,
+    //   align: 'center',
+    //   render: (text, record) => {
+    //     return <Space size="large">
+    //       <p style={
+    //         {
+    //           background: text,
+    //           width: '30px',
+    //           height: '30px'
+    //         }}>
 
-          </p>
-        </Space>
-      }
-    },
+    //       </p>
+    //     </Space>
+    //   }
+    // },
     {
       align: 'end',
       title: 'Giá trị giải thưởng(VNĐ)',
