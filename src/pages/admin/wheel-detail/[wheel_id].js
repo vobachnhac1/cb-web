@@ -248,8 +248,27 @@ export default function WheelDetail({ query }) {
       width: 170,
       render: (text, record) => {
         return <span>
-          {moment(text).format('YYYY-MM-DD, hh:mm:ss')}
+          {moment(text).format('YYYY-MM-DD, HH:mm:ss')}
         </span>
+      }
+    },
+    {
+      title: 'Màu sắc',
+      dataIndex: 'wheel_color',
+      key: 'wheel_color',
+      width: 80,
+      align: 'center',
+      render: (text, record) => {
+        return <Space size="large">
+          <p style={
+            {
+              background: text,
+              width: '30px',
+              height: '30px'
+            }}>
+
+          </p>
+        </Space>
       }
     },
     {

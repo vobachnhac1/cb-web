@@ -175,7 +175,7 @@ export default function Wheel(props) {
       width: 170,
       render: (text, record) => {
         return <span>
-          {moment(text).format('YYYY-MM-DD, hh:mm:ss')}
+          {moment(text).format('YYYY-MM-DD, HH:mm:ss')}
         </span>
       }
     },
@@ -187,7 +187,7 @@ export default function Wheel(props) {
       width: 170,
       render: (text, record) => {
         return <span>
-          {moment(text).format('YYYY-MM-DD, hh:mm:ss')}
+          {moment(text).format('YYYY-MM-DD, HH:mm:ss')}
         </span>
       }
     },
