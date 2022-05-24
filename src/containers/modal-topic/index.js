@@ -4,7 +4,7 @@
 * Phone 0906.918.738
 * Created: 2022-04-08
 *------------------------------------------------------- */
-require("./style.module.less");
+require("./styles.less");
 
 import { Card, Col, Form, Input, Modal, Row, Select, Typography } from 'antd';
 import { useEffect, useState } from 'react';
@@ -15,7 +15,6 @@ import { getters as gettersTopic } from '@/redux/topic';
 import * as Message from '@/components/message';
 
 const classNames = require("classnames");
-const styles = require("./style.module.less");
 const { Option } = Select;
 const { Text } = Typography;
 
@@ -34,7 +33,7 @@ const layoutContent = {
 const ModalTopic = (props) => {
   const { callback, visible = false, bodyModel: { isAdd = false, record = null } } = props;
   const dispatch = useDispatch();
-  const [isApprove, setIsApprove] = useState(record ? record.status_yn : "N");
+  const [isApprove, setIsApprove] = useState(record ? record.status_yn : "Y");
   const [topicName, setTopicName] = useState(record ? record.topic_name : "");
 
   useEffect(() => {
@@ -42,9 +41,9 @@ const ModalTopic = (props) => {
     setIsApprove(record ? record.status_yn : "")
   }, [visible]);
 
-  const onChangeSelect = (record) => {
-    setIsApprove(record);
-  }
+  // const onChangeSelect = (record) => {
+  //   setIsApprove(record);
+  // }
 
   const onCallback = async () => {
     if (!topicName || topicName.length == 0) {
@@ -107,7 +106,7 @@ const ModalTopic = (props) => {
         >
           <Row >
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Tên chủ đề'}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Tên chủ đề'}</Text>
             </Col>
             <Col  {...layoutContent}>
               <Input
@@ -116,13 +115,13 @@ const ModalTopic = (props) => {
                 onChange={(text) => setTopicName(text.target.value)} />
             </Col>
           </Row>
-          <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Phê Duyệt'}</Text>
-            </Col>
-            <Col  {...layoutContent}>
+          {/* <Row style={{ marginTop: 10 }}> */}
+          {/* <Col {...layoutHeader} >
+              <Text className={classNames({ 'text-font': true })}>{'Phê Duyệt'}</Text>
+            </Col> */}
+          {/* <Col  {...layoutContent}>
               <Select
-                disabled={isAdd}
+                disabled={true}
                 defaultValue={isApprove == 'Y' ? 'Phê duyệt' : 'Không'}
                 value={isApprove == 'Y' ? 'Phê duyệt' : 'Không'}
                 style={{ width: '100%' }}
@@ -131,8 +130,8 @@ const ModalTopic = (props) => {
                 <Option key='Y'>{"Phê duyệt"}</Option>
                 <Option key='N'>{"Không"}</Option>
               </Select>
-            </Col>
-          </Row>
+            </Col> */}
+          {/* </Row> */}
         </Form>
       </Card>
     </Modal>
