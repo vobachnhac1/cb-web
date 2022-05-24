@@ -113,6 +113,7 @@ const WheelChild = (props) => {
         classNames({ [styles["wheel"]]: true }, { [styles["spinning"]]: spinning })} //chỗ import
         style={wheelVars}>
         {places.map((item, index) => {
+          console.log('item: ', item);
           return (
             <div
               className={classNames({ [styles["wheel-item"]]: true })}

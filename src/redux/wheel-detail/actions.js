@@ -90,7 +90,6 @@ export const SaveOnListWheelDetail = (payload) => async (dispatch, getState, { $
 }
 
 export const insertWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
-  console.log('insertWheelDetail payload', payload)
   const param = {
     "wheel_id": parseInt(payload.wheel_id),
     "wheel_name": payload.wheel_name,
@@ -136,7 +135,6 @@ export const insertWheelDetail = (payload) => async (dispatch, getState, { $http
 }
 
 export const updateWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
-  console.log('updateWheelDetail payload', payload)
   const param = {
     "wheel_detail_id": payload.wheel_detail_id,
     "no": parseInt(payload.no),

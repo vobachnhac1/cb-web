@@ -133,24 +133,15 @@ export default function DisplayWheel(props) {
     setSelectedItem(value)
   }
 
-
-
   return (
     <div className={styles['App']} style={{
       backgroundImage: null
     }}>
       <Header title={PathTitle[`${path}`]} />
-      <PopupMenu></PopupMenu>
-      {
-        // manager sẽ chức ẩn hiện menu nếu !=null => ko hiện
-        // state != 1 => hiện thị nút quay lại setStatePage =1 
-        // onCallback
-      }
-      {
-        // lấy sách trúng thưởng state 1
 
-      }
-      {/* menu */}
+      {!manager&&<PopupMenu /> }
+
+
 
 
 

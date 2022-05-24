@@ -199,7 +199,7 @@ const ModalWheelDetail = (props) => {
 
     // add
     if (isAdd) {
-      param.created_date = moment().format('YYYY-MM-DD, hh:mm:ss')
+      param.created_date = moment().format('YYYY-MM-DD, HH:mm:ss')
       const result = await dispatch(actionWheelDetail.insertWheelDetail(param));
       let data = result
       if (result) {

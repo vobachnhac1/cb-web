@@ -102,25 +102,6 @@ export default function Segment(props) {
       width: 200
 
     },
-    // {
-    //   title: 'Màu sắc',
-    //   dataIndex: 'segment_color',
-    //   key: 'segment_color',
-    //   width: 80,
-    //   align: 'center',
-    //   render: (text, record) => {
-    //     return <Space size="large">
-    //       <p style={
-    //         {
-    //           background: text,
-    //           width: '30px',
-    //           height: '30px'
-    //         }}>
-
-    //       </p>
-    //     </Space>
-    //   }
-    // },
     {
       align: 'end',
       title: 'Giá trị giải thưởng(VNĐ)',
@@ -148,7 +129,7 @@ export default function Segment(props) {
       align: 'center',
       render: (text, record) => {
         return <span>
-          {!text || text == "0000-00-00 00:00:00" ? 'Không giới hạn' : moment(text).format('YYYY-MM-DD, hh:mm:ss')}
+          {!text || text == "0000-00-00 00:00:00" ? 'Không giới hạn' : moment(text).format('YYYY-MM-DD, HH:mm:ss')}
         </span>
       }
     },
@@ -160,7 +141,7 @@ export default function Segment(props) {
       align: 'center',
       render: (text, record) => {
         return <span>
-          {moment(text).format('YYYY-MM-DD, hh:mm:ss')}
+          {moment(text).format('YYYY-MM-DD, HH:mm:ss')}
         </span>
       }
     },
