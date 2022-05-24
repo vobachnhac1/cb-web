@@ -6,12 +6,17 @@
 *------------------------------------------------------- */
 require("./style.module.less");
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Router from 'next/router';
+import * as styles from './style.module.less';
+import * as classnames from 'classnames';
 import LayoutHome from '@/containers/Home';
-import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Input, DatePicker } from 'antd';
-
+import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Typography, Input, DatePicker } from 'antd';
+const { Text } = Typography;
 const { RangePicker } = DatePicker;
 import * as Message from '@/components/message';
 import ModalSegment from '@/containers/modal-segment';
+import ModalTopic from '@/containers/modal-topic';
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
 import { actions as actionSegment } from '@/redux/segment';
@@ -21,10 +26,13 @@ import { getters as gettersTopic } from '@/redux/topic';
 
 import moment from 'moment';
 import __ from 'lodash';
+// handhandleDelete
+
 
 export default function Segment(props) {
+  const [topicId, setTopicId] = useState('');
+  const [dataSearch, setDataSearch] = useState('')
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
   const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
   const [filter, setFilter] = useState({
@@ -33,104 +41,81 @@ export default function Segment(props) {
     from_date_act: null,
     to_date_act: null
   });
-
+  // gọi 1 function rồi theo dõi nhưng thay đổi của param đó
   useEffect(() => {
-    initPage();
+    initPage(); // chjay 1 lần duy nhất
   }, [])
 
+
   const initPage = async () => {
-    setLoading(true);
-    await dispatch(actionSegment.searchSegment());
+    const paramsInitSegment = {
+      "topic_id": 0,
+      "segment_id": 0,
+      "segment_name": "string",
+      "segment_color": "string",
+      "inactived_date": "2022-04-08T04:17:56.025Z",
+      "created_date": "2022-04-08T04:17:56.025Z",
+      "datelastmaint": "2022-04-08T04:17:56.025Z",
+      "is_approve": true
+    }
+    await dispatch(actionSegment.searchSegment(paramsInitSegment));
     await dispatch(actionTopic.searchTopic());
-    setLoading(false);
   }
 
   const onSearch = async () => {
-
     const { segment_name, topic_id, from_date_act, to_date_act } = filter;
     if (__.isNil(segment_name) && __.isNil(topic_id) && __.isNil(from_date_act) && __.isNil(to_date_act)) {
       initPage();
     } else {
-      setLoading(true);
-      const { success } = await dispatch(actionSegment.filterSegment(filter));
-      if (success)
-        setLoading(false);
+      const result = await dispatch(actionSegment.filterSegment(filter));
+      return;
     }
-
   }
 
+
   const handleDelete = async (record) => {
-    let dataRecord = record
+    let dataRecord = { ...record }
     const result = await dispatch(actionSegment.deleteSegmentById(dataRecord));
     if (result) {
-      onSearch();
-      Message.Success("Thông Báo", "Xóa thành công");
+      initPage();
+      Message.Success("NOTYFICATON", "DELETE TOPIC SUCCESS");
       return
     }
-    Message.Error("Thông Báo", "Xóa thất bại!");
+    Message.Error("NOTYFICATON", "DELETE TOPIC FAIL");
   };
   const columns = [
     {
-      title: 'STT',
-      dataIndex: 'key',
-      key: 'key',
-      fixed: 'left',
-      width: 50,
-      render: (text, record) => {
-        return parseInt(text) + 1
-      }
-    },
-    {
-      title: 'Mã',
+      title: 'Mã kết quả\n trúng thưởng',
       dataIndex: 'segment_id',
       key: 'segment_id',
       fixed: 'left',
       width: 100
+      // render: text => <a>{text}</a>,
     },
     {
       title: 'Tên kết quả \n trúng thưởng',
       dataIndex: 'segment_name',
       key: 'segment_name',
       fixed: 'left',
-      width: 200
-
+      width: 250
     },
     {
       title: 'Chủ đề',
       dataIndex: 'topic_name',
       key: 'topic_name',
-      width: 200
+      fixed: 'center',
+      width: 250,
 
-    },
-    {
-      align: 'end',
-      title: 'Giá trị giải thưởng(VNĐ)',
-      dataIndex: 'segment_value',
-      key: 'segment_value',
-      width: 200,
-      render: (text, record) => (
-        <Space size="large" style={{
-          'display': 'flex',
-          'justifyContent': 'flex-end',
-          'fontWeight': '500'
-        }}>
-          <span>
-            {`${text}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          </span>
-
-        </Space>
-      )
     },
     {
       title: 'Ngày hết hiệu lực',
       dataIndex: 'inactived_date',
       key: 'inactived_date',
       width: 170,
-      align: 'center',
       render: (text, record) => {
-        return <span>
-          {!text || text == "0000-00-00 00:00:00" ? 'Không giới hạn' : moment(text).format('YYYY-MM-DD, HH:mm:ss')}
-        </span>
+        return <p>
+          {!text ? '' : moment(text).format('YYYY-MM-DD, hh:mm:ss')}
+        </p>
       }
     },
     {
@@ -138,36 +123,38 @@ export default function Segment(props) {
       dataIndex: 'created_date',
       key: 'created_date',
       width: 170,
-      align: 'center',
       render: (text, record) => {
-        return <span>
-          {moment(text).format('YYYY-MM-DD, HH:mm:ss')}
-        </span>
+        return <p>
+          {moment(text).format('YYYY-MM-DD, hh:mm:ss')}
+        </p>
       }
     },
 
     {
       title: 'Action',
       key: 'action',
-      width: 170,
+      width: 140,
       render: (text, record) => (
-        record.number_segment_used === 1 ?
-          <span style={{ color: 'green', }} >
-            Có vòng quay đang sử dụng giải thưởng này !
-          </span>
-          :
-          <Space size="middle">
-            <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateSegment(record)} >Cập nhật</Button>
-            {listSegment.length >= 1 ? (
-              <Popconfirm title="Bạn có muốn?" onConfirm={() => handleDelete(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom" >
-                <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
-              </Popconfirm>
-            ) : null
-            }
-          </Space>
+
+        <Space size="middle">
+          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateSegment(record)} >Edit</Button>
+
+          {listSegment.length >= 1 ? (
+            <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)} >
+              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Delete</Button>
+            </Popconfirm>
+          ) : null
+          }
+        </Space>
       ),
     },
   ];
+  const pagination = {
+    current: 1,
+    pageSize: 10,
+    total: 200,
+
+  };
 
 
   const [visible, setVisible] = useState(false);
@@ -190,15 +177,18 @@ export default function Segment(props) {
       isAdd: false
     });
   }
+
+
   const callbackModal = (params) => {
     setVisible(params.visible);
-    onSearch()
+    initPage();
   }
 
   return (
     <LayoutHome>
       <Col style={{ marginBottom: 30 }}>
         <ModalSegment visible={visible} bodyModel={bodyModel} callback={callbackModal} />
+
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
           title="Tất cả kết quả giải thưởng"
@@ -206,12 +196,15 @@ export default function Segment(props) {
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>
             <Row gutter={[16, 24]}>
+              {/* <Col className="gutter-row"  >
+                <Text style={{ marginLeft: '4px' }}>{'Chủ đề :'}</Text>
+              </Col> */}
               <Col className="gutter-row" span={4}>
                 <Select
                   allowClear
                   placeholder="Chủ đề"
                   style={{ width: '100%' }}
-                  defaultValue={null}
+                  defaultValue=""
                   value={filter.topic_id}
                   onChange={(value) => setFilter({ ...filter, topic_id: value })}>
                   {listTopic.map((Item, key) => (
@@ -219,8 +212,12 @@ export default function Segment(props) {
                   ))}
                 </Select>
               </Col>
-              <Col className="gutter-row" span={5}>
+              <Col className="gutter-row" span={8}>
+                <Input placeholder="Tên chủ đề cần tìm" value={filter.segment_name} onChange={(event) => setFilter({ ...filter, segment_name: event.target.value })} />
+              </Col>
+              <Col className="gutter-row" span={8}>
                 <RangePicker
+
                   onChange={(dates, dateString) => {
                     if (dates) {
                       setFilter({
@@ -238,9 +235,6 @@ export default function Segment(props) {
                   }}
                 />
               </Col>
-              <Col className="gutter-row" span={6}>
-                <Input placeholder="Tên giải thưởng cần tìm" allowClear value={filter.segment_name} onChange={(event) => setFilter({ ...filter, segment_name: event.target.value ? event.target.value : null })} />
-              </Col>
             </Row>
             <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
               <Col className="gutter-row" span={3}>
@@ -256,12 +250,12 @@ export default function Segment(props) {
         <Card>
           <Col span={48} style={{ marginTop: 10 }}>
             <Table
-              className="table_layout"
               columns={columns}
               dataSource={listSegment}
-              size='small'
-              loading={loading}
-              scroll={{ x: 1300, y: '45vh' }}
+              size='large'
+              pagination={pagination}
+              loading={false}
+              scroll={{ x: 1300 }}
             />
           </Col>
         </Card>

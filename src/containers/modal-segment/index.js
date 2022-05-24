@@ -5,7 +5,10 @@
 * Created: 2022-04-08
 *------------------------------------------------------- */
 require("./style.module.less");
-import { Card, Col, Form, Input, Modal, Row, Select, Typography, DatePicker, InputNumber } from 'antd';
+
+import Header from '@/components/Head';
+import Layout from '@/layout';
+import { Card, Col, Form, Input, Modal, Row, Select, Typography, DatePicker, Button } from 'antd';
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
@@ -17,6 +20,7 @@ import { actions as actionSegment } from '@/redux/segment';
 
 const classNames = require("classnames");
 const styles = require("./style.module.less");
+const { Option } = Select;
 const { Text } = Typography;
 
 const layoutHeader = {
@@ -33,11 +37,13 @@ const layoutContent = {
 };
 const ModalSegment = (props) => {
   const { callback, visible = false, bodyModel: { isAdd = false, record = null } } = props;
+  const [loading, setLoading] = useState(false);
   const [segmentId, setSegmentId] = useState(record ? record.segment_id : "");
   const [topicId, setTopicId] = useState(record ? record.topic_id : "");
   const [segmentName, setSegmentName] = useState(record ? record.segment_name : "");
-  const [segmentValue, setSegmentValue] = useState(record ? record.segment_value : "");
+  const [segmentColor, setSegmentColor] = useState(record ? record.segment_color : "");
   const [inactived_date, setInactived_date] = useState(record ? record.inactived_date : "");
+
   const dispatch = useDispatch();
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
 
@@ -49,59 +55,72 @@ const ModalSegment = (props) => {
     setSegmentId(record ? record.segment_id : "")
     setTopicId(record ? record.topic_id : "")
     setSegmentName(record ? record.segment_name : "")
-    setSegmentValue(record ? record.segment_value : "")
+    setSegmentColor(record ? record.segment_color : "")
     setInactived_date(record ? record.inactived_date : "")
   }
 
   const onCallback = async () => {
-    let msg_error = [];
+    // if (!segmentId || segmentId.lenght == 0) {
+    //   Message.Warning("NOTYFICATON", "Mã kết quả chưa điền nội dung");
+    //   return;
+    // }
     if (!topicId) {
-      msg_error.push("- Chủ đề chưa được chọn");
+      Message.Warning("NOTYFICATON", "Chủ đề chưa được chọn");
+      return;
     }
-    if (!segmentName || segmentName.length == 0) {
-      msg_error.push("- Tên kết quả trúng thưởng chưa có nội dung");
+    if (!segmentName || segmentName.lenght == 0) {
+      Message.Warning("NOTYFICATON", "Tên kết quả trúng thưởng chưa có nội dung");
+      return;
     }
-    if (msg_error && msg_error.length > 0) {
-      Message.WarningArr("Thông Báo", msg_error);
-      return
+    if (!segmentColor || segmentColor.lenght == 0) {
+      Message.Warning("NOTYFICATON", "Màu sắc hiển thị chưa có nội dung");
+      return;
     }
+    if (!inactived_date || inactived_date.lenght == 0) {
+      Message.Warning("NOTYFICATON", "Hãy chọn ngày kết thúc giải thưởng");
+      return;
+    }
+   
+
     const param = {
       ...record,
       segment_id: segmentId,
       topic_id: topicId,
       segment_name: segmentName,
-      segment_value: segmentValue,
+      segment_color: segmentColor,
       inactived_date: inactived_date,
       is_approve: true,
+      // status_yn: isApprove,
       visible: false
     }
+
 
     // add
     if (isAdd) {
       const result = await dispatch(actionSegment.insertSegment(param));
       if (result) {
-        callback({ visible: false, });
-        Message.Success("Thông Báo", "Thêm thành công");
+        callback({ visible: false });
+        Message.Success("NOTYFICATON", "ADD NEW SEGMENT SUCCESS");
         return;
       }
-      Message.Error("Thông Báo", "Thêm thất bại");
+      Message.Error("NOTYFICATON", "ADD NEW SEGMENT FAILED");
       return;
     }
     //edit
-    const result = await dispatch(actionSegment.updateSegment(param));
+    const result = await dispatch(actionSegment.updateTopic(param));
     if (result) {
       callback({ visible: false });
-      Message.Success("Thông Báo", "Cập nhật thành công");
+      Message.Success("NOTYFICATON", "UPDATE SEGMENT SUCCESS");
       return;
     }
-    Message.Error("Thông Báo", "Cập nhật thất bại");
+    Message.Error("NOTYFICATON", "UPDATE SEGMENT FAILED");
 
-    // false
+
   }
   const onCancel = () => {
     callback({ visible: false });
-  }
 
+  }
   return (
     <Modal
       width={750}
@@ -109,8 +128,8 @@ const ModalSegment = (props) => {
       closable={false}
       centered
       visible={visible}
-      okText={'Xác nhận'}
-      cancelText={'Quay lại'}
+      okText={'Comfirm'}
+      cancelText={'Cancel'}
       onOk={onCallback}
       onCancel={onCancel}
     >
@@ -134,19 +153,23 @@ const ModalSegment = (props) => {
           labelAlign='left'
           size={'default'}
 
-        >
 
+        >
+          {/*  */}
           {
             segmentId ? <Row >
               <Col {...layoutHeader} >
                 <Text className={classNames({ [styles['text-font']]: true })}>{'Mã kết quả trúng thưởng :'}</Text>
               </Col>
               <Col  {...layoutContent}>
+
                 <Input style={{ width: '100%' }} value={segmentId} onChange={(text) => setSegmentId(text.target.value)} disabled />
               </Col>
             </Row>
-              : null
+              : ""
           }
+
+
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
               <Text className={classNames({ [styles['text-font']]: true })}>{'Chủ đề :'}</Text>
@@ -154,7 +177,6 @@ const ModalSegment = (props) => {
             <Col  {...layoutContent}>
 
               <Select
-                disabled={isAdd ? false : true}
                 style={{ width: '100%' }}
                 defaultValue=""
                 value={
@@ -162,6 +184,7 @@ const ModalSegment = (props) => {
                 onChange={(value) => setTopicId(value)}>
                 {listTopic.map((Item, key) => (
                   <Select.Option value={Item.topic_id} key={key}>{Item.topic_name}</Select.Option>
+                  // <option value={option.value}>{option.label}</option>
                 ))}
               </Select>
             </Col>
@@ -171,39 +194,26 @@ const ModalSegment = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Tên kết quả trúng thưởng '}</Text>
             </Col>
             <Col  {...layoutContent}>
+
               <Input style={{ width: '100%' }} value={segmentName} onChange={(text) => setSegmentName(text.target.value)} />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Giá trị giải thưởng '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
-              <InputNumber style={{ width: '100%' }}
-                addonAfter={"VND"}
-                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                value={segmentValue}
-                onChange={(text) => {
-                  setSegmentValue(text ? text : 0);
-                }}
-              />
-            </Col>
-          </Row>
-          {/* <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
               <Text className={classNames({ [styles['text-font']]: true })}>{'Màu sắc hiển thị '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Input type="color" style={{ width: '50%' }} value={segmentColor} onChange={(text) => setSegmentColor(text.target.value)} />
+
+              <Input style={{ width: '100%' }} value={segmentColor} onChange={(text) => setSegmentColor(text.target.value)} />
             </Col>
-          </Row> */}
+          </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
               <Text className={classNames({ [styles['text-font']]: true })}>{'Ngày hết hiệu lực '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <DatePicker disabledDate={d => !d || d.isSameOrBefore(moment().set('date', (moment().date() - 1)))} style={{ width: '50%' }} value={!inactived_date || inactived_date === "0000-00-00 00:00:00" ? null : moment(inactived_date)} onChange={(date) => setInactived_date(date)} />
+
+              <DatePicker value={inactived_date ? moment(inactived_date) : null} onChange={(date) => setInactived_date(date)} />
             </Col>
           </Row>
         </Form>

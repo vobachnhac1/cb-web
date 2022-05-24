@@ -5,7 +5,6 @@
 * Created: 2022-03-10
 *------------------------------------------------------- */
 
-import HeadShare from '@/components/Head';
 import { LockOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
 import Image from 'next/image';
@@ -59,8 +58,6 @@ const SetPassword = (props) => {
 		<div
 			className={classes.wrapper}
 		>
-			<HeadShare title='Set Password' />
-
 			<div className={classes.left}>
 				<div className={classes.leftOverlay} />
 				<div className={classes.leftContent}>

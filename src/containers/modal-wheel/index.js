@@ -5,17 +5,22 @@
 * Created: 2022-04-08
 *------------------------------------------------------- */
 require("./style.module.less");
-import { Card, Col, Form, Input, Modal, Row, Typography, DatePicker, InputNumber } from 'antd';
+
+import Header from '@/components/Head';
+import Layout from '@/layout';
+import { Card, Col, Form, Input, Modal, Row, Select, Typography, DatePicker, Button } from 'antd';
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
 // khai báo store
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { actions as actionSegment } from '@/redux/segment';
 import { actions as actionWheel } from '@/redux/wheel';
-import _ from 'lodash';
+
 
 const classNames = require("classnames");
 const styles = require("./style.module.less");
+const { Option } = Select;
 const { Text } = Typography;
 
 const layoutHeader = {
@@ -32,6 +37,7 @@ const layoutContent = {
 };
 const ModalSegment = (props) => {
   const { callback, visible = false, bodyModel: { isAdd = false, record = null } } = props;
+  const [loading, setLoading] = useState(false);
   const [wheelId, setWheelId] = useState(record ? record.wheel_id : "");
   const [wheelName, setWheelName] = useState(record ? record.wheel_name : "");
   const [numSegments, setNumSegments] = useState(record ? record.num_segments : "");
@@ -53,60 +59,67 @@ const ModalSegment = (props) => {
 
   const initPage = async () => {
     setWheelId(record ? record.wheel_id : "")
-    setWheelName(record ? record.wheel_name.toString() : "")
-    setNumSegments(record ? record.num_segments.toString() : "")
-    setAccountNbr(record ? record.account_nbr.toString() : "")
-    setTotalValue(record ? record.total_value.toString() : "")
-    setRemainValue(record ? record.remain_value.toString() : "")
-    setOuterRadius(record ? record.outer_radius.toString() : "")
-    setTextFrontSize(record ? record.text_fontsize.toString() : "10")
-    setRatationAngle(record ? record.rotation_angle.toString() : "")
-    setInactived_date(record ? record.inactived_date.toString() : "")
+    setWheelName(record ? record.wheel_name : "")
+    setNumSegments(record ? record.num_segments : "")
+    setAccountNbr(record ? record.account_nbr : "")
+    setTotalValue(record ? record.total_value : "")
+    setRemainValue(record ? record.remain_value : "")
+    setOuterRadius(record ? record.outer_radius : "")
+    setTextFrontSize(record ? record.text_fontsize : "")
+    setRatationAngle(record ? record.rotation_angle : "")
+    setInactived_date(record ? record.inactived_date : "")
   }
 
   const onCallback = async () => {
-    let msg_error = [];
-
-    if ((!wheelId || wheelId.length == 0) && !isAdd) {
-      msg_error.push("-ID chưa điền nội dung");
+    if (!wheelId || wheelId.lenght == 0) {
+      Message.Warning("NOTYFICATON", "ID chưa điền nội dung");
+      return;
     }
-    if (!wheelName || wheelName.length == 0) {
-      msg_error.push("-Tên vòng quay chưa điền nội dung");
+    if (!wheelName || wheelName.lenght == 0) {
+      Message.Warning("NOTYFICATON", "Tên vòng quay chưa điền nội dung");
+      return;
     }
-    if (!numSegments || numSegments.length == 0) {
-      msg_error.push("-Số kết quả trúng thưởng chưa có nội dung");
+    if (!numSegments || numSegments.lenght == 0) {
+      Message.Warning("NOTYFICATON", "Số kết quả trúng thưởng chưa có nội dung");
+      return;
     }
-    if (parseInt(numSegments) > 14) {
-      msg_error.push("-Số kết quả trúng thưởng không được lớn hơn 14");
+    if (!accountNbr || accountNbr.lenght == 0) {
+      Message.Warning("NOTYFICATON", "Tài khoảng trích tiền chưa có nội dung");
+      return;
     }
-    if (!accountNbr) {
-      msg_error.push("-Tài khoản trích tiền chưa có nội dung");
+    if (!totalValue || totalValue.lenght == 0) {
+      Message.Warning("NOTYFICATON", "Tổng giải thưởng chưa có nội dung");
+      return;
     }
-    if (!totalValue) {
-      msg_error.push("-Tổng giải thưởng chưa có nội dung");
+    if (!remainValue || remainValue.lenght == 0) {
+      Message.Warning("NOTYFICATON", "Tổng giá trị giải thuưởng còn lại chưa có nội dung");
+      return;
     }
-    if (!textFrontSize) {
-      msg_error.push("-Đặt kích thước chữ chưa có nội dung");
+    if (!outerRadius || outerRadius.lenght == 0) {
+      Message.Warning("NOTYFICATON", "Bán kính vòng quay chưa có nội dung");
+      return;
     }
-    if (parseInt(textFrontSize) < 0) {
-      msg_error.push("-Kích thước chữ đang là giá trị bé hơn 0");
+    if (!textFrontSize || textFrontSize.lenght == 0) {
+      Message.Warning("NOTYFICATON", "Đặt kích thước chữ chưa có nội dung");
+      return;
     }
-    if (!inactived_date || inactived_date.length == 0) {
-      msg_error.push("-Hãy chọn ngày kết thúc giải thưởng");
+    if (!ratationAngle || ratationAngle.lenght == 0) {
+      Message.Warning("NOTYFICATON", "Đặt góc vòng quay chưa có nội dung");
+      return;
     }
-    if (msg_error && msg_error.length > 0) {
-      Message.WarningArr("Thông Báo", msg_error);
-      return
+    if (!inactived_date || inactived_date.lenght == 0) {
+      Message.Warning("NOTYFICATON", "Hãy chọn ngày kết thúc giải thưởng");
+      return;
     }
 
     const param = {
       ...record,
-      "wheel_id": wheelId ? wheelId : 0,
+      "wheel_id": wheelId,
       "num_segments": numSegments,
       "wheel_name": wheelName,
       "account_nbr": accountNbr,
       "total_value": totalValue,
-      "remain_value": isAdd ? totalValue : remainValue,
+      "remain_value": remainValue,
       "outer_radius": outerRadius,
       "text_fontsize": textFrontSize,
       "rotation_angle": ratationAngle,
@@ -122,20 +135,20 @@ const ModalSegment = (props) => {
       const result = await dispatch(actionWheel.insertWheel(param));
       if (result) {
         callback({ visible: false });
-        Message.Success("Thông Báo", "Thêm mới thành công");
+        Message.Success("NOTYFICATON", "ADD NEW WHEEL SUCCESS");
         return;
       }
-      Message.Error("Thông Báo", "Thêm mới thất bại");
+      Message.Error("NOTYFICATON", "ADD NEW WHEEL FAILED");
       return;
     }
     //edit
     const result = await dispatch(actionWheel.updateWheel(param));
     if (result) {
       callback({ visible: false });
-      Message.Success("Thông Báo", "Cập nhật thành công");
+      Message.Success("NOTYFICATON", "UPDATE SEGMENT SUCCESS");
       return;
     }
-    Message.Error("Thông Báo", "Cập nhật thất bại");
+    Message.Error("NOTYFICATON", "UPDATE SEGMENT FAILED");
 
 
   }
@@ -150,8 +163,8 @@ const ModalSegment = (props) => {
       closable={false}
       centered
       visible={visible}
-      okText={'Xác nhận'}
-      cancelText={'Thoát'}
+      okText={'Comfirm'}
+      cancelText={'Cancel'}
       onOk={onCallback}
       onCancel={onCancel}
     >
@@ -200,10 +213,10 @@ const ModalSegment = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Số kết quả '}</Text>
+              <Text type="number" className={classNames({ [styles['text-font']]: true })}>{'Số kết quả '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Input type="number" min="1" max="14" style={{ width: '100%' }} value={numSegments} onChange={(text) => setNumSegments(text.target.value)} />
+              <Input style={{ width: '100%' }} value={numSegments} onChange={(text) => setNumSegments(text.target.value)} />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
@@ -211,6 +224,7 @@ const ModalSegment = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Tài khoản trích tiền game '}</Text>
             </Col>
             <Col  {...layoutContent}>
+
               <Input style={{ width: '100%' }} value={accountNbr} onChange={(text) => setAccountNbr(text.target.value)} />
             </Col>
           </Row>
@@ -219,13 +233,7 @@ const ModalSegment = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng giá trị giải '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <InputNumber style={{ width: '100%' }}
-                addonAfter={"VND"}
-                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                value={totalValue}
-                onChange={(text) => setTotalValue(text)}
-              />
+              <Input type="number" style={{ width: '100%' }} value={totalValue} onChange={(text) => setTotalValue(text.target.value)} />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
@@ -233,14 +241,16 @@ const ModalSegment = (props) => {
               <Text className={classNames({ [styles['text-font']]: true })}>{'Giá trị còn lại '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <InputNumber style={{ width: '100%' }}
-                addonAfter={"VND"}
-                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                value={totalValue}
-                onChange={(text) => setRemainValue(text)}
-                disabled
-              />
+
+              <Input type="number" style={{ width: '100%' }} value={remainValue} onChange={(text) => setRemainValue(text.target.value)} />
+            </Col>
+          </Row>
+          <Row style={{ marginTop: 10 }}>
+            <Col {...layoutHeader} >
+              <Text className={classNames({ [styles['text-font']]: true })}>{'Bán kính vòng quay '}</Text>
+            </Col>
+            <Col  {...layoutContent}>
+              <Input type="number" style={{ width: '100%' }} value={outerRadius} onChange={(text) => setOuterRadius(text.target.value)} />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
@@ -253,11 +263,19 @@ const ModalSegment = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
+              <Text type="number" className={classNames({ [styles['text-font']]: true })}>{'Đặt góc vòng quay '}</Text>
+            </Col>
+            <Col  {...layoutContent}>
+              <Input style={{ width: '100%' }} value={ratationAngle} onChange={(text) => setRatationAngle(text.target.value)} />
+            </Col>
+          </Row>
+          <Row style={{ marginTop: 10 }}>
+            <Col {...layoutHeader} >
               <Text className={classNames({ [styles['text-font']]: true })}>{'Ngày hết hiệu lực '}</Text>
             </Col>
             <Col  {...layoutContent}>
 
-              <DatePicker disabledDate={d => !d || d.isSameOrBefore(moment().set('date', (moment().date())))} value={inactived_date ? moment(inactived_date) : null} onChange={(date) => setInactived_date(date)} />
+              <DatePicker value={inactived_date ? moment(inactived_date) : null} onChange={(date) => setInactived_date(date)} />
             </Col>
           </Row>
         </Form>

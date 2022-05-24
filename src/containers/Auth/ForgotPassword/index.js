@@ -5,10 +5,8 @@
 * Created: 2022-03-10
 *------------------------------------------------------- */
 
-import HeadShare from '@/components/Head';
 import { UserOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
-import Head from 'next/head';
 import Image from 'next/image';
 import React from 'react';
 import classes from './style.module.less';
@@ -103,7 +101,6 @@ const ForgotPassword = (props) => {
 		<div
 			className={classes.wrapper}
 		>
-			<HeadShare title='Forgot Password' />
 			<div className={classes.left}>
 				<div className={classes.leftOverlay} />
 				<div className={classes.leftContent}>
