@@ -4,24 +4,10 @@ import URLSERVER from '@/redux/urlServer.json';
 // hàm thị thi nội bộ
 const setSearchWheel = (payload) => ({ type: TYPES.WHEEL_SEARCH, payload });
 // hàm xử lý được gọi từ bên ngoài
+
 export const searchWheel = (payload) => async (dispatch, getState, { $http }) => {
-  const param = {
-    "wheel_id": payload.wheel_id,
-    "num_segments": payload.num_segments,
-    "wheel_name": payload.wheel_name,
-    "account_nbr": payload.account_nbr,
-    "total_value": payload.total_value,
-    "remain_value": payload.remain_value,
-    "outer_radius": payload.outer_radius,
-    "text_fontsize": payload.text_fontsize,
-    "rotation_angle": payload.rotation_angle,
-    "inactived_date": payload.inactived_date,
-    "created_date": payload.created_date,
-    "datelastmaint": payload.datelastmaint,
-    "is_approve": true
-  }
   // call xuống backend url + param 
-  const result = await $http.post(URLSERVER.searchAllWheel, param);
+  const result = await $http.get(URLSERVER.searchAllWheel);
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
@@ -32,24 +18,8 @@ export const searchWheel = (payload) => async (dispatch, getState, { $http }) =>
 }
 
 export const insertWheel = (payload) => async (dispatch, getState, { $http }) => {
-  const param = {
-    "wheel_id": parseInt(payload.wheel_id),
-    "num_segments": parseInt(payload.num_segments),
-    "wheel_name": payload.wheel_name,
-    "account_nbr": payload.account_nbr,
-    "total_value": parseInt(payload.total_value),
-    "remain_value": parseInt(payload.remain_value),
-    "outer_radius": parseInt(payload.outer_radius),
-    "text_fontsize": parseInt(payload.text_fontsize),
-    "rotation_angle": parseInt(payload.rotation_angle),
-    "inactived_date": payload.inactived_date,
-    "created_date": "2022-04-09T08:41:40.514Z",
-    "datelastmaint": "2022-04-09T08:41:40.514Z",
-    "is_approve": true
-  }
-  // console.log('call action', param)
-  // call xuống backend url + param 
-  const result = await $http.post(URLSERVER.insertWheel, param);
+  // call xuống backend url + param
+  const result = await $http.post(URLSERVER.insertWheel, payload);
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
@@ -58,23 +28,8 @@ export const insertWheel = (payload) => async (dispatch, getState, { $http }) =>
 }
 
 export const updateWheel = (payload) => async (dispatch, getState, { $http }) => {
-  const param = {
-    "wheel_id": parseInt(payload.wheel_id),
-    "num_segments": parseInt(payload.num_segments),
-    "wheel_name": payload.wheel_name,
-    "account_nbr": payload.account_nbr,
-    "total_value": parseInt(payload.total_value),
-    "remain_value": parseInt(payload.remain_value),
-    "outer_radius": parseInt(payload.outer_radius),
-    "text_fontsize": parseInt(payload.text_fontsize),
-    "rotation_angle": parseInt(payload.rotation_angle),
-    "inactived_date": payload.inactived_date,
-    "created_date": "2022-04-09T08:41:40.514Z",
-    "datelastmaint": "2022-04-09T08:41:40.514Z",
-    "is_approve": true
-  }
   // call xuống backend url + param 
-  const result = await $http.post(URLSERVER.updateWheelById, param);
+  const result = await $http.put(URLSERVER.updateWheelById, payload);
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
@@ -85,21 +40,9 @@ export const updateWheel = (payload) => async (dispatch, getState, { $http }) =>
 export const deleteWheelById = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
     "wheel_id": parseInt(payload.wheel_id),
-    "num_segments": parseInt(payload.num_segments),
-    "wheel_name": payload.wheel_name,
-    "account_nbr": payload.account_nbr,
-    "total_value": parseInt(payload.total_value),
-    "remain_value": parseInt(payload.remain_value),
-    "outer_radius": parseInt(payload.outer_radius),
-    "text_fontsize": parseInt(payload.text_fontsize),
-    "rotation_angle": parseInt(payload.rotation_angle),
-    "inactived_date": payload.inactived_date,
-    "created_date": "2022-04-09T08:41:40.514Z",
-    "datelastmaint": "2022-04-09T08:41:40.514Z",
-    "is_approve": true
   }
   // call xuống backend url + param 
-  const result = await $http.post(URLSERVER.deleteWheelById, param);
+  const result = await $http.delete(URLSERVER.deleteWheelById, param);
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
@@ -115,6 +58,15 @@ export const filterWheel = (payload) => async (dispatch, getState, { $http }) =>
   }
   const listWheel = data.data;
   dispatch(setSearchWheel(listWheel))
+  return true
+}
+
+export const sendAppove = (payload) => async (dispatch, getState, { $http }) => {
+  const result = await $http.post(URLSERVER.updateStateWheel, payload);
+  const { success, data } = result;
+  if (!success || !data.success) {
+    return false;
+  }
   return true
 }
 

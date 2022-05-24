@@ -1,12 +1,13 @@
 :root {
   --wheel-font: 'Lato', 'Quicksand', sans-serif;
-  --wheel-font-size: 16px;
+  --wheel-font-size: 12px;
   --wheel-icon-size: 40px;
   --wheel-size: 500px;
   --wheel-position-wheel: 15%;
   --wheel-slice-spacing: 50px;
   --wheel-border-size: 5px;
   --wheel-color: #337ab7;
+  --background-color: white;
   --neutral-color: white;
   --PI: 3.14159265358979;
   --nb-item: 0;
@@ -16,7 +17,7 @@
   --spinning-duration: 4s;
   --reset-duration: 0.25s;
   --item-reward-url: url("/images/reward/reward1.png");
-  --scale-distance: 1;
+  --scale-distance: 2;
 }
 
 // Nhac custom
@@ -73,11 +74,12 @@
 // done
 @media screen and (min-width: 1200px) {
   :root {
-    --wheel-size: 650px;
-    --wheel-font-size: 22px;
+    --wheel-size: 600px;
+    --wheel-font-size: 16px;
+    --wheel-font-size: 16px;
     --wheel-icon-size: 40px;
     --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
-    --scale-distance: 0.5;
+    --scale-distance: 1.1;
   }
 
   .wheel-viewbox {
@@ -120,10 +122,11 @@
 @media screen and (min-width: 992px) and (max-width: 1199px) {
   :root {
     --wheel-size: 600px;
-    --wheel-font-size: calc(20px + (26 - 20) * ((100vw - 992px) / (1199 - 992)));
+    --wheel-font-size: calc(12px + (26 - 20) * ((100vw - 992px) / (1199 - 992)));
     --wheel-icon-size: 40px;
     --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
-    --scale-distance: 0.5;
+    --scale-distance: 1.1;
+
   }
 
   .wheel-viewbox {
@@ -166,10 +169,10 @@
 @media screen and (min-width: 768px) and (max-width: 991px) {
   :root {
     --wheel-size: calc(100vw/(sqrt(2)) - 10px);
-    --wheel-font-size: calc(18px + (26 - 18) * ((100vw - 768px) / (991 - 768)));
+    --wheel-font-size: calc(12px + (26 - 18) * ((100vw - 768px) / (991 - 768)));
     --wheel-icon-size: 35px;
     --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
-    --scale-distance: 0.5;
+    --scale-distance: 1.2;
   }
 
   .wheel-viewbox {
@@ -209,13 +212,59 @@
 }
 
 // done
-@media screen and (min-width: 576px) and (max-width: 767px) {
+@media screen and (min-width: 676px) and (max-width: 767px) {
   :root {
     --wheel-size: calc((100vw/(sqrt(2))) - 10px);
-    --wheel-font-size: calc(15px + (22 - 15) * ((100vw - 576px) / (767 - 576)));
+    --wheel-font-size: calc(10px + (22 - 15) * ((100vw - 576px) / (767 - 576)));
     --wheel-icon-size: 33px;
     --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
-    --scale-distance: 1;
+    --scale-distance: 1.3;
+
+  }
+
+  .wheel-viewbox {
+    top: calc(var(--wheel-size)/2 - 70px/2 + 10px);
+    left: calc(var(--wheel-size)/2 - 70px/2 + 10px);
+    width: 70px;
+    height: 70px;
+    border-radius: 70px;
+  }
+
+  .wheel-viewbox-border {
+    top: calc(var(--wheel-size)/2 - 100px/2 + 10px);
+    left: calc(var(--wheel-size)/2 - 100px/2 + 10px);
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
+
+  }
+
+  @keyframes animation_logo {
+    from {
+      top: calc(var(--wheel-size)/2 - 50px/2 + 10px);
+      left: calc(var(--wheel-size)/2 - 50px/2 + 10px);
+      width: 50px;
+      height: 50px;
+      border-radius: 50px;
+    }
+
+    to {
+      top: calc(var(--wheel-size)/2 - 70px/2 + 10px);
+      left: calc(var(--wheel-size)/2 - 70px/2 + 10px);
+      width: 70px;
+      height: 70px;
+      border-radius: 50px;
+    }
+  }
+}
+
+@media screen and (min-width: 576px) and (max-width: 675px) {
+  :root {
+    --wheel-size: calc((100vw/(sqrt(2))) - 10px);
+    --wheel-font-size: calc(10px + (22 - 15) * ((100vw - 576px) / (767 - 576)));
+    --wheel-icon-size: 33px;
+    --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
+    --scale-distance: 1.5;
 
   }
 
@@ -256,13 +305,61 @@
 }
 
 // done
-@media screen and (min-width: 414px) and (max-width: 575px) {
+@media screen and (min-width: 474px) and (max-width: 575px) {
   :root {
     --wheel-size: calc((100vw/(sqrt(2))) - 10px);
-    --wheel-font-size: calc(12px + (18 - 12) * ((100vw - 414px) / (575 - 414)));
+    --wheel-font-size: calc(8px + (14 - 8) * ((100vw - 414px) / (575 - 414)));
     --wheel-icon-size: 24px;
     --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
-    --scale-distance: 1.5;
+    --scale-distance: 2;
+
+  }
+
+  .wheel-viewbox {
+    top: calc(var(--wheel-size)/2 - 50px/2 + 10px);
+    left: calc(var(--wheel-size)/2 - 50px/2 + 10px);
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+
+  }
+
+  .wheel-viewbox-border {
+    top: calc(var(--wheel-size)/2 - 80px/2 + 10px);
+    left: calc(var(--wheel-size)/2 - 80px/2 + 10px);
+    width: 80px;
+    height: 80px;
+    border-radius: 80px;
+
+  }
+
+  @keyframes animation_logo {
+    from {
+      top: calc(var(--wheel-size)/2 - 35px/2 + 10px);
+      left: calc(var(--wheel-size)/2 - 35px/2 + 10px);
+      width: 35px;
+      height: 35px;
+      border-radius: 35px;
+    }
+
+    to {
+      top: calc(var(--wheel-size)/2 - 50px/2 + 10px);
+      left: calc(var(--wheel-size)/2 - 50px/2 + 10px);
+      width: 50px;
+      height: 50px;
+      border-radius: 50px;
+    }
+  }
+}
+
+// done
+@media screen and (min-width: 414px) and (max-width: 473px) {
+  :root {
+    --wheel-size: calc((100vw/(sqrt(2))) - 10px);
+    --wheel-font-size: calc(8px + (14 - 8) * ((100vw - 414px) / (575 - 414)));
+    --wheel-icon-size: 24px;
+    --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
+    --scale-distance: 2.3;
 
   }
 
@@ -307,10 +404,10 @@
 @media screen and (min-width: 360px) and (max-width: 413px) {
   :root {
     --wheel-size: calc((100vw/(sqrt(2))) - 10px);
-    --wheel-font-size: calc(8px + (16 - 8) * ((100vw - 360px) / (413 - 360)));
+    --wheel-font-size: calc(8px + (8 - 8) * ((100vw - 360px) / (413 - 360)));
     --wheel-icon-size: 15px;
     --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
-    --scale-distance: 1.8;
+    --scale-distance: 2.55;
   }
 
   .wheel-viewbox {
@@ -354,10 +451,10 @@
 @media screen and (min-width: 320px) and (max-width: 359px) {
   :root {
     --wheel-size: calc((100vw/(sqrt(2))) - 10px);
-    --wheel-font-size: 8px;
+    --wheel-font-size: 5px;
     --wheel-icon-size: 15px;
     --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
-    --scale-distance: 1.8;
+    --scale-distance: 2.9;
   }
 
   .wheel-viewbox {
@@ -401,10 +498,10 @@
 @media screen and (max-width: 319px) {
   :root {
     --wheel-size: calc((100vw/(sqrt(2))) - 20px);
-    --wheel-font-size: 8px;
+    --wheel-font-size: 5px;
     --wheel-icon-size: 12px;
     --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
-    --scale-distance: 3;
+    --scale-distance: 3.5;
   }
 
   .wheel-viewbox {
@@ -499,7 +596,7 @@
   overflow: hidden;
   border-radius: 50%;
   border: solid var(--wheel-color) var(--wheel-border-size);
-  background-color: var(--wheel-color);
+  background-color: var(--background-color);
   transition: transform var(--reset-duration);
   transform: rotate(0deg);
   cursor: pointer;

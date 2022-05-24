@@ -9,7 +9,7 @@ import { buildReducer } from '../wrapper';
 //Creating my reducer
 export default buildReducer(
   {
-    listTopic: []
+    listTopic: [],
   }, {
   [TYPES.TOPIC_SEARCH]: (state = listTopic, payload) => {
 

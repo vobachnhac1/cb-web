@@ -19,7 +19,8 @@ const { Sider } = Layout;
 import __isArray from 'lodash/isArray';
 import __isEmpty from 'lodash/isEmpty';
 import _ from 'lodash';
-import classes from './style.module.less';
+import { useRouter } from 'next/router';
+import { element } from 'prop-types';
 
 // qui tắc đặt tên => sub['tên'] (cha) => lấy ra con => nếu lấy 2/3 con thì ghi rõ thằng con được lấy
 
@@ -30,51 +31,89 @@ const menu = [
     parentKey: null,
     path: '/admin/topic',
     icon: <CodepenOutlined />,
-    title: 'Topic',
+    title: '1 Chủ Đề',
     child: null,
   }, {
     key: 'subWheel',
     parentKey: null,
     path: '/admin/wheel',
     icon: <CodeSandboxOutlined />,
-    title: 'Wheel',
-    child: null,
-  }, {
-    key: 'subWheelDetail',
-    parentKey: null,
-    path: '/admin/wheel-detail',
-    icon: <AliyunOutlined />,
-    title: 'Wheel Detail',
+    title: '3 Vòng Quay',
     child: null,
   }, {
     key: 'subSegment',
     parentKey: null,
     path: '/admin/segment',
     icon: <CodepenCircleOutlined />,
-    title: 'Segment',
+    title: '2 Giải thưởng',
     child: null,
+  }, {
+    key: 'subRules',
+    parentKey: null,
+    path: '/admin/rules',
+    icon: <AliyunOutlined />,
+    title: '4 Quy tắc',
+    child: [
+      {
+        key: 'viewRules',
+        parentKey: 'subRules',
+        path: '/admin/rules/management',
+        icon: <AliyunOutlined />,
+        title: 'Quản lý quy tắc',
+        child: null,
+      }, {
+        key: 'subWheelApprove',
+        parentKey: 'subRules',
+        path: '/admin/rules/wheel-approve',
+        icon: <AliyunOutlined />,
+        title: 'Phê duyệt vòng quay',
+        child: null,
+      }, {
+        key: 'subRulesReward',
+        parentKey: 'subRules',
+        path: '/admin/rules/reward-generate',
+        icon: <AliyunOutlined />,
+        title: 'Tạo phần thưởng tự động',
+        child: null,
+      }, {
+        key: 'subRewardHistory',
+        parentKey: 'subRules',
+        path: '/admin/rules/reward-history',
+        icon: <AliyunOutlined />,
+        title: 'Danh sách trao thưởng',
+        child: null,
+      }
+    ],
   },
 ];
+
 const permission = [
   {
     parent: 'subTopic',
     child: null,
   }, {
+    parent: 'subSegment',
+    child: null,
+  }, {
     parent: 'subWheel',
     child: null,
   }, {
-    parent: 'subWheelDetail',
-    child: null,
-  }, {
-    parent: 'subSegment',
-    child: null,
+    parent: 'subRules',
+    child: ['viewRules', 'subRulesReward', , 'subRewardHistory']
   },
+  // 'subWheelApprove',
 ];
 
 
+
 const SliderCustom = (props) => {
+  const router = useRouter();
   const [collapsed, toggleCollapsed] = useState(false);
+  const [openKeys, setOpenKeys] = useState([]);
+  const [isChoosed, setIsChoosed] = useState(null);
+  const [rootSubmenuKeys, setRootSubmenuKeys] = useState([]);
   const [mapArrScreen, setMapArrScreen] = useState([]);
+
   useEffect(() => {
     const arrScreen = permission.map((item) => {
       let arrTemp = [];
@@ -99,7 +138,25 @@ const SliderCustom = (props) => {
       });
       return arrTemp;
     });
+    const path = router.pathname;
+    let keyChoose = null;
+    arrScreen.forEach(item => {
+      if (item.path == path) {
+        keyChoose = item.key
+      } else {
+        if (item.child && item.child.length > 0) {
+          item.child.forEach(element => {
+            if (element.path == path) {
+              keyChoose = element.key
+              setOpenKeys([item.key]);
+            }
+          })
+        }
+      }
+    })
     setMapArrScreen(arrScreen);
+    setRootSubmenuKeys(arrScreen.map(item => item.key));
+    setIsChoosed(keyChoose);
   }, []);
 
   const renderItemMenu = (item) => {
@@ -109,8 +166,7 @@ const SliderCustom = (props) => {
     }
     return (
       <Menu.Item key={key} icon={icon}>
-        {/* <span>{title}</span> */}
-        <Link href={path}>
+        <Link href={path} >
           <a>{title}</a>
         </Link>
       </Menu.Item>
@@ -126,8 +182,18 @@ const SliderCustom = (props) => {
     );
   };
 
+  const onOpenChange = (keys) => {
+    const latestOpenKey = keys.find(key => openKeys.indexOf(key) === -1);
+    if (rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+      setOpenKeys(keys);
+    } else {
+      setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
+    }
+  }
+
   return (
     <Sider
+      // onMouseLeave={() => toggleCollapsed(true)}
       width={250}
       collapsible
       collapsed={collapsed}
@@ -135,13 +201,15 @@ const SliderCustom = (props) => {
     >
       <Menu
         mode='inline'
-        defaultSelectedKeys={['0']}
-        defaultOpenKeys={['sub1']}
+        onOpenChange={onOpenChange}
+        selectedKeys={isChoosed}
+        openKeys={openKeys}
         style={{ height: '100%', borderRight: 0 }}
       >
         {mapArrScreen.map(renderItemMenu)}
       </Menu>
     </Sider>
+
   );
 };
 

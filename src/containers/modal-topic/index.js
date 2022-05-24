@@ -4,10 +4,8 @@
 * Phone 0906.918.738
 * Created: 2022-04-08
 *------------------------------------------------------- */
-require("./style.module.less");
+require("./styles.less");
 
-import Header from '@/components/Head';
-import Layout from '@/layout';
 import { Card, Col, Form, Input, Modal, Row, Select, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 
@@ -17,7 +15,6 @@ import { getters as gettersTopic } from '@/redux/topic';
 import * as Message from '@/components/message';
 
 const classNames = require("classnames");
-const styles = require("./style.module.less");
 const { Option } = Select;
 const { Text } = Typography;
 
@@ -36,7 +33,7 @@ const layoutContent = {
 const ModalTopic = (props) => {
   const { callback, visible = false, bodyModel: { isAdd = false, record = null } } = props;
   const dispatch = useDispatch();
-  const [isApprove, setIsApprove] = useState(record ? record.status_yn : "N");
+  const [isApprove, setIsApprove] = useState(record ? record.status_yn : "Y");
   const [topicName, setTopicName] = useState(record ? record.topic_name : "");
 
   useEffect(() => {
@@ -44,13 +41,13 @@ const ModalTopic = (props) => {
     setIsApprove(record ? record.status_yn : "")
   }, [visible]);
 
-  const onChangeSelect = (record) => {
-    setIsApprove(record);
-  }
+  // const onChangeSelect = (record) => {
+  //   setIsApprove(record);
+  // }
 
   const onCallback = async () => {
-    if (!topicName || topicName.lenght == 0) {
-      Message.Warning("NOTYFICATON", "Topic Name blank");
+    if (!topicName || topicName.length == 0) {
+      Message.Warning("Thông Báo", "Tên chủ đề không được để trống!");
       return;
     }
     const param = {
@@ -66,10 +63,10 @@ const ModalTopic = (props) => {
         setIsApprove('N');
         setTopicName('');
         callback({ visible: false });
-        Message.Success("NOTYFICATON", "ADD NEW TOPIC SUCCESS");
+        Message.Success("Thông Báo", "Thêm chủ đề thành công");
         return;
       }
-      Message.Error("NOTYFICATON", "ADD NEW TOPIC FAILED");
+      Message.Error("Thông Báo", "Thêm chủ đề thất bại");
       return;
     }
     const result = await dispatch(actionTopic.updateTopic(param));
@@ -77,10 +74,10 @@ const ModalTopic = (props) => {
       setIsApprove('N');
       setTopicName('');
       callback({ visible: false });
-      Message.Success("NOTYFICATON", "UPDATE TOPIC SUCCESS");
+      Message.Success("Thông Báo", "Cập nhật chủ đề thành công");
       return;
     }
-    Message.Error("NOTYFICATON", "UPDATE TOPIC FAILED");
+    Message.Error("Thông Báo", "Cập nhật chủ đề thất bại");
   }
   const onCancel = () => {
     callback({ visible: false });
@@ -92,14 +89,14 @@ const ModalTopic = (props) => {
       closable={false}
       centered
       visible={visible}
-      okText={'Comfirm'}
-      cancelText={'Cancel'}
+      okText={'Xác nhận'}
+      cancelText={'Thoát'}
       onOk={onCallback}
       onCancel={onCancel}
     >
       <Card
-        headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'center', backgroundColor: "#0C74CF" }}
-        title={isAdd ? "ADD TOPIC" : 'EDIT TOPIC'}
+        headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'center', backgroundColor: "rgb(3, 77, 162)" }}
+        title={isAdd ? "Thêm chủ đề" : 'Cập nhật chủ đề'}
         bordered={true}
         style={{ backgroundColor: '#FFFFFF' }}>
         <Form
@@ -109,7 +106,7 @@ const ModalTopic = (props) => {
         >
           <Row >
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'TOPIC NAME'}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Tên chủ đề'}</Text>
             </Col>
             <Col  {...layoutContent}>
               <Input
@@ -118,23 +115,23 @@ const ModalTopic = (props) => {
                 onChange={(text) => setTopicName(text.target.value)} />
             </Col>
           </Row>
-          <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'APPROVE'}</Text>
-            </Col>
-            <Col  {...layoutContent}>
+          {/* <Row style={{ marginTop: 10 }}> */}
+          {/* <Col {...layoutHeader} >
+              <Text className={classNames({ 'text-font': true })}>{'Phê Duyệt'}</Text>
+            </Col> */}
+          {/* <Col  {...layoutContent}>
               <Select
-                disabled={isAdd}
-                defaultValue={isApprove == 'Y' ? 'YES' : 'NO'}
-                value={isApprove == 'Y' ? 'YES' : 'NO'}
+                disabled={true}
+                defaultValue={isApprove == 'Y' ? 'Phê duyệt' : 'Không'}
+                value={isApprove == 'Y' ? 'Phê duyệt' : 'Không'}
                 style={{ width: '100%' }}
                 onChange={onChangeSelect}
               >
-                <Option key='Y'>YES</Option>
-                <Option key='N'>NO</Option>
+                <Option key='Y'>{"Phê duyệt"}</Option>
+                <Option key='N'>{"Không"}</Option>
               </Select>
-            </Col>
-          </Row>
+            </Col> */}
+          {/* </Row> */}
         </Form>
       </Card>
     </Modal>

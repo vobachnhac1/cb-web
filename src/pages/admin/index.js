@@ -5,18 +5,15 @@
 * Created: 2022-04-07
 *------------------------------------------------------- */
 require("./style.module.less");
-import { useState } from 'react';
 import * as styles from './style.module.less';
 import * as classnames from 'classnames';
 import LayoutHome from '@/containers/Home';
-
-
+import DisplayWheel from '@/pages/wheel/[wheel-info]';
 
 export default function HomeWheel() {
 
   return (
-    <LayoutHome>
-    </LayoutHome>
+    <LayoutHome />
   )
 }
 
