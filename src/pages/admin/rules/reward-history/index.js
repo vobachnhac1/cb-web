@@ -4,8 +4,7 @@
 * Phone 0906.918.738
 * Created: 2022-04-29
 *------------------------------------------------------- */
-require("./style.module.less");
-import * as styles from './style.module.less';
+require("./styles.less");
 import * as classnames from 'classnames';
 import { useState, useEffect } from 'react';
 import LayoutHome from '@/containers/Home';
@@ -178,7 +177,7 @@ export default function RewardHistory(props) {
         <div style={{ marginTop: 20 }} />
         <Card>
           <Table
-            className={styles["table_layout"]}
+            className={"table_layout"}
             columns={columns}
             dataSource={listRewardHis}
             size='small'

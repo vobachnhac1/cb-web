@@ -4,7 +4,7 @@
 * Phone 036.847.5269
 * Created: 2022-04-07
 *------------------------------------------------------- */
-require("./style.module.less");
+require("./styles.less");
 import { useState, useEffect } from 'react';
 import LayoutHome from '@/containers/Home';
 import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Input, DatePicker } from 'antd';

@@ -4,18 +4,16 @@
 * Phone 0906.918.738
 * Created: 2022-04-08
 *------------------------------------------------------- */
-require("./style.module.less");
+require("./styles.less");
 import { Card, Col, Form, Select, Modal, Row, Typography, DatePicker, Tag } from 'antd';
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
-import moment from 'moment';
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
 import { actions as actionsRules } from '@/redux/rules';
-import _, { set } from 'lodash';
+import _ from 'lodash';
 
 const classNames = require("classnames");
-const styles = require("./style.module.less");
 const { Text } = Typography;
 const { RangePicker } = DatePicker;
 
@@ -115,7 +113,7 @@ const ModalWheelApprove = (props) => {
         >
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Mã quy tắc:'}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Mã quy tắc:'}</Text>
             </Col>
             <Col  {...layoutContent}>
               {/* <Input style={{ width: '100%' }} onChange={(text) => { }} /> */}

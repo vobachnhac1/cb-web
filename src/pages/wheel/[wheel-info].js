@@ -6,14 +6,13 @@
 *------------------------------------------------------- */
 import { useEffect, useState } from 'react';
 import WheelChild from '@/components/WheelChild';
-require("./style.module.less");
+require("./styles.less");
 require('./tabsStyle.less');
 const classNames = require("classnames");
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
 import { actions as actionsEventWheel } from '@/redux/event-wheel';
 import { getters as gettersEventWheel } from '@/redux/event-wheel';
-import * as styles from './style.module.less';
 import __ from 'lodash';
 import * as Message from '@/components/message';
 import { useRouter } from 'next/router';
@@ -134,7 +133,7 @@ export default function DisplayWheel(props) {
   }
 
   return (
-    <div className={styles['App']} style={{
+    <div className={'App'} style={{
       backgroundImage: null
     }}>
       <Header title={PathTitle[`${path}`]} />

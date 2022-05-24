@@ -5,8 +5,7 @@
 * Created: 2022-04-04
 *------------------------------------------------------- */
 import { useEffect, useState } from 'react'
-import * as styles from './style.module.less';
-require("./style.module.less");
+require("./styles.less");
 const classNames = require("classnames");
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
@@ -118,17 +117,17 @@ const WheelChild = (props) => {
   }
 
   return (
-    <div className={styles["wheel-container"]}>
+    <div className={"wheel-container"}>
       {spinning && <ModalComfirmReward onInit={spinning} data={rewardBody} callback={onReset} />}
-      <div className={classNames({ [styles['wheel-viewbox-border']]: true })} />
-      <div className={classNames({ [styles['wheel-viewbox']]: true })} onClick={activeEvent} />
+      <div className={classNames({ 'wheel-viewbox-border': true })} />
+      <div className={classNames({ 'wheel-viewbox': true })} onClick={activeEvent} />
       <div className={
-        classNames({ [styles["wheel"]]: true }, { [styles["spinning"]]: spinning })} //chỗ import
+        classNames({ 'wheel': true }, { 'spinning': spinning })} //chỗ import
         style={wheelVars}>
         {places.map((item, index) => {
           return (
             <div
-              className={classNames({ [styles["wheel-item"]]: true })}
+              className={classNames({ 'wheel-item': true })}
               key={item.no}
               style={{
                 '--item-nb': index,
@@ -137,7 +136,7 @@ const WheelChild = (props) => {
                 '--background-color': item.wheel_color,
               }}>
               <div
-                className={classNames({ [styles["wheel-item-icon"]]: true })}
+                className={classNames({ "wheel-item-icon": true })}
               />
               {item.segment_name}
             </div>
