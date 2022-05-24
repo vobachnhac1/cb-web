@@ -15,25 +15,39 @@ import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Typography, I
 const { Text } = Typography;
 import * as Message from '@/components/message';
 import ModalSegment from '@/containers/modal-segment';
-import ModalWheel from '@/containers/modal-wheel'
-
+import ModalTopic from '@/containers/modal-topic';
+import ModalWheelDetail from '@/containers/modal-wheel-detail'
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
 import { actions as actionSegment } from '@/redux/segment';
 import { getters as gettersSegment } from '@/redux/segment';
-import { actions as actionWheel } from '@/redux/wheel';
-import { getters as gettersWheel } from '@/redux/wheel';
+import { actions as actionTopic } from '@/redux/topic';
+import { getters as gettersTopic } from '@/redux/topic';
+import { actions as actionWheelDetail } from '@/redux/wheel-detail';
+import { getters as gettersWheelDetail } from '@/redux/wheel-detail';
 
 import moment from 'moment';
-import __ from 'lodash';
+// handhandleDelete
 
-export default function Wheel(props) {
+
+export default function WheelDetail(props) {
+  const [topicId, setTopicId] = useState('');
   const [dataSearch, setDataSearch] = useState('')
   const dispatch = useDispatch();
-  const listWheel = useSelector(gettersWheel.getStateLoadPageWheel) || [];
-  const [filter, setFilter] = useState({
-    wheel_name: null,
-  });
+  const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
+  const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
+  const listWheelDetail = [
+    {
+      "wheel_detail_id": 1,
+      "wheel_id": 0,
+      "segment_id": 1,
+      "no": 1,
+      "goal_yn": 1,
+      "remain_value": 1,
+      "created_date": "2022-04-06T17:05:36.000Z",
+      "datelastmaint": "2022-04-06T17:05:36.000Z"
+    }
+  ];
 
   // gọi 1 function rồi theo dõi nhưng thay đổi của param đó
   useEffect(() => {
@@ -42,95 +56,89 @@ export default function Wheel(props) {
 
 
   const initPage = async () => {
-    const paramsInit = {
-      "wheel_id": 0,
-      "num_segments": 0,
-      "wheel_name": "string",
-      "account_nbr": "string",
-      "total_value": 0,
-      "remain_value": 0,
-      "outer_radius": 0,
-      "text_fontsize": 0,
-      "rotation_angle": 0,
-      "inactived_date": "2022-04-09T07:38:05.782Z",
-      "created_date": "2022-04-09T07:38:05.782Z",
-      "datelastmaint": "2022-04-09T07:38:05.782Z",
-      "is_approve": true
-    }
-    await dispatch(actionWheel.searchWheel(paramsInit));
-
+    // const paramsInitSegment = {
+    //   "wheel_id": 0,
+    //   "wheel_detail_id": 0,
+    //   "segment_id": 0,
+    //   "no": 0,
+    //   "goal_yn": 0,
+    //   "remain_value": 0,
+    //   "inactived_date": "2022-04-11T06:06:50.653Z",
+    //   "created_date": "2022-04-11T06:06:50.653Z",
+    //   "datelastmaint": "2022-04-11T06:06:50.653Z",
+    //   "is_approve": true
+    // }
+    // await dispatch(actionSegment.searchSegment(paramsInitSegment));
+    await dispatch(actionTopic.searchTopic());
+    await dispatch(actionWheelDetail.searchWheelDetail());
   }
 
-  const onSearch = async () => {
-    const { wheel_name } = filter;
-    if (__.isNil(wheel_name)) {
-      initPage();
-    } else {
-      const result = await dispatch(actionWheel.filterWheel(filter));
-      return;
+  const searchBtn = async () => {
+    let paramsSearch = {
+      "topic_id": topicId,
+      "segment_id": 0,
+      "segment_name": "string",
+      "segment_color": "string",
+      "inactived_date": "2022-04-08T04:17:56.025Z",
+      "created_date": "2022-04-08T04:17:56.025Z",
+      "datelastmaint": "2022-04-08T04:17:56.025Z",
+      "is_approve": true,
+      'dataSearch': dataSearch,
     }
+    await dispatch(actionSegment.searchSegment(paramsSearch));
   }
-
 
 
   const handleDelete = async (record) => {
     let dataRecord = { ...record }
-    const result = await dispatch(actionWheel.deleteWheelById(dataRecord));
+    const result = await dispatch(actionSegment.deleteSegmentById(dataRecord));
     if (result) {
       initPage();
-      Message.Success("NOTYFICATON", "DELETE WHEEL SUCCESS");
+      Message.Success("NOTYFICATON", "DELETE TOPIC SUCCESS");
       return
     }
-    Message.Error("NOTYFICATON", "DELETE WHEEL FAIL");
+    Message.Error("NOTYFICATON", "DELETE TOPIC FAIL");
   };
   const columns = [
     {
       title: 'ID',
-      dataIndex: 'wheel_id',
-      key: 'wheel_id',
+      dataIndex: 'wheel_detail_id',
+      key: 'wheel_detail_id',
       fixed: 'left',
-      width: 50
+      width: 100
       // render: text => <a>{text}</a>,
     },
     {
-      title: 'Tên vòng quay',
-      dataIndex: 'wheel_name',
-      key: 'wheel_name',
+      title: 'Mã vòng quay',
+      dataIndex: 'wheel_id',
+      key: 'wheel_id',
       fixed: 'left',
       width: 250
     },
     {
-      title: 'Số kết quả',
-      dataIndex: 'num_segments',
-      key: 'num_segments',
+      title: 'Mã trúng thưởng',
+      dataIndex: 'segment_id',
+      key: 'segment_id',
       fixed: 'center',
-      width: 100,
+      width: 250,
 
     },
     {
-      title: 'Tổng giá trị giải',
-      dataIndex: 'total_value',
-      key: 'total_value',
+      title: 'STT',
+      dataIndex: 'no',
+      key: 'no',
+      fixed: 'center',
       width: 250,
+
     },
     {
-      title: 'Giá trị còn lại',
+      title: 'Số lần trung thưởng còn lại',
       dataIndex: 'remain_value',
       key: 'remain_value',
+      fixed: 'center',
       width: 250,
-    },
-    {
-      title: 'Ngày hết hiệu lực',
-      dataIndex: 'inactived_date',
-      key: 'inactived_date',
-      width: 170,
-      render: (text, record) => {
-        return <p>
-          {moment(text).format('YYYY-MM-DD, hh:mm:ss')}
-        </p>
-      }
-    },
 
+    },
     {
       title: 'Action',
       key: 'action',
@@ -138,9 +146,8 @@ export default function Wheel(props) {
       render: (text, record) => (
 
         <Space size="middle">
-          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateWheel(record)} >Edit</Button>
-
-          {listWheel.length >= 1 ? (
+          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateDetail(record)} >Edit</Button>
+          {listWheelDetail.length >= 1 ? (
             <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)} >
               <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Delete</Button>
             </Popconfirm>
@@ -164,14 +171,14 @@ export default function Wheel(props) {
     record: null
   });
 
-  const addNewWheel = () => {
+  const addNewWheelDetail = () => {
     setVisible(true);
     setBodyModel({
       record: null,
       isAdd: true
     });
   }
-  const updateWheel = (record) => {
+  const updateDetail = (record) => {
     setVisible(true);
     setBodyModel({
       record: record,
@@ -188,25 +195,25 @@ export default function Wheel(props) {
   return (
     <LayoutHome>
       <Col style={{ marginBottom: 30 }}>
-        <ModalWheel visible={visible} bodyModel={bodyModel} callback={callbackModal} />
+        <ModalWheelDetail visible={visible} bodyModel={bodyModel} callback={callbackModal} />
 
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
-          title="Vòng Quay"
+          title="Chi tiết vòng quay"
           bordered={true}
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>
             <Row gutter={[16, 24]}>
               <Col className="gutter-row" span={12}>
-                <Input placeholder="Tên vòng quay cần tìm" value={filter.wheel_name} onChange={(event) => setFilter({ ...filter, wheel_name: event.target.value })} />
+                <Input placeholder="Thông tin cần tìm" onChange={(event) => setDataSearch(event.target.value)} />
               </Col>
             </Row>
             <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
               <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewWheel}>Thêm</Button>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewWheelDetail}>Thêm</Button>
               </Col>
               <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={searchBtn}>Tìm kiếm</Button>
               </Col>
             </Row>
           </Col>
@@ -216,7 +223,7 @@ export default function Wheel(props) {
           <Col span={48} style={{ marginTop: 10 }}>
             <Table
               columns={columns}
-              dataSource={listWheel}
+              dataSource={listWheelDetail}
               size='large'
               pagination={pagination}
               loading={false}
