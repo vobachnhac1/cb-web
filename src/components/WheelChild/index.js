@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { actions as actionsEventWheel } from '@/redux/event-wheel';
 import { getters as gettersEventWheel } from '@/redux/event-wheel';
 import * as Message from '@/components/message';
+import ModalComfirmReward from '@/containers/modal-comfirm-reward';
 
 const WheelChild = (props) => {
   const { roles = null, arrItem = [], selectedItem = null } = props;
@@ -20,6 +21,8 @@ const WheelChild = (props) => {
   const places = !roles ? useSelector(gettersEventWheel.getContentReward) : (arrItem || []);
   const isProcessing = useSelector(gettersEventWheel.getProccessing);
   const eventInfo = useSelector(gettersEventWheel.getEventInfo);
+  const [rewardBody, setRewardBody] = useState(null);
+
   const wheelVars = {
     '--nb-item': places.length,
     '--selected-item': selectedItem,
@@ -31,6 +34,7 @@ const WheelChild = (props) => {
   const spinning = selectedItem !== null ? true : false;
 
   const setup = () => {
+    setRewardBody(null)
     props.onSelectItem(null)
   }
 
@@ -47,14 +51,16 @@ const WheelChild = (props) => {
     }, 50);
   }
 
+
   const selectItem = async () => {
     let keyHost = 0;
     Message.Info("Thông Báo", "Bắt đầu quay");
     await dispatch(actionsEventWheel.setProcessing(true));
-    let rsReward;
+    let rsReward = null;
     if (!roles) {
       if (eventInfo) {
         rsReward = await dispatch(actionsEventWheel.getRewardOfWheel());
+        setRewardBody(rsReward);
         if (rsReward) {
           if (props.onSelectItem) {
             props.onSelectItem(places.length - (parseInt(rsReward.no)));
@@ -76,18 +82,20 @@ const WheelChild = (props) => {
     }
 
     setTimeout(async () => {
-      if (!roles) {
-        if (rsReward) {
-          Message.Info("Thông Báo", `Bạn nhận được kết quả: ${rsReward.segment_name} `);
-        } else {
-          Message.Info("Thông Báo", `Chúc bạn may mắn lần sau!`);
-        }
-        await dispatch(actionsEventWheel.setProcessing(false));
-        return
-      }
-      if (selectedItem && places && places.length > 0) {
-        Message.Info("Thông Báo", `Bạn nhận được kết quả: ${arrItem.find(item => item.key == keyHost).segment_name} `);
-      }
+      // if (!roles) {
+      //   if (rsReward) {
+
+      //     console.log('rsReward: ', rsReward);
+      //     Message.Info("Thông Báo", `Bạn nhận được kết quả: ${rsReward.segment_name} `);
+      //   } else {
+      //     Message.Info("Thông Báo", `Chúc bạn may mắn lần sau!`);
+      //   }
+      //   await dispatch(actionsEventWheel.setProcessing(false));
+      //   return
+      // }
+      // if (selectedItem && places && places.length > 0) {
+      //   Message.Info("Thông Báo", `Bạn nhận được kết quả: ${arrItem.find(item => item.key == keyHost).segment_name} `);
+      // }
       await dispatch(actionsEventWheel.setProcessing(false));
     }, 4000);
   }
@@ -104,16 +112,20 @@ const WheelChild = (props) => {
     }
     return colour;
   }
+  const onReset = () => {
+    setRewardBody(null)
+    props.onSelectItem(null)
+  }
 
   return (
     <div className={styles["wheel-container"]}>
+      {spinning && <ModalComfirmReward onInit={spinning} data={rewardBody} callback={onReset} />}
       <div className={classNames({ [styles['wheel-viewbox-border']]: true })} />
       <div className={classNames({ [styles['wheel-viewbox']]: true })} onClick={activeEvent} />
       <div className={
         classNames({ [styles["wheel"]]: true }, { [styles["spinning"]]: spinning })} //chỗ import
         style={wheelVars}>
         {places.map((item, index) => {
-          console.log('item: ', item);
           return (
             <div
               className={classNames({ [styles["wheel-item"]]: true })}

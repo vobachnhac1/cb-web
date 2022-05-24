@@ -138,15 +138,13 @@ export default function DisplayWheel(props) {
       backgroundImage: null
     }}>
       <Header title={PathTitle[`${path}`]} />
-
-      {!manager&&<PopupMenu /> }
-
-
-
-
-
-      {!invalid && <WheelChild arrItem={arrItem} onSelectItem={onSelectItem} selectedItem={selectedItem} roles={manager} />}
-
+      {!manager && <PopupMenu />}
+      {!invalid && <WheelChild
+        arrItem={arrItem}
+        onSelectItem={onSelectItem}
+        selectedItem={selectedItem}
+        roles={manager}
+      />}
     </div>
   )
 }
