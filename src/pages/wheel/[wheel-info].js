@@ -7,6 +7,7 @@
 import { useEffect, useState } from 'react';
 import WheelChild from '@/components/WheelChild';
 require("./style.module.less");
+require('./tabsStyle.less');
 const classNames = require("classnames");
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
@@ -18,6 +19,35 @@ import * as Message from '@/components/message';
 import { useRouter } from 'next/router';
 import { PathTitle } from "@/constants/url-name";
 import Header from '@/components/Head';
+// pop up menu
+import BurgerIcon from '@/components/BurgerIcon';
+import Menu from '@/components/Menu'
+import Popup from "reactjs-popup";
+import PopupMenu from '@/containers/popup-menu-wheel'
+import { Tabs } from "antd";
+const { TabPane } = Tabs;
+
+
+const stylesCpx = {
+  fontFamily: "sans-serif",
+  textAlign: "center",
+  marginTop: "40px"
+};
+
+
+const contentStyle = {
+  // backgroundImage:`url(${car})` url("/images/happynewyear.jpg")
+  backgroundImage: `url(${"/images/reward_bg.jpg"})`,
+  backgroundSize: `100% 100%`,
+  backgroundRepeat: `no-repeat`,
+  // width: "80%",
+  border: "none",
+  width: `500px`,
+  height: `70vh`,
+  overflow: `auto`,
+  padding: `2rem`,
+  opacity: `0.9`,
+};
 
 export default function DisplayWheel(props) {
   /// url mẫu http://localhost:3000/wheel/000001000012-0000000001
@@ -47,6 +77,7 @@ export default function DisplayWheel(props) {
   //   },
   // });
   const dispatch = useDispatch();
+
   useEffect(() => {
     if (!manager) {
       initPage();
@@ -55,6 +86,20 @@ export default function DisplayWheel(props) {
       setPath('/wheel/')
     }
   }, []);
+
+
+  const [statePage, setStatePage] = useState(1);
+
+  useEffect(() => {
+    if (statePage == 1) {
+      /// call chile
+    } else if (statePage == 2) {
+      // call  list 1
+    } else if (statePage == 3) {
+      // call  list 2
+    }
+
+  }, [statePage])
 
   const initPage = async () => {
     const locationUrl = window.location;
@@ -83,16 +128,34 @@ export default function DisplayWheel(props) {
       setInvalid(true)
     }
   }
+
   const onSelectItem = (value) => {
     setSelectedItem(value)
   }
+
+
+
   return (
     <div className={styles['App']} style={{
       backgroundImage: null
     }}>
       <Header title={PathTitle[`${path}`]} />
+      <PopupMenu></PopupMenu>
+      {
+        // manager sẽ chức ẩn hiện menu nếu !=null => ko hiện
+        // state != 1 => hiện thị nút quay lại setStatePage =1 
+        // onCallback
+      }
+      {
+        // lấy sách trúng thưởng state 1
 
-      {invalid ? <div /> : <WheelChild arrItem={arrItem} onSelectItem={onSelectItem} selectedItem={selectedItem} roles={manager} />}
+      }
+      {/* menu */}
+
+
+
+      {!invalid && <WheelChild arrItem={arrItem} onSelectItem={onSelectItem} selectedItem={selectedItem} roles={manager} />}
+
     </div>
   )
 }
