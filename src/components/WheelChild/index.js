@@ -92,10 +92,17 @@ const WheelChild = (props) => {
     }, 4000);
   }
 
-  var stringToColour = function (str) {
-    if (!str || str && str.length == 0) {
-      return null
+  const stringToColour = (str) => {
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
     }
+    var colour = '#';
+    for (var i = 0; i < 3; i++) {
+      var value = (hash >> (i * 8)) & 0xFF;
+      colour += ('00' + value.toString(16)).substr(-2);
+    }
+    return colour;
   }
 
   return (
@@ -105,23 +112,24 @@ const WheelChild = (props) => {
       <div className={
         classNames({ [styles["wheel"]]: true }, { [styles["spinning"]]: spinning })} //chỗ import
         style={wheelVars}>
-        {places.map((item, index) => (
-          <div
-            className={classNames({ [styles["wheel-item"]]: true })}
-            key={item.no}
-            style={{
-              '--item-nb': index,
-              '--item-reward-url': `url("${item.imgBase64}")`,
-              '--neutral-color': item.wheel_color ? stringToColour(item.wheel_color) : null,
-              '--background-color': item.wheel_color ? stringToColour(item.wheel_color) : null,
-              // '--neutral-color-text': stringToColour(item.segment_color)
-            }}>
+        {places.map((item, index) => {
+          return (
             <div
-              className={classNames({ [styles["wheel-item-icon"]]: true })}
-            />
-            {item.segment_name}
-          </div>
-        )
+              className={classNames({ [styles["wheel-item"]]: true })}
+              key={item.no}
+              style={{
+                '--item-nb': index,
+                '--item-reward-url': `url("${item.imgBase64}")`,
+                '--neutral-color': stringToColour(item.wheel_color),
+                '--background-color': stringToColour(item.wheel_color),
+              }}>
+              <div
+                className={classNames({ [styles["wheel-item-icon"]]: true })}
+              />
+              {item.segment_name}
+            </div>
+          )
+        }
         )}
       </div>
     </div>
