@@ -17,7 +17,7 @@ export class RestClientCreator {
   constructor(options = {}) {
     this.axiosInstance = axios.create({
       ...options,
-      baseURL: URLSERVER.server//'http://localhost:22222' // 'https://weathermanagementdev.azurewebsites.net'
+      baseURL: process.env.URL_BE || URLSERVER.server  //'http://localhost:22222' // 'https://weathermanagementdev.azurewebsites.net'
     });
     this.axiosInstance.defaults.headers.common[CONST.REQ_HEADER_CONTENT_TYPE] = CONST.REQ_CONTENT_TYPE.JSON;
     this.axiosInstance.defaults.timeout = 60000;
