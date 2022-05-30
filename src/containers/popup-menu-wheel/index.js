@@ -1,47 +1,24 @@
 import BurgerIcon from '@/components/BurgerIcon';
-import Menu from '@/components/Menu'
-import Popup from "reactjs-popup";
+require("./styles.less");
+const classNames = require("classnames");
+import { useState } from 'react'
 import { Tabs } from "antd";
 const { TabPane } = Tabs;
 
-
-//style
-const stylesCpx = {
-  fontFamily: "sans-serif",
-  textAlign: "center",
-  marginTop: "40px"
-};
-
-
-const contentStyle = {
-  backgroundImage: `url(${"/images/reward_bg.jpg"})`,
-  backgroundSize: `100% 100%`,
-  backgroundRepeat: `no-repeat`,
-  border: "none",
-  width: `500px`,
-  height: `70vh`,
-  overflow: `auto`,
-  padding: `2rem`,
-  opacity: `0.9`,
-};
-
 export default function PopupMenu() {
+  const [open, setOpen] = useState(false);
+
   return (
-    <div style={stylesCpx}>
-      <Popup
-        modal
-        overlayStyle={{ background: "rgba(0, 0, 0, 0.3)" }}
-        contentStyle={contentStyle}
-        closeOnDocumentClick={false}
-        trigger={open => <BurgerIcon open={open} />}
-      >
-        {close => <Menu close={close} />}
+    <>
+      {/* 'reward-list', */}
+      <BurgerIcon onClick={() => setOpen(!open)} open={open} />
+      <div className={classNames({ 'reward-list': true }, { 'show': open },)} >
 
         {/* tabs info */}
-        <div>
+        <div className={'items'}>
           <Tabs defaultActiveKey="1" >
             <TabPane tab="Lịch sử trúng" key="1">
-              <ul>
+              <ul className={'items-subs'}>
                 <li><span>22/05/2022</span> - <span>Trúng giải nhất 10 triệu</span></li>
                 <li><span>22/05/2022</span> - <span>Trúng giải nhì 5 triệu</span></li>
                 <li><span>22/05/2022</span> - <span>Trúng giải may mắn</span></li>
@@ -57,7 +34,7 @@ export default function PopupMenu() {
               </ul>
             </TabPane>
             <TabPane tab="Danh sách giải" key="2">
-              <ul>
+              <ul className={'items-subs'}>
                 <li><span>01</span> - <span>Giải đặc biệt 200tr</span></li>
                 <li><span>02</span> - <span>Giải đặc biệt 80tr</span></li>
                 <li><span>03</span> - <span>Giải đặc biệt 20tr</span></li>
@@ -70,7 +47,7 @@ export default function PopupMenu() {
               </ul>
             </TabPane>
             <TabPane tab="Xếp hạng tài khoản trúng" key="3">
-              <ul>
+              <ul className={'items-subs'}>
                 <li><span>01</span> - <span>STK: 022551232322</span></li>
                 <li><span>02</span> - <span>STK: 055636456554</span></li>
                 <li><span>03</span> - <span>STK: 015854751221</span></li>
@@ -88,8 +65,11 @@ export default function PopupMenu() {
             </TabPane>
           </Tabs>
         </div>
-      </Popup>
-    </div>
+
+
+      </div >
+    </>
+
 
   )
 
