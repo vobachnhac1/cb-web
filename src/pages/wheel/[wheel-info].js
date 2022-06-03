@@ -7,7 +7,7 @@
 import { useEffect, useState } from 'react';
 import WheelChild from '@/components/WheelChild';
 require("./styles.less");
-require('./tabsStyle.less');
+// require('./tabsStyle.less');
 const classNames = require("classnames");
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
@@ -19,34 +19,9 @@ import { useRouter } from 'next/router';
 import { PathTitle } from "@/constants/url-name";
 import Header from '@/components/Head';
 // pop up menu
-import BurgerIcon from '@/components/BurgerIcon';
-import Menu from '@/components/Menu'
-import Popup from "reactjs-popup";
 import PopupMenu from '@/containers/popup-menu-wheel'
-import { Tabs } from "antd";
-const { TabPane } = Tabs;
 
 
-const stylesCpx = {
-  fontFamily: "sans-serif",
-  textAlign: "center",
-  marginTop: "40px"
-};
-
-
-const contentStyle = {
-  // backgroundImage:`url(${car})` url("/images/happynewyear.jpg")
-  backgroundImage: `url(${"/images/reward_bg.jpg"})`,
-  backgroundSize: `100% 100%`,
-  backgroundRepeat: `no-repeat`,
-  // width: "80%",
-  border: "none",
-  width: `500px`,
-  height: `70vh`,
-  overflow: `auto`,
-  padding: `2rem`,
-  opacity: `0.9`,
-};
 
 export default function DisplayWheel(props) {
   /// url mẫu http://localhost:3000/wheel/000001000012-0000000001
