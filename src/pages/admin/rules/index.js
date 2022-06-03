@@ -4,7 +4,7 @@
 * Phone 0906.918.738
 * Created: 2022-04-22
 *------------------------------------------------------- */
-require("./style.module.less");
+require("./styles.less");
 import LayoutHome from '@/containers/Home';
 import { Button, Card, Col, Row, Space, Table, Typography, Input, Tag, DatePicker } from 'antd';
 import * as Message from '@/components/message';

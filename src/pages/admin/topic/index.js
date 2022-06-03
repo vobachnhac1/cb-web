@@ -4,12 +4,11 @@
 * Phone 0906.918.738
 * Created: 2022-04-07
 *------------------------------------------------------- */
-require("./style.module.less");
+require("./styles.less");
 import { useEffect, useState } from 'react';
 import { Button, Card, Col, Input, Row, Space, Table, DatePicker, Typography, Popconfirm } from 'antd';
 import moment from 'moment';
 import __ from 'lodash';
-import * as styles from './style.module.less';
 import * as classnames from 'classnames';
 import LayoutHome from '@/containers/Home';
 import * as Message from '@/components/message';
@@ -88,13 +87,14 @@ export default function Topic(props) {
               Có vòng quay đã duyệt và đang sử dụng chủ đề này !
             </span>
             : <>
-              <Button style={{ color: record.status_yn == 'N' ? 'green' : 'red', borderColor: record.status_yn == 'N' ? 'green' : 'red', borderWidth: 0.5 }}
+              {/* <Button style={{ color: record.status_yn == 'N' ? 'green' : 'red', borderColor: record.status_yn == 'N' ? 'green' : 'red', borderWidth: 0.5 }}
                 onClick={() => approveTopic(record)} >{
                   record.status_yn == 'N' ? "Phê duyệt" : "Từ chối"
-                }</Button>
-              {
+                }</Button> */}
+              {/* {
                 record.status_yn == 'N' && <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateTopic(record)} >Cập nhật</Button>
-              }
+              } */}
+              <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateTopic(record)} >Cập nhật</Button>
               <Popconfirm title="Bạn có muốn?" onConfirm={() => deleteTopic(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom" >
                 <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
               </Popconfirm>

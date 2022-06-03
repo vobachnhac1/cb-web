@@ -5,14 +5,14 @@
 * Created: 2022-04-04
 *------------------------------------------------------- */
 import { useEffect, useState } from 'react'
-import * as styles from './style.module.less';
-require("./style.module.less");
+require("./styles.less");
 const classNames = require("classnames");
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
 import { actions as actionsEventWheel } from '@/redux/event-wheel';
 import { getters as gettersEventWheel } from '@/redux/event-wheel';
 import * as Message from '@/components/message';
+import ModalComfirmReward from '@/containers/modal-comfirm-reward';
 
 const WheelChild = (props) => {
   const { roles = null, arrItem = [], selectedItem = null } = props;
@@ -20,6 +20,8 @@ const WheelChild = (props) => {
   const places = !roles ? useSelector(gettersEventWheel.getContentReward) : (arrItem || []);
   const isProcessing = useSelector(gettersEventWheel.getProccessing);
   const eventInfo = useSelector(gettersEventWheel.getEventInfo);
+  const [rewardBody, setRewardBody] = useState(null);
+
   const wheelVars = {
     '--nb-item': places.length,
     '--selected-item': selectedItem,
@@ -31,6 +33,7 @@ const WheelChild = (props) => {
   const spinning = selectedItem !== null ? true : false;
 
   const setup = () => {
+    setRewardBody(null)
     props.onSelectItem(null)
   }
 
@@ -47,14 +50,16 @@ const WheelChild = (props) => {
     }, 50);
   }
 
+
   const selectItem = async () => {
     let keyHost = 0;
     Message.Info("Thông Báo", "Bắt đầu quay");
     await dispatch(actionsEventWheel.setProcessing(true));
-    let rsReward;
+    let rsReward = null;
     if (!roles) {
       if (eventInfo) {
         rsReward = await dispatch(actionsEventWheel.getRewardOfWheel());
+        setRewardBody(rsReward);
         if (rsReward) {
           if (props.onSelectItem) {
             props.onSelectItem(places.length - (parseInt(rsReward.no)));
@@ -76,23 +81,25 @@ const WheelChild = (props) => {
     }
 
     setTimeout(async () => {
-      if (!roles) {
-        if (rsReward) {
-          Message.Info("Thông Báo", `Bạn nhận được kết quả: ${rsReward.segment_name} `);
-        } else {
-          Message.Info("Thông Báo", `Chúc bạn may mắn lần sau!`);
-        }
-        await dispatch(actionsEventWheel.setProcessing(false));
-        return
-      }
-      if (selectedItem && places && places.length > 0) {
-        Message.Info("Thông Báo", `Bạn nhận được kết quả: ${arrItem.find(item => item.key == keyHost).segment_name} `);
-      }
+      // if (!roles) {
+      //   if (rsReward) {
+
+      //     console.log('rsReward: ', rsReward);
+      //     Message.Info("Thông Báo", `Bạn nhận được kết quả: ${rsReward.segment_name} `);
+      //   } else {
+      //     Message.Info("Thông Báo", `Chúc bạn may mắn lần sau!`);
+      //   }
+      //   await dispatch(actionsEventWheel.setProcessing(false));
+      //   return
+      // }
+      // if (selectedItem && places && places.length > 0) {
+      //   Message.Info("Thông Báo", `Bạn nhận được kết quả: ${arrItem.find(item => item.key == keyHost).segment_name} `);
+      // }
       await dispatch(actionsEventWheel.setProcessing(false));
     }, 4000);
   }
 
-  var stringToColour = function (str) {
+  const stringToColour = (str) => {
     var hash = 0;
     for (var i = 0; i < str.length; i++) {
       hash = str.charCodeAt(i) + ((hash << 5) - hash);
@@ -104,31 +111,37 @@ const WheelChild = (props) => {
     }
     return colour;
   }
+  const onReset = () => {
+    setRewardBody(null)
+    props.onSelectItem(null)
+  }
 
   return (
-    <div className={styles["wheel-container"]}>
-      <div className={classNames({ [styles['wheel-viewbox-border']]: true })} />
-      <div className={classNames({ [styles['wheel-viewbox']]: true })} onClick={activeEvent} />
+    <div className={"wheel-container"}>
+      {spinning && <ModalComfirmReward onInit={spinning} data={rewardBody} callback={onReset} />}
+      <div className={classNames({ 'wheel-viewbox-border': true })} />
+      <div className={classNames({ 'wheel-viewbox': true })} onClick={activeEvent} />
       <div className={
-        classNames({ [styles["wheel"]]: true }, { [styles["spinning"]]: spinning })} //chỗ import
+        classNames({ 'wheel': true }, { 'spinning': spinning })} //chỗ import
         style={wheelVars}>
-        {places.map((item, index) => (
-          <div
-            className={classNames({ [styles["wheel-item"]]: true })}
-            key={item.no}
-            style={{
-              '--item-nb': index,
-              '--item-reward-url': `url("${item.imgBase64}")`,
-              '--neutral-color': stringToColour(item.segment_color),
-              '--background-color': stringToColour(item.segment_color),
-              // '--neutral-color-text': stringToColour(item.segment_color)
-            }}>
+        {places.map((item, index) => {
+          return (
             <div
-              className={classNames({ [styles["wheel-item-icon"]]: true })}
-            />
-            {item.segment_name}
-          </div>
-        )
+              className={classNames({ 'wheel-item': true })}
+              key={item.no}
+              style={{
+                '--item-nb': index,
+                '--item-reward-url': `url("${item.imgBase64}")`,
+                '--neutral-color': item.wheel_color,
+                '--background-color': item.wheel_color,
+              }}>
+              <div
+                className={classNames({ "wheel-item-icon": true })}
+              />
+              {item.segment_name}
+            </div>
+          )
+        }
         )}
       </div>
     </div>

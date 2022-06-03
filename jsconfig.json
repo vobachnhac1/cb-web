@@ -27,7 +27,7 @@
   "include": [
     // "next-env.d.ts",
     "**/*.js",
-    "**/*.jsx",
+    "**/*.jsx", "src/components/BurgerIcon",
     // "src/components/room-client/index.jsx"
   ],
   "exclude": [

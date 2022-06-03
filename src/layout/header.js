@@ -15,7 +15,7 @@ import NotificationCustom from '@/components/NotificationBase';
 
 const stylesLess = require("./style.module.less");
 
-import logocbb from './images/logocb.jpg'
+import logocbb from './images/logo_CB_color_vn.svg'
 import Image from 'next/image';
 
 const HeaderCustom = (props) => {
@@ -27,29 +27,22 @@ const HeaderCustom = (props) => {
     <Header style={{ padding: 0, backgroundColor: '#034da2' }} >
       <div
         style={{
-          backgroundColor: '#034da2',
+          backgroundColor: '#ffff',
           float: 'left',
           width: 230,
           height: 44,
           margin: 10,
+          paddingBottom: 48
+
         }}
       >
-        {/* <img
-          style={{
-            float: 'left',
-            width: 230,
-            height: 44,
-          }}
+        <Image
+          width={230}
+          height={44}
           src={logocbb}
           alt="logocbb"
-        /> */}
-        	<Image
-            width={230}
-            height={44}
-            src={logocbb}
-            alt="logocbb"
-          />
-      
+        />
+
       </div>
       <div style={{ marginTop: 1, float: 'right' }} onMouseLeave={onMouseLeave}>
         <Menu
