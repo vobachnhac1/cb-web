@@ -43,5 +43,8 @@
   "updateStateWheel": "rules/update-status-the-wheel",
   "updateWheelWithRules": "wheel/update-wheel-with-rules-id",
   "getRewardHistory": "rules/get-reward-history",
-  "comfirmReceived": "rules/comfirm-reward-by-server"
+  "comfirmReceived": "rules/comfirm-reward-by-server",
+  "monitorGetRewardWithDWM": "monitor/get-reward-DWM",
+  "monitorGetRewardbyWheelId": "monitor/get-reward-by-wheel-id",
+  "monitorRewardRecievedBytime": "monitor/get-reward-recieved-by-time"
 }
