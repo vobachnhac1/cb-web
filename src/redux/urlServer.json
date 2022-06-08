@@ -1,5 +1,5 @@
 {
-  "server": "http://localhost:26868",
+  "server": "http://192.168.1.49:26868",
   "signin": "/auth/local/signin",
   "signup": "/auth/local/signup",
   "signout": "/auđth/logout",

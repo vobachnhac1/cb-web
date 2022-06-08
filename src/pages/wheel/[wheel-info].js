@@ -108,7 +108,7 @@ export default function DisplayWheel(props) {
   }
 
   return (
-    <div className={'App'} style={{
+    <div className='App' style={{
       backgroundImage: null
     }}>
       <Header title={PathTitle[`${path}`]} />
