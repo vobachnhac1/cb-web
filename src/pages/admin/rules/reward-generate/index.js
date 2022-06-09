@@ -361,6 +361,7 @@ export default function GenerateReward(props) {
       }
       const result = await dispatch(actionsRules.updateWheelDetailWithRules(params));
       if (result) {
+        onGenerated();
         Message.Success("THÔNG BÁO", "CẬP NHẬT THÀNH CÔNG");
         setIsEditData(false);
         setListWheelDtTemp(listWheelDt);
