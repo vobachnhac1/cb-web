@@ -1,6 +1,6 @@
 import { Button } from "antd";
 import React, { useEffect, useState } from "react";
-require("./styles.less");
+// require("./styles.less");
 const classNames = require("classnames");
 
 // khai báo store
@@ -13,7 +13,6 @@ import ModalComfirmReward from '@/containers/modal-comfirm-reward';
 const MainWheel = (props) => {
   const { arrItem, roles = null } = props;
   const dispatch = useDispatch();
-
   const [animation, setAnimation] = useState(false);
   const [selectedItem, setSelectedItem] = useState(0);
   const places = !roles ? useSelector(gettersEventWheel.getContentReward) : (arrItem || []);
@@ -22,18 +21,6 @@ const MainWheel = (props) => {
   const [rewardBody, setRewardBody] = useState(null);
 
   const onPress = async () => {
-    // if (selectedItem === 0) {
-    //   setAnimation(true)
-    //   const randomItem = Math.floor(Math.random() * places.length);
-    //   setSelectedItem(randomItem);
-    //   var myAudio = new Audio('/sound/demo3s.wav');
-    //   myAudio.load();
-    //   myAudio.play();
-    // } else {
-    //   setAnimation(false)
-    //   setSelectedItem(0);
-    // }
-
     let keyHost = 0;
     Message.Info("Thông Báo", "Bắt đầu quay");
     await dispatch(actionsEventWheel.setProcessing(true));
@@ -45,7 +32,7 @@ const MainWheel = (props) => {
         if (rsReward) {
           if (selectedItem === 0) {
             setAnimation(true)
-            setSelectedItem(parseInt(rsReward.no));
+            setSelectedItem(places.length - (parseInt(rsReward.no)));
             // props.onSelectItem(places.length - (parseInt(rsReward.no)));
             let myAudio = new Audio('/sound/demo3s.wav');
             myAudio.load();
@@ -63,11 +50,13 @@ const MainWheel = (props) => {
         setAnimation(true)
         setSelectedItem(places[randomItem].key);
         keyHost = places[randomItem].key
+        let myAudio = new Audio('/sound/demo3s.wav');
+        myAudio.load();
+        myAudio.play();
       } else {
         setup();
       }
     }
-
     setTimeout(async () => {
       await dispatch(actionsEventWheel.setProcessing(false));
     }, 3000);
@@ -100,46 +89,81 @@ const MainWheel = (props) => {
     setAnimation(false);
     setSelectedItem(0);
   }
+  const returnPositionInit = () => {
+    if (places.length == 6) {
+      const rs = 0;
+      return rs;
+    } else if (places.length == 8) {
+      const rs = (360 / places.length) - (360 / places.length) / 2;
+      return rs;
+    } else if (places.length == 10) {
+      const rs = (360 / places.length);
+      return rs;
+    } else if (places.length == 12) {
+      const rs = (360 / places.length) + (360 / places.length) / 2;
+      return rs;
+    } else if (places.length == 14) {
+      const rs = (360 / places.length) + (360 / places.length);
+      console.log('rs: ', rs);
+      return rs;
+    } else {
+      return 0;
+    }
+  }
 
   return (
     <>
       {animation && <ModalComfirmReward onInit={animation} data={rewardBody} callback={onReset} />}
-      <div className="containerSpin">
-        <div className={classNames({ 'active-spin': animation }, { 'arrow': true })} >
-          <div class="image-border" />
-          <div class="image-row" />
-        </div>
-        <div
-          className={classNames({ 'spinning': animation }, { 'pieContainer': true })}
-          style={{ '--selected': selectedItem, '--num-item': places.length }}>
-          <div className="pieBackground">
-            <div className="pieBackground1">
-              {
-                places.map((item, index) => {
-                  const rotate = 360 / places.length;
-                  const position = ((index + 1) * rotate) + 'deg';
-                  return (
-                    <div key={item.no} className="hold" style={{ transform: `rotate(${position})` }} >
-                      <div
-                        className="pie"
-                        style={{
-                          '--wheel-color': item.wheel_color,
-                          "--rotate": rotate + 'deg',
-                        }}>
-                        <p className={classNames({ [`content${places.length}`]: true })}>{item.segment_name}</p>
-                        <div className={classNames({ "pie-image": true }, { [`pie-img${places.length}`]: true })}
-                          style={{ '--url': `url(${item.imgBase64})` }} />
-                      </div>
-                    </div>);
-                })
-              }
-            </div>
+      <div className="colContainer"
+        style={{
+          '--position-init': `${returnPositionInit()}deg`
+        }}>
+        {/* <div className="rowContainer"> */}
+        <div className="containerSpin">
+          <div className={classNames({ 'active-spin': animation }, { 'arrow': true })} >
+            <div class="image-border" />
+            <div class="image-row" />
+          </div>
+          <div
+            className={classNames({ 'spinning': animation }, { 'pieContainer': true })}
+            style={{
+              '--selected': selectedItem,
+              '--num-item': places.length
+            }}>
+            <div className="pieBackground" />
+            <div className="pieBackground1" />
+            {
+              places.map((item, index) => {
+                const rotate = 360 / places.length;
+                const position = ((index + 1) * rotate) + 'deg';
+                return (
+                  <div key={item.no}
+                    className="hold"
+                    style={{ transform: `rotate(${position})` }}
+                  >
+                    <div
+                      className="pie"
+                      style={{
+                        '--wheel-color': item.wheel_color,
+                        "--rotate": rotate + 'deg',
+                      }}>
+                      <p className={classNames({ [`content${places.length}`]: true })}>{item.segment_name}</p>
+                      <div className={classNames({ "pie-image": true }, { [`pie-img${places.length}`]: true })}
+                        style={{ '--url': `url(${item.imgBase64})` }} />
+                    </div>
+                  </div>);
+              })
+            }
           </div>
         </div>
+        <Button onClick={activeEvent}
+          className="button-custom"
+          type="primary">
+          Nhấn Quay
+        </Button>
+
       </div>
-      <Button onClick={onPress} style={{ width: 100 }} type="primary">
-        Nhấn Quay
-      </Button>
+
     </>
   )
 }
