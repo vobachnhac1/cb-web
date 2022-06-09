@@ -24,7 +24,7 @@ const DisplayWheel = (props) => {
   const [invalid, setInvalid] = useState(false);
   const places = !manager ? useSelector(gettersEventWheel.getContentReward) : (arrItem || []);
   useEffect(() => {
-    let arrItem = [];
+    // let arrItem = [];
     // let length = 14;
     // for (let i = 1; i <= length; i++) {
     //   if (i % 2 == 0) {

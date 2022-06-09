@@ -19,7 +19,7 @@ export const getStateMonitorDWM = (state) => {
 
 export const getStateMonitorRewardRecievedStateTotal = (state) => {
   const { dashboard: { listRewardRecieved = [] } } = state;
-  console.log('listRewardRecieved: ', listRewardRecieved);
+  // console.log('listRewardRecieved: ', listRewardRecieved);
   if (listRewardRecieved && listRewardRecieved.length == 0) {
     return {
       total: 0

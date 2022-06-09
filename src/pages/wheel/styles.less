@@ -7,7 +7,7 @@
   --selected: 0; // chọn trúng
   --num-item: 0; // số lượng item
   --url: url("/images/reward/reward1.png");
-  --result-position: 0deg;
+  --set-margin-left: 2;
   --position-init: 0deg;
 }
 
@@ -46,7 +46,7 @@
   display: flex;
   position: fixed;
   flex-direction: column;
-  margin-left: calc(calc(100% - var(--size) - 26px)/2);
+  margin-left: calc(calc(100% - var(--size) - 26px)/var(--set-margin-left));
 }
 
 .pieBackground {
@@ -172,7 +172,7 @@
   width: 100;
   z-index: 5;
   position: absolute;
-  top: 550;
+  top: 300;
   left: 150;
 }
 
@@ -226,11 +226,12 @@
   }
 
   .button-custom {
-    width: 100px;
+    width: 100%;
     z-index: 5;
     position: absolute;
-    top: 600px;
-    left: 150px;
+    top: calc(var(--size) + 50px);
+    display: flex;
+    justify-content: center;
   }
 
   /// 
@@ -349,11 +350,12 @@
   }
 
   .button-custom {
-    width: 100px;
+    width: 100%;
     z-index: 5;
     position: absolute;
-    top: 500px;
-    left: 100px;
+    top: calc(var(--size) + 50px);
+    display: flex;
+    justify-content: center;
   }
 
   .pie-img14 {
@@ -470,11 +472,12 @@
   }
 
   .button-custom {
-    width: 100px;
+    width: 100%;
     z-index: 5;
     position: absolute;
-    top: 475px;
-    left: 80px;
+    top: calc(var(--size) + 50px);
+    display: flex;
+    justify-content: center;
   }
 
   .pie-img14 {
@@ -590,11 +593,12 @@
   }
 
   .button-custom {
-    width: 100px;
+    width: 100%;
     z-index: 5;
     position: absolute;
-    top: 425px;
-    left: 40px;
+    top: calc(var(--size) + 50px);
+    display: flex;
+    justify-content: center;
   }
 
   // item of wheel

@@ -11,7 +11,7 @@ import * as Message from '@/components/message';
 import ModalComfirmReward from '@/containers/modal-comfirm-reward';
 
 const MainWheel = (props) => {
-  const { arrItem, roles = null } = props;
+  const { arrItem = [], roles = null } = props;
   const dispatch = useDispatch();
   const [animation, setAnimation] = useState(false);
   const [selectedItem, setSelectedItem] = useState(0);
@@ -46,6 +46,7 @@ const MainWheel = (props) => {
       }
     } else {
       const randomItem = Math.floor(Math.random() * places.length);
+
       if (selectedItem === 0) {
         setAnimation(true)
         setSelectedItem(places[randomItem].key);
@@ -104,7 +105,6 @@ const MainWheel = (props) => {
       return rs;
     } else if (places.length == 14) {
       const rs = (360 / places.length) + (360 / places.length);
-      console.log('rs: ', rs);
       return rs;
     } else {
       return 0;
@@ -114,54 +114,56 @@ const MainWheel = (props) => {
   return (
     <>
       {animation && <ModalComfirmReward onInit={animation} data={rewardBody} callback={onReset} />}
-      <div className="colContainer"
+      <div class="colContainer"
         style={{
+          '--set-margin-left': !roles ? 2 : 6,
           '--position-init': `${returnPositionInit()}deg`
         }}>
         {/* <div className="rowContainer"> */}
-        <div className="containerSpin">
-          <div className={classNames({ 'active-spin': animation }, { 'arrow': true })} >
+        <div class="containerSpin">
+          <div class={classNames({ 'active-spin': animation }, { 'arrow': true })} >
             <div class="image-border" />
             <div class="image-row" />
           </div>
           <div
-            className={classNames({ 'spinning': animation }, { 'pieContainer': true })}
+            class={classNames({ 'spinning': animation }, { 'pieContainer': true })}
             style={{
               '--selected': selectedItem,
               '--num-item': places.length
             }}>
-            <div className="pieBackground" />
-            <div className="pieBackground1" />
+            <div class="pieBackground" />
+            <div class="pieBackground1" />
             {
               places.map((item, index) => {
                 const rotate = 360 / places.length;
                 const position = ((index + 1) * rotate) + 'deg';
                 return (
                   <div key={item.no}
-                    className="hold"
+                    class="hold"
                     style={{ transform: `rotate(${position})` }}
                   >
                     <div
-                      className="pie"
+                      class="pie"
                       style={{
                         '--wheel-color': item.wheel_color,
                         "--rotate": rotate + 'deg',
                       }}>
-                      <p className={classNames({ [`content${places.length}`]: true })}>{item.segment_name}</p>
-                      <div className={classNames({ "pie-image": true }, { [`pie-img${places.length}`]: true })}
+                      <p class={classNames({ [`content${places.length}`]: true })}>{item.segment_name}</p>
+                      <div class={classNames({ "pie-image": true }, { [`pie-img${places.length}`]: true })}
                         style={{ '--url': `url(${item.imgBase64})` }} />
                     </div>
                   </div>);
               })
             }
           </div>
+          <div class="button-custom">
+            <Button
+              onClick={activeEvent}
+              type="primary">
+              Nhấn Quay
+            </Button>
+          </div>
         </div>
-        <Button onClick={activeEvent}
-          className="button-custom"
-          type="primary">
-          Nhấn Quay
-        </Button>
-
       </div>
 
     </>
