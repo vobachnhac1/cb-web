@@ -4,7 +4,7 @@
 * Phone 036.847.5269
 * Created: 2022-04-07
 *------------------------------------------------------- */
-require("./style.module.less");
+require("./styles.less");
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
@@ -85,15 +85,24 @@ export default function Segment(props) {
   };
   const columns = [
     {
-      title: 'Mã kết quả\n trúng thưởng',
+      title: 'STT',
+      dataIndex: 'key',
+      key: 'key',
+      fixed: 'left',
+      width: 50,
+      render: (text, record) => {
+        return parseInt(text) + 1
+      }
+    },
+    {
+      title: 'Mã giải thưởng',
       dataIndex: 'segment_id',
       key: 'segment_id',
       fixed: 'left',
-      width: 100
-      // render: text => <a>{text}</a>,
+      width: 120
     },
     {
-      title: 'Tên kết quả \n trúng thưởng',
+      title: 'Tên giải thưởng',
       dataIndex: 'segment_name',
       key: 'segment_name',
       fixed: 'left',

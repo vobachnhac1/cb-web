@@ -4,11 +4,7 @@
 * Phone 036.847.5269
 * Created: 2022-04-07
 *------------------------------------------------------- */
-require("./style.module.less");
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Router from 'next/router';
-import * as styles from './style.module.less';
+require("./styles.less");
 import * as classnames from 'classnames';
 import LayoutHome from '@/containers/Home';
 import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Typography, Input } from 'antd';

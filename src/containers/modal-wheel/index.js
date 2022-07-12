@@ -4,11 +4,8 @@
 * Phone 0906.918.738
 * Created: 2022-04-08
 *------------------------------------------------------- */
-require("./style.module.less");
-
-import Header from '@/components/Head';
-import Layout from '@/layout';
-import { Card, Col, Form, Input, Modal, Row, Select, Typography, DatePicker, Button } from 'antd';
+require("./styles.less");
+import { Card, Col, Form, Input, Modal, Row, Typography, DatePicker, InputNumber } from 'antd';
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
@@ -19,8 +16,6 @@ import { actions as actionWheel } from '@/redux/wheel';
 
 
 const classNames = require("classnames");
-const styles = require("./style.module.less");
-const { Option } = Select;
 const { Text } = Typography;
 
 const layoutHeader = {
@@ -194,7 +189,7 @@ const ModalSegment = (props) => {
           {
             wheelId ? <Row >
               <Col {...layoutHeader} >
-                <Text className={classNames({ [styles['text-font']]: true })}>{'ID '}</Text>
+                <Text className={classNames({ 'text-font': true })}>{'ID '}</Text>
               </Col>
               <Col  {...layoutContent}>
                 <Input type="number" style={{ width: '100%' }} value={wheelId} onChange={(text) => setWheelId(text.target.value)} disabled />
@@ -205,7 +200,7 @@ const ModalSegment = (props) => {
 
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Tên vòng quay'}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Tên vòng quay'}</Text>
             </Col>
             <Col  {...layoutContent}>
               <Input style={{ width: '100%' }} value={wheelName} onChange={(text) => setWheelName(text.target.value)} />
@@ -213,7 +208,7 @@ const ModalSegment = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text type="number" className={classNames({ [styles['text-font']]: true })}>{'Số kết quả '}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Số kết quả '}</Text>
             </Col>
             <Col  {...layoutContent}>
               <Input style={{ width: '100%' }} value={numSegments} onChange={(text) => setNumSegments(text.target.value)} />
@@ -221,7 +216,7 @@ const ModalSegment = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Tài khoản trích tiền game '}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Tài khoản trích tiền game '}</Text>
             </Col>
             <Col  {...layoutContent}>
 
@@ -230,7 +225,7 @@ const ModalSegment = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng giá trị giải '}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Tổng giá trị giải '}</Text>
             </Col>
             <Col  {...layoutContent}>
               <Input type="number" style={{ width: '100%' }} value={totalValue} onChange={(text) => setTotalValue(text.target.value)} />
@@ -238,7 +233,7 @@ const ModalSegment = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Giá trị còn lại '}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Giá trị còn lại '}</Text>
             </Col>
             <Col  {...layoutContent}>
 
@@ -255,7 +250,7 @@ const ModalSegment = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Đặt kích thước chữ '}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Đặt kích thước chữ '}</Text>
             </Col>
             <Col  {...layoutContent}>
               <Input type="number" style={{ width: '100%' }} value={textFrontSize} onChange={(text) => setTextFrontSize(text.target.value)} />
@@ -263,15 +258,7 @@ const ModalSegment = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text type="number" className={classNames({ [styles['text-font']]: true })}>{'Đặt góc vòng quay '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
-              <Input style={{ width: '100%' }} value={ratationAngle} onChange={(text) => setRatationAngle(text.target.value)} />
-            </Col>
-          </Row>
-          <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Ngày hết hiệu lực '}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Ngày hết hiệu lực '}</Text>
             </Col>
             <Col  {...layoutContent}>
 

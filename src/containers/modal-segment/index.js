@@ -4,11 +4,8 @@
 * Phone 0906.918.738
 * Created: 2022-04-08
 *------------------------------------------------------- */
-require("./style.module.less");
-
-import Header from '@/components/Head';
-import Layout from '@/layout';
-import { Card, Col, Form, Input, Modal, Row, Select, Typography, DatePicker, Button } from 'antd';
+require("./styles.less");
+import { Card, Col, Form, Input, Modal, Row, Select, Typography, DatePicker, InputNumber } from 'antd';
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
@@ -19,8 +16,7 @@ import { actions as actionSegment } from '@/redux/segment';
 
 
 const classNames = require("classnames");
-const styles = require("./style.module.less");
-const { Option } = Select;
+const styles = require("./styles.less");
 const { Text } = Typography;
 
 const layoutHeader = {
@@ -135,7 +131,7 @@ const ModalSegment = (props) => {
     >
       <Card
         headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'center', backgroundColor: "rgb(3, 77, 162)" }}
-        title={isAdd ? "Thêm Kết quả giải thưởng" : 'Cập nhật Kết quả giải thưởng'}
+        title={isAdd ? "Thêm kết quả giải thưởng" : 'Cập nhật kết quả giải thưởng'}
         bordered={true}
         style={{ backgroundColor: '#FFFFFF' }}>
         <Form
@@ -159,7 +155,7 @@ const ModalSegment = (props) => {
           {
             segmentId ? <Row >
               <Col {...layoutHeader} >
-                <Text className={classNames({ [styles['text-font']]: true })}>{'Mã kết quả trúng thưởng :'}</Text>
+                <Text className={classNames({ 'text-font': true })}>{'Mã kết quả trúng thưởng :'}</Text>
               </Col>
               <Col  {...layoutContent}>
 
@@ -172,7 +168,7 @@ const ModalSegment = (props) => {
 
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Chủ đề :'}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Chủ đề :'}</Text>
             </Col>
             <Col  {...layoutContent}>
 
@@ -191,7 +187,7 @@ const ModalSegment = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Tên kết quả trúng thưởng '}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Tên giải thưởng '}</Text>
             </Col>
             <Col  {...layoutContent}>
 
@@ -200,7 +196,23 @@ const ModalSegment = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Màu sắc hiển thị '}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Giá trị giải thưởng '}</Text>
+            </Col>
+            <Col  {...layoutContent}>
+              <InputNumber style={{ width: '100%' }}
+                addonAfter={"VND"}
+                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                value={segmentValue}
+                onChange={(text) => {
+                  setSegmentValue(text ? text : 0);
+                }}
+              />
+            </Col>
+          </Row>
+          {/* <Row style={{ marginTop: 10 }}>
+            <Col {...layoutHeader} >
+              <Text className={classNames({ 'text-font': true })}>{'Màu sắc hiển thị '}</Text>
             </Col>
             <Col  {...layoutContent}>
 
@@ -209,7 +221,7 @@ const ModalSegment = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Ngày hết hiệu lực '}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Ngày hết hiệu lực '}</Text>
             </Col>
             <Col  {...layoutContent}>
 
