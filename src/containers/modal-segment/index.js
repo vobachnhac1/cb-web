@@ -4,7 +4,7 @@
 * Phone 0906.918.738
 * Created: 2022-04-08
 *------------------------------------------------------- */
-require("./style.module.less");
+require("./styles.less");
 import { Card, Col, Form, Input, Modal, Row, Select, Typography, DatePicker, InputNumber } from 'antd';
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
@@ -16,7 +16,7 @@ import { actions as actionSegment } from '@/redux/segment';
 
 
 const classNames = require("classnames");
-const styles = require("./style.module.less");
+const styles = require("./styles.less");
 const { Text } = Typography;
 
 const layoutHeader = {
@@ -36,10 +36,8 @@ const ModalSegment = (props) => {
   const [segmentId, setSegmentId] = useState(record ? record.segment_id : "");
   const [topicId, setTopicId] = useState(record ? record.topic_id : "");
   const [segmentName, setSegmentName] = useState(record ? record.segment_name : "");
-  const [segmentColor, setSegmentColor] = useState(record ? record.segment_color : "#659bc9");
   const [segmentValue, setSegmentValue] = useState(record ? record.segment_value : "");
   const [inactived_date, setInactived_date] = useState(record ? record.inactived_date : "");
-
   const dispatch = useDispatch();
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
 
@@ -51,19 +49,11 @@ const ModalSegment = (props) => {
     setSegmentId(record ? record.segment_id : "")
     setTopicId(record ? record.topic_id : "")
     setSegmentName(record ? record.segment_name : "")
-    setSegmentColor(record ? record.segment_color : "#659bc9")
     setSegmentValue(record ? record.segment_value : "")
     setInactived_date(record ? record.inactived_date : "")
   }
 
   const onCallback = async () => {
-
-    // state loading true/false
-    /*
-      if(loading) return;
-          // bật true
-    */
-
     let msg_error = [];
     if (!topicId) {
       msg_error.push("- Chủ đề chưa được chọn");
@@ -71,11 +61,6 @@ const ModalSegment = (props) => {
     if (!segmentName || segmentName.length == 0) {
       msg_error.push("- Tên kết quả trúng thưởng chưa có nội dung");
     }
-
-    if (!segmentColor || segmentColor.length == 0) {
-      msg_error.push("- Màu sắc hiển thị chưa chọn");
-    }
-
     if (msg_error && msg_error.length > 0) {
       Message.WarningArr("Thông Báo", msg_error);
       return
@@ -85,7 +70,6 @@ const ModalSegment = (props) => {
       segment_id: segmentId,
       topic_id: topicId,
       segment_name: segmentName,
-      segment_color: segmentColor,
       segment_value: segmentValue,
       inactived_date: inactived_date,
       is_approve: true,
@@ -132,7 +116,7 @@ const ModalSegment = (props) => {
     >
       <Card
         headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'center', backgroundColor: "rgb(3, 77, 162)" }}
-        title={isAdd ? "Thêm Kết quả giải thưởng" : 'Cập nhật Kết quả giải thưởng'}
+        title={isAdd ? "Thêm kết quả giải thưởng" : 'Cập nhật kết quả giải thưởng'}
         bordered={true}
         style={{ backgroundColor: '#FFFFFF' }}>
         <Form
@@ -155,7 +139,7 @@ const ModalSegment = (props) => {
           {
             segmentId ? <Row >
               <Col {...layoutHeader} >
-                <Text className={classNames({ [styles['text-font']]: true })}>{'Mã kết quả trúng thưởng :'}</Text>
+                <Text className={classNames({ 'text-font': true })}>{'Mã kết quả trúng thưởng :'}</Text>
               </Col>
               <Col  {...layoutContent}>
                 <Input style={{ width: '100%' }} value={segmentId} onChange={(text) => setSegmentId(text.target.value)} disabled />
@@ -165,7 +149,7 @@ const ModalSegment = (props) => {
           }
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Chủ đề :'}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Chủ đề :'}</Text>
             </Col>
             <Col  {...layoutContent}>
 
@@ -184,7 +168,7 @@ const ModalSegment = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Tên kết quả trúng thưởng '}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Tên giải thưởng '}</Text>
             </Col>
             <Col  {...layoutContent}>
               <Input style={{ width: '100%' }} value={segmentName} onChange={(text) => setSegmentName(text.target.value)} />
@@ -192,7 +176,7 @@ const ModalSegment = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Giá trị giải thưởng '}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Giá trị giải thưởng '}</Text>
             </Col>
             <Col  {...layoutContent}>
               <InputNumber style={{ width: '100%' }}
@@ -206,17 +190,17 @@ const ModalSegment = (props) => {
               />
             </Col>
           </Row>
-          <Row style={{ marginTop: 10 }}>
+          {/* <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Màu sắc hiển thị '}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Màu sắc hiển thị '}</Text>
             </Col>
             <Col  {...layoutContent}>
               <Input type="color" style={{ width: '50%' }} value={segmentColor} onChange={(text) => setSegmentColor(text.target.value)} />
             </Col>
-          </Row>
+          </Row> */}
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Ngày hết hiệu lực '}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Ngày hết hiệu lực '}</Text>
             </Col>
             <Col  {...layoutContent}>
               <DatePicker disabledDate={d => !d || d.isSameOrBefore(moment().set('date', (moment().date() - 1)))} style={{ width: '50%' }} value={!inactived_date || inactived_date === "0000-00-00 00:00:00" ? null : moment(inactived_date)} onChange={(date) => setInactived_date(date)} />

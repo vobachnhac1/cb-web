@@ -4,7 +4,7 @@
 * Phone 036.847.5269
 * Created: 2022-04-07
 *------------------------------------------------------- */
-require("./style.module.less");
+require("./styles.less");
 import { useState, useEffect } from 'react';
 import LayoutHome from '@/containers/Home';
 import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Input, DatePicker } from 'antd';
@@ -81,14 +81,14 @@ export default function Segment(props) {
       }
     },
     {
-      title: 'Mã',
+      title: 'Mã giải thưởng',
       dataIndex: 'segment_id',
       key: 'segment_id',
       fixed: 'left',
-      width: 100
+      width: 120
     },
     {
-      title: 'Tên kết quả \n trúng thưởng',
+      title: 'Tên giải thưởng',
       dataIndex: 'segment_name',
       key: 'segment_name',
       fixed: 'left',
@@ -101,25 +101,6 @@ export default function Segment(props) {
       key: 'topic_name',
       width: 200
 
-    },
-    {
-      title: 'Màu sắc',
-      dataIndex: 'segment_color',
-      key: 'segment_color',
-      width: 80,
-      align: 'center',
-      render: (text, record) => {
-        return <Space size="large">
-          <p style={
-            {
-              background: text,
-              width: '30px',
-              height: '30px'
-            }}>
-
-          </p>
-        </Space>
-      }
     },
     {
       align: 'end',
@@ -148,7 +129,7 @@ export default function Segment(props) {
       align: 'center',
       render: (text, record) => {
         return <span>
-          {!text || text == "0000-00-00 00:00:00" ? 'Không giới hạn' : moment(text).format('YYYY-MM-DD, hh:mm:ss')}
+          {!text || text == "0000-00-00 00:00:00" ? 'Không giới hạn' : moment(text).format('YYYY-MM-DD, HH:mm:ss')}
         </span>
       }
     },
@@ -160,7 +141,7 @@ export default function Segment(props) {
       align: 'center',
       render: (text, record) => {
         return <span>
-          {moment(text).format('YYYY-MM-DD, hh:mm:ss')}
+          {moment(text).format('YYYY-MM-DD, HH:mm:ss')}
         </span>
       }
     },

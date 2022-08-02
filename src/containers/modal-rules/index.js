@@ -4,7 +4,7 @@
 * Phone 0906.918.738
 * Created: 2022-04-08
 *------------------------------------------------------- */
-require("./style.module.less");
+require("./styles.less");
 import { Card, Col, Form, Input, Modal, Row, Typography, DatePicker, Tag, Select } from 'antd';
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
@@ -17,7 +17,6 @@ import { getters as gettersRules } from '@/redux/rules';
 import _ from 'lodash';
 
 const classNames = require("classnames");
-const styles = require("./style.module.less");
 const { Text } = Typography;
 const { RangePicker } = DatePicker;
 
@@ -187,7 +186,7 @@ const ModalRules = (props) => {
         >
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Mã quy tắc:'}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Mã quy tắc:'}</Text>
             </Col>
             <Col  {...layoutContent}>
               {/* <Input style={{ width: '100%' }} onChange={(text) => { }} /> */}
@@ -196,7 +195,7 @@ const ModalRules = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Tên quy tắc:'}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Tên quy tắc:'}</Text>
             </Col>
             <Col  {...layoutContent}>
               <Input style={{ width: '100%' }} value={body.rules_name} onChange={(text) => { setBody({ ...body, rules_name: text.target.value }) }} />
@@ -204,7 +203,7 @@ const ModalRules = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Số lượng giải được trúng:'}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Số lượng giải được trúng:'}</Text>
             </Col>
             <Col  {...layoutContent}>
               <Input
@@ -219,7 +218,7 @@ const ModalRules = (props) => {
             // select option wheel
             <Row style={{ marginTop: 10 }}>
               <Col {...layoutHeader} >
-                <Text className={classNames({ [styles['text-font']]: true })}>{'Vòng quay:'}</Text>
+                <Text className={classNames({ 'text-font': true })}>{'Vòng quay:'}</Text>
               </Col>
               <Col  {...layoutContent}>
                 <Select
@@ -239,7 +238,7 @@ const ModalRules = (props) => {
           }
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Trạng thái:'}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Trạng thái:'}</Text>
             </Col>
             <Col  {...layoutContent}>
               {
@@ -251,7 +250,7 @@ const ModalRules = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ [styles['text-font']]: true })}>{'Thời gian áp dụng:'}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Thời gian áp dụng:'}</Text>
             </Col>
             <Col  {...layoutContent}>
               <RangePicker

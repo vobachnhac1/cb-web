@@ -15,7 +15,7 @@ import moment from 'moment';
 const { Text } = Typography;
 import * as Message from '@/components/message';
 const classNames = require("classnames");
-const styles = require("./style.module.less");
+require("./styles.less");
 
 import ModalWheelDetail from '@/containers/modal-wheel-detail'
 
@@ -248,8 +248,27 @@ export default function WheelDetail({ query }) {
       width: 170,
       render: (text, record) => {
         return <span>
-          {moment(text).format('YYYY-MM-DD, hh:mm:ss')}
+          {moment(text).format('YYYY-MM-DD, HH:mm:ss')}
         </span>
+      }
+    },
+    {
+      title: 'Màu sắc',
+      dataIndex: 'wheel_color',
+      key: 'wheel_color',
+      width: 80,
+      align: 'center',
+      render: (text, record) => {
+        return <Space size="large">
+          <p style={
+            {
+              background: text,
+              width: '30px',
+              height: '30px'
+            }}>
+
+          </p>
+        </Space>
       }
     },
     {
@@ -395,7 +414,7 @@ export default function WheelDetail({ query }) {
                 <Col className="gutter-row" style={{
                   'width': '225px'
                 }}>
-                  <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền vòng quay: '}</Text>
+                  <Text className={classNames({ 'text-font': true })}>{'Tổng tiền vòng quay: '}</Text>
                   <InputNumber style={{ width: '100%' }}
                     addonAfter={"VND"}
                     formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -406,7 +425,7 @@ export default function WheelDetail({ query }) {
                 <Col className="gutter-row" style={{
                   'width': '225px'
                 }}>
-                  <Text className={classNames({ [styles['text-font']]: true })}>{'Tiền vòng quay còn lại: '}</Text>
+                  <Text className={classNames({ 'text-font': true })}>{'Tiền vòng quay còn lại: '}</Text>
                   <InputNumber
                     style={{ width: '100%' }}
                     addonAfter={"VND"}
@@ -418,7 +437,7 @@ export default function WheelDetail({ query }) {
                 <Col className="gutter-row" style={{
                   'width': '225px'
                 }}>
-                  <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền chi tiết vòng quay '}</Text>
+                  <Text className={classNames({ 'text-font': true })}>{'Tổng tiền chi tiết vòng quay '}</Text>
                   <InputNumber
                     style={{ width: '100%' }}
                     addonAfter={"VND"}

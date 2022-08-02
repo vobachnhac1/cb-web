@@ -6,18 +6,22 @@
 *------------------------------------------------------- */
 import { useEffect, useState } from 'react';
 import WheelChild from '@/components/WheelChild';
-require("./style.module.less");
+require("./styles.less");
+// require('./tabsStyle.less');
 const classNames = require("classnames");
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
 import { actions as actionsEventWheel } from '@/redux/event-wheel';
 import { getters as gettersEventWheel } from '@/redux/event-wheel';
-import * as styles from './style.module.less';
 import __ from 'lodash';
 import * as Message from '@/components/message';
 import { useRouter } from 'next/router';
 import { PathTitle } from "@/constants/url-name";
 import Header from '@/components/Head';
+// pop up menu
+import PopupMenu from '@/containers/popup-menu-wheel'
+
+
 
 export default function DisplayWheel(props) {
   /// url mẫu http://localhost:3000/wheel/000001000012-0000000001
@@ -47,6 +51,7 @@ export default function DisplayWheel(props) {
   //   },
   // });
   const dispatch = useDispatch();
+
   useEffect(() => {
     if (!manager) {
       initPage();
@@ -55,6 +60,20 @@ export default function DisplayWheel(props) {
       setPath('/wheel/')
     }
   }, []);
+
+
+  const [statePage, setStatePage] = useState(1);
+
+  useEffect(() => {
+    if (statePage == 1) {
+      /// call chile
+    } else if (statePage == 2) {
+      // call  list 1
+    } else if (statePage == 3) {
+      // call  list 2
+    }
+
+  }, [statePage])
 
   const initPage = async () => {
     const locationUrl = window.location;
@@ -83,16 +102,23 @@ export default function DisplayWheel(props) {
       setInvalid(true)
     }
   }
+
   const onSelectItem = (value) => {
     setSelectedItem(value)
   }
+
   return (
-    <div className={styles['App']} style={{
+    <div className={'App'} style={{
       backgroundImage: null
     }}>
       <Header title={PathTitle[`${path}`]} />
-
-      {invalid ? <div /> : <WheelChild arrItem={arrItem} onSelectItem={onSelectItem} selectedItem={selectedItem} roles={manager} />}
+      {!manager && <PopupMenu />}
+      {!invalid && <WheelChild
+        arrItem={arrItem}
+        onSelectItem={onSelectItem}
+        selectedItem={selectedItem}
+        roles={manager}
+      />}
     </div>
   )
 }

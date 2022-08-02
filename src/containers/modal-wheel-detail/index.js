@@ -6,8 +6,6 @@
 *------------------------------------------------------- */
 // require("./style.module.less");
 
-import Header from '@/components/Head';
-import Layout from '@/layout';
 import { Card, Col, Form, Input, Modal, Row, Select, Typography, Radio, InputNumber, Upload } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import * as Message from '@/components/message';
@@ -26,7 +24,7 @@ import { getters as gettersWheelDetail } from '@/redux/wheel-detail';
 import { isBuffer } from 'lodash';
 
 const classNames = require("classnames");
-const styles = require("./style.module.less");
+require("./styles.less");
 const { Option } = Select;
 const { Text } = Typography;
 
@@ -50,7 +48,7 @@ const ModalWheelDetail = (props) => {
   const [wheelId, setWheelId] = useState(record ? record.wheel_id : "")
   const [segmentId, setSegmentId] = useState(record ? record.segment_id : "");
   const [segmentValue, setSegmentValue] = useState(1);
-  // const [segmentColor, setSegmentColor] = useState(record ? record.segment_color : "#659bc9");
+  const [wheelColor, setWheelColor] = useState(record ? record.wheel_color : "#659bc9");
   const [no, setNo] = useState(record ? record.no : "")
   const [remainValue, setRemainValue] = useState(record ? record.remain_value : "")
   const [remainNumber, setRemainNumber] = useState(record ? record.remain_number : "")
@@ -95,6 +93,7 @@ const ModalWheelDetail = (props) => {
     setNo(record ? record.no : noWheelDetail_length + 1)
     setRemainNumber(record ? record.remain_number : "")
     setRemainValue(record ? record.remain_value : 0)
+    setWheelColor(record ? record.wheel_color : "#659bc9")
     setGoalYn(record ? record.goal_yn : -1)
     setImgBase64(record ? record.imgBase64 : '')
     setUrl(record ? record.url : '')
@@ -137,6 +136,9 @@ const ModalWheelDetail = (props) => {
     if (goalYn === -1) {
       msg_error.push('-Trúng thưởng chưa được chọn')
     }
+    if (!wheelColor || wheelColor.length == 0) {
+      msg_error.push("- Màu sắc hiển thị chưa chọn");
+    }
     if (!imgBase64) {
       msg_error.push('-Hình chưa được chọn')
     }
@@ -150,6 +152,7 @@ const ModalWheelDetail = (props) => {
       segment_id: segmentId,
       no: no,
       goal_yn: goalYn,
+      wheel_color: wheelColor,
       remain_number: remainNumber,
       imgBase64: imgBase64,
       url: url,
@@ -194,7 +197,7 @@ const ModalWheelDetail = (props) => {
 
     // add
     if (isAdd) {
-      param.created_date = moment().format('YYYY-MM-DD, hh:mm:ss')
+      param.created_date = moment().format('YYYY-MM-DD, HH:mm:ss')
       const result = await dispatch(actionWheelDetail.insertWheelDetail(param));
       let data = result
       if (result) {
@@ -392,7 +395,7 @@ const ModalWheelDetail = (props) => {
 
             <Row style={{ marginTop: 10 }}>
               <Col {...layoutHeader} >
-                <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền vòng quay: '}</Text>
+                <Text className={classNames({ 'text-font': true })}>{'Tổng tiền vòng quay: '}</Text>
               </Col>
               <Col  {...layoutContent}>
 
@@ -409,7 +412,7 @@ const ModalWheelDetail = (props) => {
             </Row>
             <Row style={{ marginTop: 10 }}>
               <Col {...layoutHeader} >
-                <Text className={classNames({ [styles['text-font']]: true })}>{'Tiền vòng quay còn lại: '}</Text>
+                <Text className={classNames({ 'text-font': true })}>{'Tiền vòng quay còn lại: '}</Text>
               </Col>
               <Col  {...layoutContent}>
                 <InputNumber
@@ -428,7 +431,7 @@ const ModalWheelDetail = (props) => {
               !isAdd ?
                 <Row style={{ marginTop: 10 }} >
                   <Col {...layoutHeader} >
-                    <Text className={classNames({ [styles['text-font']]: true })}>{'ID'}</Text>
+                    <Text className={classNames({ 'text-font': true })}>{'ID'}</Text>
                   </Col>
                   <Col  {...layoutContent}>
                     <Input disabled style={{ width: '100%' }} value={wheelDetailId} onChange={(text) => setWheelDetailId(text.target.value)} />
@@ -438,7 +441,7 @@ const ModalWheelDetail = (props) => {
             }
             <Row style={{ marginTop: 10 }}>
               <Col {...layoutHeader} >
-                <Text className={classNames({ [styles['text-font']]: true })}>{'Mã vòng quay '}</Text>
+                <Text className={classNames({ 'text-font': true })}>{'Mã vòng quay '}</Text>
               </Col>
               <Col  {...layoutContent}>
 
@@ -456,7 +459,7 @@ const ModalWheelDetail = (props) => {
             </Row>
             <Row style={{ marginTop: 10 }}>
               <Col {...layoutHeader} >
-                <Text className={classNames({ [styles['text-font']]: true })}>{'Chủ đề'}</Text>
+                <Text className={classNames({ 'text-font': true })}>{'Chủ đề'}</Text>
               </Col>
               <Col  {...layoutContent}>
                 <Select
@@ -471,7 +474,7 @@ const ModalWheelDetail = (props) => {
             </Row>
             <Row style={{ marginTop: 10 }}>
               <Col {...layoutHeader} >
-                <Text className={classNames({ [styles['text-font']]: true })}>{'Kết quả trúng thưởng'}</Text>
+                <Text className={classNames({ 'text-font': true })}>{'Kết quả giải thưởng'}</Text>
               </Col>
               <Col  {...layoutContent}>
                 <Select
@@ -487,7 +490,7 @@ const ModalWheelDetail = (props) => {
             </Row>
             <Row style={{ marginTop: 10 }}>
               <Col {...layoutHeader} >
-                <Text className={classNames({ [styles['text-font']]: true })}>{'Số lần trúng thưởng '}</Text>
+                <Text className={classNames({ 'text-font': true })}>{'Số lần trúng thưởng '}</Text>
               </Col>
               <Col  {...layoutContent}>
                 <Input type="number" style={{ width: '100%' }} value={remainNumber} disabled={segmentValue == 0 ? true : false} onChange={onChangeRemainNumber} />
@@ -495,7 +498,7 @@ const ModalWheelDetail = (props) => {
             </Row>
             <Row style={{ marginTop: 10 }}>
               <Col {...layoutHeader} >
-                <Text className={classNames({ [styles['text-font']]: true })}>{'Tổng tiền chi tiết vòng quay '}</Text>
+                <Text className={classNames({ 'text-font': true })}>{'Tổng tiền chi tiết vòng quay '}</Text>
               </Col>
               <Col  {...layoutContent}>
 
@@ -518,7 +521,7 @@ const ModalWheelDetail = (props) => {
             </Row>
             <Row style={{ marginTop: 10 }}>
               <Col {...layoutHeader} >
-                <Text className={classNames({ [styles['text-font']]: true })}>{'Số thứ tự trên vòng quay '}</Text>
+                <Text className={classNames({ 'text-font': true })}>{'Số thứ tự trên vòng quay '}</Text>
               </Col>
               <Col  {...layoutContent}>
 
@@ -527,7 +530,7 @@ const ModalWheelDetail = (props) => {
             </Row>
             <Row style={{ marginTop: 10 }}>
               <Col {...layoutHeader} >
-                <Text className={classNames({ [styles['text-font']]: true })}>{'Trúng thưởng '}</Text>
+                <Text className={classNames({ 'text-font': true })}>{'Trúng thưởng '}</Text>
               </Col>
               <Col  {...layoutContent}>
                 <Radio.Group onChange={onChangeRadio} value={goalYn ? goalYn : 0}>
@@ -539,7 +542,15 @@ const ModalWheelDetail = (props) => {
             </Row>
             <Row style={{ marginTop: 10 }}>
               <Col {...layoutHeader} >
-                <Text className={classNames({ [styles['text-font']]: true })}>{'Hình ảnh '}</Text>
+                <Text className={classNames({ 'text-font': true })}>{'Màu sắc hiển thị '}</Text>
+              </Col>
+              <Col  {...layoutContent}>
+                <Input type="color" style={{ width: '26%' }} value={wheelColor} onChange={(text) => setWheelColor(text.target.value)} />
+              </Col>
+            </Row>
+            <Row style={{ marginTop: 10 }}>
+              <Col {...layoutHeader} >
+                <Text className={classNames({ 'text-font': true })}>{'Hình ảnh '}</Text>
               </Col>
               <Col  {...layoutContent} style={{ height: '104px' }}>
                 <Upload

@@ -4,8 +4,7 @@
 * Phone 0906.918.738
 * Created: 2022-04-22
 *------------------------------------------------------- */
-require("./style.module.less");
-import * as styles from './style.module.less';
+require("./styles.less");
 import * as classnames from 'classnames';
 import { useState, useEffect } from 'react';
 import LayoutHome from '@/containers/Home';
@@ -131,7 +130,7 @@ export default function WheelApprove(props) {
       width: 170,
       render: (text, record) => {
         return <span>
-          {moment(text).format('YYYY-MM-DD, hh:mm:ss')}
+          {moment(text).format('YYYY-MM-DD, HH:mm:ss')}
         </span>
       }
     },
@@ -143,7 +142,7 @@ export default function WheelApprove(props) {
       align: 'center',
       render: (text, record) => {
         return <span>
-          {moment(text).format('YYYY-MM-DD, hh:mm:ss')}
+          {moment(text).format('YYYY-MM-DD, HH:mm:ss')}
         </span>
       }
     }, {
