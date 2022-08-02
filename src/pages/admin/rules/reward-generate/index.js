@@ -361,6 +361,7 @@ export default function GenerateReward(props) {
       }
       const result = await dispatch(actionsRules.updateWheelDetailWithRules(params));
       if (result) {
+        onGenerated();
         Message.Success("THÔNG BÁO", "CẬP NHẬT THÀNH CÔNG");
         setIsEditData(false);
         setListWheelDtTemp(listWheelDt);
@@ -525,7 +526,7 @@ export default function GenerateReward(props) {
       setLoading(true);
       const { rules_id, wheel_id } = listWheelApproved.find(ele => ele.wheel_id == value);
       const result = await dispatch(actionsRules.getWheelDtStateApprove(wheel_id));
-      console.log('rules_id: ', rules_id, listRules);
+      // console.log('rules_id: ', rules_id, listRules);
       if (result.length > 0) {
         setListWheelDt(result.map((item, index) => ({ ...item, key: index })))
         setListWheelDtTemp(result.map((item, index) => ({ ...item, key: index })))

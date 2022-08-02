@@ -305,7 +305,102 @@
 }
 
 // done
-@media screen and (min-width: 474px) and (max-width: 575px) {
+@media screen and (min-width: 535px) and (max-width: 575px) {
+  :root {
+    --wheel-size: calc((100vw/(sqrt(2))) - 10px);
+    --wheel-font-size: calc(8px + (14 - 8) * ((100vw - 414px) / (575 - 414)));
+    --wheel-icon-size: 24px;
+    --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
+    --scale-distance: 1.6;
+
+  }
+
+  .wheel-viewbox {
+    top: calc(var(--wheel-size)/2 - 50px/2 + 10px);
+    left: calc(var(--wheel-size)/2 - 50px/2 + 10px);
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+
+  }
+
+  .wheel-viewbox-border {
+    top: calc(var(--wheel-size)/2 - 80px/2 + 10px);
+    left: calc(var(--wheel-size)/2 - 80px/2 + 10px);
+    width: 80px;
+    height: 80px;
+    border-radius: 80px;
+
+  }
+
+  @keyframes animation_logo {
+    from {
+      top: calc(var(--wheel-size)/2 - 35px/2 + 10px);
+      left: calc(var(--wheel-size)/2 - 35px/2 + 10px);
+      width: 35px;
+      height: 35px;
+      border-radius: 35px;
+    }
+
+    to {
+      top: calc(var(--wheel-size)/2 - 50px/2 + 10px);
+      left: calc(var(--wheel-size)/2 - 50px/2 + 10px);
+      width: 50px;
+      height: 50px;
+      border-radius: 50px;
+    }
+  }
+}
+
+@media screen and (min-width: 474px) and (max-width: 534px) {
+  :root {
+    --wheel-size: calc((100vw/(sqrt(2))) - 10px);
+    --wheel-font-size: calc(8px + (14 - 8) * ((100vw - 414px) / (575 - 414)));
+    --wheel-icon-size: 24px;
+    --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
+    --scale-distance: 1.8;
+
+  }
+
+  .wheel-viewbox {
+    top: calc(var(--wheel-size)/2 - 50px/2 + 10px);
+    left: calc(var(--wheel-size)/2 - 50px/2 + 10px);
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+
+  }
+
+  .wheel-viewbox-border {
+    top: calc(var(--wheel-size)/2 - 80px/2 + 10px);
+    left: calc(var(--wheel-size)/2 - 80px/2 + 10px);
+    width: 80px;
+    height: 80px;
+    border-radius: 80px;
+
+  }
+
+  @keyframes animation_logo {
+    from {
+      top: calc(var(--wheel-size)/2 - 35px/2 + 10px);
+      left: calc(var(--wheel-size)/2 - 35px/2 + 10px);
+      width: 35px;
+      height: 35px;
+      border-radius: 35px;
+    }
+
+    to {
+      top: calc(var(--wheel-size)/2 - 50px/2 + 10px);
+      left: calc(var(--wheel-size)/2 - 50px/2 + 10px);
+      width: 50px;
+      height: 50px;
+      border-radius: 50px;
+    }
+  }
+}
+
+// done
+@media screen and (min-width: 440px) and (max-width: 473px) {
   :root {
     --wheel-size: calc((100vw/(sqrt(2))) - 10px);
     --wheel-font-size: calc(8px + (14 - 8) * ((100vw - 414px) / (575 - 414)));
@@ -352,14 +447,13 @@
   }
 }
 
-// done
-@media screen and (min-width: 414px) and (max-width: 473px) {
+@media screen and (min-width: 414px) and (max-width: 439px) {
   :root {
     --wheel-size: calc((100vw/(sqrt(2))) - 10px);
     --wheel-font-size: calc(8px + (14 - 8) * ((100vw - 414px) / (575 - 414)));
     --wheel-icon-size: 24px;
     --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
-    --scale-distance: 2.3;
+    --scale-distance: 2.1;
 
   }
 
@@ -401,13 +495,60 @@
 }
 
 // done
-@media screen and (min-width: 360px) and (max-width: 413px) {
+@media screen and (min-width: 390px) and (max-width: 413px) {
   :root {
     --wheel-size: calc((100vw/(sqrt(2))) - 10px);
     --wheel-font-size: calc(8px + (8 - 8) * ((100vw - 360px) / (413 - 360)));
     --wheel-icon-size: 15px;
     --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
-    --scale-distance: 2.55;
+    --scale-distance: 2.3;
+  }
+
+  .wheel-viewbox {
+    top: calc(var(--wheel-size)/2 - 60px/2 + 10px);
+    left: calc(var(--wheel-size)/2 - 60px/2 + 10px);
+    width: 60px;
+    height: 60px;
+    border-radius: 60px;
+
+  }
+
+  .wheel-viewbox-border {
+    top: calc(var(--wheel-size)/2 - 80px/2 + 10px);
+    left: calc(var(--wheel-size)/2 - 80px/2 + 10px);
+    width: 80px;
+    height: 80px;
+    border-radius: 80px;
+
+  }
+
+  @keyframes animation_logo {
+    from {
+      top: calc(var(--wheel-size)/2 - 40px/2 + 10px);
+      left: calc(var(--wheel-size)/2 - 40px/2 + 10px);
+      width: 40px;
+      height: 40px;
+      border-radius: 40px;
+    }
+
+    to {
+      top: calc(var(--wheel-size)/2 - 50px/2 + 10px);
+      left: calc(var(--wheel-size)/2 - 50px/2 + 10px);
+      width: 50px;
+      height: 50px;
+      border-radius: 50px;
+    }
+  }
+}
+
+
+@media screen and (min-width: 360px) and (max-width: 389px) {
+  :root {
+    --wheel-size: calc((100vw/(sqrt(2))) - 10px);
+    --wheel-font-size: calc(8px + (8 - 8) * ((100vw - 360px) / (413 - 360)));
+    --wheel-icon-size: 15px;
+    --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
+    --scale-distance: 2.4;
   }
 
   .wheel-viewbox {
@@ -454,7 +595,7 @@
     --wheel-font-size: 5px;
     --wheel-icon-size: 15px;
     --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
-    --scale-distance: 2.9;
+    --scale-distance: 2.6;
   }
 
   .wheel-viewbox {
@@ -501,7 +642,7 @@
     --wheel-font-size: 5px;
     --wheel-icon-size: 12px;
     --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
-    --scale-distance: 3.5;
+    --scale-distance: 3;
   }
 
   .wheel-viewbox {

@@ -38,12 +38,12 @@ const ModalTopic = (props) => {
 
   useEffect(() => {
     setTopicName(record ? record.topic_name : "")
-    setIsApprove(record ? record.status_yn : "")
+    // setIsApprove(record ? record.status_yn : "")
   }, [visible]);
 
-  // const onChangeSelect = (record) => {
-  //   setIsApprove(record);
-  // }
+  const onChangeSelect = (record) => {
+    setIsApprove(record);
+  }
 
   const onCallback = async () => {
     if (!topicName || topicName.length == 0) {
@@ -60,7 +60,7 @@ const ModalTopic = (props) => {
     if (isAdd) {
       const result = await dispatch(actionTopic.insertTopic(param));
       if (result) {
-        setIsApprove('N');
+        // setIsApprove('N');
         setTopicName('');
         callback({ visible: false });
         Message.Success("Thông Báo", "Thêm chủ đề thành công");
@@ -71,7 +71,7 @@ const ModalTopic = (props) => {
     }
     const result = await dispatch(actionTopic.updateTopic(param));
     if (result) {
-      setIsApprove('N');
+      // setIsApprove('N');
       setTopicName('');
       callback({ visible: false });
       Message.Success("Thông Báo", "Cập nhật chủ đề thành công");
@@ -115,23 +115,35 @@ const ModalTopic = (props) => {
                 onChange={(text) => setTopicName(text.target.value)} />
             </Col>
           </Row>
-          {/* <Row style={{ marginTop: 10 }}> */}
-          {/* <Col {...layoutHeader} >
-              <Text className={classNames({ 'text-font': true })}>{'Phê Duyệt'}</Text>
-            </Col> */}
-          {/* <Col  {...layoutContent}>
-              <Select
-                disabled={true}
-                defaultValue={isApprove == 'Y' ? 'Phê duyệt' : 'Không'}
-                value={isApprove == 'Y' ? 'Phê duyệt' : 'Không'}
-                style={{ width: '100%' }}
-                onChange={onChangeSelect}
-              >
-                <Option key='Y'>{"Phê duyệt"}</Option>
-                <Option key='N'>{"Không"}</Option>
-              </Select>
-            </Col> */}
-          {/* </Row> */}
+          <Row style={{ marginTop: 10 }}>
+            <Col {...layoutHeader} >
+              <Text className={classNames({ 'text-font': true })}>{'Hệ thống'}</Text>
+            </Col>
+            <Col  {...layoutContent}>
+                <Select
+                  disabled={false}
+                  // defaultValue={isApprove == 'Y' ? 'Phê duyệt' : 'Không'}
+                  // value={ }
+                  style={{ width: '100%' }}
+                  onChange={onChangeSelect}
+                >
+                  <Option key='1'>{"CBWay"}</Option>
+                  <Option key='2'>{"Game Loyalty"}</Option>
+                  <Option key='3'>{"Marketing"}</Option>
+                  <Option key='0'>{"Khác..."}</Option>
+                </Select>
+              </Col>
+          </Row>
+          {isApprove =='0' &&  <Row style={{ marginTop: 10 }}>
+            <Col {...layoutHeader} >
+              {/* <Text className={classNames({ 'text-font': true })}>{'Hệ thống'}</Text> */}
+            </Col>
+            <Col  {...layoutContent}>
+                <Input></Input>
+              </Col>
+          </Row>
+          }
+         
         </Form>
       </Card>
     </Modal>

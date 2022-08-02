@@ -1,6 +1,13 @@
-import React, { useEffect, useState } from "react";
-import MainWheel from "@/components/wheel-spin/MainWheel";
+/* --------------------------------------------------------
+* Author Võ Bách Nhạc
+* Email vonhac.20394@gmail.com
+* Phone 0906.918.738
+* Created: 2022-04-04
+*------------------------------------------------------- */
+import { useEffect, useState } from 'react';
+import WheelChild from '@/components/wheel-child';
 require("./styles.less");
+// require('./tabsStyle.less');
 const classNames = require("classnames");
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
@@ -14,41 +21,38 @@ import Header from '@/components/Head';
 // pop up menu
 import PopupMenu from '@/containers/popup-menu-wheel'
 
-const DisplayWheel = (props) => {
-  const router = useRouter();
-  const dispatch = useDispatch();
-  const [list, setList] = useState([]);
+
+
+export default function DisplayWheel(props) {
   /// url mẫu http://localhost:3000/wheel/000001000012-0000000001
+  const router = useRouter()
   const { manager = null, arrItem = [] } = props;
+  const [selectedItem, setSelectedItem] = useState(null);
   const [path, setPath] = useState(router.pathname);
   const [invalid, setInvalid] = useState(false);
   const places = !manager ? useSelector(gettersEventWheel.getContentReward) : (arrItem || []);
   useEffect(() => {
-    // let arrItem = [];
-    // let length = 14;
-    // for (let i = 1; i <= length; i++) {
-    //   if (i % 2 == 0) {
-    //     arrItem.push({
-    //       no: i + 1,
-    //       key: i,
-    //       wheel_color: "#337ab7",
-    //       imgBase64: `/images/reward/reward${i}.png`,
-    //       segment_name: "Giải thưởng thứ " + i
+    checkWheelDetail();
+  }, [places]);
 
-    //     })
-    //   } else {
-    //     arrItem.push({
-    //       no: i + 1,
-    //       key: i,
-    //       wheel_color: "white",
-    //       imgBase64: `/images/reward/reward${i}.png`,
-    //       segment_name: "Giải thưởng thứ " + i
+  const checkWheelDetail = () => {
+    if (!manager && (!places || places.length == 0)) {
+      // Message.Warning("THÔNG BÁO", "Vòng quay chưa có giải thưởng")
+      setInvalid(true)
+    }
+  }
+  // const [userInfo, setUserInfo] = useState({
+  //   wheel_type: null,
+  //   wheel_id: null,
+  //   rules_id: null,
+  //   usr_info: {
+  //     user_id: null,
+  //     num: 0
+  //   },
+  // });
+  const dispatch = useDispatch();
 
-    //     })
-    //   }
-    // }
-    // console.log('arrItem: ', arrItem);
-    setList(arrItem);
+  useEffect(() => {
     if (!manager) {
       initPage();
     }
@@ -56,6 +60,20 @@ const DisplayWheel = (props) => {
       setPath('/wheel/')
     }
   }, []);
+
+
+  const [statePage, setStatePage] = useState(1);
+
+  useEffect(() => {
+    if (statePage == 1) {
+      /// call chile
+    } else if (statePage == 2) {
+      // call  list 1
+    } else if (statePage == 3) {
+      // call  list 2
+    }
+
+  }, [statePage])
 
   const initPage = async () => {
     const locationUrl = window.location;
@@ -83,40 +101,25 @@ const DisplayWheel = (props) => {
       Message.Warning("THÔNG BÁO", "Đường dẫn không đúng")
       setInvalid(true)
     }
-  };
+  }
 
-  const checkWheelDetail = () => {
-    if (!manager && (!places || places.length == 0)) {
-      // Message.Warning("THÔNG BÁO", "Vòng quay chưa có giải thưởng")
-      setInvalid(true)
-    }
-  };
-
-  useEffect(() => {
-    checkWheelDetail();
-  }, [places]);
-
-  const [statePage, setStatePage] = useState(1);
-  useEffect(() => {
-    if (statePage == 1) {
-      /// call chile
-    } else if (statePage == 2) {
-      // call  list 1
-    } else if (statePage == 3) {
-      // call  list 2
-    }
-
-  }, [statePage])
+  const onSelectItem = (value) => {
+    setSelectedItem(value)
+  }
 
   return (
-    <div className="App">
+    <div className='App' style={{
+      backgroundImage: null
+    }}>
       <Header title={PathTitle[`${path}`]} />
       {!manager && <PopupMenu />}
-      {!invalid && <MainWheel
-        arrItem={list}
+      {!invalid && <WheelChild
+        arrItem={arrItem}
+        onSelectItem={onSelectItem}
+        selectedItem={selectedItem}
         roles={manager}
       />}
     </div>
   )
 }
-export default DisplayWheel;
+
