@@ -19,18 +19,18 @@ export default function PopupMenu() {
           <Tabs defaultActiveKey="1" >
             <TabPane tab="Lịch sử trúng" key="1">
               <ul className={'items-subs'}>
-                <li><span>22/05/2022</span> - <span>Trúng giải nhất 10 triệu</span></li>
-                <li><span>22/05/2022</span> - <span>Trúng giải nhì 5 triệu</span></li>
-                <li><span>22/05/2022</span> - <span>Trúng giải may mắn</span></li>
-                <li><span>22/05/2022</span> - <span>Trúng giải nhất 10 triệu</span></li>
-                <li><span>22/05/2022</span> - <span>Trúng giải nhì 5 triệu</span></li>
-                <li><span>22/05/2022</span> - <span>Trúng giải may mắn</span></li>
-                <li><span>22/05/2022</span> - <span>Trúng giải nhất 10 triệu</span></li>
-                <li><span>22/05/2022</span> - <span>Trúng giải nhì 5 triệu</span></li>
-                <li><span>22/05/2022</span> - <span>Trúng giải may mắn</span></li>
-                <li><span>22/05/2022</span> - <span>Trúng giải nhất 10 triệu</span></li>
-                <li><span>22/05/2022</span> - <span>Trúng giải nhì 5 triệu</span></li>
-                <li><span>22/05/2022</span> - <span>Trúng giải may mắn</span></li>
+                <li><span>22/05/2022</span> - <span>Trúng giải nhất 10 triệu</span> - <span className={'items-subs__noti'}>Đang chờ trả thưởng</span></li>
+                <li><span>22/05/2022</span> - <span>Trúng giải nhì 5 triệu</span> - <span className={'items-subs__noti'}>Đã trả thưởng</span></li>
+                <li><span>22/05/2022</span> - <span>Trúng giải may mắn</span> - <span className={'items-subs__noti'}>Đang chờ trả thưởng</span></li>
+                <li><span>22/05/2022</span> - <span>Trúng giải nhất 10 triệu</span> - <span className={'items-subs__noti'}>Đã trả thưởng</span></li>
+                <li><span>22/05/2022</span> - <span>Trúng giải nhì 5 triệu</span> - <span className={'items-subs__noti'}>Đang chờ trả thưởng</span></li>
+                <li><span>22/05/2022</span> - <span>Trúng giải may mắn</span> - <span className={'items-subs__noti'}>Đã trả thưởng</span></li>
+                <li><span>22/05/2022</span> - <span>Trúng giải nhất 10 triệu</span> - <span className={'items-subs__noti'}>Đang chờ trả thưởng</span></li>
+                <li><span>22/05/2022</span> - <span>Trúng giải nhì 5 triệu</span> - <span className={'items-subs__noti'}>Đã trả thưởng</span></li>
+                <li><span>22/05/2022</span> - <span>Trúng giải may mắn</span> - <span className={'items-subs__noti'}>Đang chờ trả thưởng</span></li>
+                <li><span>22/05/2022</span> - <span>Trúng giải nhất 10 triệu</span> - <span className={'items-subs__noti'}>Đã trả thưởng</span></li>
+                <li><span>22/05/2022</span> - <span>Trúng giải nhì 5 triệu</span> - <span className={'items-subs__noti'}>Đang chờ trả thưởng</span></li>
+                <li><span>22/05/2022</span> - <span>Trúng giải may mắn</span> - <span className={'items-subs__noti'}>Đang chờ trả thưởng</span></li>
               </ul>
             </TabPane>
             <TabPane tab="Danh sách giải" key="2">
