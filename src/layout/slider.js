@@ -96,11 +96,11 @@ const menu = [
     ],
   },
   {
-    key: 'subBehavior',
+    key: 'subManager-CbCoin',
     parentKey: null,
-    path: '/admin/behavior',
+    path: '/admin/manager-cb-coin',
     icon: <SwapOutlined />,
-    title: ' Hành Vi',
+    title: ' Quản lý CBcoin',
     child: null,
   },
 ];
@@ -126,7 +126,7 @@ const permission = [
   },
   // 'subWheelApprove',
   {
-    parent: 'subBehavior',
+    parent: 'subManager-CbCoin',
     child: null,
   },
 ];

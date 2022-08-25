@@ -104,7 +104,7 @@ const EditableCell = ({
   );
 };
 
-export default function Behavior(props) {
+export default function ManagerCbCoin(props) {
   const [form] = Form.useForm();
   const [data, setData] = useState(originData);
   const [count, setCount] = useState(totalStt);
@@ -332,7 +332,7 @@ export default function Behavior(props) {
     };
   });
   return (
-    <div className="bahavior">
+    <div className="manager-CbCoin">
       <LayoutHome>
         <Col style={{ marginBottom: 30 }}>
           <Card
