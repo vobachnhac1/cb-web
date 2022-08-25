@@ -17,18 +17,19 @@ import {
 
 require("./styles.less");
 const originData = [];
-
-for (let i = 0; i < 10; i++) {
+let n = 10
+for (n; n > 0; n--) {
   originData.push({
-    key: `${i + 1}`,
-    hethong: `Tên hệ thống 1 ${i + 1}`,
+    key: `${n - 1}`,
+    hethong: `Tên hệ thống  ${n - 1}`,
     fromDate: ``,
     toDate: ``,
-    trangthai: i % 2 !== 0 ? false : true
+    trangthai: n % 2 !== 0 ? false : true
   });
+
 }
 
-let totalStt = originData.length;
+let totalStt = parseInt(originData.length) - parseInt(1);
 
 const EditableCell = ({
   editing,
@@ -136,6 +137,7 @@ export default function Behavior(props) {
       toDate: "",
       trangthai: ""
     };
+    // sắp xếp data lại ngay chổ này
     setData([...data, newData]);
     setCount(count + 1);
   };
