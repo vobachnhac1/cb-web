@@ -18,13 +18,13 @@ import {
 require("./styles.less");
 const originData = [];
 
-for (let i = 0; i < 3; i++) {
+for (let i = 0; i < 10; i++) {
   originData.push({
     key: `${i + 1}`,
     hethong: `Tên hệ thống 1 ${i + 1}`,
     fromDate: ``,
     toDate: ``,
-    tranthai: "Đang hoạt động"
+    trangthai: i % 2 !== 0 ? false : true
   });
 }
 
@@ -117,7 +117,7 @@ export default function Behavior(props) {
       hethong: "",
       fromDate: "",
       toDate: "",
-      tranthai: "",
+      trangthai: "",
       ...record
     });
     setEditingKey(record.key);
@@ -134,7 +134,7 @@ export default function Behavior(props) {
       hethong: "",
       fromDate: "",
       toDate: "",
-      tranthai: ""
+      trangthai: ""
     };
     setData([...data, newData]);
     setCount(count + 1);
@@ -206,15 +206,55 @@ export default function Behavior(props) {
       }
     },
     {
+      align: 'center',
       title: "Trạng thái",
-      dataIndex: "tranthai",
-      width: 150,
-      editable: true
+      dataIndex: "trangthai",
+      width: 120,
+      render: (_, record) => {
+        const editable = isEditing(record);
+        return editable ? (
+          <span>
+            <Typography.Link
+              onClick={() => save(record.key)}
+              style={{
+                marginRight: 8,
+              }}
+            >
+              <Button style={{ color: 'green', borderColor: 'green', borderWidth: 0.5 }}>
+                Active
+              </Button>
+
+            </Typography.Link>
+            <Typography.Link
+              onClick={() => save(record.key)}
+              style={{
+                marginRight: 8,
+              }}
+            >
+              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }}>
+                Inactive
+              </Button>
+
+            </Typography.Link>
+
+          </span>
+        ) : (
+          <div
+            style={{
+              fontWeight: "500"
+            }}
+          >
+            {record.trangthai ? <span style={{ color: "green" }}>Đang hoạt động</span> : <span style={{ color: "red" }}>Dừng hoạt động</span>}
+          </div>
+        );
+      }
+
     },
     {
+      align: 'center',
       title: "Action",
       dataIndex: "operation",
-      width: 80,
+      width: 100,
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (
@@ -225,7 +265,9 @@ export default function Behavior(props) {
                 marginRight: 8
               }}
             >
-              Lưu
+              <Button style={{ color: 'green', borderColor: 'green', borderWidth: 0.5 }}>
+                Lưu
+              </Button>
             </Typography.Link>
             <Popconfirm
               okText="Xác nhận"
@@ -233,7 +275,9 @@ export default function Behavior(props) {
               title="Bạn muốn hủy?"
               onConfirm={cancel}
             >
-              <a>Hủy</a>
+              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }}>
+                Hủy
+              </Button>
             </Popconfirm>
           </span>
         ) : (
@@ -248,13 +292,18 @@ export default function Behavior(props) {
               disabled={editingKey !== ""}
               onClick={() => edit(record)}
             >
-              Cập nhật
+
+              <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }}>
+                Cập nhật
+              </Button>
             </Typography.Link>
             <Typography.Link
               disabled={editingKey !== ""}
               onClick={() => edit(record)}
             >
-              <span style={{ color: "red" }}>Xóa</span>
+              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }}>
+                Xóa
+              </Button>
             </Typography.Link>
           </div>
         );
@@ -338,46 +387,7 @@ export default function Behavior(props) {
           </Card>
         </Col>
       </LayoutHome >
-      {/* /////////////////////////////////// */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end"
-        }}
-      >
-        <Button
-          onClick={handleAdd}
-          type="primary"
-          style={{
-            marginBottom: 16,
-            background: "green"
-          }}
-        >
-          Thêm mới
-        </Button>
-      </div>
-
-      <Form form={form} component={false}>
-        <Table
-          components={{
-            body: {
-              cell: EditableCell
-            }
-          }}
-          scroll={{ x: 1300, y: "45vh" }}
-          bordered
-          dataSource={data}
-          columns={mergedColumns}
-          rowClassName="editable-row"
-          pagination={{
-            onChange: cancel
-          }}
-        />
-      </Form>
     </div>
-    // <div>
-    //   test
-    // </div>
   );
 };
 
