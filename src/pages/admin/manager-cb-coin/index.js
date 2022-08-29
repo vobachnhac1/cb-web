@@ -19,23 +19,14 @@ import {
 require("./styles.less");
 const originData = [];
 let n = 10
-// for (n; n > 0; n--) {
-//   originData.push({
-//     key: `${n - 1}`,
-//     hethong: `Tên hệ thống  ${n - 1}`,
-//     fromDate: ``,
-//     toDate: ``,
-//     trangthai: n % 2 !== 0 ? false : true
-//   });
 
-// }
 
 for (let i = 0; i < n; i++) {
   originData.push({
-    key: `${i + 1}`,
-    hethong: `Tên hệ thống  ${i + 1}`,
-    fromDate: ``,
-    toDate: ``,
+    ord_numbers: `${i + 1}`,
+    criteria_name: `Tên hệ thống  ${i + 1}`,
+    from_date: ``,
+    to_date: ``,
     trangthai: i % 2 !== 0 ? false : true
   });
 
@@ -63,35 +54,7 @@ const EditableCell = ({
     ) : (
       <Input />
     );
-  // let inputNode;
-  // if (inputType === "date") {
-  //   if (record.fromDate) {
-  //     inputNode = (
-  //       <DatePicker
-  //         value={record.fromDate}
-  //         disabledDate={(d) =>
-  //           !d || d.isSameOrBefore(moment().set("date", moment().date() - 1))
-  //         }
-  //       />
-  //     );
-  //   } else if (record.toDate) {
-  //     inputNode = (
-  //       <DatePicker
-  //         value={record.fromDate}
-  //         disabledDate={(d) =>
-  //           !d || d.isSameOrBefore(moment().set("date", moment().date() - 1))
-  //         }
-  //       />
-  //     );
-  //   }
-  //   // inputNode = <DatePicker />;
-  // } else {
-  //   inputNode = <Input />;
-  // }
-
-  // else if(inputType === "active"){
-  //   inputNode = <DatePicker />
-  // }
+ 
   return (
     <td {...restProps}>
       {editing ? (
@@ -121,8 +84,8 @@ export default function ManagerCbCoin(props) {
   const [data, setData] = useState(originData);
   const [count, setCount] = useState(totalStt);
 
-  const [editingKey, setEditingKey] = useState("");
-  const isEditing = (record) => record.key === editingKey;
+  const [editingord_numbers, setEditingord_numbers] = useState("");
+  const isEditing = (record) => record.ord_numbers === editingord_numbers;
 
   const [flagActive, setFlagActive] = useState("")
 
@@ -134,44 +97,44 @@ export default function ManagerCbCoin(props) {
     console.log('đã nhấp vào nút cập nhật record :', record)
     setFlagActive(record.trangthai)
     form.setFieldsValue({
-      key: "",
-      hethong: "",
-      fromDate: "",
-      toDate: "",
+      ord_numbers: "",
+      criteria_name: "",
+      from_date: "",
+      to_date: "",
       trangthai: "",
       ...record
     });
-    setEditingKey(record.key);
+    setEditingord_numbers(record.ord_numbers);
   };
 
   const cancel = () => {
-    setEditingKey("");
+    setEditingord_numbers("");
     setFlagActive("")
   };
 
 
-const save = async (key) => {
+const save = async (ord_numbers) => {
     try {
       const row = await form.validateFields();
       const newData = [...data];
-      const index = newData.findIndex((item) => key === item.key);
+      const index = newData.findIndex((item) => ord_numbers === item.ord_numbers);
       //
       console.log("new data", newData);
       //
       if (index > -1) {
         const item = newData[index];
-        item.fromDate = moment(item.fromDate).format("L");
-        item.toDate = moment(item.toDate).format("L");
+        item.from_date = moment(item.from_date).format("L");
+        item.to_date = moment(item.to_date).format("L");
         item.trangthai = flagActive
 
         newData.splice(index, 1, { ...item, ...row });
         setData(newData);
-        setEditingKey("");
+        setEditingord_numbers("");
         setFlagActive("")
       } else {
         newData.push(row);
         setData(newData);
-        setEditingKey("");
+        setEditingord_numbers("");
       }
       console.log(newData);
     } catch (errInfo) {
@@ -187,19 +150,19 @@ const save = async (key) => {
   const columns = [
     {
       title: "STT",
-      dataIndex: "key",
+      dataIndex: "ord_numbers",
       width: 70,
       editable: false
     },
     {
       title: "Tên hệ thống",
-      dataIndex: "hethong",
+      dataIndex: "criteria_name",
       width: 250,
       editable: true
     },
     {
       title: "Từ ngày",
-      dataIndex: "fromDate",
+      dataIndex: "from_date",
       width: 100,
       editable: true,
       render: (text, record) => {
@@ -208,7 +171,7 @@ const save = async (key) => {
     },
     {
       title: "Đến ngày",
-      dataIndex: "toDate",
+      dataIndex: "to_date",
       width: 100,
       editable: true,
       render: (text, record) => {
@@ -270,7 +233,7 @@ const save = async (key) => {
         return editable ? (
           <span>
             <Typography.Link
-              onClick={() => save(record.key)}
+              onClick={() => save(record.ord_numbers)}
               style={{
                 marginRight: 8
               }}
@@ -299,7 +262,7 @@ const save = async (key) => {
             }}
           >
             <Typography.Link
-              disabled={editingKey !== ""}
+              disabled={editingord_numbers !== ""}
               onClick={() => edit(record)}
             >
 
@@ -308,7 +271,7 @@ const save = async (key) => {
               </Button>
             </Typography.Link>
             <Typography.Link
-              disabled={editingKey !== ""}
+              disabled={editingord_numbers !== ""}
             >
               <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }}>
                 Xóa
@@ -329,7 +292,7 @@ const save = async (key) => {
       onCell: (record) => ({
         record,
         inputType:
-          col.dataIndex === "fromDate" || col.dataIndex === "toDate"
+          col.dataIndex === "from_date" || col.dataIndex === "to_date"
             ? "date"
             : "text",
         dataIndex: col.dataIndex,
@@ -384,8 +347,8 @@ const save = async (key) => {
                     defaultValue={null}
                     value={filter.topic_id}
                     onChange={(value) => setFilter({ ...filter, topic_id: value })}>
-                    {listTopic.map((Item, key) => (
-                      <Select.Option value={Item.topic_id} key={key}>{Item.topic_name}</Select.Option>
+                    {listTopic.map((Item, ord_numbers) => (
+                      <Select.Option value={Item.topic_id} ord_numbers={ord_numbers}>{Item.topic_name}</Select.Option>
                     ))}
                   </Select>
                 </Col>
