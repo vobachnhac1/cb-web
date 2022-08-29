@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import moment from "moment";
 import LayoutHome from '@/containers/Home';
+import ModalManagerCbCoin from '@/containers/modal-manager-cb-coin'
 import {
   Form,
   Input,
@@ -35,7 +36,7 @@ for (let i = 0; i < n; i++) {
     hethong: `Tên hệ thống  ${i + 1}`,
     fromDate: ``,
     toDate: ``,
-    trangthai: n % 2 !== 0 ? false : true
+    trangthai: i % 2 !== 0 ? false : true
   });
 
 }
@@ -123,7 +124,15 @@ export default function ManagerCbCoin(props) {
   const [editingKey, setEditingKey] = useState("");
   const isEditing = (record) => record.key === editingKey;
 
+  const [flagActive, setFlagActive] = useState("")
+
+  const onChangeFlagActive = (flag) => {
+    setFlagActive(!flag)
+  }
+
   const edit = (record) => {
+    console.log('đã nhấp vào nút cập nhật record :', record)
+    setFlagActive(record.trangthai)
     form.setFieldsValue({
       key: "",
       hethong: "",
@@ -137,23 +146,11 @@ export default function ManagerCbCoin(props) {
 
   const cancel = () => {
     setEditingKey("");
+    setFlagActive("")
   };
 
-  const handleAdd = () => {
-    let index = data.length;
-    const newData = {
-      key: `${index + 1}`,
-      hethong: "",
-      fromDate: "",
-      toDate: "",
-      trangthai: ""
-    };
-    // sắp xếp data lại ngay chổ này
-    setData([...data, newData]);
-    setCount(count + 1);
-  };
 
-  const save = async (key) => {
+const save = async (key) => {
     try {
       const row = await form.validateFields();
       const newData = [...data];
@@ -163,19 +160,14 @@ export default function ManagerCbCoin(props) {
       //
       if (index > -1) {
         const item = newData[index];
-        //
         item.fromDate = moment(item.fromDate).format("L");
-        console.log("item", newData[0]);
-        console.log('moment().format("L")', moment().format("L"));
-        console.log("item.key", item.key);
-        console.log("item.fromDate1", moment(newData[0].fromDate).format("L"));
-        console.log("item.fromDate", moment(item.fromDate).format("L"));
         item.toDate = moment(item.toDate).format("L");
-        //
+        item.trangthai = flagActive
 
         newData.splice(index, 1, { ...item, ...row });
         setData(newData);
         setEditingKey("");
+        setFlagActive("")
       } else {
         newData.push(row);
         setData(newData);
@@ -186,6 +178,11 @@ export default function ManagerCbCoin(props) {
       console.log("Validate Failed:", errInfo);
     }
   };
+
+  const onDelete = (recordID) =>{
+    // call action xóa
+
+  }
 
   const columns = [
     {
@@ -228,23 +225,23 @@ export default function ManagerCbCoin(props) {
         return editable ? (
           <span>
             <Typography.Link
-              onClick={() => save(record.key)}
+
               style={{
                 marginRight: 8,
               }}
             >
-              <Button style={{ color: 'green', borderColor: 'green', borderWidth: 0.5 }}>
+              <Button onClick={() => onChangeFlagActive(flagActive)} style={{ color: `${flagActive ? 'white' : 'green'}`, borderColor: 'green', borderWidth: 0.5, background: `${flagActive ? 'green' : ''}` }}>
                 Active
               </Button>
 
             </Typography.Link>
             <Typography.Link
-              onClick={() => save(record.key)}
+
               style={{
                 marginRight: 8,
               }}
             >
-              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }}>
+              <Button onClick={() => onChangeFlagActive(flagActive)} style={{ color: `${flagActive ? 'red' : 'white'}`, borderColor: 'red', borderWidth: 0.5, background: `${flagActive ? '' : 'red'}` }}>
                 Inactive
               </Button>
 
@@ -312,7 +309,6 @@ export default function ManagerCbCoin(props) {
             </Typography.Link>
             <Typography.Link
               disabled={editingKey !== ""}
-              onClick={() => edit(record)}
             >
               <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }}>
                 Xóa
@@ -342,15 +338,39 @@ export default function ManagerCbCoin(props) {
       })
     };
   });
+
+  // modal
+  const [visible, setVisible] = useState(false);
+  const [bodyModel, setBodyModel] = useState({
+    isAdd: false,
+    record: null
+  });
+
+  const addNew = () => {
+    setVisible(true);
+    setBodyModel({
+      record: null,
+      isAdd: true
+    });
+  }
+
+  const callbackModal = (params) => {
+    setVisible(params.visible);
+    // onSearch()
+  }
+
   return (
     <div className="manager-CbCoin">
       <LayoutHome>
         <Col style={{ marginBottom: 30 }}>
+          {/* modal */}
+          <ModalManagerCbCoin visible={visible} bodyModel={bodyModel} callback={callbackModal} />
+
           <Card
             headStyle={{
               fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)"
             }}
-            title="Quản lý tích điểm"
+            title="Quản lý tiêu chí CBCoin"
             bordered={true}
             style={{ backgroundColor: '#FFFFFF' }}>
             <Col span={48} >
@@ -394,7 +414,7 @@ export default function ManagerCbCoin(props) {
               </Row> */}
               <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
                 <Col className="gutter-row" span={3}>
-                  <Button type='primary' size='middle' style={{ width: '100%' }}>Thêm</Button>
+                  <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNew}>Thêm</Button>
                 </Col>
                 <Col className="gutter-row" span={3}>
                   <Button type='primary' size='middle' style={{ width: '100%' }} >Tìm kiếm</Button>
@@ -405,23 +425,6 @@ export default function ManagerCbCoin(props) {
           <div style={{ marginTop: 20 }} />
           <Card>
             <Col span={48} style={{ marginTop: 10 }}>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end"
-                }}
-              >
-                <Button
-                  onClick={handleAdd}
-                  type="primary"
-                  style={{
-                    marginBottom: 16,
-                    background: "#034da2"
-                  }}
-                >
-                  Thêm mới
-                </Button>
-              </div>
               {/* table */}
               <Form form={form} component={false}>
                 <Table
