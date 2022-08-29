@@ -45,6 +45,15 @@ const ModalManagerCbCoin = (props) => {
   const [inactived_date, setInactived_date] = useState(record ? record.inactived_date : "");
   const dispatch = useDispatch();
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
+  
+  // data manager cb coin
+
+  const [ord_numbers, setOrd_numbers] = useState(record ? record.ord_numbers : "");
+  const [criteria_name, setCriteria_name] = useState(record ? record.criteria_name : "");
+  const [from_date, setFrom_date] = useState(record ? record.from_date : "");
+  const [to_date, setTo_date] = useState(record ? record.to_date : "");
+  const [status, setStatus] = useState(record ? record.status : "");
+
 
   useEffect(() => {
     initPage();
@@ -56,6 +65,13 @@ const ModalManagerCbCoin = (props) => {
     setSegmentName(record ? record.segment_name : "")
     setSegmentValue(record ? record.segment_value : "")
     setInactived_date(record ? record.inactived_date : "")
+
+    // data manager cb coin
+    setOrd_numbers(record ? record.ord_numbers : "")
+    setCriteria_name(record ? record.criteria_name : "")
+    setFrom_date(record ? record.from_date : "")
+    setTo_date(record ? record.to_date : "")
+    setStatus(record ? record.status : "")
   }
 
   const onCallback = async () => {
