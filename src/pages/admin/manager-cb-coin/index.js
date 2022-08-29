@@ -17,6 +17,8 @@ import {
 } from "antd";
 
 require("./styles.less");
+import router from 'next/router';
+
 const originData = [];
 let n = 10
 
@@ -83,7 +85,7 @@ export default function ManagerCbCoin(props) {
   const [form] = Form.useForm();
   const [data, setData] = useState(originData);
   const [count, setCount] = useState(totalStt);
-
+  const [loading, setLoading] = useState(true);
   const [editingord_numbers, setEditingord_numbers] = useState("");
   const isEditing = (record) => record.ord_numbers === editingord_numbers;
 
@@ -302,6 +304,17 @@ export default function ManagerCbCoin(props) {
     };
   });
 
+  const onDoubleClick = (record, rowIndex) => {
+    // setVisible(true);
+    // setBodyModel({
+    //   record: record,
+    //   isAdd: false
+    // });
+    // manager-detail-cb-coin
+    // router.push(`/admin/wheel-detail/${record.wheel_id}`)
+    router.push(`/admin/manager-detail-cb-coin`)
+  }
+
   // modal
   const [visible, setVisible] = useState(false);
   const [bodyModel, setBodyModel] = useState({
@@ -321,6 +334,7 @@ export default function ManagerCbCoin(props) {
     setVisible(params.visible);
     // onSearch()
   }
+
 
   return (
     <div className="manager-CbCoin">
@@ -396,6 +410,8 @@ export default function ManagerCbCoin(props) {
                       cell: EditableCell
                     }
                   }}
+                  // loading={loading}
+                  size='small'
                   scroll={{ x: 1300, y: "45vh" }}
                   bordered
                   dataSource={data}
@@ -403,6 +419,17 @@ export default function ManagerCbCoin(props) {
                   rowClassName="editable-row"
                   pagination={{
                     onChange: cancel
+                  }}
+                  onRow={(record, rowIndex) => {
+                    return {
+                      onClick: event => { }, // click row
+                      onDoubleClick: event => {
+                        onDoubleClick(record, rowIndex)
+                      }, // double click row { }
+                      onContextMenu: event => { }, // right button click row
+                      onMouseEnter: event => { }, // mouse enter row
+                      onMouseLeave: event => { }, // mouse leave row
+                    };
                   }}
                 />
               </Form>
