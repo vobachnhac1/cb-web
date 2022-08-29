@@ -81,7 +81,7 @@ const EditableCell = ({
   );
 };
 
-export default function ManagerCbCoin(props) {
+export default function ManagerDetailCbCoin(props) {
   const [form] = Form.useForm();
   const [data, setData] = useState(originData);
   const [count, setCount] = useState(totalStt);
@@ -151,13 +151,25 @@ export default function ManagerCbCoin(props) {
 
   const columns = [
     {
-      title: "STT",
+      title: "Các giao dịch được tính CBCoin",
       dataIndex: "ord_numbers",
       width: 70,
       editable: false
     },
     {
-      title: "Tên hệ thống",
+      title: "Số điểm trên lần",
+      dataIndex: "criteria_name",
+      width: 250,
+      editable: true
+    },
+    {
+      title: "Số lần",
+      dataIndex: "criteria_name",
+      width: 250,
+      editable: true
+    },
+    {
+      title: "Số điểm trên lần",
       dataIndex: "criteria_name",
       width: 250,
       editable: true
