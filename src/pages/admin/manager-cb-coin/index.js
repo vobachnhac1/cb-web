@@ -18,10 +18,21 @@ import {
 require("./styles.less");
 const originData = [];
 let n = 10
-for (n; n > 0; n--) {
+// for (n; n > 0; n--) {
+//   originData.push({
+//     key: `${n - 1}`,
+//     hethong: `Tên hệ thống  ${n - 1}`,
+//     fromDate: ``,
+//     toDate: ``,
+//     trangthai: n % 2 !== 0 ? false : true
+//   });
+
+// }
+
+for (let i = 0; i < n; i++) {
   originData.push({
-    key: `${n - 1}`,
-    hethong: `Tên hệ thống  ${n - 1}`,
+    key: `${i + 1}`,
+    hethong: `Tên hệ thống  ${i + 1}`,
     fromDate: ``,
     toDate: ``,
     trangthai: n % 2 !== 0 ? false : true
@@ -344,6 +355,51 @@ export default function ManagerCbCoin(props) {
             style={{ backgroundColor: '#FFFFFF' }}>
             <Col span={48} >
               {/* function tìm kiếm */}
+              {/* <Row gutter={[16, 24]}>
+                <Col className="gutter-row" span={4}>
+                  <Select
+                    allowClear
+                    placeholder="Chủ đề"
+                    style={{ width: '100%' }}
+                    defaultValue={null}
+                    value={filter.topic_id}
+                    onChange={(value) => setFilter({ ...filter, topic_id: value })}>
+                    {listTopic.map((Item, key) => (
+                      <Select.Option value={Item.topic_id} key={key}>{Item.topic_name}</Select.Option>
+                    ))}
+                  </Select>
+                </Col>
+                <Col className="gutter-row" span={5}>
+                  <RangePicker
+                    onChange={(dates, dateString) => {
+                      if (dates) {
+                        setFilter({
+                          ...filter,
+                          from_date_act: dateString[0],
+                          to_date_act: dateString[1],
+                        });
+                      } else {
+                        setFilter({
+                          ...filter,
+                          from_date_act: null,
+                          to_date_act: null,
+                        });
+                      }
+                    }}
+                  />
+                </Col>
+                <Col className="gutter-row" span={6}>
+                  <Input placeholder="Tên giải thưởng cần tìm" allowClear value={filter.segment_name} onChange={(event) => setFilter({ ...filter, segment_name: event.target.value ? event.target.value : null })} />
+                </Col>
+              </Row> */}
+              <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
+                <Col className="gutter-row" span={3}>
+                  <Button type='primary' size='middle' style={{ width: '100%' }}>Thêm</Button>
+                </Col>
+                <Col className="gutter-row" span={3}>
+                  <Button type='primary' size='middle' style={{ width: '100%' }} >Tìm kiếm</Button>
+                </Col>
+              </Row>
             </Col>
           </Card>
           <div style={{ marginTop: 20 }} />
@@ -360,7 +416,7 @@ export default function ManagerCbCoin(props) {
                   type="primary"
                   style={{
                     marginBottom: 16,
-                    background: "green"
+                    background: "#034da2"
                   }}
                 >
                   Thêm mới
