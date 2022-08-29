@@ -54,7 +54,7 @@ const EditableCell = ({
     ) : (
       <Input />
     );
- 
+
   return (
     <td {...restProps}>
       {editing ? (
@@ -113,7 +113,7 @@ export default function ManagerCbCoin(props) {
   };
 
 
-const save = async (ord_numbers) => {
+  const save = async (ord_numbers) => {
     try {
       const row = await form.validateFields();
       const newData = [...data];
@@ -142,7 +142,7 @@ const save = async (ord_numbers) => {
     }
   };
 
-  const onDelete = (recordID) =>{
+  const onDelete = (recordID) => {
     // call action xóa
 
   }
@@ -193,7 +193,7 @@ const save = async (ord_numbers) => {
                 marginRight: 8,
               }}
             >
-              <Button onClick={() => onChangeFlagActive(flagActive)} style={{ color: `${flagActive ? 'white' : 'green'}`, borderColor: 'green', borderWidth: 0.5, background: `${flagActive ? 'green' : ''}` }}>
+              <Button onClick={() => flagActive ? '' : onChangeFlagActive(flagActive)} style={{ color: `${flagActive ? 'white' : 'green'}`, borderColor: 'green', borderWidth: 0.5, background: `${flagActive ? 'green' : ''}` }}>
                 Active
               </Button>
 
@@ -204,7 +204,7 @@ const save = async (ord_numbers) => {
                 marginRight: 8,
               }}
             >
-              <Button onClick={() => onChangeFlagActive(flagActive)} style={{ color: `${flagActive ? 'red' : 'white'}`, borderColor: 'red', borderWidth: 0.5, background: `${flagActive ? '' : 'red'}` }}>
+              <Button onClick={() => flagActive ? onChangeFlagActive(flagActive) : ''} style={{ color: `${flagActive ? 'red' : 'white'}`, borderColor: 'red', borderWidth: 0.5, background: `${flagActive ? '' : 'red'}` }}>
                 Inactive
               </Button>
 
