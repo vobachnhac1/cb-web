@@ -5,7 +5,7 @@
 * Created: 2022-04-08
 *------------------------------------------------------- */
 require("./styles.less");
-import { Card, Col, Form, Input, Modal, Row, Typography, DatePicker , Radio,  } from 'antd';
+import { Card, Col, Form, Input, Modal, Row, Typography, DatePicker, Radio, } from 'antd';
 
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
@@ -37,7 +37,7 @@ const ModalManagerCbCoin = (props) => {
   const { callback, visible = false, bodyModel: { isAdd = false, record = null } } = props;
 
   //state data form
-  
+
   const [segmentId, setSegmentId] = useState(record ? record.segment_id : "");
   const [topicId, setTopicId] = useState(record ? record.topic_id : "");
   const [segmentName, setSegmentName] = useState(record ? record.segment_name : "");
@@ -45,7 +45,7 @@ const ModalManagerCbCoin = (props) => {
   const [inactived_date, setInactived_date] = useState(record ? record.inactived_date : "");
   const dispatch = useDispatch();
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
-  
+
   // data manager cb coin
 
   const [ord_numbers, setOrd_numbers] = useState(record ? record.ord_numbers : "");
@@ -161,13 +161,12 @@ const ModalManagerCbCoin = (props) => {
           size={'default'}
 
         >
-
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
               <Text className={classNames({ 'text-font': true })}>{'Tên hệ thống :'}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Input style={{ width: '100%' }} value={segmentId} onChange={(text) => setSegmentId(text.target.value)} />
+              <Input style={{ width: '100%' }} value={criteria_name} onChange={(text) => setCriteria_name(text.target.value)} />
             </Col>
           </Row>
 
@@ -176,7 +175,7 @@ const ModalManagerCbCoin = (props) => {
               <Text className={classNames({ 'text-font': true })}>{'Từ ngày: '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <DatePicker disabledDate={d => !d || d.isSameOrBefore(moment().set('date', (moment().date() - 1)))} style={{ width: '50%' }} value={!inactived_date || inactived_date === "0000-00-00 00:00:00" ? null : moment(inactived_date)} onChange={(date) => setInactived_date(date)} />
+              <DatePicker disabledDate={d => !d || d.isSameOrBefore(moment().set('date', (moment().date() - 1)))} style={{ width: '50%' }} value={!from_date || from_date === "0000-00-00 00:00:00" ? null : moment(from_date)} onChange={(date) => setFrom_date(date)} />
             </Col>
           </Row>
 
@@ -185,7 +184,7 @@ const ModalManagerCbCoin = (props) => {
               <Text className={classNames({ 'text-font': true })}>{'Đến ngày: '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <DatePicker disabledDate={d => !d || d.isSameOrBefore(moment().set('date', (moment().date() - 1)))} style={{ width: '50%' }} value={!inactived_date || inactived_date === "0000-00-00 00:00:00" ? null : moment(inactived_date)} onChange={(date) => setInactived_date(date)} />
+              <DatePicker disabledDate={d => !d || d.isSameOrBefore(moment().set('date', (moment().date() - 1)))} style={{ width: '50%' }} value={!to_date || to_date === "0000-00-00 00:00:00" ? null : moment(to_date)} onChange={(date) => setTo_date(date)} />
             </Col>
           </Row>
 
@@ -194,9 +193,9 @@ const ModalManagerCbCoin = (props) => {
               <Text className={classNames({ 'text-font': true })}>{'Trạng thái: '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Radio.Group onChange={onChange} value={1}>
-                <Radio value={1}>Active</Radio>
-                <Radio value={2}>Inactive</Radio>
+              <Radio.Group onChange={onChange} value={status}>
+                <Radio value={true}>Active</Radio>
+                <Radio value={false}>Inactive</Radio>
               </Radio.Group>
             </Col>
           </Row>
