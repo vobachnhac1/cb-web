@@ -43,5 +43,6 @@
   "updateStateWheel": "rules/update-status-the-wheel",
   "updateWheelWithRules": "wheel/update-wheel-with-rules-id",
   "getRewardHistory": "rules/get-reward-history",
-  "comfirmReceived": "rules/comfirm-reward-by-server"
+  "comfirmReceived": "rules/comfirm-reward-by-server",
+  "getCustPointCriteria":"cust-point/criteria"
 }
