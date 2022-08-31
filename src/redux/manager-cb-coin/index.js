@@ -9,15 +9,14 @@ import { buildReducer } from '../wrapper';
 //Creating my reducer
 export default buildReducer(
   {
-    // listSegment: []
-  }, 
+    listManagerCbCoin: []
+  },
   {
-    // [TYPES.SEGMENT_SEARCH]: (state = listSegment, payload) => {
-
-    //   return {
-    //     ...state,
-    //     listSegment: payload
-    //   }
-    // }
+    [TYPES.MANAGER_CB_COIN_SEARCH]: (state = listManagerCbCoin, payload) => {
+      return {
+        ...state,
+        listManagerCbCoin: payload
+      }
+    }
   },
 );

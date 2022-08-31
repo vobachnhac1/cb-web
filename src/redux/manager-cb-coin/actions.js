@@ -1,9 +1,9 @@
 import * as TYPES from './type';
 import URLSERVER from '@/redux/urlServer.json';
 
-const setSearchCbCoin = (payload) => ({ type: TYPES.SEGMENT_SEARCH, payload });
+const setSearchManagerCbCoin = (payload) => ({ type: TYPES.MANAGER_CB_COIN_SEARCH, payload });
 
-export const insertCbCoin = (payload) => async (dispatch, getState, { $http }) => {
+export const insertManagerCbCoin = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
     "topic_id": payload.topic_id,
     "segment_id": payload.segment_id,
@@ -24,7 +24,7 @@ export const insertCbCoin = (payload) => async (dispatch, getState, { $http }) =
   return true
 }
 
-export const updateCbCoin = (payload) => async (dispatch, getState, { $http }) => {
+export const updateManagerCbCoin = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
     "topic_id": payload.topic_id,
     "segment_id": payload.segment_id,
@@ -45,7 +45,7 @@ export const updateCbCoin = (payload) => async (dispatch, getState, { $http }) =
   return true
 }
 
-export const deleteCbCoinById = (payload) => async (dispatch, getState, { $http }) => {
+export const deleteManagerCbCoinById = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
     "segment_id": parseInt(payload.segment_id),
   }
@@ -58,7 +58,7 @@ export const deleteCbCoinById = (payload) => async (dispatch, getState, { $http 
   return true
 }
 
-export const searchCbCoin = (payload) => async (dispatch, getState, { $http }) => {
+export const searchManagerCbCoin = (payload) => async (dispatch, getState, { $http }) => {
   // call xuống backend url + param 
   const result = await $http.get(URLSERVER.searchAllSegment);
   const { success, data } = result;
@@ -66,18 +66,18 @@ export const searchCbCoin = (payload) => async (dispatch, getState, { $http }) =
     return false;
   }
   const listSegment = data.data; 0
-  dispatch(setSearchSegment(listSegment))
+  dispatch(setSearchManagerCbCoin(listSegment))
   return true
 }
 
-export const filterCbCoin = (payload) => async (dispatch, getState, { $http }) => {
+export const filterManagerCbCoin = (payload) => async (dispatch, getState, { $http }) => {
   const result = await $http.post(URLSERVER.searchSegmentById, payload);
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
   }
   const listSegment = data.data;
-  dispatch(setSearchSegment(listSegment))
+  dispatch(setSearchManagerCbCoin(listSegment))
 
   return {
     "success": true,

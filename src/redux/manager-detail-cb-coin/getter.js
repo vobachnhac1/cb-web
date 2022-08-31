@@ -1,7 +1,7 @@
 // Lấy giá trị store
 
-export const getStateLoadPageSegment = ({ segment: { listSegment = [] } }) => {
-  return listSegment.map((item, index) => ({ ...item, key: index })) || []
+export const getStateLoadPageSegment = ({ ManagerDetailCbCoin: { listManagerDetailCbCoin = [] } }) => {
+  return listManagerDetailCbCoin.map((item, index) => ({ ...item, key: index })) || []
 };
 
 
