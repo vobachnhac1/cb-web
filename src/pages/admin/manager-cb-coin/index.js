@@ -29,7 +29,7 @@ for (let i = 0; i < n; i++) {
     criteria_name: `Tên hệ thống  ${i + 1}`,
     from_date: ``,
     to_date: ``,
-    trangthai: i % 2 !== 0 ? false : true
+    status: i % 2 !== 0 ? false : true
   });
 
 }
@@ -97,13 +97,13 @@ export default function ManagerCbCoin(props) {
 
   const edit = (record) => {
     console.log('đã nhấp vào nút cập nhật record :', record)
-    setFlagActive(record.trangthai)
+    setFlagActive(record.status)
     form.setFieldsValue({
       ord_numbers: "",
       criteria_name: "",
       from_date: "",
       to_date: "",
-      trangthai: "",
+      status: "",
       ...record
     });
     setEditingord_numbers(record.ord_numbers);
@@ -127,7 +127,7 @@ export default function ManagerCbCoin(props) {
         const item = newData[index];
         item.from_date = moment(item.from_date).format("L");
         item.to_date = moment(item.to_date).format("L");
-        item.trangthai = flagActive
+        item.status = flagActive
 
         newData.splice(index, 1, { ...item, ...row });
         setData(newData);
@@ -183,7 +183,7 @@ export default function ManagerCbCoin(props) {
     {
       align: 'center',
       title: "Trạng thái",
-      dataIndex: "trangthai",
+      dataIndex: "status",
       width: 120,
       render: (_, record) => {
         const editable = isEditing(record);
@@ -219,7 +219,7 @@ export default function ManagerCbCoin(props) {
               fontWeight: "500"
             }}
           >
-            {record.trangthai ? <span style={{ color: "green" }}>Đang hoạt động</span> : <span style={{ color: "red" }}>Dừng hoạt động</span>}
+            {record.status ? <span style={{ color: "green" }}>Đang hoạt động</span> : <span style={{ color: "red" }}>Dừng hoạt động</span>}
           </div>
         );
       }

@@ -5,18 +5,13 @@ const setSearchManagerCbCoin = (payload) => ({ type: TYPES.MANAGER_CB_COIN_SEARC
 
 export const insertManagerCbCoin = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
-    "topic_id": payload.topic_id,
-    "segment_id": payload.segment_id,
-    "segment_name": payload.segment_name,
-    // "segment_color": payload.segment_color,
-    "segment_value": payload.segment_value,
-    "inactived_date": payload.inactived_date,
-    "created_date": "2022-04-08T09:54:19.063Z",
-    "datelastmaint": "2022-04-08T09:54:19.063Z",
-    "is_approve": payload.is_approve
+    criteria_name: payload.criteria_name,
+    from_date: payload.from_date,
+    to_date: payload.to_date,
+    status: payload.status
   }
 
-  const result = await $http.post(URLSERVER.insertSegment, param);
+  const result = await $http.post(URLSERVER.insertCustPointCriteria, param);
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
@@ -26,18 +21,10 @@ export const insertManagerCbCoin = (payload) => async (dispatch, getState, { $ht
 
 export const updateManagerCbCoin = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
-    "topic_id": payload.topic_id,
-    "segment_id": payload.segment_id,
-    "segment_name": payload.segment_name,
-    // "segment_color": payload.segment_color,
-    "segment_value": payload.segment_value,
-    "inactived_date": payload.inactived_date,
-    "created_date": "2022-04-08T09:54:19.063Z",
-    "datelastmaint": "2022-04-08T09:54:19.063Z",
-    "is_approve": payload.is_approve
+    criteria_id: parseInt(payload.criteria_id)
   }
   // call xuống backend url + param
-  const result = await $http.put(URLSERVER.updateSegmentById, param);
+  const result = await $http.put(URLSERVER.updateCustPointCriteria, param);
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
@@ -47,10 +34,10 @@ export const updateManagerCbCoin = (payload) => async (dispatch, getState, { $ht
 
 export const deleteManagerCbCoinById = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
-    "segment_id": parseInt(payload.segment_id),
+    criteria_id: parseInt(payload.criteria_id)
   }
   // call xuống backend url + param
-  const result = await $http.delete(URLSERVER.deleteSegmentById, param);
+  const result = await $http.delete(URLSERVER.deleteCustPointCriteria, param);
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
@@ -60,27 +47,27 @@ export const deleteManagerCbCoinById = (payload) => async (dispatch, getState, {
 
 export const searchManagerCbCoin = (payload) => async (dispatch, getState, { $http }) => {
   // call xuống backend url + param 
-  const result = await $http.get(URLSERVER.searchAllSegment);
+  const result = await $http.get(URLSERVER.getCustPointCriteria);
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
   }
-  const listSegment = data.data; 0
+  const listSegment = data.data; 
   dispatch(setSearchManagerCbCoin(listSegment))
   return true
 }
 
-export const filterManagerCbCoin = (payload) => async (dispatch, getState, { $http }) => {
-  const result = await $http.post(URLSERVER.searchSegmentById, payload);
-  const { success, data } = result;
-  if (!success || !data.success) {
-    return false;
-  }
-  const listSegment = data.data;
-  dispatch(setSearchManagerCbCoin(listSegment))
+// export const filterManagerCbCoin = (payload) => async (dispatch, getState, { $http }) => {
+//   const result = await $http.post(URLSERVER.MANAGER_CB_COIN_SEARCH_BY_ID, payload);
+//   const { success, data } = result;
+//   if (!success || !data.success) {
+//     return false;
+//   }
+//   const listSegment = data.data;
+//   dispatch(setSearchManagerCbCoin(listSegment))
 
-  return {
-    "success": true,
-  }
-}
+//   return {
+//     "success": true,
+//   }
+// }
 
