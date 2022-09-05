@@ -18,9 +18,11 @@ import {
 
 require("./styles.less");
 import router from 'next/router';
+import { getters as gettersManagerCbCoin } from '@/redux/manager-cb-coin';
+import { actions as actionsManagerCbCoin } from '@/redux/manager-cb-coin';
 
 const originData = [];
-let n = 10
+let n = 20
 
 
 for (let i = 0; i < n; i++) {
@@ -128,7 +130,9 @@ export default function ManagerCbCoin(props) {
         item.from_date = moment(item.from_date).format("L");
         item.to_date = moment(item.to_date).format("L");
         item.status = flagActive
-
+        // call actions update
+        // nếu update thành công cho phép cập nhật vào listManagerCbCoin
+        // nếu ko thành công thì báo lỗi
         newData.splice(index, 1, { ...item, ...row });
         setData(newData);
         setEditingord_numbers("");

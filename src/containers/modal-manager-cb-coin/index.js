@@ -12,8 +12,8 @@ import { useEffect, useState } from 'react';
 import moment from 'moment';
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
-import { getters as gettersTopic } from '@/redux/topic';
-import { actions as actionSegment } from '@/redux/segment';
+import { getters as gettersManagerCbCoin } from '@/redux/manager-cb-coin';
+import { actions as actionsManagerCbCoin } from '@/redux/manager-cb-coin';
 
 
 const classNames = require("classnames");
@@ -35,24 +35,14 @@ const layoutContent = {
 
 const ModalManagerCbCoin = (props) => {
   const { callback, visible = false, bodyModel: { isAdd = false, record = null } } = props;
-
-  //state data form
-
-  const [segmentId, setSegmentId] = useState(record ? record.segment_id : "");
-  const [topicId, setTopicId] = useState(record ? record.topic_id : "");
-  const [segmentName, setSegmentName] = useState(record ? record.segment_name : "");
-  const [segmentValue, setSegmentValue] = useState(record ? record.segment_value : "");
-  const [inactived_date, setInactived_date] = useState(record ? record.inactived_date : "");
   const dispatch = useDispatch();
-  const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
-
   // data manager cb coin
-
   const [ord_numbers, setOrd_numbers] = useState(record ? record.ord_numbers : "");
   const [criteria_name, setCriteria_name] = useState(record ? record.criteria_name : "");
   const [from_date, setFrom_date] = useState(record ? record.from_date : "");
   const [to_date, setTo_date] = useState(record ? record.to_date : "");
   const [status, setStatus] = useState(record ? record.status : "");
+  const listManagerCbCoin = useSelector(gettersManagerCbCoin.getStateLoadPageManagerCbCoin) || [];
 
 
   useEffect(() => {
@@ -60,12 +50,6 @@ const ModalManagerCbCoin = (props) => {
   }, [visible]);
 
   const initPage = async () => {
-    setSegmentId(record ? record.segment_id : "")
-    setTopicId(record ? record.topic_id : "")
-    setSegmentName(record ? record.segment_name : "")
-    setSegmentValue(record ? record.segment_value : "")
-    setInactived_date(record ? record.inactived_date : "")
-
     // data manager cb coin
     setOrd_numbers(record ? record.ord_numbers : "")
     setCriteria_name(record ? record.criteria_name : "")
@@ -76,10 +60,13 @@ const ModalManagerCbCoin = (props) => {
 
   const onCallback = async () => {
     let msg_error = [];
-    if (!topicId) {
-      msg_error.push("- Chủ đề chưa được chọn");
+    if (!criteria_name || criteria_name.length == 0) {
+      msg_error.push("- Tên kết quả trúng thưởng chưa có nội dung");
     }
-    if (!segmentName || segmentName.length == 0) {
+    if (!from_date || from_date.length == 0) {
+      msg_error.push("- Tên kết quả trúng thưởng chưa có nội dung");
+    }
+    if (!to_date || to_date.length == 0) {
       msg_error.push("- Tên kết quả trúng thưởng chưa có nội dung");
     }
     if (msg_error && msg_error.length > 0) {
@@ -88,18 +75,15 @@ const ModalManagerCbCoin = (props) => {
     }
     const param = {
       ...record,
-      segment_id: segmentId,
-      topic_id: topicId,
-      segment_name: segmentName,
-      segment_value: segmentValue,
-      inactived_date: inactived_date,
-      is_approve: true,
-      visible: false
+      criteria_name: criteria_name,
+      from_date: from_date,
+      to_date:to_date,
+      status: status
     }
 
     // add
     if (isAdd) {
-      const result = await dispatch(actionSegment.insertSegment(param));
+      const result = await dispatch(actionsManagerCbCoin.insertSegment(param));
       if (result) {
         callback({ visible: false, });
         Message.Success("Thông Báo", "Thêm thành công");
@@ -108,17 +92,8 @@ const ModalManagerCbCoin = (props) => {
       Message.Error("Thông Báo", "Thêm thất bại");
       return;
     }
-    //edit
-    const result = await dispatch(actionSegment.updateSegment(param));
-    if (result) {
-      callback({ visible: false });
-      Message.Success("Thông Báo", "Cập nhật thành công");
-      return;
-    }
-    Message.Error("Thông Báo", "Cập nhật thất bại");
-
-    // false
   }
+  
   const onCancel = () => {
     callback({ visible: false });
   }
