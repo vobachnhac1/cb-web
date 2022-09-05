@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import moment from "moment";
 import LayoutHome from '@/containers/Home';
 import ModalManagerCbCoin from '@/containers/modal-manager-cb-coin'
@@ -18,13 +18,12 @@ import {
 
 require("./styles.less");
 import router from 'next/router';
+import { useSelector, useDispatch } from 'react-redux';
 import { getters as gettersManagerCbCoin } from '@/redux/manager-cb-coin';
 import { actions as actionsManagerCbCoin } from '@/redux/manager-cb-coin';
 
 const originData = [];
 let n = 20
-
-
 for (let i = 0; i < n; i++) {
   originData.push({
     ord_numbers: `${i + 1}`,
@@ -36,7 +35,6 @@ for (let i = 0; i < n; i++) {
 
 }
 
-let totalStt = parseInt(originData.length) - parseInt(1);
 
 const EditableCell = ({
   editing,
@@ -84,14 +82,27 @@ const EditableCell = ({
 };
 
 export default function ManagerCbCoin(props) {
+  const dispatch = useDispatch();
   const [form] = Form.useForm();
-  const [data, setData] = useState(originData);
-  const [count, setCount] = useState(totalStt);
   const [loading, setLoading] = useState(true);
+  const [data, setData] = useState(originData);
+  // const [data, setData] = useSelector(gettersManagerCbCoin.getStateLoadPageManagerCbCoin) || [];
+  const listManagerCbCoin = useSelector(gettersManagerCbCoin.getStateLoadPageManagerCbCoin) || [];
   const [editingord_numbers, setEditingord_numbers] = useState("");
   const isEditing = (record) => record.ord_numbers === editingord_numbers;
-
+  // const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
   const [flagActive, setFlagActive] = useState("")
+  
+  useEffect(() => {
+    console.log('init page ',1)
+    initPage();
+  }, [])
+
+  const initPage = async () => {
+    setLoading(true);
+    await dispatch(actionsManagerCbCoin.searchManagerCbCoin());
+    setLoading(false);
+  }
 
   const onChangeFlagActive = (flag) => {
     setFlagActive(!flag)
@@ -418,7 +429,7 @@ export default function ManagerCbCoin(props) {
                   size='small'
                   scroll={{ x: 1300, y: "45vh" }}
                   bordered
-                  dataSource={data}
+                  dataSource={listManagerCbCoin}
                   columns={mergedColumns}
                   rowClassName="editable-row"
                   pagination={{

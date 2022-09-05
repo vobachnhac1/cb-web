@@ -28,8 +28,11 @@ export const updateManagerCbCoin = (payload) => async (dispatch, getState, { $ht
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
+  }else{
+    
+    return true
   }
-  return true
+  
 }
 
 export const deleteManagerCbCoinById = (payload) => async (dispatch, getState, { $http }) => {
@@ -47,13 +50,31 @@ export const deleteManagerCbCoinById = (payload) => async (dispatch, getState, {
 
 export const searchManagerCbCoin = (payload) => async (dispatch, getState, { $http }) => {
   // call xuống backend url + param 
-  const result = await $http.get(URLSERVER.getCustPointCriteria);
-  const { success, data } = result;
-  if (!success || !data.success) {
-    return false;
+  // const result = await $http.get(URLSERVER.getCustPointCriteria);
+  // const { success, data } = result;
+  // if (!success || !data.success) {
+  //   return false;
+  // }
+  // const listdata = data.data; 
+
+  // test data
+  console.log('searchManagerCbCoin', 'searchManagerCbCoin')
+
+  const originData = [];
+  let n = 20
+  for (let i = 0; i < n; i++) {
+    originData.push({
+      ord_numbers: `${i + 1}`,
+      criteria_name: `Tên hệ thống  ${i + 1}`,
+      from_date: ``,
+      to_date: ``,
+      status: i % 2 !== 0 ? false : true
+    });
+
   }
-  const listSegment = data.data; 
-  dispatch(setSearchManagerCbCoin(listSegment))
+
+  const listdata = originData;
+  dispatch(setSearchManagerCbCoin(listdata))
   return true
 }
 
