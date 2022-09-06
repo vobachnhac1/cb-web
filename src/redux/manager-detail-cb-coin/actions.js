@@ -14,13 +14,13 @@ export const insertManagerDetailCbCoin = (payload) => async (dispatch, getState,
     isDelete: false
   }
 
-  const state = getState();
-  const { listManagerDetailCbCoin } = state.ManagerCbCoin
+  let state = getState();
+  let { listManagerDetailCbCoin } = state.ManagerDetailCbCoin
 
   let listManagerDetailCbCoinNew = [...listManagerDetailCbCoin]
+  // listManagerDetailCbCoinNew.push(newItem)
   listManagerDetailCbCoinNew.push(newItem)
-
-  dispatch(setSearchManagerDetailCbCoin(listManagerDetailCbCoinNew.push(newItem)))
+  dispatch(setSearchManagerDetailCbCoin(listResultDoneArr(listManagerDetailCbCoinNew)))
 
   // const result = await $http.post(URLSERVER.insertCustPointCriteriaDetail, param);
   // const { success, data } = result;
@@ -56,15 +56,13 @@ export const deleteManagerDetailCbCoin = (payload) => async (dispatch, getState,
 
   let state = getState();
   let { listManagerDetailCbCoin } = state.ManagerDetailCbCoin
-  let listManagerDetailCbCoinNew = [...listManagerDetailCbCoin]
-
   for (let i = 0; i < listManagerDetailCbCoin.length; i++) {
     if (parseInt(listManagerDetailCbCoin[i].key) === parseInt(param.key)) {
       listManagerDetailCbCoin[i].isDelete = true
       break
     }
   }
-  
+
   dispatch(setSearchManagerDetailCbCoin(listResultDoneArr(listManagerDetailCbCoin)))
   return true
 }

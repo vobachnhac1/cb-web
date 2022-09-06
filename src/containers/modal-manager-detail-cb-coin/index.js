@@ -40,9 +40,15 @@ const ModalManagerDetailCbCoin = (props) => {
   const [type, setType] = useState(record ? record.type : "");
 
   useEffect(() => {
-
+    initPage();
   }, [visible]);
 
+  const initPage = async () => {
+    setBehaviorCode(record ? record.behaviorCode : "")
+    setPoint(record ? record.point : "")
+    setNumberBehavior(record ? record.numberBehavior : "")
+    setType(record ? record.type : "")
+  }
 
   const onCallback = async () => {
     if (!behaviorCode || behaviorCode.length == 0) {
