@@ -5,19 +5,17 @@
 * Created: 2022-04-08
 *------------------------------------------------------- */
 require("./styles.less");
-import { Card, Col, Form, Input, Modal, Row, Typography, DatePicker, Radio, } from 'antd';
 
-import * as Message from '@/components/message';
+import { Card, Col, Form, Input, Modal, Row, Select, Typography, InputNumber } from 'antd';
 import { useEffect, useState } from 'react';
-import moment from 'moment';
-// khai báo store
-import { useSelector, useDispatch } from 'react-redux';
-import { getters as gettersTopic } from '@/redux/topic';
-import { actions as actionSegment } from '@/redux/segment';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { actions as actionManagerDetailCbCoin } from '@/redux/manager-detail-cb-coin';
+import { getters as gettersManagerDetailCbCoin } from '@/redux/manager-detail-cb-coin';
+import * as Message from '@/components/message';
 
 const classNames = require("classnames");
-const styles = require("./styles.less");
+const { Option } = Select;
 const { Text } = Typography;
 
 const layoutHeader = {
@@ -32,156 +30,138 @@ const layoutContent = {
   md: { span: 12, offset: 0 },
   lg: { span: 16, offset: 0 },
 };
-
-const ModalManagerCbCoin = (props) => {
+const ModalManagerDetailCbCoin = (props) => {
   const { callback, visible = false, bodyModel: { isAdd = false, record = null } } = props;
-
-  //state data form
-
-  const [segmentId, setSegmentId] = useState(record ? record.segment_id : "");
-  const [topicId, setTopicId] = useState(record ? record.topic_id : "");
-  const [segmentName, setSegmentName] = useState(record ? record.segment_name : "");
-  const [segmentValue, setSegmentValue] = useState(record ? record.segment_value : "");
-  const [inactived_date, setInactived_date] = useState(record ? record.inactived_date : "");
   const dispatch = useDispatch();
-  const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
+  // state ModalManagerDetailCbCoin
+  const [behaviorCode, setBehaviorCode] = useState(record ? record.behaviorCode : "");
+  const [point, setPoint] = useState(record ? record.point : "");
+  const [numberBehavior, setNumberBehavior] = useState(record ? record.numberBehavior : "");
+  const [type, setType] = useState(record ? record.type : "");
 
   useEffect(() => {
-    initPage();
+
   }, [visible]);
 
-  const initPage = async () => {
-    setSegmentId(record ? record.segment_id : "")
-    setTopicId(record ? record.topic_id : "")
-    setSegmentName(record ? record.segment_name : "")
-    setSegmentValue(record ? record.segment_value : "")
-    setInactived_date(record ? record.inactived_date : "")
-  }
 
   const onCallback = async () => {
-    let msg_error = [];
-    if (!topicId) {
-      msg_error.push("- Chủ đề chưa được chọn");
+    if (!behaviorCode || behaviorCode.length == 0) {
+      Message.Warning("Thông Báo", "Giao dịch tích CbCoin không được để trống!");
+      return;
     }
-    if (!segmentName || segmentName.length == 0) {
-      msg_error.push("- Tên kết quả trúng thưởng chưa có nội dung");
+    if (!point || point.length == 0) {
+      Message.Warning("Thông Báo", "Số điểm không được để trống!");
+      return;
     }
-    if (msg_error && msg_error.length > 0) {
-      Message.WarningArr("Thông Báo", msg_error);
-      return
+    if (!numberBehavior || numberBehavior.length == 0) {
+      Message.Warning("Thông Báo", "Số lần không được để trống!");
+      return;
+    }
+    if (!type || type.length == 0) {
+      Message.Warning("Thông Báo", "Số loại không được để trống!");
+      return;
     }
     const param = {
       ...record,
-      segment_id: segmentId,
-      topic_id: topicId,
-      segment_name: segmentName,
-      segment_value: segmentValue,
-      inactived_date: inactived_date,
-      is_approve: true,
+      behaviorCode: ``,
+      point: ``,
+      numberBehavior: ``,
+      type: ``,
       visible: false
     }
 
-    // add
+    // isAdd
     if (isAdd) {
-      const result = await dispatch(actionSegment.insertSegment(param));
+      const result = await dispatch(actionManagerDetailCbCoin.insertManagerDetailCbCoin(param));
       if (result) {
-        callback({ visible: false, });
-        Message.Success("Thông Báo", "Thêm thành công");
+
+        callback({ visible: false });
+        Message.Success("Thông Báo", "Thêm chi tiết CbCoin thành công");
         return;
       }
-      Message.Error("Thông Báo", "Thêm thất bại");
+      Message.Error("Thông Báo", "Thêm chi tiết CbCoin thất bại");
       return;
     }
-    //edit
-    const result = await dispatch(actionSegment.updateSegment(param));
+    const result = await dispatch(actionManagerDetailCbCoin.updateManagerDetailCbCoin(param));
     if (result) {
+
       callback({ visible: false });
-      Message.Success("Thông Báo", "Cập nhật thành công");
+      Message.Success("Thông Báo", "Cập nhật chi tiết CbCoin thành công");
       return;
     }
-    Message.Error("Thông Báo", "Cập nhật thất bại");
-
-    // false
+    Message.Error("Thông Báo", "Cập nhật chi tiết CbCoin thất bại");
   }
   const onCancel = () => {
     callback({ visible: false });
   }
-
-  const onChange = (e) => {
-    console.log('radio checked', e.target.value);
-    setValue(e.target.value);
-  };
-
   return (
     <Modal
-      width={750}
+      width={700}
       maskClosable={false}
       closable={false}
       centered
       visible={visible}
       okText={'Xác nhận'}
-      cancelText={'Quay lại'}
+      cancelText={'Thoát'}
       onOk={onCallback}
       onCancel={onCancel}
     >
       <Card
         headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'center', backgroundColor: "rgb(3, 77, 162)" }}
-        title={isAdd ? "Thêm chi tiết tiêu chí CBCoin " : 'Cập nhật chi tiết tiêu chí CBCoin'}
+        title={isAdd ? "Thêm chi tiết CBCoin" : 'Cập nhật chi tiết CBCoin'}
         bordered={true}
         style={{ backgroundColor: '#FFFFFF' }}>
         <Form
-          labelCol={{
-            span: 6,
-          }}
-          wrapperCol={{
-            span: 14,
-          }}
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 14 }}
           layout="horizontal"
-          initialValues={{
-            size: 'default',
-            value: ''
-          }}
-          labelAlign='left'
-          size={'default'}
-
         >
-
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ 'text-font': true })}>{'Tên hệ thống :'}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Giao dịch được tích coin'}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Input style={{ width: '100%' }} value={segmentId} onChange={(text) => setSegmentId(text.target.value)} />
+              <Input
+                style={{ width: '100%' }}
+                value={behaviorCode}
+                onChange={(text) => setBehaviorCode(text.target.value)} />
             </Col>
           </Row>
-
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ 'text-font': true })}>{'Từ ngày: '}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Số điểm trên lần'}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <DatePicker disabledDate={d => !d || d.isSameOrBefore(moment().set('date', (moment().date() - 1)))} style={{ width: '50%' }} value={!inactived_date || inactived_date === "0000-00-00 00:00:00" ? null : moment(inactived_date)} onChange={(date) => setInactived_date(date)} />
+              <InputNumber style={{ width: '100%' }}
+                value={point}
+                onChange={(text) => {
+                  setPoint(text ? text : 0);
+                }}
+              />
             </Col>
           </Row>
-
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ 'text-font': true })}>{'Đến ngày: '}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Số lần'}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <DatePicker disabledDate={d => !d || d.isSameOrBefore(moment().set('date', (moment().date() - 1)))} style={{ width: '50%' }} value={!inactived_date || inactived_date === "0000-00-00 00:00:00" ? null : moment(inactived_date)} onChange={(date) => setInactived_date(date)} />
+              <InputNumber style={{ width: '100%' }}
+                value={numberBehavior}
+                onChange={(text) => {
+                  setNumberBehavior(text ? text : 0);
+                }}
+              />
             </Col>
           </Row>
-
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ 'text-font': true })}>{'Trạng thái: '}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Số loại'}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Radio.Group onChange={onChange} value={1}>
-                <Radio value={1}>Active</Radio>
-                <Radio value={2}>Inactive</Radio>
-              </Radio.Group>
+              <Input
+                style={{ width: '100%' }}
+                value={type}
+                onChange={(text) => setType(text.target.value)} />
             </Col>
           </Row>
         </Form>
@@ -190,4 +170,4 @@ const ModalManagerCbCoin = (props) => {
   )
 }
 
-export default ModalManagerCbCoin;
+export default ModalManagerDetailCbCoin;

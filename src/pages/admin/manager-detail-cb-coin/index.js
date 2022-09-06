@@ -11,7 +11,8 @@ import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Input, DatePi
 
 const { RangePicker } = DatePicker;
 import * as Message from '@/components/message';
-import ModalSegment from '@/containers/modal-segment';
+import ModalManagerDetailCbCoin from '@/containers/modal-manager-detail-cb-coin';
+
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
 import { actions as actionManagerDetailCbCoin } from '@/redux/manager-detail-cb-coin';
@@ -38,7 +39,7 @@ export default function ManagerDetailCbCoin(props) {
   const initPage = async () => {
     setLoading(true);
     await dispatch(actionManagerDetailCbCoin.searchManagerDetailCbCoin());
- 
+
     setLoading(false);
   }
 
@@ -139,7 +140,7 @@ export default function ManagerDetailCbCoin(props) {
   return (
     <LayoutHome>
       <Col style={{ marginBottom: 30 }}>
-        <ModalSegment visible={visible} bodyModel={bodyModel} callback={callbackModal} />
+        <ModalManagerDetailCbCoin visible={visible} bodyModel={bodyModel} callback={callbackModal} />
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
           title="Quản lý chi tiết CBCoin"
