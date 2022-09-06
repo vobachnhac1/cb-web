@@ -124,6 +124,7 @@ export default function ManagerDetailCbCoin(props) {
               Khôi phục</Button>
             :
             <Popconfirm title="Bạn có muốn?" onConfirm={() => handleDelete(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom" >
+              <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5, marginRight: 10 }} >Cập nhật</Button>
               <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
             </Popconfirm>
           }

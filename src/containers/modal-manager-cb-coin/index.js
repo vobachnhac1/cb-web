@@ -61,13 +61,13 @@ const ModalManagerCbCoin = (props) => {
   const onCallback = async () => {
     let msg_error = [];
     if (!criteria_name || criteria_name.length == 0) {
-      msg_error.push("- Tên kết quả trúng thưởng chưa có nội dung");
+      msg_error.push("- Tên hệ thống chưa có nội dung");
     }
     if (!from_date || from_date.length == 0) {
-      msg_error.push("- Tên kết quả trúng thưởng chưa có nội dung");
+      msg_error.push("- Trường Từ ngày chưa có nội dung");
     }
     if (!to_date || to_date.length == 0) {
-      msg_error.push("- Tên kết quả trúng thưởng chưa có nội dung");
+      msg_error.push("- Trường đến ngày chưa có nội dung");
     }
     if (msg_error && msg_error.length > 0) {
       Message.WarningArr("Thông Báo", msg_error);
@@ -77,7 +77,7 @@ const ModalManagerCbCoin = (props) => {
       ...record,
       criteria_name: criteria_name,
       from_date: from_date,
-      to_date:to_date,
+      to_date: to_date,
       status: status
     }
 
@@ -93,14 +93,14 @@ const ModalManagerCbCoin = (props) => {
       return;
     }
   }
-  
+
   const onCancel = () => {
     callback({ visible: false });
   }
 
   const onChange = (e) => {
     console.log('radio checked', e.target.value);
-    setValue(e.target.value);
+    setStatus(e.target.value);
   };
 
   return (

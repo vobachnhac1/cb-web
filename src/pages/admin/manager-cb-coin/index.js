@@ -413,9 +413,9 @@ export default function ManagerCbCoin(props) {
                 <Col className="gutter-row" span={3}>
                   <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNew}>Thêm</Button>
                 </Col>
-                <Col className="gutter-row" span={3}>
+                {/* <Col className="gutter-row" span={3}>
                   <Button type='primary' size='middle' style={{ width: '100%' }} >Tìm kiếm</Button>
-                </Col>
+                </Col> */}
               </Row>
             </Col>
           </Card>
