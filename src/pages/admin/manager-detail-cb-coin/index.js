@@ -59,14 +59,26 @@ export default function ManagerDetailCbCoin(props) {
 
   const handleDelete = async (record) => {
     let dataRecord = record
-    // const result = await dispatch(actionSegment.deleteSegmentById(dataRecord));
+    const result = await dispatch(actionManagerDetailCbCoin.deleteManagerDetailCbCoin(dataRecord));
     if (result) {
-      onSearch();
+      // onSearch();
       Message.Success("Thông Báo", "Xóa thành công");
       return
     }
     Message.Error("Thông Báo", "Xóa thất bại!");
   };
+
+  const handleUnDelete = async (record) => {
+    let dataRecord = record
+    const result = await dispatch(actionManagerDetailCbCoin.unDeleteManagerDetailCbCoin(dataRecord));
+    if (result) {
+      // onSearch();
+      Message.Success("Thông Báo", "Xóa thành công");
+      return
+    }
+    Message.Error("Thông Báo", "Xóa thất bại!");
+  };
+
   const columns = [
     {
       title: 'Giao dịch được tính coin',
@@ -103,9 +115,18 @@ export default function ManagerDetailCbCoin(props) {
       width: 50,
       render: (text, record) => (
         <Space size="middle">
-          <Popconfirm title="Bạn có muốn?" onConfirm={() => handleDelete(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom" >
-            <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
-          </Popconfirm>
+          {record.isDelete
+            ?
+            <Button
+              style={{ color: 'white', borderColor: '#fa8c16', borderWidth: 0.5, background: '#faad14' }}
+              onClick={() => handleUnDelete(record)}
+            >
+              Khôi phục</Button>
+            :
+            <Popconfirm title="Bạn có muốn?" onConfirm={() => handleDelete(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom" >
+              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
+            </Popconfirm>
+          }
         </Space>
       ),
     },
