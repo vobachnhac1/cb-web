@@ -44,8 +44,12 @@
   "updateWheelWithRules": "wheel/update-wheel-with-rules-id",
   "getRewardHistory": "rules/get-reward-history",
   "comfirmReceived": "rules/comfirm-reward-by-server",
-  "getCustPointCriteria":"cust-point/criteria",
-  "insertCustPointCriteria":"cust-point/criteria",
-  "updateCustPointCriteria":"cust-point/criteria",
-  "deleteCustPointCriteria":"cust-point/criteria"
+  "getCustPointCriteria": "cust-point/criteria",
+  "insertCustPointCriteria": "cust-point/criteria",
+  "updateCustPointCriteria": "cust-point/criteria",
+  "deleteCustPointCriteria": "cust-point/criteria",
+  "getCustPointCriteriaDetail": "cust-point/criteriaDetail",
+  "insertCustPointCriteriaDetail": "cust-point/criteriaDetail",
+  "updateCustPointCriteriaDetail": "cust-point/criteriaDetail",
+  "deleteCustPointCriteriaDetail": "cust-point/criteriaDetail"
 }

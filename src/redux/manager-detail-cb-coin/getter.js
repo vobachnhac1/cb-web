@@ -1,6 +1,6 @@
 // Lấy giá trị store
 
-export const getStateLoadPageSegment = ({ ManagerDetailCbCoin: { listManagerDetailCbCoin = [] } }) => {
+export const getStateLoadPageManagerDetailCbCoin = ({ ManagerDetailCbCoin: { listManagerDetailCbCoin = [] } }) => {
   return listManagerDetailCbCoin.map((item, index) => ({ ...item, key: index })) || []
 };
 

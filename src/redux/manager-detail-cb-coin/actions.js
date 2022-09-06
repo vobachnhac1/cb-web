@@ -16,7 +16,7 @@ export const insertManagerDetailCbCoin = (payload) => async (dispatch, getState,
     "is_approve": payload.is_approve
   }
 
-  const result = await $http.post(URLSERVER.insertSegment, param);
+  const result = await $http.post(URLSERVER.insertCustPointCriteriaDetail, param);
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
@@ -37,7 +37,7 @@ export const updateManagerDetailCbCoin = (payload) => async (dispatch, getState,
     "is_approve": payload.is_approve
   }
   // call xuống backend url + param
-  const result = await $http.put(URLSERVER.updateSegmentById, param);
+  const result = await $http.put(URLSERVER.updateCustPointCriteriaDetail, param);
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
@@ -50,7 +50,7 @@ export const deleteManagerDetailCbCoin = (payload) => async (dispatch, getState,
     "segment_id": parseInt(payload.segment_id),
   }
   // call xuống backend url + param
-  const result = await $http.delete(URLSERVER.deleteSegmentById, param);
+  const result = await $http.delete(URLSERVER.deleteCustPointCriteriaDetail, param);
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
@@ -60,27 +60,43 @@ export const deleteManagerDetailCbCoin = (payload) => async (dispatch, getState,
 
 export const searchManagerDetailCbCoin = (payload) => async (dispatch, getState, { $http }) => {
   // call xuống backend url + param 
-  const result = await $http.get(URLSERVER.searchAllSegment);
-  const { success, data } = result;
-  if (!success || !data.success) {
-    return false;
+  // const result = await $http.get(URLSERVER.getCustPointCriteriaDetail);
+  // const { success, data } = result;
+  // if (!success || !data.success) {
+  //   return false;
+  // }
+  // const listData = data.data; 
+
+  //test data
+  let originData = [];
+  let n = 10;
+  for (let i = 0; i < n; i++) {
+    originData.push({
+      id: '111' + `${i + 1}`,
+      behaviorCode: 'LOGIN' + `${i + 1}`,
+      point: 101 + i,
+      numberBehavior: 1,
+      type: "EVENT" + `${i + 1}`
+    })
   }
-  const listSegment = data.data; 0
-  dispatch(setSearchManagerDetailCbCoin(listSegment))
+
+  const listData = originData;
+
+  dispatch(setSearchManagerDetailCbCoin(listData))
   return true
 }
 
-export const filterManagerDetailCbCoin = (payload) => async (dispatch, getState, { $http }) => {
-  const result = await $http.post(URLSERVER.searchSegmentById, payload);
-  const { success, data } = result;
-  if (!success || !data.success) {
-    return false;
-  }
-  const listSegment = data.data;
-  dispatch(setSearchManagerDetailCbCoin(listSegment))
+// export const filterManagerDetailCbCoin = (payload) => async (dispatch, getState, { $http }) => {
+//   const result = await $http.post(URLSERVER.searchSegmentById, payload);
+//   const { success, data } = result;
+//   if (!success || !data.success) {
+//     return false;
+//   }
+//   const listSegment = data.data;
+//   dispatch(setSearchManagerDetailCbCoin(listSegment))
 
-  return {
-    "success": true,
-  }
-}
+//   return {
+//     "success": true,
+//   }
+// }
 
