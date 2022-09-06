@@ -21,20 +21,7 @@ import router from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
 import { getters as gettersManagerCbCoin } from '@/redux/manager-cb-coin';
 import { actions as actionsManagerCbCoin } from '@/redux/manager-cb-coin';
-
-const originData = [];
-let n = 20
-for (let i = 0; i < n; i++) {
-  originData.push({
-    ord_numbers: `${i + 1}`,
-    criteria_name: `Tên hệ thống  ${i + 1}`,
-    from_date: ``,
-    to_date: ``,
-    status: i % 2 !== 0 ? false : true
-  });
-
-}
-
+import { isBuffer } from "lodash";
 
 const EditableCell = ({
   editing,
@@ -85,16 +72,13 @@ export default function ManagerCbCoin(props) {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState(originData);
-  // const [data, setData] = useSelector(gettersManagerCbCoin.getStateLoadPageManagerCbCoin) || [];
   const listManagerCbCoin = useSelector(gettersManagerCbCoin.getStateLoadPageManagerCbCoin) || [];
   const [editingord_numbers, setEditingord_numbers] = useState("");
   const isEditing = (record) => record.ord_numbers === editingord_numbers;
-  // const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
   const [flagActive, setFlagActive] = useState("")
-  
+
   useEffect(() => {
-    console.log('init page ',1)
+    console.log('init page ', 1)
     initPage();
   }, [])
 
@@ -127,30 +111,41 @@ export default function ManagerCbCoin(props) {
     setFlagActive("")
   };
 
-
-  const save = async (ord_numbers) => {
+  const save = async (criteria_id) => {
     try {
       const row = await form.validateFields();
-      const newData = [...data];
-      const index = newData.findIndex((item) => ord_numbers === item.ord_numbers);
-      //
-      console.log("new data", newData);
-      //
+      const newData = [...listManagerCbCoin];
+      const index = newData.findIndex((item) => criteria_id === item.criteria_id);
+
       if (index > -1) {
         const item = newData[index];
-        item.from_date = moment(item.from_date).format("L");
-        item.to_date = moment(item.to_date).format("L");
+        item.criteria_name = row.criteria_name
+        item.from_date = row.from_date;
+        item.to_date = row.to_date;
         item.status = flagActive
-        // call actions update
-        // nếu update thành công cho phép cập nhật vào listManagerCbCoin
-        // nếu ko thành công thì báo lỗi
-        newData.splice(index, 1, { ...item, ...row });
-        setData(newData);
+
+        let params = {
+          ord_numbers: item.ord_numbers,
+          criteria_id: parseInt(item.criteria_id),
+          criteria_name: item.criteria_name,
+          from_date: item.from_date,
+          to_date: item.to_date,
+          status: item.status,
+          indexChange: index,
+        }
+        await dispatch(actionsManagerCbCoin.updateManagerCbCoin(params));
         setEditingord_numbers("");
         setFlagActive("")
       } else {
-        newData.push(row);
-        setData(newData);
+        let params = {
+          criteria_id: parseInt(item.criteria_id),
+          criteria_name: item.criteria_name,
+          from_date: item.from_date,
+          to_date: item.to_date,
+          status: item.status,
+          indexChange: index,
+        }
+        await dispatch(actionsManagerCbCoin.updateManagerCbCoin(params));
         setEditingord_numbers("");
       }
       console.log(newData);
@@ -172,27 +167,34 @@ export default function ManagerCbCoin(props) {
       editable: false
     },
     {
+      title: "ID",
+      dataIndex: "criteria_id",
+      width: 100,
+    },
+    {
       title: "Tên hệ thống",
       dataIndex: "criteria_name",
       width: 250,
       editable: true
     },
     {
+      align: 'center',
       title: "Từ ngày",
       dataIndex: "from_date",
-      width: 100,
+      width: 120,
       editable: true,
       render: (text, record) => {
-        return <span>{text ? moment(text).format("YYYY-MM-DD") : ""}</span>;
+        return <span>{text ? moment(text).format("YYYY-MM-DD, HH:mm:ss") : ""}</span>;
       }
     },
     {
+      align: 'center',
       title: "Đến ngày",
       dataIndex: "to_date",
-      width: 100,
+      width: 120,
       editable: true,
       render: (text, record) => {
-        return <span>{text ? moment(text).format("YYYY-MM-DD") : ""}</span>;
+        return <span>{text ? moment(text).format("YYYY-MM-DD, HH:mm:ss") : ""}</span>;
       }
     },
     {
@@ -205,7 +207,6 @@ export default function ManagerCbCoin(props) {
         return editable ? (
           <span>
             <Typography.Link
-
               style={{
                 marginRight: 8,
               }}
@@ -213,10 +214,8 @@ export default function ManagerCbCoin(props) {
               <Button onClick={() => flagActive ? '' : onChangeFlagActive(flagActive)} style={{ color: `${flagActive ? 'white' : 'green'}`, borderColor: 'green', borderWidth: 0.5, background: `${flagActive ? 'green' : ''}` }}>
                 Active
               </Button>
-
             </Typography.Link>
             <Typography.Link
-
               style={{
                 marginRight: 8,
               }}
@@ -224,7 +223,6 @@ export default function ManagerCbCoin(props) {
               <Button onClick={() => flagActive ? onChangeFlagActive(flagActive) : ''} style={{ color: `${flagActive ? 'red' : 'white'}`, borderColor: 'red', borderWidth: 0.5, background: `${flagActive ? '' : 'red'}` }}>
                 Inactive
               </Button>
-
             </Typography.Link>
 
           </span>
@@ -244,13 +242,13 @@ export default function ManagerCbCoin(props) {
       align: 'center',
       title: "Action",
       dataIndex: "operation",
-      width: 100,
+      width: 120,
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (
           <span>
             <Typography.Link
-              onClick={() => save(record.ord_numbers)}
+              onClick={() => save(record.criteria_id)}
               style={{
                 marginRight: 8
               }}
@@ -289,10 +287,18 @@ export default function ManagerCbCoin(props) {
             </Typography.Link>
             <Typography.Link
               disabled={editingord_numbers !== ""}
+
             >
-              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }}>
-                Xóa
-              </Button>
+              <Popconfirm
+                okText="Xác nhận"
+                cancelText="Thoát"
+                title="Bạn muốn xóa?"
+                onConfirm={() => onDelete(record.criteria_id)}
+              >
+                <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }}>
+                  Xóa
+                </Button>
+              </Popconfirm>
             </Typography.Link>
           </div>
         );
@@ -303,7 +309,6 @@ export default function ManagerCbCoin(props) {
     if (!col.editable) {
       return col;
     }
-
     return {
       ...col,
       onCell: (record) => ({
@@ -425,7 +430,7 @@ export default function ManagerCbCoin(props) {
                       cell: EditableCell
                     }
                   }}
-                  // loading={loading}
+                  loading={loading}
                   size='small'
                   scroll={{ x: 1300, y: "45vh" }}
                   bordered
