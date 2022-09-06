@@ -5,15 +5,10 @@ const setSearchManagerDetailCbCoin = (payload) => ({ type: TYPES.MANAGER_DETAIL_
 
 export const insertManagerDetailCbCoin = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
-    "topic_id": payload.topic_id,
-    "segment_id": payload.segment_id,
-    "segment_name": payload.segment_name,
-    // "segment_color": payload.segment_color,
-    "segment_value": payload.segment_value,
-    "inactived_date": payload.inactived_date,
-    "created_date": "2022-04-08T09:54:19.063Z",
-    "datelastmaint": "2022-04-08T09:54:19.063Z",
-    "is_approve": payload.is_approve
+    behaviorCode: payload.behaviorCode,
+    point: parseInt(payload.point),
+    numberBehavior: parseInt(payload.numberBehavior),
+    type: payload.type
   }
 
   const result = await $http.post(URLSERVER.insertCustPointCriteriaDetail, param);
@@ -26,15 +21,11 @@ export const insertManagerDetailCbCoin = (payload) => async (dispatch, getState,
 
 export const updateManagerDetailCbCoin = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
-    "topic_id": payload.topic_id,
-    "segment_id": payload.segment_id,
-    "segment_name": payload.segment_name,
-    // "segment_color": payload.segment_color,
-    "segment_value": payload.segment_value,
-    "inactived_date": payload.inactived_date,
-    "created_date": "2022-04-08T09:54:19.063Z",
-    "datelastmaint": "2022-04-08T09:54:19.063Z",
-    "is_approve": payload.is_approve
+    id: payload.id,
+    behaviorCode: payload.behaviorCode,
+    point: parseInt(payload.point),
+    numberBehavior: parseInt(payload.numberBehavior),
+    type: payload.type
   }
   // call xuống backend url + param
   const result = await $http.put(URLSERVER.updateCustPointCriteriaDetail, param);
@@ -47,7 +38,7 @@ export const updateManagerDetailCbCoin = (payload) => async (dispatch, getState,
 
 export const deleteManagerDetailCbCoin = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
-    "segment_id": parseInt(payload.segment_id),
+    id: payload.id,
   }
   // call xuống backend url + param
   const result = await $http.delete(URLSERVER.deleteCustPointCriteriaDetail, param);
@@ -85,18 +76,4 @@ export const searchManagerDetailCbCoin = (payload) => async (dispatch, getState,
   dispatch(setSearchManagerDetailCbCoin(listData))
   return true
 }
-
-// export const filterManagerDetailCbCoin = (payload) => async (dispatch, getState, { $http }) => {
-//   const result = await $http.post(URLSERVER.searchSegmentById, payload);
-//   const { success, data } = result;
-//   if (!success || !data.success) {
-//     return false;
-//   }
-//   const listSegment = data.data;
-//   dispatch(setSearchManagerDetailCbCoin(listSegment))
-
-//   return {
-//     "success": true,
-//   }
-// }
 
