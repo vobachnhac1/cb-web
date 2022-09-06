@@ -4,8 +4,6 @@ import URLSERVER from '@/redux/urlServer.json';
 const setSearchManagerDetailCbCoin = (payload) => ({ type: TYPES.MANAGER_DETAIL_CB_COIN_SEARCH, payload });
 
 export const insertManagerDetailCbCoin = (payload) => async (dispatch, getState, { $http }) => {
-  // insert vào list state
-
   const newItem = {
     behaviorCode: payload.behaviorCode,
     point: parseInt(payload.point),
@@ -16,34 +14,38 @@ export const insertManagerDetailCbCoin = (payload) => async (dispatch, getState,
 
   let state = getState();
   let { listManagerDetailCbCoin } = state.ManagerDetailCbCoin
-
   let listManagerDetailCbCoinNew = [...listManagerDetailCbCoin]
   // listManagerDetailCbCoinNew.push(newItem)
   listManagerDetailCbCoinNew.push(newItem)
   dispatch(setSearchManagerDetailCbCoin(listResultDoneArr(listManagerDetailCbCoinNew)))
-
-  // const result = await $http.post(URLSERVER.insertCustPointCriteriaDetail, param);
-  // const { success, data } = result;
-  // if (!success || !data.success) {
-  //   return false;
-  // }
-
-
   return true
 }
 
 export const updateManagerDetailCbCoin = (payload) => async (dispatch, getState, { $http }) => {
-  //call api lưu lại
-
   const param = {
+    key: payload.key,
     id: payload.id,
     behaviorCode: payload.behaviorCode,
     point: parseInt(payload.point),
     numberBehavior: parseInt(payload.numberBehavior),
-    type: payload.type
+    type: payload.type,
+    idDelete: payload.idDelete
   }
 
-  dispatch(setSearchManagerDetailCbCoin(listResultDoneArr(listManagerDetailCbCoinNew)))
+  let state = getState();
+  let { listManagerDetailCbCoin } = state.ManagerDetailCbCoin
+  for (let i = 0; i < listManagerDetailCbCoin.length; i++) {
+    if (parseInt(listManagerDetailCbCoin[i].key) === parseInt(param.key)) {
+      listManagerDetailCbCoin[i].id = param.id,
+        listManagerDetailCbCoin[i].behaviorCode = param.behaviorCode,
+        listManagerDetailCbCoin[i].point = parseInt(param.point),
+        listManagerDetailCbCoin[i].numberBehavior = parseInt(param.numberBehavior),
+        listManagerDetailCbCoin[i].type = param.type,
+        listManagerDetailCbCoin[i].idDelete = param.idDelete
+      break
+    }
+  }
+  dispatch(setSearchManagerDetailCbCoin(listResultDoneArr(listManagerDetailCbCoin)))
   return true
 }
 
@@ -71,16 +73,13 @@ export const unDeleteManagerDetailCbCoin = (payload) => async (dispatch, getStat
   // undelete trong list state
   const param = {
     id: payload.id,
+    key: payload.key
   }
   const state = getState();
   let { listManagerDetailCbCoin } = state.ManagerDetailCbCoin
-  let listManagerDetailCbCoinNew = [...listManagerDetailCbCoin]
-  // const index = listManagerDetailCbCoinNew.findIndex((item) => param.id === item.id);
-  // if (index > -1) { 
-  //   listManagerDetailCbCoinNew.splice(index, 1); 
-  // }
+
   for (let i = 0; i < listManagerDetailCbCoin.length; i++) {
-    if (parseInt(listManagerDetailCbCoin[i].id) === parseInt(param.id)) {
+    if (parseInt(listManagerDetailCbCoin[i].key) === parseInt(param.key)) {
       listManagerDetailCbCoin[i].isDelete = false
       break
     }
@@ -101,7 +100,7 @@ export const searchManagerDetailCbCoin = (payload) => async (dispatch, getState,
 
   //test data
   let originData = [];
-  let n = 10;
+  let n = 5;
   for (let i = 0; i < n; i++) {
     originData.push({
       key: i,
@@ -115,7 +114,6 @@ export const searchManagerDetailCbCoin = (payload) => async (dispatch, getState,
   }
 
   const listData = originData;
-
   dispatch(setSearchManagerDetailCbCoin(listData))
   return true
 }
@@ -134,3 +132,4 @@ function listResultDoneArr(arr) {
   let mergeArr = arrNoDelete.concat(arrDelete).map((item, index) => ({ ...item, key: index }))
   return mergeArr;
 }
+

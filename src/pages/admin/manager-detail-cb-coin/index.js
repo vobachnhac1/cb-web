@@ -73,10 +73,10 @@ export default function ManagerDetailCbCoin(props) {
     const result = await dispatch(actionManagerDetailCbCoin.unDeleteManagerDetailCbCoin(dataRecord));
     if (result) {
       // onSearch();
-      Message.Success("Thông Báo", "Xóa thành công");
+      Message.Success("Thông Báo", "Khôi phục thành công");
       return
     }
-    Message.Error("Thông Báo", "Xóa thất bại!");
+    Message.Error("Thông Báo", "Khôi phục thất bại!");
   };
 
   const columns = [
@@ -122,11 +122,13 @@ export default function ManagerDetailCbCoin(props) {
               onClick={() => handleUnDelete(record)}
             >
               Khôi phục</Button>
-            :
-            <Popconfirm title="Bạn có muốn?" onConfirm={() => handleDelete(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom" >
-              <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5, marginRight: 10 }} >Cập nhật</Button>
-              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
-            </Popconfirm>
+            : <>
+              <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5, marginRight: 10 }} onClick={() => update(record)}>Cập nhật</Button>
+              <Popconfirm title="Bạn có muốn?" onConfirm={() => handleDelete(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom" >
+                <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
+              </Popconfirm>
+            </>
+
           }
         </Space>
       ),
@@ -140,14 +142,14 @@ export default function ManagerDetailCbCoin(props) {
     record: null
   });
 
-  const addNewSegment = () => {
+  const addNew = () => {
     setVisible(true);
     setBodyModel({
       record: null,
       isAdd: true
     });
   }
-  const updateSegment = (record) => {
+  const update = (record) => {
     setVisible(true);
     setBodyModel({
       record: record,
@@ -156,7 +158,7 @@ export default function ManagerDetailCbCoin(props) {
   }
   const callbackModal = (params) => {
     setVisible(params.visible);
-    onSearch()
+    // onSearch()
   }
 
   return (
@@ -182,7 +184,7 @@ export default function ManagerDetailCbCoin(props) {
         <div style={{ marginTop: 20 }} />
         <Card>
           <Col className="gutter-row" span={3}>
-            <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewSegment}>Thêm</Button>
+            <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNew}>Thêm</Button>
           </Col>
           <Col span={48} style={{ marginTop: 10 }}>
             <Table

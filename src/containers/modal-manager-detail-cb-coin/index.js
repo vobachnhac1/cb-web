@@ -69,10 +69,10 @@ const ModalManagerDetailCbCoin = (props) => {
     }
     const param = {
       ...record,
-      behaviorCode: ``,
-      point: ``,
-      numberBehavior: ``,
-      type: ``,
+      behaviorCode: behaviorCode,
+      point: point,
+      numberBehavior: numberBehavior,
+      type: type,
       visible: false
     }
 
@@ -87,19 +87,22 @@ const ModalManagerDetailCbCoin = (props) => {
       }
       Message.Error("Thông Báo", "Thêm chi tiết CbCoin thất bại");
       return;
+    } else {
+      const result = await dispatch(actionManagerDetailCbCoin.updateManagerDetailCbCoin(param));
+      if (result) {
+        callback({ visible: false });
+        Message.Success("Thông Báo", "Cập nhật chi tiết CbCoin thành công");
+        return;
+      }
+      Message.Error("Thông Báo", "Cập nhật chi tiết CbCoin thất bại");
     }
-    const result = await dispatch(actionManagerDetailCbCoin.updateManagerDetailCbCoin(param));
-    if (result) {
 
-      callback({ visible: false });
-      Message.Success("Thông Báo", "Cập nhật chi tiết CbCoin thành công");
-      return;
-    }
-    Message.Error("Thông Báo", "Cập nhật chi tiết CbCoin thất bại");
   }
+
   const onCancel = () => {
     callback({ visible: false });
   }
+
   return (
     <Modal
       width={700}
