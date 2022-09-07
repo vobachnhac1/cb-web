@@ -48,6 +48,6 @@
   "insertCustPointCriteria": "cust-point/criteria",
   "updateCustPointCriteria": "cust-point/criteria",
   "deleteCustPointCriteria": "cust-point/criteria",
-  "getCustPointCriteriaDetail": "cust-point/criteriaDetail",
+  "getCustPointCriteriaDetail": "cust-point/behavior",
   "saveCustPointCriteriaDetail": "cust-point/criteriaDetail"
 }

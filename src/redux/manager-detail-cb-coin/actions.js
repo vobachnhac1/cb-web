@@ -111,12 +111,12 @@ export const searchManagerDetailCbCoin = (payload) => async (dispatch, getState,
   let params = {
     cbCoin_id: payload.cbCoin_id
   }
-  // const result = await $http.get(URLSERVER.getCustPointCriteriaDetail);
-  // const { success, data } = result;
-  // if (!success || !data.success) {
-  //   return false;
-  // }
-  // const listData = data.data; 
+  const result = await $http.get(`${URLSERVER.getCustPointCriteriaDetail}/${params.cbCoin_id}`);
+  const { success, data } = result;
+  if (!success) {
+    return false;
+  }
+  const listData = data.data;
 
   //test data
   let originData = [];
@@ -133,8 +133,8 @@ export const searchManagerDetailCbCoin = (payload) => async (dispatch, getState,
     })
   }
 
-  const listData = originData;
-  dispatch(setSearchManagerDetailCbCoin(listData))
+  const listData1 = originData;
+  dispatch(setSearchManagerDetailCbCoin(listData1))
   return true
 }
 
