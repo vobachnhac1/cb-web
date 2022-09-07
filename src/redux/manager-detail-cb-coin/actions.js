@@ -95,7 +95,7 @@ export const saveManagerDetailCbCoin = (payload) => async (dispatch, getState, {
   let param = {
     listManagerDetailCbCoin: payload.listData
   }
-  
+
   const result = await $http.post(URLSERVER.saveCustPointCriteriaDetail, param);
   const { success, data } = result;
   if (!success || !data.success) {
@@ -106,7 +106,11 @@ export const saveManagerDetailCbCoin = (payload) => async (dispatch, getState, {
 }
 
 export const searchManagerDetailCbCoin = (payload) => async (dispatch, getState, { $http }) => {
+
   // call xuống backend url + param 
+  let params = {
+    cbCoin_id: payload.cbCoin_id
+  }
   // const result = await $http.get(URLSERVER.getCustPointCriteriaDetail);
   // const { success, data } = result;
   // if (!success || !data.success) {
@@ -134,6 +138,7 @@ export const searchManagerDetailCbCoin = (payload) => async (dispatch, getState,
   return true
 }
 
+// sắp xếp những phần tử xóa và phần tử bị xóa
 function listResultDoneArr(arr) {
   let arrTamps = [...arr]
   let arrNoDelete = []

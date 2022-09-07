@@ -21,7 +21,11 @@ import { getters as gettersManagerDetailCbCoin } from '@/redux/manager-detail-cb
 import moment from 'moment';
 import __ from 'lodash';
 
-export default function ManagerDetailCbCoin(props) {
+ManagerDetailCbCoin.getInitialProps = async ({ query }) => {
+  return { query }
+}
+
+export default function ManagerDetailCbCoin({ query }) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const listManagerDetailCbCoin = useSelector(gettersManagerDetailCbCoin.getStateLoadPageManagerDetailCbCoin) || [];
@@ -38,8 +42,10 @@ export default function ManagerDetailCbCoin(props) {
 
   const initPage = async () => {
     setLoading(true);
-    await dispatch(actionManagerDetailCbCoin.searchManagerDetailCbCoin());
-
+    const data = {
+      'cbCoin_id': query.cbCoin_id
+    }
+    await dispatch(actionManagerDetailCbCoin.searchManagerDetailCbCoin(data));
     setLoading(false);
   }
 
