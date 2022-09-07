@@ -15,7 +15,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getters as gettersManagerCbCoin } from '@/redux/manager-cb-coin';
 import { actions as actionsManagerCbCoin } from '@/redux/manager-cb-coin';
 
-
 const classNames = require("classnames");
 const styles = require("./styles.less");
 const { Text } = Typography;
@@ -76,8 +75,8 @@ const ModalManagerCbCoin = (props) => {
     const param = {
       ...record,
       criteria_name: criteria_name,
-      from_date: from_date,
-      to_date: to_date,
+      from_date: moment(from_date).format(),
+      to_date: moment(to_date).format(),
       status: status
     }
 

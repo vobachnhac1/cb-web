@@ -111,11 +111,11 @@ export default function ManagerCbCoin(props) {
     setFlagActive("")
   };
 
-  const save = async (criteria_id) => {
+  const save = async (criteria_code) => {
     try {
       const row = await form.validateFields();
       const newData = [...listManagerCbCoin];
-      const index = newData.findIndex((item) => criteria_id === item.criteria_id);
+      const index = newData.findIndex((item) => criteria_code === item.criteria_code);
 
       if (index > -1) {
         const item = newData[index];
@@ -126,7 +126,7 @@ export default function ManagerCbCoin(props) {
 
         let params = {
           ord_numbers: item.ord_numbers,
-          criteria_id: parseInt(item.criteria_id),
+          criteria_code: parseInt(item.criteria_code),
           criteria_name: item.criteria_name,
           from_date: item.from_date,
           to_date: item.to_date,
@@ -138,7 +138,7 @@ export default function ManagerCbCoin(props) {
         setFlagActive("")
       } else {
         let params = {
-          criteria_id: parseInt(item.criteria_id),
+          criteria_code: parseInt(item.criteria_code),
           criteria_name: item.criteria_name,
           from_date: item.from_date,
           to_date: item.to_date,
@@ -154,8 +154,17 @@ export default function ManagerCbCoin(props) {
     }
   };
 
-  const onDelete = (recordID) => {
+  const onDelete = async (record) => {
+    console.log('onDelete', 'da lic')
     // call action xóa
+    let dataRecord = record
+    const result = await dispatch(actionsManagerCbCoin.deleteManagerCbCoinById(dataRecord));
+    if (result) {
+      await dispatch(actionsManagerCbCoin.searchManagerCbCoin());
+      Message.Success("Thông Báo", "Xóa thành công");
+      return
+    }
+    Message.Error("Thông Báo", "Xóa thất bại!")
 
   }
 
@@ -168,7 +177,7 @@ export default function ManagerCbCoin(props) {
     },
     {
       title: "ID",
-      dataIndex: "criteria_id",
+      dataIndex: "criteria_code",
       width: 100,
     },
     {
@@ -248,7 +257,7 @@ export default function ManagerCbCoin(props) {
         return editable ? (
           <span>
             <Typography.Link
-              onClick={() => save(record.criteria_id)}
+              onClick={() => save(record.criteria_code)}
               style={{
                 marginRight: 8
               }}
@@ -293,7 +302,7 @@ export default function ManagerCbCoin(props) {
                 okText="Xác nhận"
                 cancelText="Thoát"
                 title="Bạn muốn xóa?"
-                onConfirm={() => onDelete(record.criteria_id)}
+                onConfirm={() => onDelete(record)}
               >
                 <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }}>
                   Xóa
@@ -332,7 +341,7 @@ export default function ManagerCbCoin(props) {
     // });
     // manager-detail-cb-coin
     // router.push(`/admin/wheel-detail/${record.wheel_id}`)
-    router.push(`/admin/manager-detail-cb-coin/${record.criteria_id}`)
+    router.push(`/admin/manager-detail-cb-coin/${record.criteria_code}`)
   }
 
   // modal
@@ -350,9 +359,9 @@ export default function ManagerCbCoin(props) {
     });
   }
 
-  const callbackModal = (params) => {
+  const callbackModal = async (params) => {
     setVisible(params.visible);
-    // onSearch()
+    await dispatch(actionsManagerCbCoin.searchManagerCbCoin());
   }
 
 
