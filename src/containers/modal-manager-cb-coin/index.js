@@ -83,7 +83,7 @@ const ModalManagerCbCoin = (props) => {
 
     // add
     if (isAdd) {
-      const result = await dispatch(actionsManagerCbCoin.insertSegment(param));
+      const result = await dispatch(actionsManagerCbCoin.insertManagerCbCoin(param));
       if (result) {
         callback({ visible: false, });
         Message.Success("Thông Báo", "Thêm thành công");

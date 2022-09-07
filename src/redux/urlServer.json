@@ -49,7 +49,5 @@
   "updateCustPointCriteria": "cust-point/criteria",
   "deleteCustPointCriteria": "cust-point/criteria",
   "getCustPointCriteriaDetail": "cust-point/criteriaDetail",
-  "insertCustPointCriteriaDetail": "cust-point/criteriaDetail",
-  "updateCustPointCriteriaDetail": "cust-point/criteriaDetail",
-  "deleteCustPointCriteriaDetail": "cust-point/criteriaDetail"
+  "saveCustPointCriteriaDetail": "cust-point/criteriaDetail"
 }

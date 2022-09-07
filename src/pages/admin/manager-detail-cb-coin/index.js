@@ -8,7 +8,7 @@ require("./styles.less");
 import { useState, useEffect } from 'react';
 import LayoutHome from '@/containers/Home';
 import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Input, DatePicker } from 'antd';
-
+import { ArrowLeftOutlined } from '@ant-design/icons';
 const { RangePicker } = DatePicker;
 import * as Message from '@/components/message';
 import ModalManagerDetailCbCoin from '@/containers/modal-manager-detail-cb-coin';
@@ -43,19 +43,19 @@ export default function ManagerDetailCbCoin(props) {
     setLoading(false);
   }
 
-  const onSearch = async () => {
+  // const onSearch = async () => {
 
-    const { segment_name, topic_id, from_date_act, to_date_act } = filter;
-    if (__.isNil(segment_name) && __.isNil(topic_id) && __.isNil(from_date_act) && __.isNil(to_date_act)) {
-      initPage();
-    } else {
-      setLoading(true);
-      // const { success } = await dispatch(actionSegment.filterSegment(filter));
-      if (success)
-        setLoading(false);
-    }
+  //   const { segment_name, topic_id, from_date_act, to_date_act } = filter;
+  //   if (__.isNil(segment_name) && __.isNil(topic_id) && __.isNil(from_date_act) && __.isNil(to_date_act)) {
+  //     initPage();
+  //   } else {
+  //     setLoading(true);
+  //     // const { success } = await dispatch(actionSegment.filterSegment(filter));
+  //     if (success)
+  //       setLoading(false);
+  //   }
 
-  }
+  // }
 
   const handleDelete = async (record) => {
     let dataRecord = record
@@ -123,7 +123,7 @@ export default function ManagerDetailCbCoin(props) {
             >
               Khôi phục</Button>
             : <>
-              <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5, marginRight: 10 }} onClick={() => update(record)}>Cập nhật</Button>
+              <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5, marginRight: 10 }} onClick={() => onUpdate(record)}>Cập nhật</Button>
               <Popconfirm title="Bạn có muốn?" onConfirm={() => handleDelete(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom" >
                 <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
               </Popconfirm>
@@ -142,20 +142,38 @@ export default function ManagerDetailCbCoin(props) {
     record: null
   });
 
-  const addNew = () => {
+  const onAddNew = () => {
     setVisible(true);
     setBodyModel({
       record: null,
       isAdd: true
     });
   }
-  const update = (record) => {
+  const onUpdate = (record) => {
     setVisible(true);
     setBodyModel({
       record: record,
       isAdd: false
     });
   }
+
+  const onSave = async (record) => {
+    const result = await dispatch(actionManagerDetailCbCoin.saveManagerDetailCbCoin());
+    if (result) {
+      Message.Success("Thông Báo", "Lưu thành công");
+      return
+    }
+    Message.Error("Thông Báo", "Lưu thất bại!");
+  }
+
+  const onCancel = async (record) => {
+    //call lại data
+    setLoading(true);
+    await dispatch(actionManagerDetailCbCoin.searchManagerDetailCbCoin());
+    setLoading(false);
+
+  }
+
   const callbackModal = (params) => {
     setVisible(params.visible);
     // onSearch()
@@ -172,11 +190,22 @@ export default function ManagerDetailCbCoin(props) {
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>
             <Row gutter={[16, 24]} style={{ marginTop: '10px' }} justify="end">
-              <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} >Lưu</Button>
+              <Col className="gutter-row" style={{ marginBottom: 10, }}>
+                {/* <Link href="/admin/wheel"> */}
+                {/* <Button type='primary' size='middle' style={{ width: '100%' }} title="Quay lại" >
+                    <ArrowLeftOutlined style={{
+                      'fontSize': '21px',
+                      'marginLeft': '-6px',
+                      'width': '15px'
+                    }} />
+                  </Button> */}
+                {/* </Link> */}
               </Col>
               <Col className="gutter-row" span={3}>
-                <Button type='primary' danger size='middle' style={{ width: '100%' }}>Hủy bỏ</Button>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSave}>Lưu</Button>
+              </Col>
+              <Col className="gutter-row" span={3}>
+                <Button type='primary' danger size='middle' style={{ width: '100%' }} onClick={onCancel}>Hủy bỏ</Button>
               </Col>
             </Row>
           </Col>
@@ -184,7 +213,7 @@ export default function ManagerDetailCbCoin(props) {
         <div style={{ marginTop: 20 }} />
         <Card>
           <Col className="gutter-row" span={3}>
-            <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNew}>Thêm</Button>
+            <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onAddNew}>Thêm</Button>
           </Col>
           <Col span={48} style={{ marginTop: 10 }}>
             <Table

@@ -89,6 +89,22 @@ export const unDeleteManagerDetailCbCoin = (payload) => async (dispatch, getStat
   return true
 }
 
+export const saveManagerDetailCbCoin = (payload) => async (dispatch, getState, { $http0 }) => {
+  //call xuống backend url + param
+
+  let param = {
+    listManagerDetailCbCoin: payload.listData
+  }
+  
+  const result = await $http.post(URLSERVER.saveCustPointCriteriaDetail, param);
+  const { success, data } = result;
+  if (!success || !data.success) {
+    return false;
+  }
+  return true
+
+}
+
 export const searchManagerDetailCbCoin = (payload) => async (dispatch, getState, { $http }) => {
   // call xuống backend url + param 
   // const result = await $http.get(URLSERVER.getCustPointCriteriaDetail);
