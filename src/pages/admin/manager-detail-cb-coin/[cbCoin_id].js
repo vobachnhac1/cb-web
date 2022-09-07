@@ -6,6 +6,7 @@
 *------------------------------------------------------- */
 require("./styles.less");
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import LayoutHome from '@/containers/Home';
 import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Input, DatePicker } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
@@ -175,7 +176,10 @@ export default function ManagerDetailCbCoin({ query }) {
   const onCancel = async (record) => {
     //call lại data
     setLoading(true);
-    await dispatch(actionManagerDetailCbCoin.searchManagerDetailCbCoin());
+    const data = {
+      'cbCoin_id': query.cbCoin_id
+    }
+    await dispatch(actionManagerDetailCbCoin.searchManagerDetailCbCoin(data));
     setLoading(false);
 
   }
@@ -195,24 +199,41 @@ export default function ManagerDetailCbCoin({ query }) {
           bordered={true}
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>
-            <Row gutter={[16, 24]} style={{ marginTop: '10px' }} justify="end">
+            {/* justify="end" */}
+            <Row gutter={[16, 24]} style={{
+              'display': 'flex',
+              'justifyContent': 'space-between',
+              'marginTop': '10px'
+            }}>
               <Col className="gutter-row" style={{ marginBottom: 10, }}>
-                {/* <Link href="/admin/wheel"> */}
-                {/* <Button type='primary' size='middle' style={{ width: '100%' }} title="Quay lại" >
+                <Link href="/admin/manager-cb-coin">
+                  <Button type='primary' size='middle' style={{ width: '100%' }} title="Quay lại" >
                     <ArrowLeftOutlined style={{
                       'fontSize': '21px',
                       'marginLeft': '-6px',
                       'width': '15px'
                     }} />
-                  </Button> */}
-                {/* </Link> */}
+                  </Button>
+                </Link>
               </Col>
-              <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSave}>Lưu</Button>
+
+              <Col style={{
+                'display': 'flex',
+                'flexWrap': 'nowrap'
+              }}
+              >
+                <Col className="gutter-row" style={{
+                  'width': '125px'
+                }}>
+                  <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSave}>Lưu</Button>
+                </Col>
+                <Col className="gutter-row" style={{
+                  'width': '125px'
+                }}>
+                  <Button type='primary' danger size='middle' style={{ width: '100%' }} onClick={onCancel}>Hủy bỏ</Button>
+                </Col>
               </Col>
-              <Col className="gutter-row" span={3}>
-                <Button type='primary' danger size='middle' style={{ width: '100%' }} onClick={onCancel}>Hủy bỏ</Button>
-              </Col>
+
             </Row>
           </Col>
         </Card>
@@ -232,8 +253,8 @@ export default function ManagerDetailCbCoin({ query }) {
             />
           </Col>
         </Card>
-      </Col>
-    </LayoutHome>
+      </Col >
+    </LayoutHome >
   )
 }
 
