@@ -33,6 +33,7 @@ export const updateManagerCbCoin = (payload) => async (dispatch, getState, { $ht
     from_date: payload.from_date,
     to_date: payload.to_date,
     status: payload.status,
+    isDelete: payload.isDelete,
     systemCd: "string",
     created_by: "string",
     updated_by: "string"
@@ -55,27 +56,17 @@ export const updateManagerCbCoin = (payload) => async (dispatch, getState, { $ht
 
     return true
   }
-  // console.log('payload.newData)', payload.newData)
-  // dispatch(setSearchManagerCbCoin(payload.newData))
-
-  // let state = getState()
-
-  // let { listManagerCbCoin } = state.ManagerCbCoin
-  // let listManagerCbCoinNEw = [...listManagerCbCoin]
-  // console.log(listManagerCbCoinNEw)
-  // listManagerCbCoinNEw.splice(indexChange, 1, { ...param })
-  // dispatch(setSearchManagerCbCoin(listManagerCbCoinNEw))
-
-  // return true
-
+ 
 }
 
 export const deleteManagerCbCoinById = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
-    criteria_code: parseInt(payload.criteria_code)
+    criteriaCode: parseInt(payload.criteria_code),
+    username: 'ADMIN'  // username is  update by name of user
+
   }
   // call xuống backend url + param
-  const result = await $http.delete(URLSERVER.deleteCustPointCriteria, param);
+  const result = await $http.delete(`${URLSERVER.deleteCustPointCriteria}/${param.criteriaCode}/${param.username}`);
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
@@ -104,18 +95,4 @@ function chagneDateObject(arrs) {
   return arrsTemps
 }
 
-
-// export const filterManagerCbCoin = (payload) => async (dispatch, getState, { $http }) => {
-//   const result = await $http.post(URLSERVER.MANAGER_CB_COIN_SEARCH_BY_ID, payload);
-//   const { success, data } = result;
-//   if (!success || !data.success) {
-//     return false;
-//   }
-//   const listSegment = data.data;
-//   dispatch(setSearchManagerCbCoin(listSegment))
-
-//   return {
-//     "success": true,
-//   }
-// }
 

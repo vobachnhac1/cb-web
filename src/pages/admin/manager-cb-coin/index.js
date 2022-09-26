@@ -17,6 +17,7 @@ import {
 } from "antd";
 
 require("./styles.less");
+import * as Message from '@/components/message';
 import router from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
 import { getters as gettersManagerCbCoin } from '@/redux/manager-cb-coin';
@@ -89,7 +90,13 @@ export default function ManagerCbCoin(props) {
   }
 
   const onChangeFlagActive = (flag) => {
-    setFlagActive(!flag)
+    console.log('onChangeFlagActive', flag)
+    if (flag === "Y") {
+      setFlagActive("N")
+    } else if (flag === "N") {
+      setFlagActive("Y")
+    }
+
   }
 
   const edit = (record) => {
@@ -131,11 +138,20 @@ export default function ManagerCbCoin(props) {
           from_date: item.from_date,
           to_date: item.to_date,
           status: item.status,
+          isDelete: item.isDelete,
           indexChange: index,
         }
-        await dispatch(actionsManagerCbCoin.updateManagerCbCoin(params));
-        setEditingord_numbers("");
-        setFlagActive("")
+        const result = await dispatch(actionsManagerCbCoin.updateManagerCbCoin(params));
+        console.log('save ', result)
+        if (result) {
+          setEditingord_numbers("");
+          Message.Success("Thông Báo", "Cập nhật thành công");
+          return;
+        } else {
+          Message.Error("Thông Báo", "Cập nhật thất bại");
+          return;
+        }
+
       } else {
         let params = {
           criteria_code: parseInt(item.criteria_code),
@@ -143,12 +159,20 @@ export default function ManagerCbCoin(props) {
           from_date: item.from_date,
           to_date: item.to_date,
           status: item.status,
+          isDelete: item.isDelete,
           indexChange: index,
         }
-        await dispatch(actionsManagerCbCoin.updateManagerCbCoin(params));
-        setEditingord_numbers("");
+        const result = await dispatch(actionsManagerCbCoin.updateManagerCbCoin(params));
+        if (result) {
+          Message.Success("Thông Báo", "Cập nhật thành công");
+          setEditingord_numbers("");
+          return;
+        } else {
+          Message.Error("Thông Báo", "Cập nhật thất bại");
+          return;
+        }
+
       }
-      console.log(newData);
     } catch (errInfo) {
       console.log("Validate Failed:", errInfo);
     }
@@ -220,7 +244,7 @@ export default function ManagerCbCoin(props) {
                 marginRight: 8,
               }}
             >
-              <Button onClick={() => flagActive ? '' : onChangeFlagActive(flagActive)} style={{ color: `${flagActive ? 'white' : 'green'}`, borderColor: 'green', borderWidth: 0.5, background: `${flagActive ? 'green' : ''}` }}>
+              <Button onClick={() => flagActive === "Y" ? '' : onChangeFlagActive(flagActive)} style={{ color: `${flagActive === "Y" ? 'white' : 'green'}`, borderColor: 'green', borderWidth: 0.5, background: `${flagActive === "Y" ? 'green' : ''}` }}>
                 Active
               </Button>
             </Typography.Link>
@@ -229,7 +253,7 @@ export default function ManagerCbCoin(props) {
                 marginRight: 8,
               }}
             >
-              <Button onClick={() => flagActive ? onChangeFlagActive(flagActive) : ''} style={{ color: `${flagActive ? 'red' : 'white'}`, borderColor: 'red', borderWidth: 0.5, background: `${flagActive ? '' : 'red'}` }}>
+              <Button onClick={() => flagActive === "N" ? '' : onChangeFlagActive(flagActive)} style={{ color: `${flagActive === "N" ? 'white' : 'red'}`, borderColor: 'red', borderWidth: 0.5, background: `${flagActive === "N" ? 'red' : ''}` }}>
                 Inactive
               </Button>
             </Typography.Link>
@@ -241,7 +265,7 @@ export default function ManagerCbCoin(props) {
               fontWeight: "500"
             }}
           >
-            {record.status ? <span style={{ color: "green" }}>Đang hoạt động</span> : <span style={{ color: "red" }}>Dừng hoạt động</span>}
+            {record.status === "Y" ? <span style={{ color: "green" }}>Đang hoạt động</span> : <span style={{ color: "red" }}>Dừng hoạt động</span>}
           </div>
         );
       }
