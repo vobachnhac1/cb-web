@@ -30,6 +30,13 @@ const layoutContent = {
   md: { span: 12, offset: 0 },
   lg: { span: 16, offset: 0 },
 };
+const ESTATE_DATE = [
+  'WEEK',
+  'DAY',
+  'MONTH',
+  'EVENT',
+]
+
 const ModalManagerDetailCbCoin = (props) => {
   const { callback, visible = false, bodyModel: { isAdd = false, record = null } } = props;
   const dispatch = useDispatch();
@@ -103,6 +110,10 @@ const ModalManagerDetailCbCoin = (props) => {
     callback({ visible: false });
   }
 
+  // onChange = () => {
+
+  // }
+
   return (
     <Modal
       width={700}
@@ -165,13 +176,18 @@ const ModalManagerDetailCbCoin = (props) => {
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
               <Text className={classNames({ 'text-font': true })}>{'Số loại'}</Text>
-            </Col>
+            </Col >
             <Col  {...layoutContent}>
-              <Input
+              <Select
                 style={{ width: '100%' }}
-                value={type}
-                onChange={(text) => setType(text.target.value)} />
+                defaultValue=""
+                onChange={(value) => setType(value)}>
+                {ESTATE_DATE.map((Item, key) => (
+                  <Select.Option value={Item} key={key}>{Item}</Select.Option>
+                ))}
+              </Select>
             </Col>
+
           </Row>
         </Form>
       </Card>
