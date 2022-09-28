@@ -38,7 +38,7 @@ const ESTATE_DATE = [
 ]
 
 const ModalManagerDetailCbCoin = (props) => {
-  const { callback, visible = false, bodyModel: { isAdd = false, record = null } } = props;
+  const { callback, visible = false, bodyModel: { isAdd = false, record = null,cbCoin_id } } = props;
   const dispatch = useDispatch();
   // state ModalManagerDetailCbCoin
   const [behaviorCode, setBehaviorCode] = useState(record ? record.behaviorCode : "");
@@ -88,7 +88,8 @@ const ModalManagerDetailCbCoin = (props) => {
       point: point,
       numBehavior: numBehavior,
       type: type,
-      visible: false
+      visible: false,
+      cbCoin_id:cbCoin_id
     }
 
     // isAdd

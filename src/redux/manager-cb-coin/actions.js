@@ -5,7 +5,6 @@ import moment from 'moment';
 const setSearchManagerCbCoin = (payload) => ({ type: TYPES.MANAGER_CB_COIN_SEARCH, payload });
 
 export const insertManagerCbCoin = (payload) => async (dispatch, getState, { $http }) => {
-  console.log('insertManagerCbCoin', payload)
   const param = {
     criteria_name: payload.criteria_name,
     from_date: payload.from_date,
@@ -48,13 +47,10 @@ export const updateManagerCbCoin = (payload) => async (dispatch, getState, { $ht
   } else {
     // nếu cập nhật thành công thì change data trên state
     let state = getState()
-
     let { listManagerCbCoin } = state.ManagerCbCoin
     let listManagerCbCoinNEw = [...listManagerCbCoin]
-    console.log(listManagerCbCoinNEw)
     listManagerCbCoinNEw.splice(indexChange, 1, { ...param })
     dispatch(setSearchManagerCbCoin(listManagerCbCoinNEw))
-
     return true
   }
  

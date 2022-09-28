@@ -50,20 +50,6 @@ export default function ManagerDetailCbCoin({ query }) {
     setLoading(false);
   }
 
-  // const onSearch = async () => {
-
-  //   const { segment_name, topic_id, from_date_act, to_date_act } = filter;
-  //   if (__.isNil(segment_name) && __.isNil(topic_id) && __.isNil(from_date_act) && __.isNil(to_date_act)) {
-  //     initPage();
-  //   } else {
-  //     setLoading(true);
-  //     // const { success } = await dispatch(actionSegment.filterSegment(filter));
-  //     if (success)
-  //       setLoading(false);
-  //   }
-
-  // }
-
   const handleDelete = async (record) => {
     let dataRecord = record
     const result = await dispatch(actionManagerDetailCbCoin.deleteManagerDetailCbCoin(dataRecord));
@@ -153,14 +139,16 @@ export default function ManagerDetailCbCoin({ query }) {
     setVisible(true);
     setBodyModel({
       record: null,
-      isAdd: true
+      isAdd: true,
+      cbCoin_id: query.cbCoin_id
     });
   }
   const onUpdate = (record) => {
     setVisible(true);
     setBodyModel({
       record: record,
-      isAdd: false
+      isAdd: false,
+      cbCoin_id: query.cbCoin_id
     });
   }
 

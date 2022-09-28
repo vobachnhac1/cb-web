@@ -5,11 +5,17 @@ const setSearchManagerDetailCbCoin = (payload) => ({ type: TYPES.MANAGER_DETAIL_
 
 export const insertManagerDetailCbCoin = (payload) => async (dispatch, getState, { $http }) => {
   const newItem = {
+    behaviorName: payload.behaviorCode,
     behaviorCode: payload.behaviorCode,
     point: parseInt(payload.point),
     numBehavior: parseInt(payload.numBehavior),
     type: payload.type,
-    isDelete: false
+    isDelete: false,
+    createdBy: 'NHACVB',
+    criteria_code: payload.cbCoin_id,
+    status: "Y",
+    systemCd: "DL",
+    updatedBy: 'NHACVB'
   }
 
   let state = getState();
@@ -31,15 +37,9 @@ export const updateManagerDetailCbCoin = (payload) => async (dispatch, getState,
     type: payload.type,
     idDelete: payload.idDelete
   }
-  console.log('updateManagerDetailCbCoin', param)
-
   let state = getState();
   let { listManagerDetailCbCoin } = state.ManagerDetailCbCoin
-  console.log('listManagerDetailCbCoin', listManagerDetailCbCoin)
   for (let i = 0; i < listManagerDetailCbCoin.length; i++) {
-    console.log('updateManagerDetailCbCoin true/fale :  ', parseInt(listManagerDetailCbCoin[i].key) === parseInt(param.key))
-    console.log('parseInt(listManagerDetailCbCoin[i].key)', parseInt(listManagerDetailCbCoin[i].key))
-    console.log('parseInt(param.key)', parseInt(param.key))
     if (parseInt(listManagerDetailCbCoin[i].key) === parseInt(param.key)) {
       listManagerDetailCbCoin[i].id = param.id,
         listManagerDetailCbCoin[i].behaviorCode = param.behaviorCode,

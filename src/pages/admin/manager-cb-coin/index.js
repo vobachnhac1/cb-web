@@ -79,7 +79,6 @@ export default function ManagerCbCoin(props) {
   const [flagActive, setFlagActive] = useState("")
 
   useEffect(() => {
-    console.log('init page ', 1)
     initPage();
   }, [])
 
@@ -90,7 +89,6 @@ export default function ManagerCbCoin(props) {
   }
 
   const onChangeFlagActive = (flag) => {
-    console.log('onChangeFlagActive', flag)
     if (flag === "Y") {
       setFlagActive("N")
     } else if (flag === "N") {
@@ -100,7 +98,6 @@ export default function ManagerCbCoin(props) {
   }
 
   const edit = (record) => {
-    console.log('đã nhấp vào nút cập nhật record :', record)
     setFlagActive(record.status)
     form.setFieldsValue({
       ord_numbers: "",
@@ -142,7 +139,6 @@ export default function ManagerCbCoin(props) {
           indexChange: index,
         }
         const result = await dispatch(actionsManagerCbCoin.updateManagerCbCoin(params));
-        console.log('save ', result)
         if (result) {
           setEditingord_numbers("");
           Message.Success("Thông Báo", "Cập nhật thành công");
@@ -179,7 +175,6 @@ export default function ManagerCbCoin(props) {
   };
 
   const onDelete = async (record) => {
-    console.log('onDelete', 'da lic')
     // call action xóa
     let dataRecord = record
     const result = await dispatch(actionsManagerCbCoin.deleteManagerCbCoinById(dataRecord));
