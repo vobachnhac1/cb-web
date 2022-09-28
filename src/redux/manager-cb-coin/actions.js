@@ -13,7 +13,8 @@ export const insertManagerCbCoin = (payload) => async (dispatch, getState, { $ht
     status: payload.status,
     systemCd: "string",
     created_by: "string",
-    updated_by: "string"
+    updated_by: "string",
+    isDelete: false
   }
 
   const result = await $http.post(URLSERVER.insertCustPointCriteria, param);
