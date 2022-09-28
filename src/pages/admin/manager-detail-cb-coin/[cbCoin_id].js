@@ -103,8 +103,8 @@ export default function ManagerDetailCbCoin({ query }) {
     },
     {
       title: 'Số lần',
-      dataIndex: 'numberBehavior',
-      key: 'numberBehavior',
+      dataIndex: 'numBehavior',
+      key: 'numBehavior',
       width: 40
 
     },
@@ -165,8 +165,13 @@ export default function ManagerDetailCbCoin({ query }) {
   }
 
   const onSave = async (record) => {
-    const result = await dispatch(actionManagerDetailCbCoin.saveManagerDetailCbCoin());
+    const data = {
+      data: listManagerDetailCbCoin
+    }
+    
+    const result = await dispatch(actionManagerDetailCbCoin.saveManagerDetailCbCoin(data));
     if (result) {
+      onCancel()
       Message.Success("Thông Báo", "Lưu thành công");
       return
     }

@@ -7,7 +7,7 @@ export const insertManagerDetailCbCoin = (payload) => async (dispatch, getState,
   const newItem = {
     behaviorCode: payload.behaviorCode,
     point: parseInt(payload.point),
-    numberBehavior: parseInt(payload.numberBehavior),
+    numBehavior: parseInt(payload.numBehavior),
     type: payload.type,
     isDelete: false
   }
@@ -27,19 +27,24 @@ export const updateManagerDetailCbCoin = (payload) => async (dispatch, getState,
     id: payload.id,
     behaviorCode: payload.behaviorCode,
     point: parseInt(payload.point),
-    numberBehavior: parseInt(payload.numberBehavior),
+    numBehavior: parseInt(payload.numBehavior),
     type: payload.type,
     idDelete: payload.idDelete
   }
+  console.log('updateManagerDetailCbCoin', param)
 
   let state = getState();
   let { listManagerDetailCbCoin } = state.ManagerDetailCbCoin
+  console.log('listManagerDetailCbCoin', listManagerDetailCbCoin)
   for (let i = 0; i < listManagerDetailCbCoin.length; i++) {
+    console.log('updateManagerDetailCbCoin true/fale :  ', parseInt(listManagerDetailCbCoin[i].key) === parseInt(param.key))
+    console.log('parseInt(listManagerDetailCbCoin[i].key)', parseInt(listManagerDetailCbCoin[i].key))
+    console.log('parseInt(param.key)', parseInt(param.key))
     if (parseInt(listManagerDetailCbCoin[i].key) === parseInt(param.key)) {
       listManagerDetailCbCoin[i].id = param.id,
         listManagerDetailCbCoin[i].behaviorCode = param.behaviorCode,
         listManagerDetailCbCoin[i].point = parseInt(param.point),
-        listManagerDetailCbCoin[i].numberBehavior = parseInt(param.numberBehavior),
+        listManagerDetailCbCoin[i].numBehavior = parseInt(param.numBehavior),
         listManagerDetailCbCoin[i].type = param.type,
         listManagerDetailCbCoin[i].idDelete = param.idDelete
       break
@@ -89,11 +94,11 @@ export const unDeleteManagerDetailCbCoin = (payload) => async (dispatch, getStat
   return true
 }
 
-export const saveManagerDetailCbCoin = (payload) => async (dispatch, getState, { $http0 }) => {
+export const saveManagerDetailCbCoin = (payload) => async (dispatch, getState, { $http }) => {
   //call xuống backend url + param
 
   let param = {
-    listManagerDetailCbCoin: payload.listData
+    listManagerDetailCbCoin: payload.data
   }
 
   const result = await $http.post(URLSERVER.saveCustPointCriteriaDetail, param);
@@ -115,27 +120,33 @@ export const searchManagerDetailCbCoin = (payload) => async (dispatch, getState,
   const { success, data } = result;
   if (!success) {
     return false;
-  }
-  const listData = data.data;
+  } else {
+    const listData = data.data;
+    // dispatch(setSearchManagerDetailCbCoin(listData))
+    dispatch(setSearchManagerDetailCbCoin(listResultDoneArr(listData)))
+    return true
 
-  //test data
-  let originData = [];
-  let n = 5;
-  for (let i = 0; i < n; i++) {
-    originData.push({
-      key: i,
-      id: i,
-      behaviorCode: 'LOGIN' + `${i + 1} `,
-      point: 101 + i,
-      numberBehavior: 1,
-      type: "EVENT" + `${i + 1} `,
-      isDelete: false
-    })
   }
 
-  const listData1 = originData;
-  dispatch(setSearchManagerDetailCbCoin(listData1))
-  return true
+
+  // //test data
+  // let originData = [];
+  // let n = 5;
+  // for (let i = 0; i < n; i++) {
+  //   originData.push({
+  //     key: i,
+  //     id: i,
+  //     behaviorCode: 'LOGIN' + `${i + 1} `,
+  //     point: 101 + i,
+  //     numBehavior: 1,
+  //     type: "EVENT" + `${i + 1} `,
+  //     isDelete: false
+  //   })
+  // }
+
+  // const listData1 = originData;
+  // dispatch(setSearchManagerDetailCbCoin(listData))
+  // return true
 }
 
 // sắp xếp những phần tử xóa và phần tử bị xóa

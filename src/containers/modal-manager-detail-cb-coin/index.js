@@ -36,7 +36,7 @@ const ModalManagerDetailCbCoin = (props) => {
   // state ModalManagerDetailCbCoin
   const [behaviorCode, setBehaviorCode] = useState(record ? record.behaviorCode : "");
   const [point, setPoint] = useState(record ? record.point : "");
-  const [numberBehavior, setNumberBehavior] = useState(record ? record.numberBehavior : "");
+  const [numBehavior, setNumBehavior] = useState(record ? record.numBehavior : "");
   const [type, setType] = useState(record ? record.type : "");
 
   useEffect(() => {
@@ -46,7 +46,7 @@ const ModalManagerDetailCbCoin = (props) => {
   const initPage = async () => {
     setBehaviorCode(record ? record.behaviorCode : "")
     setPoint(record ? record.point : "")
-    setNumberBehavior(record ? record.numberBehavior : "")
+    setNumBehavior(record ? record.numBehavior : "")
     setType(record ? record.type : "")
   }
 
@@ -59,7 +59,7 @@ const ModalManagerDetailCbCoin = (props) => {
       Message.Warning("Thông Báo", "Số điểm không được để trống!");
       return;
     }
-    if (!numberBehavior || numberBehavior.length == 0) {
+    if (!numBehavior || numBehavior.length == 0) {
       Message.Warning("Thông Báo", "Số lần không được để trống!");
       return;
     }
@@ -71,7 +71,7 @@ const ModalManagerDetailCbCoin = (props) => {
       ...record,
       behaviorCode: behaviorCode,
       point: point,
-      numberBehavior: numberBehavior,
+      numBehavior: numBehavior,
       type: type,
       visible: false
     }
@@ -155,9 +155,9 @@ const ModalManagerDetailCbCoin = (props) => {
             </Col>
             <Col  {...layoutContent}>
               <InputNumber style={{ width: '100%' }}
-                value={numberBehavior}
+                value={numBehavior}
                 onChange={(text) => {
-                  setNumberBehavior(text ? text : 0);
+                  setNumBehavior(text ? text : 0);
                 }}
               />
             </Col>

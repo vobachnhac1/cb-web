@@ -275,7 +275,7 @@ export default function ManagerCbCoin(props) {
       align: 'center',
       title: "Action",
       dataIndex: "operation",
-      width: 120,
+      width: 110,
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (
@@ -295,6 +295,7 @@ export default function ManagerCbCoin(props) {
               cancelText="Thoát"
               title="Bạn muốn hủy?"
               onConfirm={cancel}
+              placement="leftBottom"
             >
               <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }}>
                 Hủy
@@ -326,7 +327,12 @@ export default function ManagerCbCoin(props) {
                 okText="Xác nhận"
                 cancelText="Thoát"
                 title="Bạn muốn xóa?"
-                onConfirm={() => onDelete(record)}
+                onConfirm={() => {
+                  setTimeout(() => {
+                    onDelete(record)
+                  }, 25)
+                }}
+                placement="leftBottom"
               >
                 <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }}>
                   Xóa
