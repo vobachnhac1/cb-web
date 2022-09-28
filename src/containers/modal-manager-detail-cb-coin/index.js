@@ -62,12 +62,20 @@ const ModalManagerDetailCbCoin = (props) => {
       Message.Warning("Thông Báo", "Giao dịch tích CbCoin không được để trống!");
       return;
     }
-    if (!point || point.length == 0) {
+    if (point.length == 0) {
       Message.Warning("Thông Báo", "Số điểm không được để trống!");
       return;
     }
-    if (!numBehavior || numBehavior.length == 0) {
+    if (parseInt(point) < 0) {
+      Message.Warning("Thông Báo", "Số điểm không được là số âm!");
+      return;
+    }
+    if (numBehavior.length == 0) {
       Message.Warning("Thông Báo", "Số lần không được để trống!");
+      return;
+    }
+    if (parseInt(numBehavior) < 0) {
+      Message.Warning("Thông Báo", "Số lần không được là số âm!");
       return;
     }
     if (!type || type.length == 0) {
@@ -181,6 +189,7 @@ const ModalManagerDetailCbCoin = (props) => {
               <Select
                 style={{ width: '100%' }}
                 defaultValue=""
+                value={type}
                 onChange={(value) => setType(value)}>
                 {ESTATE_DATE.map((Item, key) => (
                   <Select.Option value={Item} key={key}>{Item}</Select.Option>
