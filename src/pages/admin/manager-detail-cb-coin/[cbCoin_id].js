@@ -92,7 +92,7 @@ export default function ManagerDetailCbCoin({ query }) {
       dataIndex: 'behaviorCode',
       key: 'behaviorCode',
       fixed: 'left',
-      width: 50,
+      width: 80,
 
     },
     {
@@ -119,7 +119,7 @@ export default function ManagerDetailCbCoin({ query }) {
       align: 'center',
       title: 'Action',
       key: 'action',
-      width: 50,
+      width: 40,
       render: (text, record) => (
         <Space size="middle">
           {record.isDelete
@@ -168,7 +168,7 @@ export default function ManagerDetailCbCoin({ query }) {
     const data = {
       data: listManagerDetailCbCoin
     }
-    
+
     const result = await dispatch(actionManagerDetailCbCoin.saveManagerDetailCbCoin(data));
     if (result) {
       onCancel()
