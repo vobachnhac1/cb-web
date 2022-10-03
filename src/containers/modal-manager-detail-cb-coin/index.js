@@ -38,10 +38,11 @@ const ESTATE_DATE = [
 ]
 
 const ModalManagerDetailCbCoin = (props) => {
-  const { callback, visible = false, bodyModel: { isAdd = false, record = null,cbCoin_id } } = props;
+  const { callback, visible = false, bodyModel: { isAdd = false, record = null, cbCoin_id } } = props;
   const dispatch = useDispatch();
   // state ModalManagerDetailCbCoin
   const [behaviorCode, setBehaviorCode] = useState(record ? record.behaviorCode : "");
+  const [behaviorName, setBehaviorName] = useState(record ? record.behaviorName : "");
   const [point, setPoint] = useState(record ? record.point : "");
   const [numBehavior, setNumBehavior] = useState(record ? record.numBehavior : "");
   const [type, setType] = useState(record ? record.type : "");
@@ -52,6 +53,7 @@ const ModalManagerDetailCbCoin = (props) => {
 
   const initPage = async () => {
     setBehaviorCode(record ? record.behaviorCode : "")
+    setBehaviorName(record ? record.behaviorName : "")
     setPoint(record ? record.point : "")
     setNumBehavior(record ? record.numBehavior : "")
     setType(record ? record.type : "")
@@ -60,6 +62,10 @@ const ModalManagerDetailCbCoin = (props) => {
   const onCallback = async () => {
     if (!behaviorCode || behaviorCode.length == 0) {
       Message.Warning("Thông Báo", "Giao dịch tích CbCoin không được để trống!");
+      return;
+    }
+    if (!numBehavior || numBehavior.length == 0) {
+      Message.Warning("Thông Báo", "Mã tích CbCoin không được để trống!");
       return;
     }
     if (point.length == 0) {
@@ -85,11 +91,12 @@ const ModalManagerDetailCbCoin = (props) => {
     const param = {
       ...record,
       behaviorCode: behaviorCode,
+      behaviorName: behaviorName,
       point: point,
       numBehavior: numBehavior,
       type: type,
       visible: false,
-      cbCoin_id:cbCoin_id
+      cbCoin_id: cbCoin_id
     }
 
     // isAdd
@@ -154,6 +161,17 @@ const ModalManagerDetailCbCoin = (props) => {
                 style={{ width: '100%' }}
                 value={behaviorCode}
                 onChange={(text) => setBehaviorCode(text.target.value)} />
+            </Col>
+          </Row>
+          <Row style={{ marginTop: 10 }}>
+            <Col {...layoutHeader} >
+              <Text className={classNames({ 'text-font': true })}>{'Mã tích coin'}</Text>
+            </Col>
+            <Col  {...layoutContent}>
+              <Input
+                style={{ width: '100%' }}
+                value={behaviorName}
+                onChange={(text) => setBehaviorName(text.target.value)} />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>

@@ -82,6 +82,14 @@ export default function ManagerDetailCbCoin({ query }) {
 
     },
     {
+      title: 'Mã tính coin',
+      dataIndex: 'behaviorName',
+      key: 'behaviorName',
+      fixed: 'left',
+      width: 80,
+
+    },
+    {
       title: 'Số điểm trên lần',
       dataIndex: 'point',
       key: 'point',

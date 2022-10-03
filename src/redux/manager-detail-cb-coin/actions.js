@@ -5,8 +5,8 @@ const setSearchManagerDetailCbCoin = (payload) => ({ type: TYPES.MANAGER_DETAIL_
 
 export const insertManagerDetailCbCoin = (payload) => async (dispatch, getState, { $http }) => {
   const newItem = {
-    behaviorName: payload.behaviorCode,
     behaviorCode: payload.behaviorCode,
+    behaviorName: payload.behaviorName,
     point: parseInt(payload.point),
     numBehavior: parseInt(payload.numBehavior),
     type: payload.type,
@@ -32,6 +32,7 @@ export const updateManagerDetailCbCoin = (payload) => async (dispatch, getState,
     key: payload.key,
     id: payload.id,
     behaviorCode: payload.behaviorCode,
+    behaviorName: payload.behaviorName,
     point: parseInt(payload.point),
     numBehavior: parseInt(payload.numBehavior),
     type: payload.type,
@@ -43,6 +44,7 @@ export const updateManagerDetailCbCoin = (payload) => async (dispatch, getState,
     if (parseInt(listManagerDetailCbCoin[i].key) === parseInt(param.key)) {
       listManagerDetailCbCoin[i].id = param.id,
         listManagerDetailCbCoin[i].behaviorCode = param.behaviorCode,
+        listManagerDetailCbCoin[i].behaviorName = param.behaviorName,
         listManagerDetailCbCoin[i].point = parseInt(param.point),
         listManagerDetailCbCoin[i].numBehavior = parseInt(param.numBehavior),
         listManagerDetailCbCoin[i].type = param.type,
