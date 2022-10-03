@@ -74,7 +74,7 @@ export default function ManagerDetailCbCoin({ query }) {
 
   const columns = [
     {
-      title: 'Giao dịch được tính coin',
+      title: 'Giao dịch được tính điểm',
       dataIndex: 'behaviorCode',
       key: 'behaviorCode',
       fixed: 'left',
@@ -82,7 +82,7 @@ export default function ManagerDetailCbCoin({ query }) {
 
     },
     {
-      title: 'Mã tính coin',
+      title: 'Mã tính điểm',
       dataIndex: 'behaviorName',
       key: 'behaviorName',
       fixed: 'left',
@@ -196,7 +196,7 @@ export default function ManagerDetailCbCoin({ query }) {
         <ModalManagerDetailCbCoin visible={visible} bodyModel={bodyModel} callback={callbackModal} />
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
-          title="Quản lý chi tiết CBCoin"
+          title="Quản lý chi tiết hệ thống"
           bordered={true}
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>

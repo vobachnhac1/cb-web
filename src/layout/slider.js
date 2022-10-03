@@ -41,7 +41,7 @@ const menu = [
     parentKey: null,
     path: '/admin/topic',
     icon: <CodepenOutlined />,
-    title: ' Chủ Đề',
+    title: 'Chương trình Digital Loyalty',
     child: null,
   }, {
     key: 'subWheel',
@@ -100,7 +100,7 @@ const menu = [
     parentKey: null,
     path: '/admin/manager-cb-coin',
     icon: <SwapOutlined />,
-    title: ' Quản lý CBcoin',
+    title: 'Quản lý hệ thống tích điểm',
     child: null,
   },
 ];

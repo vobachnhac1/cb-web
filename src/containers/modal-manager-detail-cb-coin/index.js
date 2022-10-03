@@ -154,7 +154,7 @@ const ModalManagerDetailCbCoin = (props) => {
         >
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ 'text-font': true })}>{'Giao dịch được tích coin'}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Giao dịch được tích điểm'}</Text>
             </Col>
             <Col  {...layoutContent}>
               <Input
@@ -165,7 +165,7 @@ const ModalManagerDetailCbCoin = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ 'text-font': true })}>{'Mã tích coin'}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Mã tích điểm'}</Text>
             </Col>
             <Col  {...layoutContent}>
               <Input

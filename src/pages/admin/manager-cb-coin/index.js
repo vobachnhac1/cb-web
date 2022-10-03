@@ -200,7 +200,7 @@ export default function ManagerCbCoin(props) {
       width: 100,
     },
     {
-      title: "Tên hệ thống",
+      title: "Hệ thống tích điểm",
       dataIndex: "criteria_name",
       width: 250,
       editable: true
@@ -401,7 +401,7 @@ export default function ManagerCbCoin(props) {
             headStyle={{
               fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)"
             }}
-            title="Quản lý tiêu chí CBCoin"
+            title="Quản lý hệ thống tích điểm"
             bordered={true}
             style={{ backgroundColor: '#FFFFFF' }}>
             <Col span={48} >
