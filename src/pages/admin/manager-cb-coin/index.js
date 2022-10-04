@@ -192,12 +192,14 @@ export default function ManagerCbCoin(props) {
       title: "STT",
       dataIndex: "ord_numbers",
       width: 70,
+      fixed: 'left',
       editable: false
     },
     {
       title: "ID",
       dataIndex: "criteria_code",
       width: 100,
+      fixed: 'left',
     },
     {
       title: "Hệ thống tích điểm",

@@ -49,5 +49,6 @@
   "updateCustPointCriteria": "cust-point/criteria",
   "deleteCustPointCriteria": "cust-point/criteria",
   "getCustPointCriteriaDetail": "cust-point/behavior",
-  "saveCustPointCriteriaDetail": "cust-point/behavior-list"
+  "saveCustPointCriteriaDetail": "cust-point/behavior-list",
+  "checkBehaviorCodeCustPointCriteriaDetail":"cust-point/check-behavior"
 }

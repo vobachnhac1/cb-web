@@ -61,11 +61,11 @@ const ModalManagerDetailCbCoin = (props) => {
 
   const onCallback = async () => {
     if (!behaviorCode || behaviorCode.length == 0) {
-      Message.Warning("Thông Báo", "Giao dịch tích CbCoin không được để trống!");
+      Message.Warning("Thông Báo", "Giao dịch tích điểm không được để trống!");
       return;
     }
     if (!numBehavior || numBehavior.length == 0) {
-      Message.Warning("Thông Báo", "Mã tích CbCoin không được để trống!");
+      Message.Warning("Thông Báo", "Mã tích điểm không được để trống!");
       return;
     }
     if (point.length == 0) {
@@ -99,25 +99,33 @@ const ModalManagerDetailCbCoin = (props) => {
       cbCoin_id: cbCoin_id
     }
 
+    //kiểm tra bahaviorCode có trùng nhau ở database
+    const checkBehavior = await dispatch(actionManagerDetailCbCoin.checkBehavior(param));
+    console.log('checkBehavior', checkBehavior)
+    if (!checkBehavior.success) {
+      Message.Warning("Thông Báo", `Mã tích điểm ${checkBehavior.message}`);
+      return;
+    }
+
     // isAdd
     if (isAdd) {
       const result = await dispatch(actionManagerDetailCbCoin.insertManagerDetailCbCoin(param));
       if (result) {
 
         callback({ visible: false });
-        Message.Success("Thông Báo", "Thêm chi tiết CbCoin thành công");
+        Message.Success("Thông Báo", "Thêm chi tiết điểm thành công");
         return;
       }
-      Message.Error("Thông Báo", "Thêm chi tiết CbCoin thất bại");
+      Message.Error("Thông Báo", "Thêm chi tiết điểm thất bại");
       return;
     } else {
       const result = await dispatch(actionManagerDetailCbCoin.updateManagerDetailCbCoin(param));
       if (result) {
         callback({ visible: false });
-        Message.Success("Thông Báo", "Cập nhật chi tiết CbCoin thành công");
+        Message.Success("Thông Báo", "Cập nhật chi tiết điểm thành công");
         return;
       }
-      Message.Error("Thông Báo", "Cập nhật chi tiết CbCoin thất bại");
+      Message.Error("Thông Báo", "Cập nhật chi tiết điểm thất bại");
     }
 
   }
@@ -144,7 +152,7 @@ const ModalManagerDetailCbCoin = (props) => {
     >
       <Card
         headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'center', backgroundColor: "rgb(3, 77, 162)" }}
-        title={isAdd ? "Thêm chi tiết CBCoin" : 'Cập nhật chi tiết CBCoin'}
+        title={isAdd ? "Thêm chi tiết điểm" : 'Cập nhật chi tiết điểm'}
         bordered={true}
         style={{ backgroundColor: '#FFFFFF' }}>
         <Form
@@ -159,8 +167,8 @@ const ModalManagerDetailCbCoin = (props) => {
             <Col  {...layoutContent}>
               <Input
                 style={{ width: '100%' }}
-                value={behaviorCode}
-                onChange={(text) => setBehaviorCode(text.target.value)} />
+                value={behaviorName}
+                onChange={(text) => setBehaviorName(text.target.value)} />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
@@ -170,8 +178,8 @@ const ModalManagerDetailCbCoin = (props) => {
             <Col  {...layoutContent}>
               <Input
                 style={{ width: '100%' }}
-                value={behaviorName}
-                onChange={(text) => setBehaviorName(text.target.value)} />
+                value={behaviorCode}
+                onChange={(text) => setBehaviorCode(text.target.value)} />
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
