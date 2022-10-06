@@ -1,32 +1,76 @@
 import * as TYPES from './type';
 import URLSERVER from '@/redux/urlServer.json';
-// listReward: [],
-//     listWheelDetailById: [],
-//     listCustomer: [],
+
 // hàm thị thi nội bộ
 const setListReward = (payload) => ({ type: TYPES.WHEELPOPUPMENU_REWARD_SEARCH, payload });
 const setListWheelDetailById = (payload) => ({ type: TYPES.WHEELPOPUPMENU_WHEELDETAILBYID_SEARCH, payload });
 const setListCustomer = (payload) => ({ type: TYPES.WHEELPOPUPMENU_CUSTOMER_SEARCH, payload });
 // hàm xử lý được gọi từ bên ngoài
 
-export const searchListReward = (payload) => async (dispatch, getState, { $http }) => { 
-  const params={
+export const getAllDataHistory = (payload) => async (dispatch, getState, { $http }) => {
+  const params = {
+    wheelId: payload.wheelId,
+    systemCode: payload.systemCode,
+    userId: payload.userId,
+    numCustomer: payload.numCustomer,
+    numReward :payload.numReward,
+    customerId: -1
+  }
+  // let success ;
 
+  // call xuống backend url + param 
+  // Lịch sử trúng của khách hàng của vòng quay hiện tại
+  const resultListReward = await $http.get(`${URLSERVER.getRewardUserIdByWheelID}/${params.userId}/${params.wheelId}/${params.numReward}`);
+  const dataFuncListReward = searchListReward(resultListReward)
+
+  // Danh sách giải trúng đã được cài không  có data hình ảnh của vòng quay hiện tại
+  const resultListWheelDetailById = await $http.get(`${URLSERVER.getWheelByWheelIdNoImages}/${params.systemCode}/${params.wheelId}`);
+  const dataFuncListWheelDetailById = searchListWheelDetailById(resultListWheelDetailById)
+
+  // Danh sách khách hàng đã trúng giải của quay vong hiện tại
+  const resultListCustomer = await $http.get(`${URLSERVER.getCusPointGetCustomer}/${params.numCustomer}/${params.wheelId}/${params.customerId}`);
+  const dataFuncListCustomer = searchListCustomer(resultListCustomer)
+
+  if (!dataFuncListReward) {
+    return false;
+  } else if (!dataFuncListWheelDetailById) {
+    return false;
+  } else if (!dataFuncListCustomer) {
+    return false;
   }
 
+  return true
 }
 
-export const searchListWheelDetailById = (payload) => async (dispatch, getState, { $http }) => {
-  const params={
-      
-  }
 
+const searchListReward = (result) => {
+  const { success, data } = result;
+  if (!success) {
+    return false;
+  }
+  const listReward = data.data;
+  dispatch(setListReward(listReward))
+  return true
 }
 
-export const searchListCustomer = (payload) => async (dispatch, getState, { $http }) => {
-  const params={
-    
+const searchListWheelDetailById = (result) => {
+  const { success, data } = result;
+  if (!success) {
+    return false;
   }
+  const listWheelDetailById = data.data;
+  dispatch(setListWheelDetailById(listWheelDetailById))
+  return true
+}
+
+const searchListCustomer = (result) => {
+  const { success, data } = result;
+  if (!success) {
+    return false;
+  }
+  const listCustomer = data.data;
+  dispatch(setListCustomer(listCustomer))
+  return true
 
 }
 

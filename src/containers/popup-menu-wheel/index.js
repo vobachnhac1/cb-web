@@ -4,9 +4,17 @@ const classNames = require("classnames");
 import { useState } from 'react'
 import { Tabs } from "antd";
 const { TabPane } = Tabs;
+import { useSelector, useDispatch } from 'react-redux';
+import { getters as gettersWheelPopupMenu } from '@/redux/wheel-popup-menu';
+import { actions as actionWheelPopupMenu } from '@/redux/wheel-popup-menu';
 
 export default function PopupMenu() {
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
+  
+  // useEffect(() => {
+  //   initPage();
+  // }, [])
 
   return (
     <>
