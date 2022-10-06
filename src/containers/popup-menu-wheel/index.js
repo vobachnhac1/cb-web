@@ -11,15 +11,36 @@ import { actions as actionWheelPopupMenu } from '@/redux/wheel-popup-menu';
 export default function PopupMenu() {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
-  
+
   // useEffect(() => {
   //   initPage();
   // }, [])
+  const onClickBurgerIcon = async () => {
+    setOpen(!open)
+    const params = {
+      wheelId: "",
+      systemCode: "",
+      userId: "",
+      numCustomer: "",
+      numReward: "",
+    }
 
+    if (open) {
+      const result = await dispatch(actionWheelPopupMenu.getAllDataHistory(params));
+      if (result) {
+        Message.Success("Thông Báo", "Hiển thị lịch sử thành công");
+      }
+      Message.Error("Thông Báo", "Hiển thị lịch sử thất bại");
+      return;
+    }
+
+  }
+
+  //setOpen(!open)
   return (
     <>
       {/* 'reward-list', */}
-      <BurgerIcon onClick={() => setOpen(!open)} open={open} />
+      <BurgerIcon onClick={onClickBurgerIcon} open={open} />
       <div className={classNames({ 'reward-list': true }, { 'show': open },)} >
 
         {/* tabs info */}
