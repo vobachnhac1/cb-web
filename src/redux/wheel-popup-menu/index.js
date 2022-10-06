@@ -32,6 +32,13 @@ export default buildReducer(
         listCustomer: payload.listCustomer,
       }
     },
-
+    [TYPES.WHEELPOPUPMENU_SEARCHALL]: (state, payload) => {
+      return {
+        ...state,
+        listReward: payload.listReward,
+        listWheelDetailById: payload.listWheelDetailById,
+        listCustomer: payload.listCustomer,
+      }
+    },
   },
 );

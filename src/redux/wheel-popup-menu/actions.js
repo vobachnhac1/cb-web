@@ -5,6 +5,10 @@ import URLSERVER from '@/redux/urlServer.json';
 const setListReward = (payload) => ({ type: TYPES.WHEELPOPUPMENU_REWARD_SEARCH, payload });
 const setListWheelDetailById = (payload) => ({ type: TYPES.WHEELPOPUPMENU_WHEELDETAILBYID_SEARCH, payload });
 const setListCustomer = (payload) => ({ type: TYPES.WHEELPOPUPMENU_CUSTOMER_SEARCH, payload });
+
+const setAllList = (payload) => ({ type: TYPES.WHEELPOPUPMENU_SEARCHALL, payload })
+
+
 // hàm xử lý được gọi từ bên ngoài
 
 export const getAllDataHistory = (payload) => async (dispatch, getState, { $http }) => {
@@ -13,7 +17,7 @@ export const getAllDataHistory = (payload) => async (dispatch, getState, { $http
     systemCode: payload.systemCode,
     userId: payload.userId,
     numCustomer: payload.numCustomer,
-    numReward :payload.numReward,
+    numReward: payload.numReward,
     customerId: -1
   }
   // let success ;
@@ -31,14 +35,15 @@ export const getAllDataHistory = (payload) => async (dispatch, getState, { $http
   const resultListCustomer = await $http.get(`${URLSERVER.getCusPointGetCustomer}/${params.numCustomer}/${params.wheelId}/${params.customerId}`);
   const dataFuncListCustomer = searchListCustomer(resultListCustomer)
 
-  if (!dataFuncListReward) {
+  if (!dataFuncListReward.success) {
     return false;
-  } else if (!dataFuncListWheelDetailById) {
+  } else if (!dataFuncListWheelDetailById.success) {
     return false;
-  } else if (!dataFuncListCustomer) {
+  } else if (!dataFuncListCustomer.success) {
     return false;
   }
 
+  dispatch(setAllList({ listReward: dataFuncListReward.listReward, listWheelDetailById: dataFuncListWheelDetailById.listWheelDetailById, listCustomer: dataFuncListCustomer.listCustomer }))
   return true
 }
 
@@ -49,8 +54,10 @@ const searchListReward = (result) => {
     return false;
   }
   const listReward = data.data;
-  dispatch(setListReward(listReward))
-  return true
+  return {
+    listReward: listReward,
+    success: success
+  }
 }
 
 const searchListWheelDetailById = (result) => {
@@ -59,8 +66,10 @@ const searchListWheelDetailById = (result) => {
     return false;
   }
   const listWheelDetailById = data.data;
-  dispatch(setListWheelDetailById(listWheelDetailById))
-  return true
+  return {
+    listWheelDetailById: listWheelDetailById,
+    success: success
+  }
 }
 
 const searchListCustomer = (result) => {
@@ -69,9 +78,10 @@ const searchListCustomer = (result) => {
     return false;
   }
   const listCustomer = data.data;
-  dispatch(setListCustomer(listCustomer))
-  return true
-
+  return {
+    listCustomer: listCustomer,
+    success: success
+  }
 }
 
 // function export ra ngoài

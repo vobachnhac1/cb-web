@@ -1,5 +1,6 @@
 import BurgerIcon from '@/components/BurgerIcon';
 require("./styles.less");
+import * as Message from '@/components/message';
 const classNames = require("classnames");
 import { useState } from 'react'
 import { Tabs } from "antd";
@@ -8,32 +9,42 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getters as gettersWheelPopupMenu } from '@/redux/wheel-popup-menu';
 import { actions as actionWheelPopupMenu } from '@/redux/wheel-popup-menu';
 
-export default function PopupMenu() {
+export default function PopupMenu(props) {
+  const { wheelId = '', userInfo = {} } = props
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
+  // Lịch sử trúng của khách hàng của vòng quay hiện tại
+  const listReward = useSelector(gettersWheelPopupMenu.getStateListReward) || [1];
+  // // Danh sách giải trúng đã được cài không  có data hình ảnh của vòng quay hiện tại
+  const listWheelDetailById = useSelector(gettersWheelPopupMenu.getStateListWheelDetailById) || [];
+  // // Danh sách khách hàng đã trúng giải của quay vong hiện tại
+  const listCustomer = useSelector(gettersWheelPopupMenu.getStateListCustomer) || [];
 
   // useEffect(() => {
   //   initPage();
   // }, [])
+
   const onClickBurgerIcon = async () => {
-    setOpen(!open)
+
     const params = {
-      wheelId: "",
-      systemCode: "",
-      userId: "",
-      numCustomer: "",
-      numReward: "",
+      wheelId: wheelId,
+      systemCode: 1,
+      userId: userInfo.user_id,
+      numCustomer: 20,
+      numReward: 20,
     }
 
-    if (open) {
+    if (!open) {
       const result = await dispatch(actionWheelPopupMenu.getAllDataHistory(params));
       if (result) {
-        Message.Success("Thông Báo", "Hiển thị lịch sử thành công");
-      }
-      Message.Error("Thông Báo", "Hiển thị lịch sử thất bại");
-      return;
-    }
 
+        Message.Success("Thông Báo", "Hiển thị lịch sử thành công");
+      } else {
+        Message.Error("Thông Báo", "Hiển thị lịch sử thất bại");
+      }
+
+    }
+    setOpen(!open)
   }
 
   //setOpen(!open)
