@@ -18,7 +18,8 @@ export const getAllDataHistory = (payload) => async (dispatch, getState, { $http
     userId: payload.userId,
     numCustomer: payload.numCustomer,
     numReward: payload.numReward,
-    customerId: -1
+    customerId: -1,
+    numReward :payload.numReward
   }
   // let success ;
 
