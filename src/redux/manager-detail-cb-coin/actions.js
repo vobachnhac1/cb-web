@@ -129,20 +129,26 @@ export const searchManagerDetailCbCoin = (payload) => async (dispatch, getState,
     return true
 
   }
-}
 
-// check behavior have duplicate
-export const checkBehavior = (payload) => async (dispatch, getState, { $http }) => {
-  const params = {
-    behaviorCode: payload.behaviorCode,
-  }
-  const result = await $http.get(`${URLSERVER.checkBehaviorCodeCustPointCriteriaDetail}/${params.behaviorCode}`);
-  const { success, message } = result.data;
 
-  return {
-    success,
-    message
-  }
+  // //test data
+  // let originData = [];
+  // let n = 5;
+  // for (let i = 0; i < n; i++) {
+  //   originData.push({
+  //     key: i,
+  //     id: i,
+  //     behaviorCode: 'LOGIN' + `${i + 1} `,
+  //     point: 101 + i,
+  //     numBehavior: 1,
+  //     type: "EVENT" + `${i + 1} `,
+  //     isDelete: false
+  //   })
+  // }
+
+  // const listData1 = originData;
+  // dispatch(setSearchManagerDetailCbCoin(listData))
+  // return true
 }
 
 // sắp xếp những phần tử xóa và phần tử bị xóa

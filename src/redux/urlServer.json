@@ -18,7 +18,6 @@
   "deleteWheelById": "/wheel/delete-by-id",
   "searchAllSegment": "/segment/select-all-segment",
   "searchSegmentById": "/segment/select-by-segment-filter",
-  "getWheelByWheelIdNoImages": "wheel-detail/reward-list",
   "insertSegment": "/segment/create",
   "updateSegmentById": "/segment/update-by-id",
   "approveSegmentById": "/segment/approve-by-id",
@@ -44,7 +43,6 @@
   "updateStateWheel": "rules/update-status-the-wheel",
   "updateWheelWithRules": "wheel/update-wheel-with-rules-id",
   "getRewardHistory": "rules/get-reward-history",
-  "getRewardUserIdByWheelID":"wheel-detail/reward-by-user",  
   "comfirmReceived": "rules/comfirm-reward-by-server",
   "monitorGetRewardWithDWM": "monitor/get-reward-DWM",
   "monitorGetRewardbyWheelId": "monitor/get-reward-by-wheel-id",
@@ -54,7 +52,5 @@
   "updateCustPointCriteria": "cust-point/criteria",
   "deleteCustPointCriteria": "cust-point/criteria",
   "getCustPointCriteriaDetail": "cust-point/behavior",
-  "saveCustPointCriteriaDetail": "cust-point/behavior-list",
-  "checkBehaviorCodeCustPointCriteriaDetail":"cust-point/check-behavior",
-  "getCusPointGetCustomer":"cust-point/get-customer"
+  "saveCustPointCriteriaDetail": "cust-point/behavior-list"
 }
