@@ -26,7 +26,7 @@ const Logo = (props) => {
 			width={120}
 			height={120}
 			{...attrs}
-			src="/images/icon.svg"
+			src="/images/logo_cbbank.jpg"
 			alt="Logo"
 		/>
 	);

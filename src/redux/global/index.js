@@ -4,23 +4,40 @@ import { ConsoleSqlOutlined } from '@ant-design/icons';
 import * as TYPES from './type';
 export * as getters from './getter'
 export * as actions from './actions'
+import { buildReducer } from '../wrapper';
 
+// Creating my reducer
 let initialState = {
   server: '',
   client: '',
   counter: 0,
+  userProfile:{},
+  arrPaths: [],
   access_token: ''
 };
-
-// Creating my reducer
-export default function reducer(state = initialState, { type, payload }) {
-  switch (type) {
-    case TYPES.LOGIN_ADMIN:
-      return {
-        ...state,
-        access_token: payload
-      }
-    default:
-      return state;
-  }
-}
+export default buildReducer(
+  {
+    server: '',
+    client: '',
+    counter: 0,
+    userProfile:{},
+    arrPaths: [],
+    access_token: ''
+  }, {
+  [TYPES.SIGN_IN]: (state = {...initialState}, payload) => {
+    return {
+      ...state,
+      access_token: payload.accessToken,
+      arrPaths: payload.arrPaths,
+      userProfile: payload.userProfile,
+    }
+  }, 
+  [TYPES.SIGN_OUT]: (state =  {...initialState}) => {
+    return {
+      ...state,
+      userProfile: {},
+      arrPaths: [],
+      access_token: ''
+    }
+  }, 
+});

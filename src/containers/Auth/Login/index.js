@@ -4,12 +4,11 @@
 * Phone 0906.918.738
 * Created: 2022-03-10
 *------------------------------------------------------- */
-
+import React ,{ useEffect, memo} from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
 import Link from 'next/link';
 import Router from 'next/router';
-import React from 'react';
 import Logo from '@/components/Layout/Logo';
 import classes from './style.module.less';
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,26 +28,22 @@ const Login = (props) => {
 	const router = useRouter();
 	const dispatch = useDispatch();
 	const [loading, setLoading] = React.useState(false);
-
-
-	// React.useEffect(() => {
-	// 	if (AuthStorage.loggedIn) {
-	// 		Router.push('/');
-	// 	}
-	// }, []);
+	const isAuth=  useSelector(getters.getAccessToken)
+	useEffect(() => {
+		if (isAuth) {
+			router.push('/home');
+		}
+	}, [isAuth]);
 
 	const onsubmitLogin = async (values) => {
 		try {
 			setLoading(true);
 			const result = await dispatch(actions.loginAdmin(values));
-
-			if (result) {
-				Router.push('/home');
-			}
 		} finally {
 			setLoading(false);
 		}
 	};
+
 	return (
 		<div
 			className={classes.wrapper}
@@ -125,18 +120,10 @@ const Login = (props) => {
 							Login
 						</Button>
 
-						<div className="mt-5">
-							<div className="class">
-								Email: admin@gmail.com
-							</div>
-							<div className="class">
-								Password: admin123
-							</div>
-						</div>
 					</Form>
 				</div>
 				<div className="py-2">
-					<strong className="text-primary">CB-Team</strong>
+					<strong className="text-primary">Digital CBBank</strong>
 					<span> 2022 © All Rights Reserved.</span>
 				</div>
 			</div>
@@ -148,4 +135,4 @@ Login.propTypes = propTypes;
 
 Login.defaultProps = defaultProps;
 
-export default Login;
+export default  memo(Login);

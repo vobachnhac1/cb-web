@@ -23,6 +23,8 @@ import __isEmpty from 'lodash/isEmpty';
 import _ from 'lodash';
 import { useRouter } from 'next/router';
 import { element } from 'prop-types';
+import { getters } from '@/redux/global';
+import { useSelector } from 'react-redux';
 
 // qui tắc đặt tên => sub['tên'] (cha) => lấy ra con => nếu lấy 2/3 con thì ghi rõ thằng con được lấy
 
@@ -122,7 +124,7 @@ const permission = [
     child: null,
   }, {
     parent: 'subRules',
-    child: ['viewRules', 'subRulesReward', , 'subRewardHistory']
+    child: ['viewRules', 'subRulesReward', 'subRewardHistory']
   },
   // 'subWheelApprove',
   {
@@ -140,34 +142,67 @@ const SliderCustom = (props) => {
   const [isChoosed, setIsChoosed] = useState(null);
   const [rootSubmenuKeys, setRootSubmenuKeys] = useState([]);
   const [mapArrScreen, setMapArrScreen] = useState([]);
-
+  const arrPaths =  useSelector(getters.getPermissionPath)
   useEffect(() => {
     const arrScreen = permission.map((item) => {
       let arrTemp = [];
       let arrChild = [];
+      let arrChildTemp = [];
       menu.forEach((element) => {
-        //check thằng parent tồn
-        if (element.key === item.parent) {
-          //check thàng child tồn tại
-          if (element.child && element.child.length > 0) {
-            arrChild = item.child.map((childMenu) => {
-              let arrExistInChild = element.child.filter(
-                (itemMenu) => itemMenu.key == childMenu
-              );
-              return _.head(arrExistInChild) || {};
-            });
+        if(arrPaths){
+          const _filter = arrPaths?.filter(item=> item == element.path)
+          if(_filter && _filter.length > 0){
+            if (element.key === item.parent) {
+              //check thàng child tồn tại
+              if (element.child && element.child.length > 0) {
+                arrChild = item.child.map((childMenu) => {
+                  let arrExistInChild = element.child.filter(
+                    (itemMenu) => itemMenu.key == childMenu
+                  );
+                  return _.head(arrExistInChild) || {};
+                });
+                // check path có được cấp quyền không
+                arrPaths.forEach(elll=>{
+                    let __child =  arrChild.filter(_path=> elll == _path.path)
+                    if(__child && __child.length >0){
+                      arrChildTemp.push(_.head(__child))
+                    }
+                })
+              }
+              arrTemp = {                
+                ...element,
+                child: arrChildTemp.filter((isExist) => isExist.key),
+              };
+            }
           }
-          arrTemp = {
-            ...element,
-            child: arrChild.filter((isExist) => isExist.key),
-          };
-        }
+        } else{
+          //check thằng parent tồn
+          if (element.key === item.parent) {
+            //check thàng child tồn tại
+            if (element.child && element.child.length > 0) {
+              arrChild = item.child.map((childMenu) => {                
+                let arrExistInChild = element.child.filter(
+                  (itemMenu) => itemMenu.key == childMenu
+                );
+                return _.head(arrExistInChild) || {};
+              });
+
+            }
+
+            arrTemp = {
+              ...element,
+              child: arrChild.filter((isExist) => isExist.key),
+            };
+          }
+        }        
       });
       return arrTemp;
     });
     const path = router.pathname;
     let keyChoose = null;
-    arrScreen.forEach(item => {
+    const arrScreenFM =  arrScreen.filter(item => item.key)
+    arrScreenFM.filter(item => item.key).forEach(item => {
+      
       if (item.path == path) {
         keyChoose = item.key
       } else {
@@ -181,10 +216,10 @@ const SliderCustom = (props) => {
         }
       }
     })
-    setMapArrScreen(arrScreen);
-    setRootSubmenuKeys(arrScreen.map(item => item.key));
+    setMapArrScreen(arrScreenFM);
+    setRootSubmenuKeys(arrScreenFM.map(item => item.key));
     setIsChoosed(keyChoose);
-  }, []);
+  }, [arrPaths]);
 
   const renderItemMenu = (item) => {
     const { key, title, path, child, icon } = item;

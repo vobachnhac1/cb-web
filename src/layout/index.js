@@ -9,10 +9,12 @@ import { Layout } from 'antd';
 import HeaderCustom from './header';
 import SliderCustom from './slider';
 import { Footer } from 'antd/lib/layout/layout';
+import { useDispatch, useSelector } from 'react-redux';
+import { actions, getters } from '@/redux/global';
+import { useRouter } from 'next/router';
 
 const LayoutCustom = (props) => {
-  const { children } = props;
-
+  const { children } = props;  
   return (
     <Layout style={{ flex: 1, height: '100vh' }}>
       <HeaderCustom />
@@ -21,7 +23,7 @@ const LayoutCustom = (props) => {
         <Layout style={{ padding: 16, flexDirection: 'column', justifyContent: 'space-between' }}>
           {children}
           <Footer style={{ textAlign: 'center', fontWeight: 'bold', height: 50 }}>
-            <span>-----------  Website designed by CB Team -----------</span>
+            <span>-----------  Website designed by Digital CBBank -----------</span>
           </Footer>
         </Layout>
       </Layout>

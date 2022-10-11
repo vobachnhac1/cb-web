@@ -55,13 +55,13 @@ export default function Monitor() {
       year: date.getFullYear(),
       wheel_id: null
     }));
-
   }
 
   // Chức năng hiển thị cơ cấu giải thưởng/ tỉ lệ giải thưởng
   const handleChange = (value) => {
     setIsInit(value);
   }
+  
   const renderOption = () => {
     return (
       <Select defaultValue={isInit} value={isInit} style={{ width: 150 }} onChange={handleChange}>
