@@ -75,17 +75,17 @@ export default function ManagerDetailCbCoin({ query }) {
   const columns = [
     {
       title: 'Giao dịch được tính điểm',
-      dataIndex: 'behaviorName',
-      key: 'behaviorName',
+      dataIndex: 'behaviorCode',
+      key: 'behaviorCode',
       fixed: 'left',
       width: 80,
 
     },
     {
       title: 'Mã tính điểm',
-      dataIndex: 'behaviorCode',
-      key: 'behaviorCode',
-
+      dataIndex: 'behaviorName',
+      key: 'behaviorName',
+      fixed: 'left',
       width: 80,
 
     },

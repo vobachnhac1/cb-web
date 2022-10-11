@@ -23,8 +23,6 @@ const DisplayWheel = (props) => {
   const [path, setPath] = useState(router.pathname);
   const [invalid, setInvalid] = useState(false);
   const places = !manager ? useSelector(gettersEventWheel.getContentReward) : (arrItem || []);
-  const [wheelId, setWheelId] = useState("")
-  const [userInfo, setUserInfo] = useState({})
   useEffect(() => {
     // let arrItem = [];
     // let length = 14;
@@ -76,12 +74,6 @@ const DisplayWheel = (props) => {
             num: parseInt(wheel_info.substring(0, 6)),
           }
         }));
-        setWheelId(parseInt(wheel_info.substring(6, 12)))
-        setUserInfo({
-          user_id: _.last(arrInfo),
-          num: parseInt(wheel_info.substring(0, 6)),
-        })
-      
         setInvalid(false)
       } else {
         Message.Warning("THÔNG BÁO", "Đường dẫn không đúng")
@@ -119,14 +111,9 @@ const DisplayWheel = (props) => {
   return (
     <div className="App">
       <Header title={PathTitle[`${path}`]} />
-      {!manager && <PopupMenu 
-        wheelId={wheelId}
-        userInfo={userInfo}
-      />}
-      {!invalid && <WheelChild
-        arrItem={arrItem}
-        onSelectItem={onSelectItem}
-        selectedItem={selectedItem}
+      {!manager && <PopupMenu />}
+      {!invalid && <MainWheel
+        arrItem={list}
         roles={manager}
       />}
     </div>
