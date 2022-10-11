@@ -1,15 +1,23 @@
 :root {
-  --wheel-color: #337ab7;
-  --rotate: 0deg;
-  --size: 400px;
-  --spinning-duration: 3s;
-  --reset-duration: 0.25s;
-  --selected: 0; // chọn trúng
-  --num-item: 0; // số lượng item
-  --url: url("/images/reward/reward1.png");
-  --set-margin-left: 2;
-  --position-init: 0deg;
+  --app-font: 'Quicksand', 'Lato', sans-serif;
+  --neutral-color: white;
 }
+
+// .App {
+//   padding-top: 10px;
+//   font-family: var(--app-font);
+//   text-align: center;
+//   background-image: url("/images/happynewyear.jpg");
+//   background-position: center;
+//   /* Center the image */
+//   background-repeat: no-repeat;
+//   /* Do not repeat the image */
+//   background-size: cover;
+//   /* Resize the background image to cover the entire container */
+//   user-select: none;
+//   height: 100vh;
+//   width: 100vw;
+// }
 
 .App {
   background-image: linear-gradient(#337ab7, white, yellow);
@@ -23,688 +31,57 @@
   background-size: cover;
 }
 
-.pieContainer {
-  height: var(--size);
-  width: var(--size);
-  transform: rotate(var(--position-init)); // set vị trí quay ban đầu
-  transition: transform var(--reset-duration);
-}
-
-.rowContainer {
-  width: 100vw;
-  height: 100vh;
-  justify-content: center;
-  display: flex;
-  position: fixed;
-  flex-direction: row;
-}
-
-.colContainer {
-  height: 100vh;
-  width: 100vw;
-  justify-content: center;
-  display: flex;
-  position: fixed;
-  flex-direction: column;
-  margin-left: calc(calc(100% - var(--size) - 26px)/var(--set-margin-left));
-}
-
-.pieBackground {
-  z-index: 0;
+.wheel-shelf-footer {
+  top: 84%;
+  left: 42.5%;
+  z-index: 1;
   position: absolute;
-  width: calc(var(--size) + 10px);
-  height: calc(var(--size) + 10px);
-  border-radius: 100%;
-  background-color: rgba(255, 255, 255, 1);
-  margin-top: -5px;
-  margin-left: -5px;
-}
-
-.pieBackground1 {
-  z-index: -1;
-  position: absolute;
-  width: calc(var(--size) + 26px);
-  height: calc(var(--size) + 26px);
-  background-color: rgba(51, 122, 183, 1);
-  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.8);
-  border-radius: 100%;
-  background-image: linear-gradient(#337ab7, white, yellow);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  top: -13px;
-  left: -13px;
-}
-
-// start arrow
-.image-row {
-  margin: 4px;
-  margin-left: 6px;
-  z-index: 4;
-  height: 34px;
-  width: 34px;
-  border-radius: 100%;
-  background-image: url("/images/logo_cbbank.jpg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-.image-border {
-  margin-top: -4px;
-  margin-left: -2px;
-  position: absolute;
-  z-index: -1;
-  background-color: red;
-  border-color: red;
-  border-width: 4px;
+  width: 200px;
   height: 50px;
-  width: 50px;
-  border-radius: 100%;
+  border-bottom: 100px solid aqua;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+
 }
 
-.arrow {
-  z-index: 5;
+.wheel-shelf-midle {
+  top: 26%;
+  left: 27.6%;
+  z-index: 1;
   position: absolute;
-  border: 4px solid transparent;
-  background: linear-gradient(#337ab7, white, yellow);
-  background-clip: padding-box;
-  border-radius: 100%;
-  height: 50px;
-  width: 50px;
-  left: calc(var(--size));
-  top: calc(var(--size)/2 - 26px);
+  width: 600px;
+  height: 600px;
+  border: 20px solid aqua;
+  border-radius: 50%;
+
+  // margin: 0 auto;
+  // background: conic-gradient(lightgrey 0deg 30deg,
+  //     red 30deg 60deg,
+  //     lightgrey 60deg 120deg,
+  //     yellow 12deg 150deg,
+  //     lightgrey 150deg 210deg,
+  //     green 210deg 240deg,
+  //     lightgrey 240deg 300deg,
+  //     blue 300deg 330deg,
+  //     lightgrey 330deg 360deg);
+  // -webkit-mask-image: radial-gradient(transparent 65%, black 65%);
+  // mask-image: radial-gradient(transparent 65%, black 65%);
+  // border-radius: 50%;
 }
 
-.arrow:after,
-.arrow:before {
-  right: 95%;
-  top: 50%;
-  border: solid transparent;
-  content: "";
-  height: 0;
-  width: 0;
+.wheel-shelf-head {
+  top: 22%;
+  left: 46.5%;
+  z-index: 1;
   position: absolute;
-  pointer-events: none;
-
-}
-
-.arrow:after {
-  // border-color: rgba(136, 183, 213, 0);
-  border-right-color: white;
-  border-width: 9px;
-  margin-top: -9px;
-}
-
-.arrow:before {
-  // border-color: rgba(255, 255, 245, 0);
-  border-right-color: red;
-  border-width: 15px;
-  margin-top: -15px;
-}
-
-
-@keyframes animation_spin {
-  from {
-    transform: rotate(-36deg);
-  }
-
-  to {
-    transform: rotate(36deg);
-  }
-}
-
-.active-spin {
-  animation-duration: 0.1s;
-  animation-name: animation_spin;
-  animation-iteration-count: 30;
-  animation-timing-function: ease;
-}
-
-.containerSpin {
-  // display: block;
-  height: calc(var(--size));
-  width: calc(var(--size));
-  position: fixed;
-}
-
-.button-custom {
-  width: 100;
-  z-index: 5;
-  position: absolute;
-  top: 300;
-  left: 150;
-}
-
-// end
-.pie {
-  transition: all 1s;
-  position: absolute;
-  width: var(--size);
-  height: var(--size);
-  border-radius: 100%;
-  clip: rect(0px, calc(var(--size)/2), calc(var(--size)), 0px);
-}
-
-.hold {
-  position: absolute;
-  width: var(--size);
-  height: var(--size);
-  // border-radius: 100%;
-  clip: rect(0px, calc(var(--size)), calc(var(--size)), calc(var(--size)/2));
-}
-
-.hold .pie {
-  background-color: var(--wheel-color); // #1b458b;
-  transform: rotate(var(--rotate));
-}
-
-.spinning {
-  width: var(--size);
-  height: var(--size);
-  transform-origin: center center;
-  transform: rotate(calc(3600deg + var(--position-init) - (360deg/var(--num-item))*(var(--selected))));
-  transition: transform var(--spinning-duration);
-}
-
-.pie-image {
-  width: 25px;
-  height: 25px;
-  position: absolute;
-  background-image: var(--url);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  transform: rotate(250deg);
-  -webkit-transform: rotate(250deg);
-}
-
-// đã xong wheel còn spin
-@media screen and (min-width: 992px) {
-  :root {
-    --size: 400px;
-  }
-
-  .button-custom {
-    width: 100%;
-    z-index: 5;
-    position: absolute;
-    top: calc(var(--size) + 50px);
-    display: flex;
-    justify-content: center;
-  }
-
-  /// 
-
-  .pie-img14 {
-    top: 15px;
-    left: 150px;
-    height: 20px;
-    width: 20px;
-    transform: rotate(260deg);
-    -webkit-transform: rotate(260deg);
-  }
-
-  .pie-img12 {
-    top: 15px;
-    left: 140px;
-    height: 20px;
-    width: 20px;
-    transform: rotate(255deg);
-    -webkit-transform: rotate(255deg);
-  }
-
-  .pie-img10 {
-    top: 15px;
-    left: 130px;
-    height: 20px;
-    width: 20px;
-    transform: rotate(250deg);
-    -webkit-transform: rotate(250deg);
-  }
-
-  .pie-img8 {
-    top: 20px;
-    left: 110px;
-    height: 25px;
-    width: 25px;
-    transform: rotate(250deg);
-    -webkit-transform: rotate(250deg);
-  }
-
-  .pie-img6 {
-    top: 30px;
-    left: 95px;
-    height: 25px;
-    width: 25px;
-    transform: rotate(240deg);
-    -webkit-transform: rotate(240deg);
-  }
-
-  .content14 {
-    position: absolute;
-    z-index: 1;
-    font-size: 12px;
-    top: 65px;
-    left: 95px;
-    width: 150px;
-    font-weight: bold;
-    transform: rotate(255deg);
-    -webkit-transform: rotate(255deg);
-  }
-
-  .content12 {
-    position: absolute;
-    z-index: 1;
-    font-size: 12px;
-    top: 75px;
-    left: 95px;
-    width: 150px;
-    font-weight: bold;
-    transform: rotate(255deg);
-    -webkit-transform: rotate(255deg);
-  }
-
-  .content10 {
-    position: absolute;
-    z-index: 1;
-    font-size: 12px;
-    top: 85px;
-    left: 90px;
-    width: 150px;
-    font-weight: bold;
-    transform: rotate(250deg);
-    -webkit-transform: rotate(250deg);
-  }
-
-  .content8 {
-    position: absolute;
-    z-index: 1;
-    font-size: 12px;
-    top: 95px;
-    left: 82px;
-    width: 150px;
-    font-weight: bold;
-    transform: rotate(245deg);
-    -webkit-transform: rotate(245deg);
-  }
-
-  .content6 {
-    position: absolute;
-    z-index: 1;
-    font-size: 12px;
-    top: 95px;
-    left: 70px;
-    width: 150px;
-    font-weight: bold;
-    transform: rotate(240deg);
-    -webkit-transform: rotate(240deg);
-  }
-}
-
-
-// đã xong wheel còn spin
-@media screen and (min-width: 768px) and (max-width: 991px) {
-  :root {
-    --size: 300px;
-  }
-
-  .button-custom {
-    width: 100%;
-    z-index: 5;
-    position: absolute;
-    top: calc(var(--size) + 50px);
-    display: flex;
-    justify-content: center;
-  }
-
-  .pie-img14 {
-    top: 8px;
-    left: 108px;
-    height: 15px;
-    width: 15px;
-    transform: rotate(260deg);
-    -webkit-transform: rotate(260deg);
-  }
-
-  .pie-img12 {
-    top: 8px;
-    left: 105px;
-    height: 20px;
-    width: 20px;
-    transform: rotate(255deg);
-    -webkit-transform: rotate(255deg);
-  }
-
-  .pie-img10 {
-    top: 10px;
-    left: 93px;
-    height: 20px;
-    width: 20px;
-    transform: rotate(250deg);
-    -webkit-transform: rotate(250deg);
-  }
-
-  .pie-img8 {
-    top: 10px;
-    left: 95px;
-    height: 20px;
-    width: 20px;
-    transform: rotate(250deg);
-    -webkit-transform: rotate(250deg);
-  }
-
-  .pie-img6 {
-    top: 25px;
-    left: 70px;
-    height: 20px;
-    width: 20px;
-    transform: rotate(240deg);
-    -webkit-transform: rotate(240deg);
-  }
-
-  .content14 {
-    position: absolute;
-    z-index: 1;
-    font-size: 11px;
-    top: 50px;
-    left: 68px;
-    width: 120px;
-    font-weight: bold;
-    transform: rotate(255deg);
-    -webkit-transform: rotate(255deg);
-  }
-
-  .content12 {
-    position: absolute;
-    z-index: 1;
-    font-size: 11px;
-    top: 55px;
-    left: 67px;
-    width: 120px;
-    font-weight: bold;
-    transform: rotate(255deg);
-    -webkit-transform: rotate(255deg);
-  }
-
-  .content10 {
-    position: absolute;
-    z-index: 1;
-    font-size: 11px;
-    top: 60px;
-    left: 62px;
-    width: 120px;
-    font-weight: bold;
-    transform: rotate(250deg);
-    -webkit-transform: rotate(250deg);
-  }
-
-  .content8 {
-    position: absolute;
-    z-index: 1;
-    font-size: 11px;
-    top: 60px;
-    left: 60px;
-    width: 120px;
-    font-weight: bold;
-    transform: rotate(250deg);
-    -webkit-transform: rotate(250deg);
-  }
-
-  .content6 {
-    position: absolute;
-    z-index: 1;
-    font-size: 11px;
-    top: 70px;
-    left: 50px;
-    width: 120px;
-    font-weight: bold;
-    transform: rotate(240deg);
-    -webkit-transform: rotate(240deg);
-  }
-}
-
-
-// đã xong wheel còn spin
-@media screen and (min-width: 414px) and (max-width: 767px) {
-  :root {
-    --size: 250px;
-  }
-
-  .button-custom {
-    width: 100%;
-    z-index: 5;
-    position: absolute;
-    top: calc(var(--size) + 50px);
-    display: flex;
-    justify-content: center;
-  }
-
-  .pie-img14 {
-    top: 5px;
-    left: 90px;
-    height: 15px;
-    width: 15px;
-    transform: rotate(260deg);
-    -webkit-transform: rotate(260deg);
-  }
-
-  .pie-img12 {
-    top: 5px;
-    left: 90px;
-    height: 15px;
-    width: 15px;
-    transform: rotate(255deg);
-    -webkit-transform: rotate(255deg);
-  }
-
-  .pie-img10 {
-    top: 8px;
-    left: 80px;
-    height: 15px;
-    width: 15px;
-    transform: rotate(250deg);
-    -webkit-transform: rotate(250deg);
-  }
-
-  .pie-img8 {
-    top: 10px;
-    left: 75px;
-    height: 15px;
-    width: 15px;
-    transform: rotate(250deg);
-    -webkit-transform: rotate(250deg);
-  }
-
-  .pie-img6 {
-    top: 20px;
-    left: 60px;
-    height: 15px;
-    width: 15px;
-    transform: rotate(240deg);
-    -webkit-transform: rotate(240deg);
-  }
-
-  .content14 {
-    position: absolute;
-    z-index: 1;
-    font-size: 9px;
-    top: 40px;
-    left: 57px;
-    width: 100px;
-    font-weight: bold;
-    transform: rotate(255deg);
-    -webkit-transform: rotate(255deg);
-  }
-
-  .content12 {
-    position: absolute;
-    z-index: 1;
-    font-size: 9px;
-    top: 40px;
-    left: 57px;
-    width: 100px;
-    font-weight: bold;
-    transform: rotate(255deg);
-    -webkit-transform: rotate(255deg);
-  }
-
-  .content10 {
-    position: absolute;
-    z-index: 1;
-    font-size: 9px;
-    top: 50px;
-    left: 53px;
-    width: 100px;
-    font-weight: bold;
-    transform: rotate(250deg);
-    -webkit-transform: rotate(250deg);
-  }
-
-  .content8 {
-    position: absolute;
-    z-index: 1;
-    font-size: 9px;
-    top: 50px;
-    left: 50px;
-    width: 100px;
-    font-weight: bold;
-    transform: rotate(250deg);
-    -webkit-transform: rotate(250deg);
-  }
-
-  .content6 {
-    position: absolute;
-    z-index: 1;
-    font-size: 9px;
-    top: 55px;
-    left: 40px;
-    width: 100px;
-    font-weight: bold;
-    transform: rotate(240deg);
-    -webkit-transform: rotate(240deg);
-  }
-}
-
-// đã xong wheel còn spin
-@media screen and (max-width: 413px) {
-  :root {
-    --size: 170px;
-  }
-
-  .button-custom {
-    width: 100%;
-    z-index: 5;
-    position: absolute;
-    top: calc(var(--size) + 50px);
-    display: flex;
-    justify-content: center;
-  }
-
-  // item of wheel
-  .pie-img14 {
-    top: 5px;
-    left: 63px;
-    height: 10px;
-    width: 10px;
-    transform: rotate(260deg);
-    -webkit-transform: rotate(260deg);
-  }
-
-  .pie-img12 {
-    top: 5px;
-    left: 60px;
-    height: 10px;
-    width: 10px;
-    transform: rotate(255deg);
-    -webkit-transform: rotate(255deg);
-  }
-
-  .pie-img10 {
-    top: 8px;
-    left: 56px;
-    height: 10px;
-    width: 10px;
-    transform: rotate(250deg);
-    -webkit-transform: rotate(250deg);
-  }
-
-  .pie-img8 {
-    top: 7px;
-    left: 50px;
-    height: 10px;
-    width: 10px;
-    transform: rotate(250deg);
-    -webkit-transform: rotate(250deg);
-  }
-
-  .pie-img6 {
-    top: 15px;
-    left: 40px;
-    height: 12px;
-    width: 12px;
-    transform: rotate(240deg);
-    -webkit-transform: rotate(240deg);
-  }
-
-  .content14 {
-    position: absolute;
-    z-index: 1;
-    font-size: 6px;
-    top: 30px;
-    left: 40px;
-    width: 65px;
-    font-weight: bold;
-    transform: rotate(255deg);
-    -webkit-transform: rotate(255deg);
-  }
-
-  .content12 {
-    position: absolute;
-    z-index: 1;
-    font-size: 6px;
-    top: 30px;
-    left: 40px;
-    width: 65px;
-    font-weight: bold;
-    transform: rotate(255deg);
-    -webkit-transform: rotate(255deg);
-  }
-
-  .content10 {
-    position: absolute;
-    z-index: 1;
-    font-size: 6px;
-    top: 35px;
-    left: 37px;
-    width: 65px;
-    font-weight: bold;
-    transform: rotate(250deg);
-    -webkit-transform: rotate(250deg);
-  }
-
-  .content8 {
-    position: absolute;
-    z-index: 1;
-    font-size: 6px;
-    top: 35px;
-    left: 35px;
-    width: 65px;
-    font-weight: bold;
-    transform: rotate(250deg);
-    -webkit-transform: rotate(250deg);
-  }
-
-  .content6 {
-    position: absolute;
-    z-index: 1;
-    font-size: 6px;
-    top: 40px;
-    left: 30px;
-    width: 65px;
-    font-weight: bold;
-    transform: rotate(240deg);
-    -webkit-transform: rotate(240deg);
-  }
+  width: 100px;
+  height: 20px;
+  border-top: 50px solid aqua;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 
 }
