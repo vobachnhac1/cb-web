@@ -46,5 +46,11 @@
   "comfirmReceived": "rules/comfirm-reward-by-server",
   "monitorGetRewardWithDWM": "monitor/get-reward-DWM",
   "monitorGetRewardbyWheelId": "monitor/get-reward-by-wheel-id",
-  "monitorRewardRecievedBytime": "monitor/get-reward-recieved-by-time"
+  "monitorRewardRecievedBytime": "monitor/get-reward-recieved-by-time",
+  "getCustPointCriteria": "cust-point/criteria",
+  "insertCustPointCriteria": "cust-point/criteria",
+  "updateCustPointCriteria": "cust-point/criteria",
+  "deleteCustPointCriteria": "cust-point/criteria",
+  "getCustPointCriteriaDetail": "cust-point/behavior",
+  "saveCustPointCriteriaDetail": "cust-point/behavior-list"
 }

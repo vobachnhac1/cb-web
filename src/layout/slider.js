@@ -11,7 +11,9 @@ import {
   AliyunOutlined,
   CodepenCircleOutlined,
   CodepenOutlined,
-  CodeSandboxOutlined
+  CodeSandboxOutlined,
+  SwapOutlined,
+  UsergroupAddOutlined
 
 } from '@ant-design/icons';
 const { SubMenu } = Menu;
@@ -27,32 +29,40 @@ import { element } from 'prop-types';
 // lưu quyền dưới database =>
 const menu = [
   {
+    key: 'subUser',
+    parentKey: null,
+    path: '/admin/user',
+    icon: <UsergroupAddOutlined />,
+    title: ' Danh sách User',
+    child: null,
+  },
+  {
     key: 'subTopic',
     parentKey: null,
     path: '/admin/topic',
     icon: <CodepenOutlined />,
-    title: '1 Chủ Đề',
+    title: 'Chương trình Digital Loyalty',
     child: null,
   }, {
     key: 'subWheel',
     parentKey: null,
     path: '/admin/wheel',
     icon: <CodeSandboxOutlined />,
-    title: '3 Vòng Quay',
+    title: ' Vòng Quay',
     child: null,
   }, {
     key: 'subSegment',
     parentKey: null,
     path: '/admin/segment',
     icon: <CodepenCircleOutlined />,
-    title: '2 Giải thưởng',
+    title: ' Giải thưởng',
     child: null,
   }, {
     key: 'subRules',
     parentKey: null,
     path: '/admin/rules',
     icon: <AliyunOutlined />,
-    title: '4 Quy tắc',
+    title: ' Quy tắc',
     child: [
       {
         key: 'viewRules',
@@ -85,13 +95,26 @@ const menu = [
       }
     ],
   },
+  {
+    key: 'subManager-CbCoin',
+    parentKey: null,
+    path: '/admin/manager-cb-coin',
+    icon: <SwapOutlined />,
+    title: 'Quản lý hệ thống tích điểm',
+    child: null,
+  },
 ];
 
 const permission = [
   {
+    parent: 'subUser',
+    child: null,
+  },
+  {
     parent: 'subTopic',
     child: null,
-  }, {
+  },
+  {
     parent: 'subSegment',
     child: null,
   }, {
@@ -102,6 +125,10 @@ const permission = [
     child: ['viewRules', 'subRulesReward', , 'subRewardHistory']
   },
   // 'subWheelApprove',
+  {
+    parent: 'subManager-CbCoin',
+    child: null,
+  },
 ];
 
 

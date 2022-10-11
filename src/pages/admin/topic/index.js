@@ -178,7 +178,7 @@ export default function Topic(props) {
           headStyle={{
             fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)"
           }}
-          title="Tất cả chủ đề"
+          title="Quản lý chương trình Digital Loyalty"
           bordered={true}
           style={{ backgroundColor: '#FFFFFF' }}>
           <Col span={48} >
