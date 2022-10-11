@@ -1,17 +1,50 @@
 import BurgerIcon from '@/components/BurgerIcon';
 require("./styles.less");
+import * as Message from '@/components/message';
 const classNames = require("classnames");
 import { useState } from 'react'
+import moment from 'moment';
 import { Tabs } from "antd";
 const { TabPane } = Tabs;
+import { useSelector, useDispatch } from 'react-redux';
+import { getters as gettersWheelPopupMenu } from '@/redux/wheel-popup-menu';
+import { actions as actionWheelPopupMenu } from '@/redux/wheel-popup-menu';
 
-export default function PopupMenu() {
+export default function PopupMenu(props) {
+  const { wheelId = '', userInfo = {} } = props
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
+  // Lịch sử trúng của khách hàng của vòng quay hiện tại
+  const listReward = useSelector(gettersWheelPopupMenu.getStateListReward) || [1];
+  // // Danh sách giải trúng đã được cài không  có data hình ảnh của vòng quay hiện tại
+  const listWheelDetailById = useSelector(gettersWheelPopupMenu.getStateListWheelDetailById) || [];
+  // // Danh sách khách hàng đã trúng giải của quay vong hiện tại
+  const listCustomer = useSelector(gettersWheelPopupMenu.getStateListCustomer) || [];
 
+  const onClickBurgerIcon = async () => {
+
+    const params = {
+      wheelId: wheelId,
+      systemCode: 1,
+      userId: userInfo.user_id,
+      numCustomer: 20,
+      numReward: 20,
+    }
+
+    if (!open) {
+      const result = await dispatch(actionWheelPopupMenu.getAllDataHistory(params));
+      if (!result) {
+        Message.Error("Thông Báo", "Hiển thị lịch sử thất bại");
+      } 
+    }
+    setOpen(!open)
+  }
+
+  //setOpen(!open)
   return (
     <>
       {/* 'reward-list', */}
-      <BurgerIcon onClick={() => setOpen(!open)} open={open} />
+      <BurgerIcon onClick={onClickBurgerIcon} open={open} />
       <div className={classNames({ 'reward-list': true }, { 'show': open },)} >
 
         {/* tabs info */}
@@ -19,48 +52,50 @@ export default function PopupMenu() {
           <Tabs defaultActiveKey="1" >
             <TabPane tab="Lịch sử trúng" key="1">
               <ul className={'items-subs'}>
-                <li><span>22/05/2022</span> - <span>Trúng giải nhất 10 triệu</span> - <span className={'items-subs__noti'}>Đang chờ trả thưởng</span></li>
-                <li><span>22/05/2022</span> - <span>Trúng giải nhì 5 triệu</span> - <span className={'items-subs__noti'}>Đã trả thưởng</span></li>
-                <li><span>22/05/2022</span> - <span>Trúng giải may mắn</span> - <span className={'items-subs__noti'}>Đang chờ trả thưởng</span></li>
-                <li><span>22/05/2022</span> - <span>Trúng giải nhất 10 triệu</span> - <span className={'items-subs__noti'}>Đã trả thưởng</span></li>
-                <li><span>22/05/2022</span> - <span>Trúng giải nhì 5 triệu</span> - <span className={'items-subs__noti'}>Đang chờ trả thưởng</span></li>
-                <li><span>22/05/2022</span> - <span>Trúng giải may mắn</span> - <span className={'items-subs__noti'}>Đã trả thưởng</span></li>
-                <li><span>22/05/2022</span> - <span>Trúng giải nhất 10 triệu</span> - <span className={'items-subs__noti'}>Đang chờ trả thưởng</span></li>
-                <li><span>22/05/2022</span> - <span>Trúng giải nhì 5 triệu</span> - <span className={'items-subs__noti'}>Đã trả thưởng</span></li>
-                <li><span>22/05/2022</span> - <span>Trúng giải may mắn</span> - <span className={'items-subs__noti'}>Đang chờ trả thưởng</span></li>
-                <li><span>22/05/2022</span> - <span>Trúng giải nhất 10 triệu</span> - <span className={'items-subs__noti'}>Đã trả thưởng</span></li>
-                <li><span>22/05/2022</span> - <span>Trúng giải nhì 5 triệu</span> - <span className={'items-subs__noti'}>Đang chờ trả thưởng</span></li>
-                <li><span>22/05/2022</span> - <span>Trúng giải may mắn</span> - <span className={'items-subs__noti'}>Đang chờ trả thưởng</span></li>
+                {listReward.map(function(item,i){
+                  return(
+                    <li key={i}><span>{moment(item.created_date).subtract(10, 'days').calendar()}</span> - <span>{item.segment_name}</span> - <span className={'items-subs__noti'}>{item.status==='NEW'?"Đang xử lý":"Đã trả thưởng"}</span></li>
+                  )
+                })}
               </ul>
             </TabPane>
             <TabPane tab="Danh sách giải" key="2">
               <ul className={'items-subs'}>
-                <li><span>01</span> - <span>Giải đặc biệt 200tr</span></li>
-                <li><span>02</span> - <span>Giải đặc biệt 80tr</span></li>
-                <li><span>03</span> - <span>Giải đặc biệt 20tr</span></li>
-                <li><span>04</span> - <span>Giải đặc biệt 10tr</span></li>
-                <li><span>05</span> - <span>Giải đặc biệt 5tr</span></li>
-                <li><span>06</span> - <span>Giải đặc biệt 2tr</span></li>
-                <li><span>07</span> - <span>Giải đặc biệt 1tr</span></li>
-                <li><span>08</span> - <span>Giải Chúc may mắn</span></li>
-                <li><span>09</span> - <span>Giải Thêm lượt quay</span></li>
+                {
+                  listWheelDetailById.map(function(item,i){
+                    return(
+                      <li
+                      style={{
+                          'fontWeight':'600'
+                        }} key={i}>
+                          <span 
+                          style={{
+                            'display': 'inline-block',
+                            'width': '30px',
+                          }}
+                        >{item.ord_numbers}</span> - <span
+                        style={{ 'marginLeft':'14px'}}
+                        >  Giải {item.segment_name}</span></li>
+                    )
+                  })
+                }
               </ul>
             </TabPane>
             <TabPane tab="Xếp hạng tài khoản trúng" key="3">
               <ul className={'items-subs'}>
-                <li><span>01</span> - <span>STK: 022551232322</span></li>
-                <li><span>02</span> - <span>STK: 055636456554</span></li>
-                <li><span>03</span> - <span>STK: 015854751221</span></li>
-                <li><span>04</span> - <span>STK: 025488552222</span></li>
-                <li><span>05</span> - <span>STK: 025488552222</span></li>
-                <li><span>06</span> - <span>STK: 25488552222</span></li>
-                <li><span>07</span> - <span>STK: 025488552222</span></li>
-                <li><span>09</span> - <span>STK: 025488552222</span></li>
-                <li><span>10</span> - <span>STK: 025488552222</span></li>
-                <li><span>11</span> - <span>STK: 025488552222</span></li>
-                <li><span>12</span> - <span>STK: 025488552222</span></li>
-                <li><span>13</span> - <span>STK: 025488552222</span></li>
-                <li><span>14</span> - <span>STK: 025488552222</span></li>
+                {
+                  listCustomer.map(function(item,i){
+                    return(
+                      <li   key={i}><span style={{
+                        'fontWeight':'900'
+                      }}>Top {i+1}</span> - <span style={{
+                        'fontWeight':'600'
+                      }}>{item.customerName?item.customerName:"nam 1"}</span> - <span >Đã trúng <span style={{
+                        'fontWeight':'600'
+                      }}>{`${item.totalValue?item.totalValue:999999999}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span> VNĐ</span></li>
+                    )
+                  })
+                }
               </ul>
             </TabPane>
             
