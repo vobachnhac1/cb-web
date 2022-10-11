@@ -15,7 +15,6 @@ export const getContentWheel = (payload) => async (dispatch, getState, { $http }
     rules_id: null
   }
   const result = await $http.post(URLSERVER.searchWheelDetailByfilter, param);
-  console.log('result: ', result);
   const { success, data } = result;
   if (!success || !data.success) {
     return false;

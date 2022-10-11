@@ -26,7 +26,7 @@ const Logo = (props) => {
 			width={120}
 			height={120}
 			{...attrs}
-			src="/images/logo.png"
+			src="/images/icon.svg"
 			alt="Logo"
 		/>
 	);

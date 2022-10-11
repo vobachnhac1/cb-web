@@ -1,5 +1,5 @@
 {
-  "server": "http://localhost:26868",
+  "server": "http://192.168.1.49:26868",
   "signin": "/auth/local/signin",
   "signup": "/auth/local/signup",
   "signout": "/auđth/logout",
@@ -46,6 +46,9 @@
   "getRewardHistory": "rules/get-reward-history",
   "getRewardUserIdByWheelID":"wheel-detail/reward-by-user",  
   "comfirmReceived": "rules/comfirm-reward-by-server",
+  "monitorGetRewardWithDWM": "monitor/get-reward-DWM",
+  "monitorGetRewardbyWheelId": "monitor/get-reward-by-wheel-id",
+  "monitorRewardRecievedBytime": "monitor/get-reward-recieved-by-time",
   "getCustPointCriteria": "cust-point/criteria",
   "insertCustPointCriteria": "cust-point/criteria",
   "updateCustPointCriteria": "cust-point/criteria",

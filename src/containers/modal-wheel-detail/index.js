@@ -474,7 +474,7 @@ const ModalWheelDetail = (props) => {
             </Row>
             <Row style={{ marginTop: 10 }}>
               <Col {...layoutHeader} >
-                <Text className={classNames({ 'text-font': true })}>{'Kết quả trúng thưởng'}</Text>
+                <Text className={classNames({ 'text-font': true })}>{'Kết quả giải thưởng'}</Text>
               </Col>
               <Col  {...layoutContent}>
                 <Select

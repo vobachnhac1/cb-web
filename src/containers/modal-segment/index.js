@@ -116,7 +116,7 @@ const ModalSegment = (props) => {
     >
       <Card
         headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'center', backgroundColor: "rgb(3, 77, 162)" }}
-        title={isAdd ? "Thêm Kết quả giải thưởng" : 'Cập nhật Kết quả giải thưởng'}
+        title={isAdd ? "Thêm kết quả giải thưởng" : 'Cập nhật kết quả giải thưởng'}
         bordered={true}
         style={{ backgroundColor: '#FFFFFF' }}>
         <Form
@@ -168,7 +168,7 @@ const ModalSegment = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ 'text-font': true })}>{'Tên kết quả trúng thưởng '}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Tên giải thưởng '}</Text>
             </Col>
             <Col  {...layoutContent}>
               <Input style={{ width: '100%' }} value={segmentName} onChange={(text) => setSegmentName(text.target.value)} />

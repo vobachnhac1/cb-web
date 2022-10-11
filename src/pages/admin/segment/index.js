@@ -81,14 +81,14 @@ export default function Segment(props) {
       }
     },
     {
-      title: 'Mã',
+      title: 'Mã giải thưởng',
       dataIndex: 'segment_id',
       key: 'segment_id',
       fixed: 'left',
-      width: 100
+      width: 120
     },
     {
-      title: 'Tên kết quả \n trúng thưởng',
+      title: 'Tên giải thưởng',
       dataIndex: 'segment_name',
       key: 'segment_name',
       fixed: 'left',
