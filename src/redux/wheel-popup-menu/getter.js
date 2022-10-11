@@ -1,8 +1,5 @@
 // lay data
 
-// export const getStateListReward = ({ listReward: { listReward = [] } }) => {
-//   return listReward.map((item, index) => ({ ...item, key: index })) || []
-// };
 export const getStateListReward = ({ wheelPopupMenu: { listReward = [] } }) => {
 
   return listReward.map((item, index) => ({ ...item, key: index })) || []

@@ -21,10 +21,6 @@ export default function PopupMenu(props) {
   // // Danh sách khách hàng đã trúng giải của quay vong hiện tại
   const listCustomer = useSelector(gettersWheelPopupMenu.getStateListCustomer) || [];
 
-  // useEffect(() => {
-  //   initPage();
-  // }, [])
-
   const onClickBurgerIcon = async () => {
 
     const params = {
@@ -32,18 +28,14 @@ export default function PopupMenu(props) {
       systemCode: 1,
       userId: userInfo.user_id,
       numCustomer: 20,
-      numReward: 15,
+      numReward: 20,
     }
 
     if (!open) {
       const result = await dispatch(actionWheelPopupMenu.getAllDataHistory(params));
-      if (result) {
-        console.log('Danh sách khách hàng đã trúng giải của quay vong hiện tại',listCustomer)
-        Message.Success("Thông Báo", "Hiển thị lịch sử thành công");
-      } else {
+      if (!result) {
         Message.Error("Thông Báo", "Hiển thị lịch sử thất bại");
-      }
-
+      } 
     }
     setOpen(!open)
   }
@@ -60,7 +52,6 @@ export default function PopupMenu(props) {
           <Tabs defaultActiveKey="1" >
             <TabPane tab="Lịch sử trúng" key="1">
               <ul className={'items-subs'}>
-                {/* <li><span>22/05/2022</span> - <span>Trúng giải nhất 10 triệu</span> - <span className={'items-subs__noti'}>Đang chờ trả thưởng</span></li> */}
                 {listReward.map(function(item,i){
                   return(
                     <li key={i}><span>{moment(item.created_date).subtract(10, 'days').calendar()}</span> - <span>{item.segment_name}</span> - <span className={'items-subs__noti'}>{item.status==='NEW'?"Đang xử lý":"Đã trả thưởng"}</span></li>
@@ -95,9 +86,13 @@ export default function PopupMenu(props) {
                 {
                   listCustomer.map(function(item,i){
                     return(
-                      <li  style={{
+                      <li   key={i}><span style={{
+                        'fontWeight':'900'
+                      }}>Top {i+1}</span> - <span style={{
                         'fontWeight':'600'
-                      }} key={i}><span>Top {i+1}</span> - <span>{item.customerName?item.customerName:"nam 1"}</span> - <span>Đã trúng {`${item.totalValue?item.totalValue:0}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} VNĐ</span></li>
+                      }}>{item.customerName?item.customerName:"nam 1"}</span> - <span >Đã trúng <span style={{
+                        'fontWeight':'600'
+                      }}>{`${item.totalValue?item.totalValue:999999999}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span> VNĐ</span></li>
                     )
                   })
                 }
