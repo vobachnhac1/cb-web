@@ -5,6 +5,7 @@
 * Created: 2022-04-04
 *------------------------------------------------------- */
 import { useEffect, useState } from 'react';
+// import WheelChild from '@/components/wheel-child';
 import WheelChild from '@/components/WheelChild';
 require("./styles.less");
 // require('./tabsStyle.less');

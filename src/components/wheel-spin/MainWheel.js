@@ -114,49 +114,49 @@ const MainWheel = (props) => {
   return (
     <>
       {animation && <ModalComfirmReward onInit={animation} data={rewardBody} callback={onReset} />}
-      <div class="colContainer"
+      <div className="colContainer"
         style={{
           '--set-margin-left': !roles ? 2 : 6,
           '--position-init': `${returnPositionInit()}deg`
         }}>
         {/* <div className="rowContainer"> */}
-        <div class="containerSpin">
-          <div class={classNames({ 'active-spin': animation }, { 'arrow': true })} >
-            <div class="image-border" />
-            <div class="image-row" />
+        <div className="containerSpin">
+          <div className={classNames({ 'active-spin': animation }, { 'arrow': true })} >
+            <div className="image-border" />
+            <div className="image-row" />
           </div>
           <div
-            class={classNames({ 'spinning': animation }, { 'pieContainer': true })}
+            className={classNames({ 'spinning': animation }, { 'pieContainer': true })}
             style={{
               '--selected': selectedItem,
               '--num-item': places.length
             }}>
-            <div class="pieBackground" />
-            <div class="pieBackground1" />
+            <div className="pieBackground" />
+            <div className="pieBackground1" />
             {
               places.map((item, index) => {
                 const rotate = 360 / places.length;
                 const position = ((index + 1) * rotate) + 'deg';
                 return (
                   <div key={item.no}
-                    class="hold"
+                    className="hold"
                     style={{ transform: `rotate(${position})` }}
                   >
                     <div
-                      class="pie"
+                      className="pie"
                       style={{
                         '--wheel-color': item.wheel_color,
                         "--rotate": rotate + 'deg',
                       }}>
-                      <p class={classNames({ [`content${places.length}`]: true })}>{item.segment_name}</p>
-                      <div class={classNames({ "pie-image": true }, { [`pie-img${places.length}`]: true })}
+                      <p className={classNames({ [`content${places.length}`]: true })}>{item.segment_name}</p>
+                      <div className={classNames({ "pie-image": true }, { [`pie-img${places.length}`]: true })}
                         style={{ '--url': `url(${item.imgBase64})` }} />
                     </div>
                   </div>);
               })
             }
           </div>
-          <div class="button-custom">
+          <div className="button-custom">
             <Button
               onClick={activeEvent}
               type="primary">
