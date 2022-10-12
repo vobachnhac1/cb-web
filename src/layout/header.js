@@ -5,7 +5,7 @@
 * Created: 2022-03-10
 *------------------------------------------------------- */
 import { Layout, Menu, message } from 'antd';
-import React, { useState } from 'react';
+import React, { useState, memo, useEffect } from 'react';
 const { Header } = Layout;
 const { SubMenu } = Menu;
 import { UserOutlined } from '@ant-design/icons';
@@ -13,16 +13,25 @@ import { UserOutlined } from '@ant-design/icons';
 import AccountProfileCustom from '@/components/AccountProfileBase';
 import NotificationCustom from '@/components/NotificationBase';
 import * as Message from '@/components/message';
-
 const stylesLess = require("./style.module.less");
 
 import logocbb from './images/logo_CB_color_vn.svg'
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
-import { getters, actions } from '@/redux/global';
-import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import ModalProfile from '@/containers/modal-profile';
+import { getters, actions } from '@/redux/global';
+import { actions as actDashboard } from '@/redux/dashboard';
+import { actions as actEventWheel } from '@/redux/event-wheel';
+import { actions as actManageCb } from '@/redux/manager-cb-coin';
+import { actions as actManageDetailCb } from '@/redux/manager-detail-cb-coin';
+import { actions as actRules } from '@/redux/rules';
+import { actions as actSegment } from '@/redux/segment';
+import { actions as actSystem } from '@/redux/system';
+import { actions as actTopic } from '@/redux/topic';
+import { actions as actWheel } from '@/redux/wheel';
+import { actions as actWheelDet } from '@/redux/wheel-detail';
+import { actions as actWheelPM } from '@/redux/wheel-popup-menu';
 
 const HeaderCustom = (props) => {
   const [visibleProfile, setVisibleProfile] = useState(false);
@@ -40,8 +49,20 @@ const HeaderCustom = (props) => {
     }
   },[isAuth]);
 
-  const  onSignOut =()=>{
+  const onSignOut =()=>{
+
     dispatch(actions.SignOut());
+    dispatch(actDashboard.SignOut());
+    dispatch(actEventWheel.SignOut());
+    dispatch(actManageCb.SignOut());
+    dispatch(actManageDetailCb.SignOut());
+    dispatch(actRules.SignOut());
+    dispatch(actSegment.SignOut());
+    dispatch(actSystem.SignOut());
+    dispatch(actTopic.SignOut());
+    dispatch(actWheel.SignOut());
+    dispatch(actWheelDet.SignOut());
+    dispatch(actWheelPM.SignOut());
   } 
   const onPreview =()=>{
     setVisibleProfile(true);
@@ -104,4 +125,4 @@ const HeaderCustom = (props) => {
     </Header>
   );
 };
-export default HeaderCustom;
+export default memo(HeaderCustom) ;

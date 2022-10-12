@@ -33,11 +33,7 @@ export default buildReducer(
     }
   }, 
   [TYPES.SIGN_OUT]: (state =  {...initialState}) => {
-    return {
-      ...state,
-      userProfile: {},
-      arrPaths: [],
-      access_token: ''
-    }
+    return {}
+    return {}
   }, 
 });

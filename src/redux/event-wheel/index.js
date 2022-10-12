@@ -5,7 +5,18 @@ export * as getters from './getter'
 export * as actions from './actions'
 import { buildReducer } from '../wrapper';
 
-
+const init = {
+  body: {
+    wheel_id: null,
+    rules_id: null,
+    listContentReward: [],
+  },
+  process: {
+    status: false,
+    message: null
+  },
+  event_info: null
+}
 //Creating my reducer
 export default buildReducer(
   {
@@ -43,6 +54,8 @@ export default buildReducer(
         ...state,
         event_info: payload
       }
-    },
+    },[TYPES.SIGN_OUT]: (state = init) => {
+      return {}
+    }
   },
 );

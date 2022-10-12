@@ -80,3 +80,9 @@ export const filterTopic = (payload) => async (dispatch, getState, { $http }) =>
 }
 // function export ra ngoài
 
+
+const signOutDispatch = () => ({ type: TYPES.SIGN_OUT})
+
+export const SignOut = () => async (dispatch, getState, { $http }) => {
+  dispatch(signOutDispatch());
+}

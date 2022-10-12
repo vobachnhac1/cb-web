@@ -39,6 +39,8 @@ export default buildReducer(
         listWheelDetailById: payload.listWheelDetailById,
         listCustomer: payload.listCustomer,
       }
-    },
+    },[TYPES.SIGN_OUT]: (state) => {
+      return {}
+    }
   },
 );

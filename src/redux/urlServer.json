@@ -56,5 +56,9 @@
   "getCustPointCriteriaDetail": "cust-point/behavior",
   "saveCustPointCriteriaDetail": "cust-point/behavior-list",
   "checkBehaviorCodeCustPointCriteriaDetail": "cust-point/check-behavior",
-  "getCusPointGetCustomer": "cust-point/get-customer"
+  "getCusPointGetCustomer": "cust-point/get-customer",
+  "getPathsList": "/sys/get-list-paths",
+  "getSystemList": "/sys/get-list-sys",
+  "getAccountList": "/sys/get-list-account",
+  "getRolesList": "/sys/get-list-roles"
 }

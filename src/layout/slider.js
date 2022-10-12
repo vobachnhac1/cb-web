@@ -3,8 +3,9 @@
 * Email vonhac.20394@gmail.com
 * Phone 0906.918.738
 * Created: 2022-03-10
+* Update: 2022/10/12 - Nhacvb : phân quyền URL 
 *------------------------------------------------------- */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,memo } from 'react';
 import Link from 'next/link';
 import { Layout, Menu } from 'antd';
 import {
@@ -105,6 +106,47 @@ const menu = [
     title: 'Quản lý hệ thống tích điểm',
     child: null,
   },
+  {
+    key: 'subSys',
+    parentKey: null,
+    path: '/admin/sys',
+    icon: <SwapOutlined />,
+    title: 'Quản lý thống',
+    child: [
+      {
+        key: 'subSytem',
+        parentKey: 'subSys',
+        path: '/admin/sys/manager',
+        icon: <AliyunOutlined />,
+        title: 'Quản lý phòng Ban',
+        child: null,
+      },
+      {
+        key: 'subSysAccount',
+        parentKey: 'subSys',
+        path: '/admin/sys/account',
+        icon: <AliyunOutlined />,
+        title: 'Danh sách tài khoản',
+        child: null,
+      },
+      {
+        key: 'subSysPaths',
+        parentKey: 'subSys',
+        path: '/admin/sys/paths-mangement',
+        icon: <AliyunOutlined />,
+        title: 'Quản lý phân quyền URL',
+        child: null,
+      },
+      {
+        key: 'subSysRoles',
+        parentKey: 'subSys',
+        path: '/admin/sys/roles',
+        icon: <AliyunOutlined />,
+        title: 'Quản lý Phân quyền',
+        child: null,
+      }
+    ],
+  },
 ];
 
 const permission = [
@@ -126,13 +168,15 @@ const permission = [
     parent: 'subRules',
     child: ['viewRules', 'subRulesReward', 'subRewardHistory']
   },
-  // 'subWheelApprove',
   {
     parent: 'subManager-CbCoin',
     child: null,
   },
+  {
+    parent: 'subSys',
+    child: ['subSytem','subSysAccount','subSysPaths','subSysRoles'],
+  },
 ];
-
 
 
 const SliderCustom = (props) => {
@@ -275,4 +319,4 @@ const SliderCustom = (props) => {
   );
 };
 
-export default SliderCustom;
+export default  memo(SliderCustom);

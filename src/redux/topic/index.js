@@ -17,5 +17,7 @@ export default buildReducer(
       ...state,
       listTopic: payload
     }
-  },
+  },[TYPES.SIGN_OUT]: (state = init) => {
+    return {}
+  }
 });

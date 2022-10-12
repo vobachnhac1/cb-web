@@ -387,3 +387,8 @@ function sumTotalValueWheelDetail(data) {
 
 
 
+const signOutDispatch = () => ({ type: TYPES.SIGN_OUT})
+
+export const SignOut = () => async (dispatch, getState, { $http }) => {
+  dispatch(signOutDispatch());
+}

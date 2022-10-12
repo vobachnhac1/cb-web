@@ -2,6 +2,7 @@ import { combineReducers } from "redux";
 import { persistReducer } from "redux-persist";
 import storage from "./sync_storage";
 import globalReducer from "@/redux/global";
+import systemReducer from "@/redux/system";
 import topicReducer from "@/redux/topic";
 import wheelReducer from "@/redux/wheel";
 import segmentReducer from "@/redux/segment";
@@ -22,6 +23,7 @@ const genPersistConfig = (key, properties) => ({
 //COMBINING ALL REDUCERS
 const rootReducer = combineReducers({
   global: persistReducer(genPersistConfig("global"), globalReducer),
+  system: persistReducer(genPersistConfig("system"), systemReducer),
   topic: persistReducer(genPersistConfig("topic"), topicReducer),
   wheel: persistReducer(genPersistConfig("wheel"), wheelReducer),
   segment: persistReducer(genPersistConfig("segment"), segmentReducer),

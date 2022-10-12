@@ -46,5 +46,7 @@ export default buildReducer(
       ...state,
       listRewardHis: payload
     }
-  },
+  },[TYPES.SIGN_OUT]: (state = init) => {
+    return {}
+  }
 });

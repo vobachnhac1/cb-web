@@ -35,6 +35,8 @@ export default buildReducer(
         wheel_status: payload.wheel_status
 
       }
-    },
+    },[TYPES.SIGN_OUT]: (state) => {
+      return {}
+    }
   },
 );

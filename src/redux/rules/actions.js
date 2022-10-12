@@ -293,3 +293,10 @@ export const comfirmReceived = (payload) => async (dispatch, getState, { $http }
   }
   return true
 }
+
+
+const signOutDispatch = () => ({ type: TYPES.SIGN_OUT})
+
+export const SignOut = () => async (dispatch, getState, { $http }) => {
+  dispatch(signOutDispatch());
+}

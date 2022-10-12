@@ -5,7 +5,9 @@ export * as getters from './getter'
 export * as actions from './actions'
 import { buildReducer } from '../wrapper';
 
-
+const init = {
+  listManagerDetailCbCoin: []
+}
 //Creating my reducer
 export default buildReducer(
   {
@@ -18,6 +20,8 @@ export default buildReducer(
         ...state,
         listManagerDetailCbCoin: payload
       }
+    },[TYPES.SIGN_OUT]: (state = init) => {
+      return {}
     }
   },
 );

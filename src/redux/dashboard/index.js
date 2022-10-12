@@ -5,18 +5,11 @@ export * as getters from './getter'
 export * as actions from './actions'
 import { buildReducer } from '../wrapper';
 
-// Creating my reducer
-// export default function reducer(state = initMonitor, { type, payload }) {
-//   switch (type) {
-//     case TYPES.MONITOR_INIT:
-//       return {
-//         ...state,
-//         wheel_id: payload
-//       }
-//     default:
-//       return state;
-//   }
-// }
+const init = {
+  listInit: [],
+  listDWM: [],
+  listRewardRecieved: [],
+}
 
 //Creating my reducer
 export default buildReducer(
@@ -43,6 +36,8 @@ export default buildReducer(
         ...state,
         listRewardRecieved: payload
       }
+    },[TYPES.SIGN_OUT]: (state = init) => {
+      return {}
     }
   },
 );
