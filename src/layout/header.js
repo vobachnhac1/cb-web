@@ -22,8 +22,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getters, actions } from '@/redux/global';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import ModalProfile from '@/containers/modal-profile';
 
 const HeaderCustom = (props) => {
+  const [visibleProfile, setVisibleProfile] = useState(false);
   const router = useRouter();
   const profile=  useSelector(getters.getProfile)
   const isAuth =  useSelector(getters.getAccessToken)
@@ -42,6 +44,15 @@ const HeaderCustom = (props) => {
     dispatch(actions.SignOut());
   } 
   const onPreview =()=>{
+    setVisibleProfile(true);
+  }
+  
+  const onCallback =(value)=>{
+    setVisibleProfile(value);
+  }
+
+  const onNotify
+   =()=>{
     Message.Info('Thông báo',"Tính năng đang phát triển")
   }
   return (
@@ -72,7 +83,7 @@ const HeaderCustom = (props) => {
           selectedKeys={isLeave}
           className={stylesLess['header-sub']}
         >
-          <Menu.Item key='Notification' onClick={onPreview}>
+          <Menu.Item key='Notification' onClick={onNotify}>
             <NotificationCustom />
           </Menu.Item>
           <SubMenu
@@ -88,6 +99,8 @@ const HeaderCustom = (props) => {
           </SubMenu>
         </Menu>
       </div>
+
+      { visibleProfile? <ModalProfile callback ={onCallback} visible={visibleProfile} />:<></>}
     </Header>
   );
 };
