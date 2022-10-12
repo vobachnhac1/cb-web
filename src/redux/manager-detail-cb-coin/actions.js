@@ -5,7 +5,7 @@ const setSearchManagerDetailCbCoin = (payload) => ({ type: TYPES.MANAGER_DETAIL_
 
 export const insertManagerDetailCbCoin = (payload) => async (dispatch, getState, { $http }) => {
   const newItem = {
-    behaviorCode: payload.behaviorCode,
+    behaviorCode: payload.behaviorCode.toUpperCase(),
     behaviorName: payload.behaviorName,
     point: parseInt(payload.point),
     numBehavior: parseInt(payload.numBehavior),
@@ -31,7 +31,7 @@ export const updateManagerDetailCbCoin = (payload) => async (dispatch, getState,
   const param = {
     key: payload.key,
     id: payload.id,
-    behaviorCode: payload.behaviorCode,
+    behaviorCode: payload.behaviorCode.toUpperCase(),
     behaviorName: payload.behaviorName,
     point: parseInt(payload.point),
     numBehavior: parseInt(payload.numBehavior),
@@ -136,6 +136,18 @@ export const checkBehavior = (payload) => async (dispatch, getState, { $http }) 
   const params = {
     behaviorCode: payload.behaviorCode,
   }
+  const state = getState();
+  let { listManagerDetailCbCoin } = state.ManagerDetailCbCoin
+  for (let i = 0; i < listManagerDetailCbCoin.length; i++) {
+    console.log('listManagerDetailCbCoin.behaviorCode === params.behaviorCode', listManagerDetailCbCoin.behaviorCode === params.behaviorCode)
+    if (listManagerDetailCbCoin[i].behaviorCode === params.behaviorCode.toUpperCase()) {
+      return {
+        success: false,
+        message: `Mã tích điểm ${params.behaviorCode} đã tồn tại`
+      }
+    }
+  }
+
   const result = await $http.get(`${URLSERVER.checkBehaviorCodeCustPointCriteriaDetail}/${params.behaviorCode}`);
   const { success, message } = result.data;
 
