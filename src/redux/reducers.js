@@ -11,6 +11,7 @@ import RulesReducer from "@/redux/rules";
 import DashboardReducer from "@/redux/dashboard";
 import ManagerCbCoinReducer from "@/redux/manager-cb-coin";
 import ManagerDetailCbCoinReducer from "@/redux/manager-detail-cb-coin";
+import wheelPopupMenuReducer from "@/redux/wheel-popup-menu";
 
 const genPersistConfig = (key, properties) => ({
   key,
@@ -28,8 +29,8 @@ const rootReducer = combineReducers({
   wheelreward: persistReducer(genPersistConfig("wheelreward"), WheelRewardReducer),
   rules: persistReducer(genPersistConfig("rules"), RulesReducer),
   dashboard: persistReducer(genPersistConfig("dashboard"), DashboardReducer),
-  ManagerCbCoin: persistReducer(genPersistConfig("rules"), ManagerCbCoinReducer),
-  ManagerDetailCbCoin: persistReducer(genPersistConfig("rules"), ManagerDetailCbCoinReducer)
-
+  ManagerCbCoin: persistReducer(genPersistConfig("ManagerCbCoin"), ManagerCbCoinReducer),
+  ManagerDetailCbCoin: persistReducer(genPersistConfig("ManagerDetailCbCoin"), ManagerDetailCbCoinReducer),
+  wheelPopupMenu: persistReducer(genPersistConfig("wheelPopupMenu"), wheelPopupMenuReducer),
 });
 export default rootReducer;

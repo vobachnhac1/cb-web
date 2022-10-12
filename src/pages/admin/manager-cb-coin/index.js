@@ -192,12 +192,14 @@ export default function ManagerCbCoin(props) {
       title: "STT",
       dataIndex: "ord_numbers",
       width: 70,
+      fixed: 'left',
       editable: false
     },
     {
       title: "ID",
       dataIndex: "criteria_code",
       width: 100,
+      fixed: 'left',
     },
     {
       title: "Hệ thống tích điểm",
@@ -359,6 +361,7 @@ export default function ManagerCbCoin(props) {
   });
 
   const onDoubleClick = (record, rowIndex) => {
+    console.log('record.criteria_code: ', record.criteria_code);
     // setVisible(true);
     // setBodyModel({
     //   record: record,
@@ -367,6 +370,7 @@ export default function ManagerCbCoin(props) {
     // manager-detail-cb-coin
     // router.push(`/admin/wheel-detail/${record.wheel_id}`)
     router.push(`/admin/manager-detail-cb-coin/${record.criteria_code}`)
+    
   }
 
   // modal
@@ -495,5 +499,4 @@ export default function ManagerCbCoin(props) {
     </div>
   );
 };
-
 

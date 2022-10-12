@@ -88,7 +88,7 @@ export default function PopupMenu(props) {
                     return(
                       <li   key={i}><span style={{
                         'fontWeight':'900'
-                      }}>Top {i+1}</span> <span style={{
+                      }}>Top {i+1}</span> - <span style={{
                         'fontWeight':'600'
                       }}>{item.customerName?item.customerName:"nam 1"}</span> - <span >Đã trúng <span style={{
                         'fontWeight':'600'
@@ -98,7 +98,6 @@ export default function PopupMenu(props) {
                 }
               </ul>
             </TabPane>
-            
           </Tabs>
         </div>
 

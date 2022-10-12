@@ -119,7 +119,6 @@ const Login = (props) => {
 						<Button type="primary" block htmlType="submit" className="login-form-button" loading={loading}>
 							Login
 						</Button>
-
 					</Form>
 				</div>
 				<div className="py-2">

@@ -85,7 +85,7 @@ const SetPassword = (props) => {
 						>
 							<div className="text-center mb-5">
 								<Image
-									src="/images/icon.svg"
+									src="/images/logo.png"
 									alt="Logo"
 									width={150}
 									height={150}

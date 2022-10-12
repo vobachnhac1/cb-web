@@ -219,7 +219,7 @@ const SliderCustom = (props) => {
     setMapArrScreen(arrScreenFM);
     setRootSubmenuKeys(arrScreenFM.map(item => item.key));
     setIsChoosed(keyChoose);
-  }, [arrPaths]);
+  }, []);
 
   const renderItemMenu = (item) => {
     const { key, title, path, child, icon } = item;
