@@ -54,8 +54,8 @@ const Login = (props) => {
 				<div className={classes.leftContent}>
 					<Logo />
 					<div className="ml-4 flex-1">
-						<h1 className="pt-0 text-white">CB-TEAM</h1>
-						<p className="">Event Management</p>
+						<h1 className="pt-0 text-white">Digital CBBank</h1>
+						<p className="">Management</p>
 					</div>
 				</div>
 			</div>
