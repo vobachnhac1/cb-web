@@ -139,9 +139,6 @@ export const checkBehavior = (payload) => async (dispatch, getState, { $http }) 
   const state = getState();
   let { listManagerDetailCbCoin } = state.ManagerDetailCbCoin
   for (let i = 0; i < listManagerDetailCbCoin.length; i++) {
-    // console.log('listManagerDetailCbCoin.behaviorCode', listManagerDetailCbCoin.behaviorCode)
-    // console.log('params.behaviorCode', params.behaviorCode)
-
     console.log('listManagerDetailCbCoin.behaviorCode === params.behaviorCode', listManagerDetailCbCoin.behaviorCode === params.behaviorCode)
     if (listManagerDetailCbCoin[i].behaviorCode === params.behaviorCode.toUpperCase()) {
       return {
