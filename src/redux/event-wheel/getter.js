@@ -2,9 +2,9 @@
 
 export const getContentReward = (state) => {
   const { wheelreward: { body: data } } = state;
-  const arrContentReward = data.listContentReward;
+  const arrContentReward = data?.listContentReward;
   if (!arrContentReward) return [];
-  return arrContentReward.map((item) => ({
+  return arrContentReward?.map((item) => ({
     no: item.no,
     imgBase64: item.imgBase64,
     remain_value: item.remain_value,

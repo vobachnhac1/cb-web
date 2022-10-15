@@ -67,7 +67,7 @@ const WheelChild = (props) => {
             setup();
           }
         } else {
-          setup();
+          setup(); 
         }
       }
     } else {
