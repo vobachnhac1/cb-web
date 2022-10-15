@@ -2,7 +2,7 @@
 * Author Võ Bách Nhạc
 * Email vonhac.20394@gmail.com
 * Phone 0906.918.738
-* Created: 2022-04-07
+* Created: 2022-10-07
 *------------------------------------------------------- */
 require("./styles.less");
 import { useEffect, useState } from 'react';
@@ -17,12 +17,22 @@ import * as Message from '@/components/message';
 import { useSelector, useDispatch } from 'react-redux';
 import Text from 'antd/lib/typography/Text';
 import { actions, getters } from '@/redux/system';
+import ModalURLManagement from '@/containers/modal-system-url-management';
 
 export default function PathsManagement(props) {
   const [perSystem, setPerSystem]= useState('FE');
+  const [perSys, setSys]= useState(null);
+  const [perSysRoles, setSysRole]= useState(null);
 
   const pathsFEList = useSelector(getters.getPathsFEList);
   const pathsBEList = useSelector(getters.getPathsBEList);
+  const listRoles = useSelector(getters.getRolesList);
+  const listSystem = useSelector(getters.getSystemList);
+
+  const [open, setOpen] = useState(false);
+  const [update, setUpdate] = useState(false);
+  const [record, setRecord] = useState(null);
+
   const dispatch = useDispatch();
   useEffect(()=>{
     initPage();
@@ -30,29 +40,126 @@ export default function PathsManagement(props) {
 
   const initPage = async ()=>{
     const params = {
-      roleId : 1,
-      systemCode : "LAB",
+      roleId : perSysRoles,
+      systemCode : perSys,
       perSystem : perSystem,
     }
-    const res = await dispatch(actions.setPathsList(params))
+    await dispatch(actions.setPathsList(params))
+    await dispatch(actions.setSystemList());
+    await dispatch(actions.setRolesList());
   }
 
-  const insertURL =()=>{
-
+  const insertSysPerURL =()=>{
+    setUpdate(false)
+    setOpen(true)
   }  
+
   const onSearch = async()=>{
     const params = {
-      roleId : 1,
-      systemCode : "LAB",
+      roleId : perSysRoles,
+      systemCode : perSys,
       perSystem : perSystem,
     }
       await dispatch(actions.setPathsList(params))
   }  
+
+  const onChangeSelectRoles =(value)=>{
+    setSysRole(value)
+  }  
+  
   const onChangeSelectPer =(value)=>{
     setPerSystem(value)
   }
 
+  const onChangeSelectSys =(value)=>{
+    setSys(value)
+  }
+
+  const updateSysPerURL =(value)=>{
+    setRecord(value)
+    setUpdate(true)
+    setOpen(true)
+  }
+
+  const deleteSysPerURL = async (value)=>{
+    const param = `/${value.id}/${true}/${value.systemCode}`
+    const result = await dispatch(actions.deleteSysPerURL(param));
+    if(result.success){
+      Message.Success("Thông Báo", result.message);
+      initPage();
+      return;
+    }
+    Message.Error("Thông Báo", result.message);
+  }
+
+  const callbackComfirm = async (value)=>{
+    if(!value.visible){
+      setOpen(false)
+      return;
+    }
+    if(update){
+      const {roleId,sysCode, url, description, id, perSystem}= value;
+      if(!sysCode){
+        Message.Success("Thông Báo", "Hệ thống không được để trống");
+        return;
+      }
+      if(!perSystem){
+        Message.Success("Thông Báo", "Quyền");
+        return;
+      }
+      if(!roleId){
+        Message.Success("Thông Báo", "Chức vụ không để trống");
+        return;
+      }
+      const param ={
+        roleId: roleId,
+        systemCode: sysCode,
+        url: url,
+        description: description,
+        id: id,
+        perSystem: perSystem,
+      }
+      console.log('param: ', param);
+      const result = await dispatch(actions.updateSysPerURL(param));
+      
+      if(result.success){
+        setOpen(false)
+        setUpdate(false)
+        setRecord(null)
+        Message.Success("Thông Báo", result.message);
+        initPage();
+        return;
+      }
+      Message.Error("Thông Báo", result.message);
+      // call API update
+    }else{
+      const param = {
+        perSystem: value.perSystem,
+        roleId: value.roleId,
+        systemCode: value.sysCode,
+        url: value.url,
+        description: value.description
+      }
+      const result = await dispatch(actions.insertSysPerURL(param));
+      if(result.success){
+        setOpen(false)
+        setUpdate(false)
+        setRecord(null)
+        Message.Success("Thông Báo", result.message);
+        initPage();
+        return;
+      }
+      Message.Error("Thông Báo", result.message);
+    }
+  }
+
   const columns = [
+    {
+      dataIndex: 'key',
+      key: 'key',
+      fixed: 'left',
+      width: 0
+    },
     {
       align: 'center',
       title: 'STT',
@@ -110,40 +217,32 @@ export default function PathsManagement(props) {
       title: 'Người cập nhật',
       dataIndex: 'updatedBy',
       key: 'updatedBy',
-    }
-    // {
-    //   align: 'center',
-    //   title: 'Action',
-    //   key: 'action',
-    //   width: 200,
-    //   render: (text, record) => (
-    //     <Space size="middle">
-    //       {record.wheel_id_apr === 1
-    //         ?
-    //         <span style={{ color: 'green', }} >
-    //           Có vòng quay đã duyệt và đang sử dụng chủ đề này !
-    //         </span>
-    //         : <>
-    //           {/* <Button style={{ color: record.status_yn == 'N' ? 'green' : 'red', borderColor: record.status_yn == 'N' ? 'green' : 'red', borderWidth: 0.5 }}
-    //             onClick={() => approveTopic(record)} >{
-    //               record.status_yn == 'N' ? "Phê duyệt" : "Từ chối"
-    //             }</Button> */}
-    //           {/* {
-    //             record.status_yn == 'N' && <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateTopic(record)} >Cập nhật</Button>
-    //           } */}
-    //           <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateTopic(record)} >Cập nhật</Button>
-    //           <Popconfirm title="Bạn có muốn?" onConfirm={() => deleteTopic(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom" >
-    //             <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
-    //           </Popconfirm>
-    //         </>}
-    //     </Space>
+    },{
+      align: 'center',
+      title: 'Action',
+      key: 'action',
+      width: 200,
+      render: (text, record) => (
+        <Space size="middle">
+          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateSysPerURL(record)} >Cập nhật</Button>
+              <Popconfirm title="Bạn có muốn?" onConfirm={() => deleteSysPerURL(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom" >
+              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
+          </Popconfirm>
+        </Space>
 
-    //   ),
-    // },
+      ),
+    },
   ];
 
   return (
     <LayoutHome>
+      { open && <ModalURLManagement  callback ={callbackComfirm} visible={ open }
+         bodyModel={{
+        record: record, 
+        update : update,
+        perSystem : perSystem
+
+      }}/>}
         <Col style={{ marginBottom: 30 }}>
           <Card
           headStyle={{
@@ -154,7 +253,31 @@ export default function PathsManagement(props) {
           style={{ backgroundColor: '#FFFFFF' }}>
             <Col span={48} >
               <Row gutter={[16, 24]} style={{ marginTop: 10 }}>
-              <Col className="gutter-row" span={8}>
+              <Col className="gutter-row" span={6}>
+                <Select
+                  placeholder="Hệ thống (Phòng Ban)"
+                  style={{ width: '100%' }}
+                  defaultValue={'FE'}
+                  value={perSys}
+                  onChange={onChangeSelectSys}
+                >
+                {listSystem?.map(item=> <Select.Option value={item.sysCode} key={item.sysCode}> {item.sysName}</Select.Option> )}
+                </Select>
+              </Col>
+              <Col className="gutter-row" span={6}>
+                <Select
+                  placeholder="Chức vụ"
+                  style={{ width: '100%' }}
+                  defaultValue={'FE'}
+                  value={perSysRoles}
+                  onChange={onChangeSelectRoles}
+                >
+                  {listRoles?.map(item=> <Select.Option value={item.roleId} key={item.roleId}> {item.roleName}</Select.Option> )}
+                  {/* <Select.Option value={'BE'} key={'BE'}> {'Quyền Server'}</Select.Option>
+                  <Select.Option value={'FE'} key={'FE'}> {'Quyền Client'}</Select.Option> */}
+                </Select>
+              </Col>
+              <Col className="gutter-row" span={6}>
                 <Select
                   placeholder="Quyền hệ thống"
                   style={{ width: '100%' }}
@@ -171,7 +294,7 @@ export default function PathsManagement(props) {
                   <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch} >Tìm kiếm</Button>
                 </Col>
                 <Col className="gutter-row" span={3}>
-                  <Button type='primary' size='middle' style={{ width: '100%' }} onClick={insertURL}>Thêm</Button>
+                  <Button type='primary' size='middle' style={{ width: '100%' }} onClick={insertSysPerURL}>Thêm</Button>
                 </Col>
               </Row>
             </Col>

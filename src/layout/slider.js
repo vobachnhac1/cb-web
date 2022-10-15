@@ -14,7 +14,8 @@ import {
   CodepenOutlined,
   CodeSandboxOutlined,
   SwapOutlined,
-  UsergroupAddOutlined
+  UsergroupAddOutlined,
+  TeamOutlined 
 
 } from '@ant-design/icons';
 const { SubMenu } = Menu;
@@ -97,21 +98,12 @@ const menu = [
         child: null,
       }
     ],
-  },
-  {
-    key: 'subManager-CbCoin',
-    parentKey: null,
-    path: '/admin/manager-cb-coin',
-    icon: <SwapOutlined />,
-    title: 'Quản lý hệ thống tích điểm',
-    child: null,
-  },
-  {
+  },{
     key: 'subSys',
     parentKey: null,
     path: '/admin/sys',
-    icon: <SwapOutlined />,
-    title: 'Quản lý thống',
+    icon: <TeamOutlined />,
+    title: 'Quản lý Admin',
     child: [
       {
         key: 'subSytem',
@@ -142,10 +134,18 @@ const menu = [
         parentKey: 'subSys',
         path: '/admin/sys/roles',
         icon: <AliyunOutlined />,
-        title: 'Quản lý Phân quyền',
+        title: 'Quản lý chức vụ',
         child: null,
       }
     ],
+  },
+  {
+    key: 'subManager-CbCoin',
+    parentKey: null,
+    path: '/admin/manager-cb-coin',
+    icon: <SwapOutlined />,
+    title: 'Quản lý hệ thống tích điểm',
+    child: null,
   },
 ];
 
@@ -168,13 +168,14 @@ const permission = [
     parent: 'subRules',
     child: ['viewRules', 'subRulesReward', 'subRewardHistory']
   },
-  {
-    parent: 'subManager-CbCoin',
-    child: null,
-  },
+
   {
     parent: 'subSys',
     child: ['subSytem','subSysAccount','subSysPaths','subSysRoles'],
+  },
+  {
+    parent: 'subManager-CbCoin',
+    child: null,
   },
 ];
 

@@ -116,7 +116,7 @@ const ModalManagerCbCoin = (props) => {
     >
       <Card
         headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'center', backgroundColor: "rgb(3, 77, 162)" }}
-        title={isAdd ? "Thêm tiêu chí CBCoin " : 'Cập nhật tiêu chí CBCoin'}
+        title={isAdd ? "Thêm hệ thống tích điểm CBCoin " : 'Cập nhật hệ thống tích điểm CBCoin'}
         bordered={true}
         style={{ backgroundColor: '#FFFFFF' }}>
         <Form

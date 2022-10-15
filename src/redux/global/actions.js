@@ -24,7 +24,6 @@ export const loginAdmin = (payload) => async (dispatch, getState, { $http }) => 
       userProfile: data.userProfile,
     }
     dispatch(loginAdminDispatch(param))
-    console.log('param: ', param);
   }
   const state = getState()
 

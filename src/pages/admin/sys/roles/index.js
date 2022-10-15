@@ -2,7 +2,7 @@
 * Author Võ Bách Nhạc
 * Email vonhac.20394@gmail.com
 * Phone 0906.918.738
-* Created: 2022-04-07
+* Created: 2022-10-07
 *------------------------------------------------------- */
 require("./styles.less");
 import { useEffect, useState } from 'react';
@@ -17,13 +17,19 @@ import * as Message from '@/components/message';
 import { useSelector, useDispatch } from 'react-redux';
 import Text from 'antd/lib/typography/Text';
 import { actions, getters } from '@/redux/system';
+import ModalRoleManagement from '@/containers/modal-system-role-management';
 
 export default function RolesManagement(props) {
   const dispatch = useDispatch();
   const roleList = useSelector(getters.getRolesList);
+  const [open, setOpen] = useState(false);
+  const [update, setUpdate] = useState(false);
+  const [record, setRecord] = useState(null);
+
   useEffect(()=>{
     initPage();
   },[]);
+
   const columns = [
     {
       align: 'center',
@@ -66,8 +72,8 @@ export default function RolesManagement(props) {
       align: 'center',
       width: 120,
       title: 'Ngày cập nhật',
-      dataIndex: 'createdDate',
-      key: 'createdDate',
+      dataIndex: 'updatedDate',
+      key: 'updatedDate',
       render: (text) => (
         <Text>{text ? moment(text).format('HH:mm:ss,  YYYY-MM-DD') : ''}</Text>
       ),
@@ -77,7 +83,21 @@ export default function RolesManagement(props) {
       title: 'Người cập nhật',
       dataIndex: 'updatedBy',
       key: 'updatedBy',
-    }
+    },{
+      align: 'center',
+      title: 'Action',
+      key: 'action',
+      width: 200,
+      render: (text, record) => (
+        <Space size="middle">
+          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateSysRole(record)} >Cập nhật</Button>
+              <Popconfirm title="Bạn có muốn?" onConfirm={() => deleteSysRole(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom" >
+              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
+          </Popconfirm>
+        </Space>
+
+      ),
+    },
 
   ];
 
@@ -86,15 +106,81 @@ export default function RolesManagement(props) {
   }
 
   const onSearch =()=>{initPage()}
-  const insertURL =()=>{}
+
+  const insertSysRole =()=>{
+    setUpdate(false)
+    setOpen(true)
+  }
+
+  const updateSysRole =(value)=>{
+    setRecord(value)
+    setUpdate(true)
+    setOpen(true)
+  }
+
+  const deleteSysRole = async (value)=>{
+    const param = `/${value.roleId}/${true}`
+    const result = await dispatch(actions.deleteSysRole(param));
+    if(result.success){
+      Message.Success("Thông Báo", result.message);
+      initPage();
+      return;
+    }
+    Message.Error("Thông Báo", result.message);
+  }
+
+  const callbackComfirm = async (value)=>{
+    if(!value.visible){
+      setOpen(false)
+      return;
+    }
+    if(update){
+      const param ={
+        roleId: value.roleId,
+        roleName: value.roleName,
+        description: value.description
+      }
+      const result = await dispatch(actions.updateSysRole(param));
+      if(result.success){
+        setOpen(false)
+        setUpdate(false)
+        setRecord(null)
+        Message.Success("Thông Báo", result.message);
+        initPage();
+        return;
+      }
+      Message.Error("Thông Báo", result.message);
+      // call API update
+    }else{
+      const param ={
+        roleId: value.roleId,
+        roleName: value.roleName,
+        description: value.description
+      }
+      const result = await dispatch(actions.insertSysRole(param));
+      if(result.success){
+        setOpen(false)
+        setUpdate(false)
+        setRecord(null)
+        Message.Success("Thông Báo", result.message);
+        initPage();
+        return;
+      }
+      Message.Error("Thông Báo", result.message);
+    }
+  }
+
   return (
     <LayoutHome>
+      { open && <ModalRoleManagement  callback ={callbackComfirm} visible={ open } bodyModel={{
+        record: record, update : update
+      }}/>}
     <Col style={{ marginBottom: 30 }}>
           <Card
           headStyle={{
             fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)"
           }}
-          title="Quyền lý Quyền chi tiết"
+          title="Quản lý Chức vụ"
           bordered={true}
           style={{ backgroundColor: '#FFFFFF' }}>
             <Col span={48} >
@@ -103,7 +189,7 @@ export default function RolesManagement(props) {
                     <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch} >Tìm kiếm</Button>
                   </Col>
                   <Col className="gutter-row" span={3}>
-                    <Button type='primary' size='middle' style={{ width: '100%' }} onClick={insertURL}>Thêm</Button>
+                    <Button type='primary' size='middle' style={{ width: '100%' }} onClick={insertSysRole}>Thêm</Button>
                   </Col>
               </Row>
             </Col>

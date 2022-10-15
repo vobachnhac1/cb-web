@@ -195,7 +195,7 @@ export default function ManagerDetailCbCoin({ query }) {
         <ModalManagerDetailCbCoin visible={visible} bodyModel={bodyModel} callback={callbackModal} />
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
-          title="Quản lý chi tiết hệ thống"
+          title="Quản lý tiêu chí giao dịch tích điểm"
           bordered={true}
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>
