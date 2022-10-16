@@ -64,5 +64,6 @@
   "urlSystemManagement":"/sys/management",
   "urlSysRoleManagement":"/sys/roles",
   "urlSysPerUrlManagement":"/sys/paths-per",
-  "urlSysAccountManagement":"/sys/account"
+  "urlSysAccountManagement":"/sys/account",
+  "urlSysChangePassword":"/sys/account-password"
 }

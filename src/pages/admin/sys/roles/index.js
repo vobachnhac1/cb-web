@@ -37,13 +37,15 @@ export default function RolesManagement(props) {
       dataIndex: 'ord_numbers',
       key: 'ord_numbers',
       width: 50,
-    }, {
-      align: 'center',
-      title: 'Mã chức vụ',
-      dataIndex: 'roleId',
-      key: 'roleId',
-      width: 100,
-    },  {
+    }, 
+    // {
+    //   align: 'center',
+    //   title: 'Mã chức vụ',
+    //   dataIndex: 'roleId',
+    //   key: 'roleId',
+    //   width: 100,
+    // },  
+    {
       align: 'center',
       title: 'Chức vụ',
       dataIndex: 'roleName',
@@ -108,6 +110,7 @@ export default function RolesManagement(props) {
   const onSearch =()=>{initPage()}
 
   const insertSysRole =()=>{
+    setRecord(null)
     setUpdate(false)
     setOpen(true)
   }
@@ -119,6 +122,8 @@ export default function RolesManagement(props) {
   }
 
   const deleteSysRole = async (value)=>{
+    // NẾU XÓA THÌ PHẢI CHECK TOÀN BỘ TABLE ĐANG DÙNG MÃ ROLES ĐANG DÙNG NẾU EXIST THÌ KHÔNG ĐƯỢC XÓA : CỤ THỂ TABLE CB_SYS_ACCOUNT, CB_SYS_PER_URL_BE, CB_SYS_PER_URL_FE
+    // HIỆN TẠI THÌ CHƯA CÓ CHECK
     const param = `/${value.roleId}/${true}`
     const result = await dispatch(actions.deleteSysRole(param));
     if(result.success){

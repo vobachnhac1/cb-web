@@ -116,6 +116,8 @@ export default function SystemManagement(props) {
   }
 
   const deleteSystem = async (value)=>{
+    // NẾU XÓA THÌ PHẢI CHECK TOÀN BỘ TABLE ĐANG DÙNG HỆ THỐNG ĐANG DÙNG NẾU EXIST THÌ KHÔNG ĐƯỢC XÓA
+    // HIỆN TẠI THÌ CHƯA CÓ CHECK
     const param = `/${value.sysCode}/${true}/${value.id}`
     const result = await dispatch(actions.deleteSystem(param));
     if(result.success){

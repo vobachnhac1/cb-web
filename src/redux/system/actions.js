@@ -185,6 +185,20 @@ export const deleteAccount = (payload) => async (dispatch, getState, { $http }) 
   return {...data, visible: data?.success }
 }
 
+export const changePassword = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+  const url = URLSERVER.urlSysChangePassword;
+  const result = await $http.put(url,payload)
+  const {success, data } = result;
+  if(success){
+    return {
+      ...data,
+      visible: data?.success
+    }
+  }
+  return {...data, visible: data?.success }
+}
+
 //done
 export const setSystemList = () => async (dispatch, getState, { $http }) => {
   setToken(getState(),$http)
