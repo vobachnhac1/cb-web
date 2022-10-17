@@ -2,7 +2,7 @@
 * Author Võ Bách Nhạc
 * Email vonhac.20394@gmail.com
 * Phone 0906.918.738
-* Created: 2022-04-07
+* Created: 2022-10-07
 *------------------------------------------------------- */
 require("./styles.less");
 import { useEffect, useState } from 'react';
@@ -17,10 +17,22 @@ import * as Message from '@/components/message';
 import { useSelector, useDispatch } from 'react-redux';
 import Text from 'antd/lib/typography/Text';
 import { actions, getters } from '@/redux/system';
+import ModalAccountManagement from '@/containers/modal-system-account';
 
 export default function AccountManagement(props) {
   const dispatch = useDispatch();
+
+  const [perSys, setSys]= useState(null);
+  const [perSysRoles, setSysRole]= useState(null);
+
   const accountList = useSelector(getters.getAccountList);
+  const listRoles = useSelector(getters.getRolesList);
+  const listSystem = useSelector(getters.getSystemList);
+
+  const [open, setOpen] = useState(false);
+  const [update, setUpdate] = useState(false);
+  const [record, setRecord] = useState(null);
+
   useEffect(()=>{
     initPage();
   },[]);
@@ -77,18 +89,107 @@ export default function AccountManagement(props) {
       title: 'Người cập nhật',
       dataIndex: 'updatedBy',
       key: 'updatedBy',
-    }
+    },{
+      align: 'center',
+      title: 'Action',
+      key: 'action',
+      width: 200,
+      render: (text, record) => (
+        <Space size="middle">
+          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateAcount(record)} >Cập nhật</Button>
+              <Popconfirm title="Bạn có muốn?" onConfirm={() => deleteAcount(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom" >
+              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
+          </Popconfirm>
+        </Space>
+
+      ),
+    },
 
   ];
 
   const initPage = async ()=>{
     const res = await dispatch(actions.setAccountList());
+    await dispatch(actions.setSystemList());
+    await dispatch(actions.setRolesList());
   }
   const onSearch =()=>{initPage()}
 
-  const insertURL =()=>{}
+  const insertAccount =()=>{
+    setRecord(null)
+    setUpdate(false)
+    setOpen(true)
+  }
+  const updateAcount =(value)=>{
+    setRecord(value)
+    setUpdate(true)
+    setOpen(true)
+  }
+  const deleteAcount =(value)=>{
+    Message.Info("Thông Báo", "Tính năng đang phát triển");
+  }
+  
+  const callbackComfirm = async (value)=>{
+    if(!value.visible){
+      setOpen(false)
+      return;
+    }
+    if(update){
+      const {userId, fullname, password, newPassword, roleId, description, id, status, systemCode}= value;
+      const param ={
+        id: id,
+        userId: userId,
+        fullname: fullname,
+        password: password,
+        newPassword: newPassword,
+        roleId: roleId,
+        description: description,
+        status: status,
+        systemCode: systemCode
+      }
+      const result = await dispatch(actions.updateAccount(param));
+      if(result.success){ 
+        setOpen(false)
+        setUpdate(false)
+        setRecord(null)
+        Message.Success("Thông Báo", result.message);
+        initPage();
+        return;
+      }
+      Message.Error("Thông Báo", result.message);
+      // call API update
+    }else{
+      const {userId, fullname, password, newPassword, roleId, description, id, status, systemCode}= value;
+      const param = {        
+        userId: userId,
+        fullname: fullname,
+        password: password,
+        newPassword: newPassword,
+        roleId: roleId,
+        description: description,
+        status: status,
+        systemCode: systemCode
+      }
+      const result = await dispatch(actions.insertAccount(param));
+      if(result.success){
+        setOpen(false)
+        setUpdate(false)
+        setRecord(null)
+        Message.Success("Thông Báo", result.message);
+        initPage();
+        return;
+      }
+      Message.Error("Thông Báo", result.message);
+    }
+  }
+  
   return (
     <LayoutHome>
+        { open && <ModalAccountManagement  callback ={callbackComfirm} visible={ open }
+         bodyModel={{
+        record: record, 
+        update : update
+
+      }}/>}
       <Col style={{ marginBottom: 30 }}>
         <Card
         headStyle={{
@@ -103,12 +204,11 @@ export default function AccountManagement(props) {
                   <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch} >Tìm kiếm</Button>
                 </Col>
                 <Col className="gutter-row" span={3}>
-                  <Button type='primary' size='middle' style={{ width: '100%' }} onClick={insertURL}>Thêm</Button>
+                  <Button type='primary' size='middle' style={{ width: '100%' }} onClick={insertAccount}>Thêm</Button>
                 </Col>
             </Row>
           </Col>
         </Card>
-
         <div style={{ marginTop: 20 }} />
         <Card>
           <Col span={48} style={{ marginTop: 10 }}>

@@ -2,7 +2,7 @@
 * Author Võ Bách Nhạc
 * Email vonhac.20394@gmail.com
 * Phone 0906.918.738
-* Created: 2022-04-07
+* Created: 2022-10-07
 *------------------------------------------------------- */
 require("./styles.less");
 import { useEffect, useState } from 'react';
@@ -17,10 +17,14 @@ import * as Message from '@/components/message';
 import { useSelector, useDispatch } from 'react-redux';
 import Text from 'antd/lib/typography/Text';
 import { actions, getters } from '@/redux/system';
+import ModalSystemManagement from '@/containers/modal-system-management';
 
 export default function SystemManagement(props) {
   const dispatch = useDispatch();
   const systemList = useSelector(getters.getSystemList);
+  const [open, setOpen] = useState(false);
+  const [update, setUpdate] = useState(false);
+  const [record, setRecord] = useState(null);
   useEffect(()=>{
     initPage();
   },[]);
@@ -66,8 +70,8 @@ export default function SystemManagement(props) {
       align: 'center',
       width: 120,
       title: 'Ngày cập nhật',
-      dataIndex: 'createdDate',
-      key: 'createdDate',
+      dataIndex: 'updatedDate',
+      key: 'updatedDate',
       render: (text) => (
         <Text>{text ? moment(text).format('HH:mm:ss,  YYYY-MM-DD') : ''}</Text>
       ),
@@ -77,7 +81,21 @@ export default function SystemManagement(props) {
       title: 'Người cập nhật',
       dataIndex: 'updatedBy',
       key: 'updatedBy',
-    }
+    }, {
+      align: 'center',
+      title: 'Action',
+      key: 'action',
+      width: 200,
+      render: (text, record) => (
+        <Space size="middle">
+          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateSystem(record)} >Cập nhật</Button>
+              <Popconfirm title="Bạn có muốn?" onConfirm={() => deleteSystem(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom" >
+              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
+          </Popconfirm>
+        </Space>
+
+      ),
+    },
 
   ];
 
@@ -86,9 +104,76 @@ export default function SystemManagement(props) {
   }
   const onSearch =()=>{initPage()}
 
-  const insertURL =()=>{}
+  const insertSystem =()=>{
+    setUpdate(false)
+    setOpen(true)
+  }
+
+  const updateSystem =(value)=>{
+    setRecord(value)
+    setUpdate(true)
+    setOpen(true)
+  }
+
+  const deleteSystem = async (value)=>{
+    const param = `/${value.sysCode}/${true}/${value.id}`
+    const result = await dispatch(actions.deleteSystem(param));
+    if(result.success){
+      Message.Success("Thông Báo", result.message);
+      initPage();
+      return;
+    }
+    Message.Error("Thông Báo", result.message);
+  }
+
+
+  const callbackComfirm = async (value)=>{
+    if(!value.visible){
+      setOpen(false)
+      return;
+    }
+    if(update){
+      const param ={
+        sysCode: value.sysCode,
+        sysName: value.sysName,
+        description: value.description,
+        id: value.id,
+      }
+      const result = await dispatch(actions.updateSystem(param));
+      if(result.success){
+        setOpen(false)
+        setUpdate(false)
+        setRecord(null)
+        Message.Success("Thông Báo", result.message);
+        initPage();
+        return;
+      }
+      Message.Error("Thông Báo", result.message);
+      // call API update
+    }else{
+      const param ={
+        sysCode: value.sysCode,
+        sysName: value.sysName,
+        description: value.description
+      }
+      const result = await dispatch(actions.insertSystem(param));
+      if(result.success){
+        setOpen(false)
+        setUpdate(false)
+        setRecord(null)
+        Message.Success("Thông Báo", result.message);
+        initPage();
+        return;
+      }
+      Message.Error("Thông Báo", result.message);
+    }
+  }
+  
   return (
     <LayoutHome>
+      { open && <ModalSystemManagement  callback ={callbackComfirm} visible={ open } bodyModel={{
+        record: record, update : update
+      }}/>}
       <Col style={{ marginBottom: 30 }}>
         <Card
         headStyle={{
@@ -103,7 +188,7 @@ export default function SystemManagement(props) {
                   <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch} >Tìm kiếm</Button>
                 </Col>
                 <Col className="gutter-row" span={3}>
-                  <Button type='primary' size='middle' style={{ width: '100%' }} onClick={insertURL}>Thêm</Button>
+                  <Button type='primary' size='middle' style={{ width: '100%' }} onClick={insertSystem}>Thêm</Button>
                 </Col>
             </Row>
           </Col>

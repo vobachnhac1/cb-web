@@ -117,14 +117,14 @@ const MainWheel = (props) => {
       <div className="colContainer"
         style={{
           '--set-margin-left': !roles ? 2 : 6,
-          '--position-init': `${returnPositionInit()}deg`
+          '--position-init': `${returnPositionInit()}deg`,
         }}>
         {/* <div className="rowContainer"> */}
         <div className="containerSpin">
           <div className={classNames({ 'active-spin': animation }, { 'arrow': true })} >
             <div className="image-border" />
             <div className="image-row" />
-          </div>
+          </div> 
           <div
             className={classNames({ 'spinning': animation }, { 'pieContainer': true })}
             style={{
@@ -171,4 +171,4 @@ const MainWheel = (props) => {
 }
 
 
-export default MainWheel
+export default MainWheel 
