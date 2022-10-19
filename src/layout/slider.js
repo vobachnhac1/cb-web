@@ -141,7 +141,7 @@ const menu = [
     ],
   },
   // {
-  //   key: 'subManager-CbCoin',
+  //   key: 'subManager-cb-coin',
   //   parentKey: null,
   //   path: '/admin/manager-cb-coin',
   //   icon: <SwapOutlined />,
@@ -149,32 +149,32 @@ const menu = [
   //   child: null,
   // },
   {
-    key: 'subManager-CbCoins',
+    key: 'subCoins',
     parentKey: null,
-    path: '/admin/cbCoin',
+    path: '/admin/cb-coin',
     icon: <AliyunOutlined />,
     title: 'Quản lý hệ thống tích điểm',
     child: [
       {
-        key: 'subManager-CbCoin-all',
-        parentKey: 'subManager-CbCoins',
-        path: '/admin/cbCoin/manager-cb-coin',
+        key: 'subCoinsAll',
+        parentKey: 'subCoins',
+        path: '/admin/cb-coin/manager-cb-coin',
         icon: <AliyunOutlined />,
         title: 'Hệ thống tích điểm',
         child: null,
       },
       {
-        key: 'subManager-CbCoin-history-user',
-        parentKey: 'subManager-CbCoins',
-        path: '/admin/cbCoin/history-user',
+        key: 'subCoinsUserHis',
+        parentKey: 'subCoins',
+        path: '/admin/cb-coin/history-user',
         icon: <AliyunOutlined />,
         title: 'Danh sách khách hàng',
         child: null,
       },
       {
-        key: 'subManager-CbCoin-history-cb-coin',
-        parentKey: 'subManager-CbCoins',
-        path: '/admin/cbCoin/history-cbCoin',
+        key: 'subCoinsHis',
+        parentKey: 'subCoins',
+        path: '/admin/cb-coin/history-cb-coin',
         icon: <AliyunOutlined />,
         title: 'Danh sách khách hàng',
         child: null,
@@ -208,8 +208,8 @@ const permission = [
     child: ['subSytem', 'subSysAccount', 'subSysPaths', 'subSysRoles'],
   },
   {
-    parent: 'subManager-CbCoins',
-    child: ['subManager-CbCoin-all', 'subManager-CbCoin-user-history','subManager-CbCoin-history-cbCoin'],
+    parent: 'subCoins',
+    child: ['subCoinsAll', 'subCoinsUserHis','subCoinsHis'],
   },
 
 ];
