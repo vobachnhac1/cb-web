@@ -172,7 +172,7 @@ const menu = [
         child: null,
       },
       {
-        key: 'subManager-CbCoin-history-cbCoin',
+        key: 'subManager-CbCoin-history-cb-coin',
         parentKey: 'subManager-CbCoins',
         path: '/admin/cbCoin/history-cbCoin',
         icon: <AliyunOutlined />,
