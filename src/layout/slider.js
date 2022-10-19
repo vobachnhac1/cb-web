@@ -5,7 +5,7 @@
 * Created: 2022-03-10
 * Update: 2022/10/12 - Nhacvb : phân quyền URL 
 *------------------------------------------------------- */
-import React, { useEffect, useState,memo } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import Link from 'next/link';
 import { Layout, Menu } from 'antd';
 import {
@@ -15,7 +15,7 @@ import {
   CodeSandboxOutlined,
   SwapOutlined,
   UsergroupAddOutlined,
-  TeamOutlined 
+  TeamOutlined
 
 } from '@ant-design/icons';
 const { SubMenu } = Menu;
@@ -98,7 +98,7 @@ const menu = [
         child: null,
       }
     ],
-  },{
+  }, {
     key: 'subSys',
     parentKey: null,
     path: '/admin/sys',
@@ -137,15 +137,49 @@ const menu = [
         title: 'Quản lý chức vụ',
         child: null,
       }
+
     ],
   },
+  // {
+  //   key: 'subManager-CbCoin',
+  //   parentKey: null,
+  //   path: '/admin/manager-cb-coin',
+  //   icon: <SwapOutlined />,
+  //   title: 'Quản lý hệ thống tích điểm',
+  //   child: null,
+  // },
   {
-    key: 'subManager-CbCoin',
+    key: 'subManager-CbCoins',
     parentKey: null,
-    path: '/admin/manager-cb-coin',
-    icon: <SwapOutlined />,
+    path: '/admin/cbCoin',
+    icon: <AliyunOutlined />,
     title: 'Quản lý hệ thống tích điểm',
-    child: null,
+    child: [
+      {
+        key: 'subManager-CbCoin-all',
+        parentKey: 'subManager-CbCoins',
+        path: '/admin/cbCoin/manager-cb-coin',
+        icon: <AliyunOutlined />,
+        title: 'Hệ thống tích điểm',
+        child: null,
+      },
+      {
+        key: 'subManager-CbCoin-history-user',
+        parentKey: 'subManager-CbCoins',
+        path: '/admin/cbCoin/history-user',
+        icon: <AliyunOutlined />,
+        title: 'Danh sách khách hàng',
+        child: null,
+      },
+      {
+        key: 'subManager-CbCoin-history-cbCoin',
+        parentKey: 'subManager-CbCoins',
+        path: '/admin/cbCoin/history-cbCoin',
+        icon: <AliyunOutlined />,
+        title: 'Danh sách khách hàng',
+        child: null,
+      },
+    ],
   },
 ];
 
@@ -171,12 +205,13 @@ const permission = [
 
   {
     parent: 'subSys',
-    child: ['subSytem','subSysAccount','subSysPaths','subSysRoles'],
+    child: ['subSytem', 'subSysAccount', 'subSysPaths', 'subSysRoles'],
   },
   {
-    parent: 'subManager-CbCoin',
-    child: null,
+    parent: 'subManager-CbCoins',
+    child: ['subManager-CbCoin-all', 'subManager-CbCoin-user-history','subManager-CbCoin-history-cbCoin'],
   },
+
 ];
 
 
@@ -187,16 +222,16 @@ const SliderCustom = (props) => {
   const [isChoosed, setIsChoosed] = useState(null);
   const [rootSubmenuKeys, setRootSubmenuKeys] = useState([]);
   const [mapArrScreen, setMapArrScreen] = useState([]);
-  const arrPaths =  useSelector(getters.getPermissionPath)
+  const arrPaths = useSelector(getters.getPermissionPath)
   useEffect(() => {
     const arrScreen = permission.map((item) => {
       let arrTemp = [];
       let arrChild = [];
       let arrChildTemp = [];
       menu.forEach((element) => {
-        if(arrPaths){
-          const _filter = arrPaths?.filter(item=> item == element.path)
-          if(_filter && _filter.length > 0){
+        if (arrPaths) {
+          const _filter = arrPaths?.filter(item => item == element.path)
+          if (_filter && _filter.length > 0) {
             if (element.key === item.parent) {
               //check thàng child tồn tại
               if (element.child && element.child.length > 0) {
@@ -207,25 +242,25 @@ const SliderCustom = (props) => {
                   return _.head(arrExistInChild) || {};
                 });
                 // check path có được cấp quyền không
-                arrPaths.forEach(elll=>{
-                    let __child =  arrChild.filter(_path=> elll == _path.path)
-                    if(__child && __child.length >0){
-                      arrChildTemp.push(_.head(__child))
-                    }
+                arrPaths.forEach(elll => {
+                  let __child = arrChild.filter(_path => elll == _path.path)
+                  if (__child && __child.length > 0) {
+                    arrChildTemp.push(_.head(__child))
+                  }
                 })
               }
-              arrTemp = {                
+              arrTemp = {
                 ...element,
                 child: arrChildTemp.filter((isExist) => isExist.key),
               };
             }
           }
-        } else{
+        } else {
           //check thằng parent tồn
           if (element.key === item.parent) {
             //check thàng child tồn tại
             if (element.child && element.child.length > 0) {
-              arrChild = item.child.map((childMenu) => {                
+              arrChild = item.child.map((childMenu) => {
                 let arrExistInChild = element.child.filter(
                   (itemMenu) => itemMenu.key == childMenu
                 );
@@ -239,15 +274,15 @@ const SliderCustom = (props) => {
               child: arrChild.filter((isExist) => isExist.key),
             };
           }
-        }        
+        }
       });
       return arrTemp;
     });
     const path = router.pathname;
     let keyChoose = null;
-    const arrScreenFM =  arrScreen.filter(item => item.key)
+    const arrScreenFM = arrScreen.filter(item => item.key)
     arrScreenFM.filter(item => item.key).forEach(item => {
-      
+
       if (item.path == path) {
         keyChoose = item.key
       } else {
@@ -320,4 +355,4 @@ const SliderCustom = (props) => {
   );
 };
 
-export default  memo(SliderCustom);
+export default memo(SliderCustom);
