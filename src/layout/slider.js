@@ -140,14 +140,6 @@ const menu = [
 
     ],
   },
-  // {
-  //   key: 'subManager-cb-coin',
-  //   parentKey: null,
-  //   path: '/admin/manager-cb-coin',
-  //   icon: <SwapOutlined />,
-  //   title: 'Quản lý hệ thống tích điểm',
-  //   child: null,
-  // },
   {
     key: 'subCoins',
     parentKey: null,
@@ -176,7 +168,7 @@ const menu = [
         parentKey: 'subCoins',
         path: '/admin/cb-coin/history-cb-coin',
         icon: <AliyunOutlined />,
-        title: 'Danh sách khách hàng',
+        title: 'Lịch sử tích điểm',
         child: null,
       },
     ],
@@ -209,7 +201,7 @@ const permission = [
   },
   {
     parent: 'subCoins',
-    child: ['subCoinsAll', 'subCoinsUserHis','subCoinsHis'],
+    child: ['subCoinsAll', 'subCoinsUserHis', 'subCoinsHis'],
   },
 
 ];
