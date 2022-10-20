@@ -390,7 +390,7 @@ export default function GenerateReward(props) {
       setLoading(false);
       return;
     }
-    const recoreWheel = listWheelApproved.find(item => item.wheel_id == filter.wheel_id)
+    const recoreWheel = listWheelApproved?.find(item => item.wheel_id == filter.wheel_id)
 
     const result = await dispatch(actionsRules.generateRewardOfRules({
       wheel_id: recoreWheel.wheel_id,
@@ -488,7 +488,7 @@ export default function GenerateReward(props) {
       return;
     }
     const rule = listRules.find(item => item.rules_id == value);
-    const wheel = listWheelApproved.find(item => item.wheel_id == filter.wheel_id);
+    const wheel = listWheelApproved?.find(item => item.wheel_id == filter.wheel_id);
     let num_date_wheel = 0;
     if (!wheel) {
       Message.Warning("Thông báo", "Vui lòng chọn Vòng Quay");
@@ -524,7 +524,7 @@ export default function GenerateReward(props) {
   const onChangeSelectWheel = async (value) => {
     if (value) {
       setLoading(true);
-      const { rules_id, wheel_id } = listWheelApproved.find(ele => ele.wheel_id == value);
+      const { rules_id, wheel_id } = listWheelApproved?.find(ele => ele.wheel_id == value);
       const result = await dispatch(actionsRules.getWheelDtStateApprove(wheel_id));
       // console.log('rules_id: ', rules_id, listRules);
       if (result.length > 0) {
@@ -571,7 +571,7 @@ export default function GenerateReward(props) {
                   value={filter.wheel_id}
                   onChange={onChangeSelectWheel}
                 >
-                  {listWheelApproved.map((item, key) => (
+                  {listWheelApproved?.map((item, key) => (
                     <Select.Option value={item.wheel_id} key={key}> {item.wheel_name}</Select.Option>
                   ))}
                 </Select>
