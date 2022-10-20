@@ -25,7 +25,7 @@ import PopupMenu from '@/containers/popup-menu-wheel'
 
 
 export default function DisplayWheel(props) {
-  /// url mẫu http://localhost:3000/wheel/000001000012-0000000001
+  /// url mẫu http://localhost:3000/wheel2/000001000012-0000000001
   const router = useRouter()
   const { manager = null, arrItem = [] } = props;
   const [selectedItem, setSelectedItem] = useState(null);
@@ -59,8 +59,8 @@ export default function DisplayWheel(props) {
     if (!manager) {
       initPage();
     }
-    if (path.includes("/wheel/", 0)) {
-      setPath('/wheel/')
+    if (path.includes("/wheel2/", 0)) {
+      setPath('/wheel2/')
     }
   }, []);
 
@@ -83,7 +83,7 @@ export default function DisplayWheel(props) {
     const params = locationUrl.pathname;
     const data = params.split('/');
     if (data && data.length > 2) {
-      if (__.last(data).length == 23 && data[1] == 'wheel') {
+      if (__.last(data).length == 23 && data[1] == 'wheel2') {
         const tempInfo = __.last(data)
         const arrInfo = tempInfo.split('-');
         const wheel_info = _.head(arrInfo);
