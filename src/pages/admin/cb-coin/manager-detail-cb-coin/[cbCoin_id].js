@@ -206,7 +206,7 @@ export default function ManagerDetailCbCoin({ query }) {
               'marginTop': '10px'
             }}>
               <Col className="gutter-row" style={{ marginBottom: 10, }}>
-                <Link href="/admin/manager-cb-coin">
+                <Link href="/admin/cbCoin/manager-cb-coin">
                   <Button type='primary' size='middle' style={{ width: '100%' }} title="Quay lại" >
                     <ArrowLeftOutlined style={{
                       'fontSize': '21px',
