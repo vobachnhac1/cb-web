@@ -40,7 +40,11 @@ export default buildReducer(
         listCustomer: payload.listCustomer,
       }
     },[TYPES.SIGN_OUT]: (state) => {
-      return {}
+      return {
+        listReward: [],
+        listWheelDetailById: [],
+        listCustomer: [],
+      }
     }
   },
 );

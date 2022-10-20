@@ -2,17 +2,17 @@
 
 export const getStateListReward = ({ wheelPopupMenu: { listReward = [] } }) => {
 
-  return listReward.map((item, index) => ({ ...item, key: index })) || []
+  return listReward?.map((item, index) => ({ ...item, key: index })) || []
 };
 
 export const getStateListWheelDetailById = ({ wheelPopupMenu: { listWheelDetailById = [] } }) => {
 
-  return listWheelDetailById.map((item, index) => ({ ...item, key: index })) || []
+  return listWheelDetailById?.map((item, index) => ({ ...item, key: index })) || []
 };
 
 export const getStateListCustomer = ({ wheelPopupMenu: { listCustomer = [] } }) => {
 
-  return listCustomer.map((item, index) => ({ ...item, key: index })) || []
+  return listCustomer?.map((item, index) => ({ ...item, key: index })) || []
 };
 
 

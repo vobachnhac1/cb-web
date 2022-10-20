@@ -1,9 +1,12 @@
 import * as TYPES from './type';
 import URLSERVER from '@/redux/urlServer.json';
+import { setToken } from '../wrapper';
 
 const setSearchManagerDetailCbCoin = (payload) => ({ type: TYPES.MANAGER_DETAIL_CB_COIN_SEARCH, payload });
 
 export const insertManagerDetailCbCoin = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   const newItem = {
     behaviorCode: payload.behaviorCode.toUpperCase(),
     behaviorName: payload.behaviorName,
@@ -28,6 +31,8 @@ export const insertManagerDetailCbCoin = (payload) => async (dispatch, getState,
 }
 
 export const updateManagerDetailCbCoin = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   const param = {
     key: payload.key,
     id: payload.id,
@@ -57,6 +62,8 @@ export const updateManagerDetailCbCoin = (payload) => async (dispatch, getState,
 }
 
 export const deleteManagerDetailCbCoin = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   // delete trong list state
   const param = {
     id: payload.id,
@@ -77,6 +84,8 @@ export const deleteManagerDetailCbCoin = (payload) => async (dispatch, getState,
 }
 
 export const unDeleteManagerDetailCbCoin = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   // undelete trong list state
   const param = {
     id: payload.id,
@@ -97,6 +106,8 @@ export const unDeleteManagerDetailCbCoin = (payload) => async (dispatch, getStat
 }
 
 export const saveManagerDetailCbCoin = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   //call xuống backend url + param
 
   let param = {
@@ -113,6 +124,7 @@ export const saveManagerDetailCbCoin = (payload) => async (dispatch, getState, {
 }
 
 export const searchManagerDetailCbCoin = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
 
   // call xuống backend url + param 
   let params = {
@@ -133,13 +145,14 @@ export const searchManagerDetailCbCoin = (payload) => async (dispatch, getState,
 
 // check behavior have duplicate
 export const checkBehavior = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   const params = {
     behaviorCode: payload.behaviorCode,
   }
   const state = getState();
   let { listManagerDetailCbCoin } = state.ManagerDetailCbCoin
   for (let i = 0; i < listManagerDetailCbCoin.length; i++) {
-    console.log('listManagerDetailCbCoin.behaviorCode === params.behaviorCode', listManagerDetailCbCoin.behaviorCode === params.behaviorCode)
     if (listManagerDetailCbCoin[i].behaviorCode === params.behaviorCode.toUpperCase()) {
       return {
         success: false,

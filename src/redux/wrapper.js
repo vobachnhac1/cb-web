@@ -15,3 +15,13 @@ export const baseReducer = (state, action, mutations, resetWhenLogout = false, i
   }
   return result;
 };
+
+
+export const setToken =(state,  $http)=>{
+  const {global:{access_token} } = state;
+  if(access_token){
+    $http.setAccessToken(access_token)
+  }else{
+    dispatch(signOutDispatch());
+  }
+}

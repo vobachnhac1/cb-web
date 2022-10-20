@@ -19,6 +19,9 @@ import { PathTitle } from "@/constants/url-name";
 import Header from '@/components/Head';
 // pop up menu
 import PopupMenu from '@/containers/popup-menu-wheel'
+import { Col, Row, Typography } from "antd";
+const {Text}= Typography
+
 const URL ='/wheel1/';
 const URL_NAME ='wheel1';
 const DisplayWheel = (props) => {
@@ -32,6 +35,7 @@ const DisplayWheel = (props) => {
   const [wheelId, setWheelId] = useState("")
   const [userInfo, setUserInfo] = useState({})
   const [selectedItem, setSelectedItem] = useState(null);
+  const getCustomerInfo = useSelector(gettersEventWheel.getCustomerInfo);
 
   const places = !manager ? useSelector(gettersEventWheel.getContentReward) : (arrItem || []);
   useEffect(() => {
@@ -138,6 +142,20 @@ const DisplayWheel = (props) => {
         wheelId={wheelId}
         userInfo={userInfo}
       />}
+       <Row style={{ position:'absolute',paddingTop:'2vh', height: '10vh', flex:1, flexDirection: 'row', alignItems:'center', width:'100vw', justifyContent:'flex-end'}}>
+        <Col style={{flex:1 }}>
+          {/* <Text>Võ Bách Nhạc</Text> */}
+        </Col>
+        <Col style={{flex:2}}>
+          <Text style={{fontSize:14, fontWeight:'bold', color:'lavender'}}>{getCustomerInfo['customerName']}</Text>
+        </Col>
+        <Col style={{flex:2}}>
+          <Row>
+            <Text style={{fontSize:14, fontWeight:'bold', color:'lavender'}}>{getCustomerInfo['totalPoint'].toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +' Coin'}</Text>
+          </Row>
+          <Text style={{fontSize:14, fontWeight:'bold', color:'lavender'}}>{getCustomerInfo['numTimes'].toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' Lượt quay'}</Text>
+        </Col>
+      </Row>
       {!invalid && <WheelChild
         arrItem={arrItem}
         onSelectItem={onSelectItem}

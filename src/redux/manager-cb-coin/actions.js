@@ -1,12 +1,15 @@
 import * as TYPES from './type';
 import URLSERVER from '@/redux/urlServer.json';
 import moment from 'moment';
+import { setToken } from '../wrapper';
 
 const setSearchManagerCbCoin = (payload) => ({ type: TYPES.MANAGER_CB_COIN_SEARCH, payload });
 const setSearchManagerCbCoinUserHistory = (payload) => ({ type: TYPES.MANAGER_CB_COIN_USERHISTORY, payload });
 const setSearchManagerCbCoinHistory = (payload) => ({ type: TYPES.MANAGER_CB_COIN_HISTORY, payload })
 
 export const insertManagerCbCoin = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   const param = {
     criteria_name: payload.criteria_name,
     from_date: payload.from_date,
@@ -27,6 +30,8 @@ export const insertManagerCbCoin = (payload) => async (dispatch, getState, { $ht
 }
 
 export const updateManagerCbCoin = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   // call xuống backend url + param
   const param = {
     ord_numbers: payload.ord_numbers,
@@ -59,6 +64,8 @@ export const updateManagerCbCoin = (payload) => async (dispatch, getState, { $ht
 }
 
 export const deleteManagerCbCoinById = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   const param = {
     criteriaCode: parseInt(payload.criteria_code),
     username: 'ADMIN'  // username is  update by name of user
@@ -74,6 +81,8 @@ export const deleteManagerCbCoinById = (payload) => async (dispatch, getState, {
 }
 
 export const searchManagerCbCoin = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   // call xuống backend url + param 
   const result = await $http.get(`${URLSERVER.getCustPointCriteria}/${null}/${null}/${null}/${null}`);
   const { success, data } = result;
@@ -104,6 +113,8 @@ export const SignOut = () => async (dispatch, getState, { $http }) => {
 
 // lay data hisory khách hàng
 export const searchManagerCbCoinUserHistory = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   // call xuống backend url + param 
   const result = await $http.get(`${URLSERVER.custPointGetAllCustomerInfo}`);
   const { success, data } = result;
@@ -119,6 +130,8 @@ export const searchManagerCbCoinUserHistory = (payload) => async (dispatch, getS
 
 // lay data hisory tích điểm
 export const searchManagerCbCoinHistory = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   // call xuống backend url + param 
   const params = {
     criteriaCode: payload.criteria_code,

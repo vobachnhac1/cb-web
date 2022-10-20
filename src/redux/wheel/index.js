@@ -19,7 +19,9 @@ export default buildReducer(
         listWheel: payload
       }
     },[TYPES.SIGN_OUT]: (state = init) => {
-      return {}
+      return  {
+        listWheel: []
+      }
     }
   },
 );

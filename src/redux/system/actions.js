@@ -1,5 +1,6 @@
 import * as TYPES from './type';
 import URLSERVER from '@/redux/urlServer.json';
+import { setToken } from '../wrapper';
 
 // hàm thị thi nội bộ
 const _setPathsFEList = (payload) => ({ type: TYPES.SET_PATHS_FE, payload});
@@ -11,7 +12,6 @@ const _setSystemList  = (payload) => ({ type: TYPES.SET_SYSTEM, payload});
 // done
 export const setPathsList = (payload) => async (dispatch, getState, { $http }) => {
   setToken(getState(),$http)
-
   const { global: { userProfile } } =  getState();
   const {perSystem, systemCode, roleId} = payload;
   const url = URLSERVER.getPathsList +"/"+roleId+"/"+systemCode+"/"+perSystem;
@@ -267,11 +267,11 @@ export const SignOut = () => async (dispatch, getState, { $http }) => {
   dispatch(signOutDispatch());
 }
 
-const setToken =(state,  $http)=>{
-  const {global:{access_token} } = state;
-  if(access_token){
-    $http.setAccessToken(access_token)
-  }else{
-    dispatch(signOutDispatch());
-  }
-}
+// export const setToken =(state,  $http)=>{
+//   const {global:{access_token} } = state;
+//   if(access_token){
+//     $http.setAccessToken(access_token)
+//   }else{
+//     dispatch(signOutDispatch());
+//   }
+// }

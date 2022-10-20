@@ -2,5 +2,6 @@
 export const EVENT_WHEEL_SEARCH = 'EVENT_WHEEL_SEARCH';
 export const EVENT_PROCCESSING = 'EVENT_PROCCESSING';
 export const EVENT_INFO = 'EVENT_INFO';
+export const CUSTOMER_INFO = 'CUSTOMER_INFO';
 export const SIGN_OUT = 'SIGN_OUT';
 

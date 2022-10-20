@@ -1,5 +1,6 @@
 import * as TYPES from './type';
 import URLSERVER from '@/redux/urlServer.json';
+import { setToken } from '../wrapper';
 
 // hàm thị thi nội bộ
 const setListReward = (payload) => ({ type: TYPES.WHEELPOPUPMENU_REWARD_SEARCH, payload });
@@ -12,6 +13,8 @@ const setAllList = (payload) => ({ type: TYPES.WHEELPOPUPMENU_SEARCHALL, payload
 // hàm xử lý được gọi từ bên ngoài
 
 export const getAllDataHistory = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   const params = {
     wheelId: payload.wheelId,
     systemCode: payload.systemCode,

@@ -28,13 +28,13 @@ export const getStateMonitorRewardRecievedStateTotal = (state) => {
   return listRewardRecieved?.map(item => ({
     ...item,
     total: parseFloat(item.total)
-  })).find(item => item.id == "TOTAL");
+  }))?.find(item => item.id == "TOTAL");
 };
 
 export const getStateMonitorRewardRecieved = (state) => {
   const { dashboard: { listRewardRecieved = [] } } = state;
   let record = listRewardRecieved?.find(item => item.id == "TOTAL");
-  return listRewardRecieved?.filter(item => item.id != "TOTAL").map(item => ({
+  return listRewardRecieved?.filter(item => item.id != "TOTAL")?.map(item => ({
     ...item,
     total: parseFloat(item.total),
     percent: parseFloat(((item.total / record.total) * 100).toFixed(2))

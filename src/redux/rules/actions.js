@@ -1,6 +1,7 @@
 import * as TYPES from './type';
 import URLSERVER from '@/redux/urlServer.json';
 import moment from 'moment';
+import { setToken } from '../wrapper';
 // hàm thị thi nội bộ
 const setRules = (payload) => ({ type: TYPES.RULES_SEARCH, payload });
 const setListWheelApproved = (payload) => ({ type: TYPES.RULES_WHEEL_APPROVED, payload });
@@ -12,6 +13,8 @@ const setRewardHis = (payload) => ({ type: TYPES.RULES_REWARD_HIS, payload });
 // hàm xử lý được gọi từ bên ngoài
 
 export const filterRules = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   const result = await $http.post(URLSERVER.getRulesByFilter, payload);
   const { success, data } = result;
   if (!success || !data.success) {
@@ -23,6 +26,8 @@ export const filterRules = (payload) => async (dispatch, getState, { $http }) =>
 }
 
 export const approveRules = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   const param = {
     // "from_date": moment(payload.from_date).format('YYYY-MM-DD'),
     // "to_date": moment(payload.to_date).format('YYYY-MM-DD'),
@@ -53,6 +58,8 @@ export const approveRules = (payload) => async (dispatch, getState, { $http }) =
 }
 
 export const deleteRules = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   const param = {
     rules_id: payload.rules_id,
     is_delete: 'Y',
@@ -77,6 +84,8 @@ export const deleteRules = (payload) => async (dispatch, getState, { $http }) =>
 }
 
 export const updateRules = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   const param = {
     from_date: moment(payload.from_date).format('YYYY-MM-DD'),
     to_date: moment(payload.to_date).format('YYYY-MM-DD'),
@@ -93,6 +102,7 @@ export const updateRules = (payload) => async (dispatch, getState, { $http }) =>
   }
 
   const getList = await $http.post(URLSERVER.getRulesByFilter, {
+
     from_date: null,
     rules_id: null,
     rules_name: null,
@@ -107,6 +117,8 @@ export const updateRules = (payload) => async (dispatch, getState, { $http }) =>
 }
 
 export const insertRules = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   const param = {
     "from_date": moment(payload.from_date).format('YYYY-MM-DD'),
     "to_date": moment(payload.to_date).format('YYYY-MM-DD'),
@@ -137,6 +149,8 @@ export const insertRules = (payload) => async (dispatch, getState, { $http }) =>
 // rules-reward
 
 export const getWheelWithStateApprove = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   try {
     const params = {
       wheel_name: null,
@@ -161,6 +175,9 @@ export const getWheelWithStateApprove = (payload) => async (dispatch, getState, 
 }
 
 export const getWheelDtStateApprove = (payload) => async (dispatch, getState, { $http }) => {
+
+  setToken(getState(),$http)
+
   try {
     const params = {
       wheel_id: payload
@@ -181,6 +198,8 @@ export const getWheelDtStateApprove = (payload) => async (dispatch, getState, { 
 }
 
 export const updateWheelDetailWithRules = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   try {
     const result = await $http.post(URLSERVER.updateWheelDetailWithRules, payload);
     const { success, data } = result;
@@ -194,6 +213,8 @@ export const updateWheelDetailWithRules = (payload) => async (dispatch, getState
 }
 
 export const generateRewardOfRules = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   try {
     const result = await $http.post(URLSERVER.generateRewardOfRules, payload);
     const { success, data } = result;
@@ -209,6 +230,8 @@ export const generateRewardOfRules = (payload) => async (dispatch, getState, { $
 // Màn hình Phê duyệt Wheel đã hợp lệ
 
 export const getWheelScreenRules = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   try {
     const result = await $http.get(URLSERVER.selectWheelApproved, payload);
     const { success, data } = result;
@@ -224,6 +247,8 @@ export const getWheelScreenRules = (payload) => async (dispatch, getState, { $ht
 }
 
 export const updateStateWheel = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   try {
     const { wheel_id, wheel_status } = payload;
     const result = await $http.post(URLSERVER.updateStateWheel, {
@@ -246,6 +271,7 @@ export const updateStateWheel = (payload) => async (dispatch, getState, { $http 
 }
 
 export const getListRulesStateApprove = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
   // trạng thái = Y, thời gian còn hiệu lực
   const param = {
     status_rules: 'Y'
@@ -261,6 +287,7 @@ export const getListRulesStateApprove = (payload) => async (dispatch, getState, 
 }
 
 export const updateWheelWithRules = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
   const result = await $http.post(URLSERVER.updateWheelWithRules, payload);
   const { success, data } = result;
   if (!success || !data.success) {
@@ -270,6 +297,7 @@ export const updateWheelWithRules = (payload) => async (dispatch, getState, { $h
 }
 
 export const getRewardHistory = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
   const result = await $http.post(URLSERVER.getRewardHistory, payload);
   const { success, data } = result;
   if (!success || !data.success) {
@@ -286,6 +314,7 @@ export const getRewardHistory = (payload) => async (dispatch, getState, { $http 
 }
 
 export const comfirmReceived = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
   const result = await $http.get(URLSERVER.comfirmReceived, payload);
   const { success, data } = result;
   if (!success || !data.success) {
