@@ -156,7 +156,7 @@ const menu = [
         child: null,
       },
       {
-        key: 'subCoinsUserHis',
+        key: 'subCoinsHisUser',
         parentKey: 'subCoins',
         path: '/admin/cb-coin/history-user',
         icon: <AliyunOutlined />,
@@ -194,14 +194,13 @@ const permission = [
     parent: 'subRules',
     child: ['viewRules', 'subRulesReward', 'subRewardHistory']
   },
-
   {
     parent: 'subSys',
     child: ['subSytem', 'subSysAccount', 'subSysPaths', 'subSysRoles'],
   },
   {
     parent: 'subCoins',
-    child: ['subCoinsAll', 'subCoinsUserHis', 'subCoinsHis'],
+    child: ['subCoinsAll', 'subCoinsHisUser', 'subCoinsHis'],
   },
 
 ];
@@ -236,14 +235,19 @@ const SliderCustom = (props) => {
                 // check path có được cấp quyền không
                 arrPaths.forEach(elll => {
                   let __child = arrChild.filter(_path => elll == _path.path)
+                  console.log('__child: ', __child);
                   if (__child && __child.length > 0) {
-                    arrChildTemp.push(_.head(__child))
+                    if('/admin/cb-coin/manager-cb-coin'===__child[0]?.path ){
+                      arrChildTemp.push(_.head(__child))
+                    }else{
+                      arrChildTemp.unshift(_.head(__child))
+                    }
                   }
                 })
               }
               arrTemp = {
                 ...element,
-                child: arrChildTemp.filter((isExist) => isExist.key),
+                child: arrChildTemp.reverse().filter((isExist) => isExist.key),
               };
             }
           }
@@ -258,9 +262,7 @@ const SliderCustom = (props) => {
                 );
                 return _.head(arrExistInChild) || {};
               });
-
             }
-
             arrTemp = {
               ...element,
               child: arrChild.filter((isExist) => isExist.key),

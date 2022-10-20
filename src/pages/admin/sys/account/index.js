@@ -67,7 +67,7 @@ export default function AccountManagement(props) {
       dataIndex: 'roleId',
       key: 'roleId',
       render: (text) => (
-        <Text>{text ? listRoles?.find(item=>item.roleId ==text).roleName: ''}</Text>
+        <Text>{text ? listRoles?.find(item=>item.roleId ==text)?.roleName: ''}</Text>
 
       ),
     }, {
