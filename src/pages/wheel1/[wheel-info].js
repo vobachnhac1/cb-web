@@ -25,7 +25,7 @@ const DisplayWheel = (props) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [list, setList] = useState([]);
-  /// url mẫu http://localhost:3000/wheel/000001000012-0000000001
+  /// url mẫu http://localhost:3000/wheel1/000001000012-0000000001
   const { manager = null, arrItem = [] } = props;
   const [path, setPath] = useState(router.pathname);
   const [invalid, setInvalid] = useState(false);
