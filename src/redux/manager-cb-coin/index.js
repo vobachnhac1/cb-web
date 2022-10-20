@@ -6,7 +6,9 @@ export * as actions from './actions'
 import { buildReducer } from '../wrapper';
 
 const init = {
-  listManagerCbCoin: []
+  listManagerCbCoin: [],
+  listManagerCbCoinUserHistory: [],
+  listManagerCbCoinHistory: []
 }
 //Creating my reducer
 export default buildReducer(
@@ -19,8 +21,20 @@ export default buildReducer(
         ...state,
         listManagerCbCoin: payload
       }
-    },[TYPES.SIGN_OUT]: (state = init) => {
+    }, [TYPES.SIGN_OUT]: (state = init) => {
       return {}
+    },
+    [TYPES.MANAGER_CB_COIN_USERHISTORY]: (state = listManagerCbCoinUserHistory, payload) => {
+      return {
+        ...state,
+        listManagerCbCoinUserHistory: payload
+      }
+    },
+    [TYPES.MANAGER_CB_COIN_HISTORY]: (state = listManagerCbCoinHistory, payload) => {
+      return {
+        ...state,
+        listManagerCbCoinHistory: payload
+      }
     }
   },
 );

@@ -3,6 +3,8 @@ import URLSERVER from '@/redux/urlServer.json';
 import moment from 'moment';
 
 const setSearchManagerCbCoin = (payload) => ({ type: TYPES.MANAGER_CB_COIN_SEARCH, payload });
+const setSearchManagerCbCoinUserHistory = (payload) => ({ type: TYPES.MANAGER_CB_COIN_USERHISTORY, payload });
+const setSearchManagerCbCoinHistory = (payload) => ({ type: TYPES.MANAGER_CB_COIN_HISTORY, payload })
 
 export const insertManagerCbCoin = (payload) => async (dispatch, getState, { $http }) => {
   const param = {
@@ -53,7 +55,7 @@ export const updateManagerCbCoin = (payload) => async (dispatch, getState, { $ht
     dispatch(setSearchManagerCbCoin(listManagerCbCoinNEw))
     return true
   }
- 
+
 }
 
 export const deleteManagerCbCoinById = (payload) => async (dispatch, getState, { $http }) => {
@@ -94,8 +96,43 @@ function chagneDateObject(arrs) {
 
 
 
-const signOutDispatch = () => ({ type: TYPES.SIGN_OUT})
+const signOutDispatch = () => ({ type: TYPES.SIGN_OUT })
 
 export const SignOut = () => async (dispatch, getState, { $http }) => {
   dispatch(signOutDispatch());
+}
+
+// lay data hisory khách hàng
+export const searchManagerCbCoinUserHistory = (payload) => async (dispatch, getState, { $http }) => {
+  // call xuống backend url + param 
+  const result = await $http.get(`${URLSERVER.custPointGetAllCustomerInfo}`);
+  const { success, data } = result;
+  if (!success) {
+    return false;
+  }
+  const listdata = data.data;
+  dispatch(setSearchManagerCbCoinUserHistory(listdata))
+  return true
+}
+
+// custPointGetHistory
+
+// lay data hisory tích điểm
+export const searchManagerCbCoinHistory = (payload) => async (dispatch, getState, { $http }) => {
+  // call xuống backend url + param 
+  const params = {
+    criteriaCode: payload.criteria_code,
+    customerId: ' ',
+    nationalId: ' ',
+    fromDate: payload.from_date_act ? payload.from_date_act : 0,
+    toDate: payload.to_date_act ? payload.to_date_act : 0
+  }
+  const result = await $http.get(`${URLSERVER.custPointGetHistory}/${params.criteriaCode}/${params.customerId}/${params.nationalId}/${params.fromDate}/${params.toDate}`);
+  const { success, data } = result;
+  if (!success) {
+    return false;
+  }
+  const listdata = data.data;
+  dispatch(setSearchManagerCbCoinHistory(listdata))
+  return true
 }

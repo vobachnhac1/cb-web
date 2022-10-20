@@ -64,5 +64,7 @@
   "urlSystemManagement":"/sys/management",
   "urlSysRoleManagement":"/sys/roles",
   "urlSysPerUrlManagement":"/sys/paths-per",
-  "urlSysAccountManagement":"/sys/account"
+  "urlSysAccountManagement":"/sys/account",
+  "custPointGetAllCustomerInfo":"/cust-point/get-all-customer-info",
+  "custPointGetHistory":"/cust-point/get-history"
 }
