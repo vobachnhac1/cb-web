@@ -32,9 +32,11 @@ import { actions as actTopic } from '@/redux/topic';
 import { actions as actWheel } from '@/redux/wheel';
 import { actions as actWheelDet } from '@/redux/wheel-detail';
 import { actions as actWheelPM } from '@/redux/wheel-popup-menu';
+import ModalProfileChangePass from '@/containers/modal-profile-change-password';
 
 const HeaderCustom = (props) => {
   const [visibleProfile, setVisibleProfile] = useState(false);
+  const [visiblePass, setVisibleChangePass] = useState(false);
   const router = useRouter();
   const profile=  useSelector(getters.getProfile)
   const isAuth =  useSelector(getters.getAccessToken)
@@ -50,7 +52,6 @@ const HeaderCustom = (props) => {
   },[isAuth]);
 
   const onSignOut =()=>{
-
     dispatch(actions.SignOut());
     dispatch(actDashboard.SignOut());
     dispatch(actEventWheel.SignOut());
@@ -75,6 +76,39 @@ const HeaderCustom = (props) => {
   const onNotify
    =()=>{
     Message.Info('Thông báo',"Tính năng đang phát triển")
+  }
+
+  const onChangePassword = ()=>{
+    setVisibleChangePass(true)
+
+  }
+
+  const onCallbackChangePass = async (value)=>{
+    if(!value.visible){
+      setVisibleChangePass(false)
+      return;
+    }
+    const {userId,fullname, passwordOld, passwordNew, roleId, id} = value
+    const param = {
+      id:id,
+      userId: userId,
+      fullname: fullname,
+      password: passwordOld,
+      newPassword: passwordNew,
+      roleId: roleId,
+    }
+    const result = await dispatch(actSystem.changePassword(param))
+    if(!result?.success){
+      Message.Warning('Thông báo',result?.message);
+      return
+    }
+    Message.Success('Thông báo',result?.message)
+    setVisibleChangePass(false)
+    setTimeout(() => {
+      onSignOut();
+    }, 500);
+    // gọi API check
+
   }
   return (
     <Header style={{ padding: 0, backgroundColor: '#034da2' }} >
@@ -114,14 +148,17 @@ const HeaderCustom = (props) => {
             title={profile?.fullname}>
             <Menu.Item key='AccountSub_1' onClick={onPreview}>
               <span>{'Thông tin tài khoản'}</span>
+            </Menu.Item>  
+            <Menu.Item key='AccountSub_2' onClick={onChangePassword}>
+              <span>{'Đổi mật khẩu'}</span>
             </Menu.Item>
-            {/* <Menu.Item key='AccountSub_2'>{'Cài đặt'}</Menu.Item> */}
             <Menu.Item key='AccountSub_3' onClick={onSignOut}>{'Đăng xuất'}</Menu.Item>
           </SubMenu>
         </Menu>
       </div>
 
       { visibleProfile? <ModalProfile callback ={onCallback} visible={visibleProfile} />:<></>}
+      { visiblePass? <ModalProfileChangePass callback ={onCallbackChangePass} visible={visiblePass} />:<></>}
     </Header>
   );
 };

@@ -19,6 +19,12 @@ import Text from 'antd/lib/typography/Text';
 import { actions, getters } from '@/redux/system';
 import ModalAccountManagement from '@/containers/modal-system-account';
 
+const STATUS_ACCOUNT = {
+  '1':'Hoạt động',
+  '2':'Không Hoạt động',
+  '3':'Tạm khóa',
+}
+
 export default function AccountManagement(props) {
   const dispatch = useDispatch();
 
@@ -57,9 +63,21 @@ export default function AccountManagement(props) {
       width: 100,
     }, {
       width: 100,
+      title: 'Chức vụ',
+      dataIndex: 'roleId',
+      key: 'roleId',
+      render: (text) => (
+        <Text>{text ? listRoles?.find(item=>item.roleId ==text).roleName: ''}</Text>
+
+      ),
+    }, {
+      width: 100,
       title: 'Trạng thái',
       dataIndex: 'status',
       key: 'status',
+      render: (text) => (
+        <Text>{text ? STATUS_ACCOUNT[text]: ''}</Text>
+      ),
     },  {
       align: 'center',
       width: 120,
