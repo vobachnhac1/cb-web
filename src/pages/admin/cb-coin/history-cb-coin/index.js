@@ -76,16 +76,6 @@ export default function HisotryCbCoin(props) {
     },
     {
       align: 'center',
-      width: 120,
-      title: 'Trạng thái',
-      dataIndex: 'status',
-      key: 'status',
-      render: (text) => (
-        <Text>{text === 'Y' ? 'Hoạt động' : 'Dừng hoạt động'}</Text>
-      ),
-    },
-    {
-      align: 'center',
       width: 200,
       title: 'Ngày khởi tạo',
       dataIndex: 'createDate',
