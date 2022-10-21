@@ -1,9 +1,12 @@
 import * as TYPES from './type';
 import URLSERVER from '@/redux/urlServer.json';
+import { setToken } from '../wrapper';
 
 const setSearchSegment = (payload) => ({ type: TYPES.SEGMENT_SEARCH, payload });
 
 export const searchSegment = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   // call xuống backend url + param 
   const result = await $http.get(URLSERVER.searchAllSegment);
   const { success, data } = result;
@@ -16,6 +19,8 @@ export const searchSegment = (payload) => async (dispatch, getState, { $http }) 
 }
 
 export const insertSegment = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   const param = {
     "topic_id": payload.topic_id,
     "segment_id": payload.segment_id,
@@ -37,6 +42,8 @@ export const insertSegment = (payload) => async (dispatch, getState, { $http }) 
 }
 
 export const updateSegment = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   const param = {
     "topic_id": payload.topic_id,
     "segment_id": payload.segment_id,
@@ -58,6 +65,8 @@ export const updateSegment = (payload) => async (dispatch, getState, { $http }) 
 }
 
 export const deleteSegmentById = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   const param = {
     "segment_id": parseInt(payload.segment_id),
   }
@@ -71,6 +80,8 @@ export const deleteSegmentById = (payload) => async (dispatch, getState, { $http
 }
 
 export const filterSegment = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   const result = await $http.post(URLSERVER.searchSegmentById, payload);
   const { success, data } = result;
   if (!success || !data.success) {
@@ -85,6 +96,7 @@ export const filterSegment = (payload) => async (dispatch, getState, { $http }) 
 }
 
 export const filterSegmentByIdTopic = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
   const result = await $http.post(URLSERVER.searchSegmentById, payload);
   const { success, data } = result;
   if (!success || !data.success) {

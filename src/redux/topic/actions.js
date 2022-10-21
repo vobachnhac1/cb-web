@@ -1,11 +1,14 @@
 import * as TYPES from './type';
 import URLSERVER from '@/redux/urlServer.json';
+import { setToken } from '../wrapper';
 
 // hàm thị thi nội bộ
 const setSearchTopic = (payload) => ({ type: TYPES.TOPIC_SEARCH, payload });
 
 // hàm xử lý được gọi từ bên ngoài
 export const searchTopic = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   // call xuống backend url + param 
   const result = await $http.get(URLSERVER.searchAllTopic);
   const { success, data } = result;
@@ -18,6 +21,8 @@ export const searchTopic = (payload) => async (dispatch, getState, { $http }) =>
 }
 
 export const insertTopic = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   const param = {
     "topic_name": payload.topic_name,
   }
@@ -30,6 +35,8 @@ export const insertTopic = (payload) => async (dispatch, getState, { $http }) =>
 }
 
 export const updateTopic = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   const param = {
     "topic_id": payload.topic_id,
     "topic_name": payload.topic_name,
@@ -44,6 +51,8 @@ export const updateTopic = (payload) => async (dispatch, getState, { $http }) =>
 }
 
 export const deleteTopic = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   const param = {
     "topic_id": payload.topic_id,
   }
@@ -56,6 +65,8 @@ export const deleteTopic = (payload) => async (dispatch, getState, { $http }) =>
 }
 
 export const approveTopic = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   const param = {
     "topic_id": payload.topic_id,
     "status": payload.status_yn
@@ -69,6 +80,8 @@ export const approveTopic = (payload) => async (dispatch, getState, { $http }) =
 }
 
 export const filterTopic = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   const result = await $http.post(URLSERVER.searchTopicById, payload);
   const { success, data } = result;
   if (!success || !data.success) {

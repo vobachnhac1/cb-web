@@ -234,20 +234,18 @@ const SliderCustom = (props) => {
                 });
                 // check path có được cấp quyền không
                 arrPaths.forEach(elll => {
-                  let __child = arrChild.filter(_path => elll == _path.path)
-                  console.log('__child: ', __child);
-                  if (__child && __child.length > 0) {
-                    if('/admin/cb-coin/manager-cb-coin'===__child[0]?.path ){
-                      arrChildTemp.push(_.head(__child))
-                    }else{
-                      arrChildTemp.unshift(_.head(__child))
-                    }
+                  let __child = arrChild?.find(_path => elll == _path.path)
+                  if (__child) {
+                    let index = arrChild.indexOf(__child);
+                    arrChildTemp.push({...__child, position:index})
+
                   }
                 })
               }
               arrTemp = {
                 ...element,
-                child: arrChildTemp.reverse().filter((isExist) => isExist.key),
+                child: arrChildTemp.sort((a,b) =>  a.position - b.position ).filter((isExist) => isExist.key),
+                
               };
             }
           }

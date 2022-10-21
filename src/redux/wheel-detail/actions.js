@@ -1,6 +1,7 @@
 import * as TYPES from './type';
 import URLSERVER from '@/redux/urlServer.json';
 import moment from 'moment';
+import { setToken } from '../wrapper';
 // import folor from '../../../public/images/wheelReward'
 // import fs from 'fs'
 
@@ -12,6 +13,7 @@ const setDataCheckWheel = (payload) => ({ type: TYPES.WHEELDETAIL_DATACHECKWHEEL
 // const setWheelDetailNo = (payload) => ({ type: TYPES.WHEELDETAIL_NO, payload });
 // // hàm xử lý được gọi từ bên ngoài
 export const searchWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
   const param = {
     "wheel_id": 0,
     "wheel_detail_id": 0,
@@ -37,7 +39,7 @@ export const searchWheelDetail = (payload) => async (dispatch, getState, { $http
 }
 
 export const SaveOnListWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
-
+  setToken(getState(),$http)
   const param = {
     "wheel_id": payload.wheel_id,
     "list_wheel_detail": payload.data,
@@ -90,6 +92,7 @@ export const SaveOnListWheelDetail = (payload) => async (dispatch, getState, { $
 }
 
 export const insertWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
   const param = {
     "wheel_id": parseInt(payload.wheel_id),
     "wheel_name": payload.wheel_name,
@@ -135,6 +138,7 @@ export const insertWheelDetail = (payload) => async (dispatch, getState, { $http
 }
 
 export const updateWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
   const param = {
     "wheel_detail_id": payload.wheel_detail_id,
     "no": parseInt(payload.no),
@@ -186,6 +190,8 @@ export const updateWheelDetail = (payload) => async (dispatch, getState, { $http
 
 // xóa phần tử trong state wheelDetail bằng is_delete = 1
 export const deleteWheelDetailById = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   const param = {
     "wheel_detail_id": payload.wheel_detail_id,
     "key": payload.key
@@ -217,6 +223,7 @@ export const deleteWheelDetailById = (payload) => async (dispatch, getState, { $
 
 // phục hồi phần tử trong state wheelDetail bằng is_delete = 0
 export const restoreWheelDetailById = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
   const param = {
     "wheel_detail_id": payload.wheel_detail_id,
     "key": payload.key
@@ -249,6 +256,7 @@ export const restoreWheelDetailById = (payload) => async (dispatch, getState, { 
 
 // get all data wheel_Detail from wheel_id
 export const filterWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
   let param = {
     "wheel_id": payload.wheel_id ? parseInt(payload.wheel_id) : null,
     "wheel_detail_id": payload.wheel_detail_id ? parseInt(payload.wheel_detail_id) : null,

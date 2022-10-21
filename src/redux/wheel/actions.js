@@ -1,11 +1,14 @@
 import * as TYPES from './type';
 import URLSERVER from '@/redux/urlServer.json';
+import { setToken } from '../wrapper';
 
 // hàm thị thi nội bộ
 const setSearchWheel = (payload) => ({ type: TYPES.WHEEL_SEARCH, payload });
 // hàm xử lý được gọi từ bên ngoài
 
 export const searchWheel = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   // call xuống backend url + param 
   const result = await $http.get(URLSERVER.searchAllWheel);
   const { success, data } = result;
@@ -18,6 +21,8 @@ export const searchWheel = (payload) => async (dispatch, getState, { $http }) =>
 }
 
 export const insertWheel = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   // call xuống backend url + param
   const result = await $http.post(URLSERVER.insertWheel, payload);
   const { success, data } = result;
@@ -28,6 +33,8 @@ export const insertWheel = (payload) => async (dispatch, getState, { $http }) =>
 }
 
 export const updateWheel = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   // call xuống backend url + param 
   const result = await $http.put(URLSERVER.updateWheelById, payload);
   const { success, data } = result;
@@ -38,6 +45,8 @@ export const updateWheel = (payload) => async (dispatch, getState, { $http }) =>
 }
 
 export const deleteWheelById = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   const param = {
     "wheel_id": parseInt(payload.wheel_id),
   }
@@ -51,6 +60,8 @@ export const deleteWheelById = (payload) => async (dispatch, getState, { $http }
 }
 
 export const filterWheel = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   const result = await $http.post(URLSERVER.searchWheelById, payload);
   const { success, data } = result;
   if (!success || !data.success) {
@@ -62,6 +73,8 @@ export const filterWheel = (payload) => async (dispatch, getState, { $http }) =>
 }
 
 export const sendAppove = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+
   const result = await $http.post(URLSERVER.updateStateWheel, payload);
   const { success, data } = result;
   if (!success || !data.success) {

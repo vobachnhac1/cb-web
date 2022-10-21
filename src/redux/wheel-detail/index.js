@@ -36,7 +36,15 @@ export default buildReducer(
 
       }
     },[TYPES.SIGN_OUT]: (state) => {
-      return {}
+      return {
+        listWheelDetail: [],
+        wheelCurtValue: 0,
+        wheelTotalValue: 0,
+        wheelDetialTotalValue: 0,
+        no: 0,
+        num_segment_wheel: 0,
+        wheel_status:''
+      }
     }
   },
 );

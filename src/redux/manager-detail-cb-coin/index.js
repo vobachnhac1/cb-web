@@ -21,7 +21,9 @@ export default buildReducer(
         listManagerDetailCbCoin: payload
       }
     },[TYPES.SIGN_OUT]: (state = init) => {
-      return {}
+      return {
+        listManagerDetailCbCoin: []
+      }
     }
   },
 );

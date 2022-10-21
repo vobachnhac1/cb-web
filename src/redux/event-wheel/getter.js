@@ -25,6 +25,10 @@ export const getEventInfo = ({ wheelreward }) => {
   const { event_info: data = {} } = wheelreward;
   return data;
 };
+export const getCustomerInfo = ({ wheelreward }) => {
+  return wheelreward?.customerProfile;
+};
+
 
 
 /// lấy state

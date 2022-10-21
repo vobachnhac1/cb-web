@@ -47,6 +47,13 @@ export default buildReducer(
       listRewardHis: payload
     }
   },[TYPES.SIGN_OUT]: (state = init) => {
-    return {}
+    return {
+      listRules: [],
+      listRulesStateYes: [],
+      listWheelApproved: [],
+      listWheelDetail: [],
+      listWheel: [],
+      listRewardHis: []
+    }
   }
 });

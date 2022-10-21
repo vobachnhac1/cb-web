@@ -28,9 +28,9 @@ export const getSystemList = ({ system: state }) => {
 export const dropdownSysList = ({ system: state }) => {
   return state?.SystemList?.map((item, index)=>({
     key: index,
-    sysCode: item.sysCode,
-    sysName: item.sysName,
-    id: item.id,
+    sysCode: item?.sysCode,
+    sysName: item?.sysName,
+    id: item?.id,
   }
   )) || null;
 };
@@ -39,8 +39,8 @@ export const dropdownSysList = ({ system: state }) => {
 export const dropdownRoleList = ({ system: state }) => {
   return state?.RolesList?.map((item, index)=>({
     key: index,
-    roleId: item.roleId,
-    roleName: item.roleName
+    roleId: item?.roleId,
+    roleName: item?.roleName
   }
   )) || null;
 };

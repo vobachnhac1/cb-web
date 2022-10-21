@@ -79,8 +79,7 @@ const WheelChild = (props) => {
         setup();
       }
     }
-
-    setTimeout(async () => {
+    setTimeout(() => {
       // if (!roles) {
       //   if (rsReward) {
 
@@ -95,7 +94,7 @@ const WheelChild = (props) => {
       // if (selectedItem && places && places.length > 0) {
       //   Message.Info("Thông Báo", `Bạn nhận được kết quả: ${arrItem.find(item => item.key == keyHost).segment_name} `);
       // }
-      await dispatch(actionsEventWheel.setProcessing(false));
+      dispatch(actionsEventWheel.setProcessing(false));      
     }, 4000);
   }
 

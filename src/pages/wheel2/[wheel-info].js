@@ -21,6 +21,8 @@ import { PathTitle } from "@/constants/url-name";
 import Header from '@/components/Head';
 // pop up menu
 import PopupMenu from '@/containers/popup-menu-wheel'
+import { Row, Col, Typography } from 'antd';
+const {Text}= Typography
 
 
 
@@ -34,6 +36,7 @@ export default function DisplayWheel(props) {
   const places = !manager ? useSelector(gettersEventWheel.getContentReward) : (arrItem || []);
   const [wheelId, setWheelId] = useState("")
   const [userInfo, setUserInfo] = useState({})
+  const getCustomerInfo = useSelector(gettersEventWheel.getCustomerInfo);
   useEffect(() => {
     checkWheelDetail();
   }, [places]);
@@ -125,6 +128,21 @@ export default function DisplayWheel(props) {
         wheelId={wheelId}
         userInfo={userInfo}
       />}
+      {!manager && 
+       <Row style={{ position:'absolute',paddingTop:'2vh', height: '10vh', flex:1, flexDirection: 'row', alignItems:'center', width:'100%', justifyContent:'flex-end'}}>
+        <Col style={{flex:1 }}>
+        </Col>
+        <Col style={{flex:2}}>
+          <Text style={{fontSize:14, fontWeight:'bold', color:'lavender'}}>{getCustomerInfo?.customerName}</Text>
+        </Col>
+        <Col style={{flex:2}}>
+          <Row>
+            <Text style={{fontSize:14, fontWeight:'bold', color:'lavender'}}>{getCustomerInfo?.totalPoint.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +' Coin'}</Text>
+          </Row>
+          <Text style={{fontSize:14, fontWeight:'bold', color:'lavender'}}>{getCustomerInfo?.numTimes.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' Lượt quay'}</Text>
+        </Col>
+      </Row>
+      }
       {!invalid && <WheelChild
         arrItem={arrItem}
         onSelectItem={onSelectItem}

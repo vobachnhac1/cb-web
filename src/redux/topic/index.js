@@ -18,6 +18,8 @@ export default buildReducer(
       listTopic: payload
     }
   },[TYPES.SIGN_OUT]: (state = init) => {
-    return {}
+    return {
+      listTopic: [],
+    }
   }
 });

@@ -19,7 +19,9 @@ export default buildReducer(
         listSegment: payload
       }
     },[TYPES.SIGN_OUT]: (state = init) => {
-      return {}
+      return {
+        listSegment: []
+      }
     }
   },
 );

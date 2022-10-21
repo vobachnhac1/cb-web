@@ -29,16 +29,25 @@ export default buildReducer(
       status: false,
       message: null
     },
-    event_info: null
+    event_info: null,
+    customerProfile:{
+      customerId: null,
+      customerName: null,
+      nationalId: null,
+      totalPoint: 0,
+      numTimes: 0,
+    }
   },
   {
     [TYPES.EVENT_WHEEL_SEARCH]: (state, payload) => {
+      const _profile = payload['customerProfile']
       return {
         ...state,
+        customerProfile: _profile,
         body: {
-          wheel_id: payload.wheel_id,
-          rules_id: payload.rules_id,
-          listContentReward: payload.list_wheel_dt,
+          wheel_id: payload?.wheel_id,
+          rules_id: payload?.rules_id,
+          listContentReward: payload?.list_wheel_dt,
         }
       }
     }, [TYPES.EVENT_PROCCESSING]: (state, payload) => {
@@ -54,8 +63,31 @@ export default buildReducer(
         ...state,
         event_info: payload
       }
+    }, [TYPES.CUSTOMER_INFO]: (state, payload) => {
+      return {
+        ...state,
+        customerProfile: payload
+      }
     },[TYPES.SIGN_OUT]: (state = init) => {
-      return {}
+      return   {
+        body: {
+          wheel_id: null,
+          rules_id: null,
+          listContentReward: [],
+        },
+        process: {
+          status: false,
+          message: null
+        },
+        event_info: null,
+        customerProfile:{
+          customerId: null,
+          customerName: null,
+          nationalId: null,
+          totalPoint: 0,
+          numTimes: 0,
+        }
+      }
     }
   },
 );

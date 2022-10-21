@@ -50,6 +50,6 @@ export default buildReducer(
       SystemList: payload
     }
   },[TYPES.SIGN_OUT]: (state = init) => {
-    return {}
+    return initialState
   }
 });
