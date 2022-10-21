@@ -128,20 +128,21 @@ export default function DisplayWheel(props) {
         wheelId={wheelId}
         userInfo={userInfo}
       />}
-      <Row style={{ position:'absolute',paddingTop:'2vh', height: '10vh', flex:1, flexDirection: 'row', alignItems:'center', width:'100vw', justifyContent:'flex-end'}}>
+      {!manager && 
+       <Row style={{ position:'absolute',paddingTop:'2vh', height: '10vh', flex:1, flexDirection: 'row', alignItems:'center', width:'100%', justifyContent:'flex-end'}}>
         <Col style={{flex:1 }}>
-          {/* <Text>Võ Bách Nhạc</Text> */}
         </Col>
         <Col style={{flex:2}}>
-          <Text style={{fontSize:14, fontWeight:'bold', color:'lavender'}}>{getCustomerInfo['customerName']}</Text>
+          <Text style={{fontSize:14, fontWeight:'bold', color:'lavender'}}>{getCustomerInfo?.customerName}</Text>
         </Col>
         <Col style={{flex:2}}>
           <Row>
-            <Text style={{fontSize:14, fontWeight:'bold', color:'lavender'}}>{getCustomerInfo['totalPoint'].toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +' Coin'}</Text>
+            <Text style={{fontSize:14, fontWeight:'bold', color:'lavender'}}>{getCustomerInfo?.totalPoint.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +' Coin'}</Text>
           </Row>
-          <Text style={{fontSize:14, fontWeight:'bold', color:'lavender'}}>{getCustomerInfo['numTimes'].toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' Lượt quay'}</Text>
+          <Text style={{fontSize:14, fontWeight:'bold', color:'lavender'}}>{getCustomerInfo?.numTimes.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' Lượt quay'}</Text>
         </Col>
       </Row>
+      }
       {!invalid && <WheelChild
         arrItem={arrItem}
         onSelectItem={onSelectItem}
