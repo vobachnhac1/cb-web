@@ -36,12 +36,13 @@ export default function ModalComfirmReward(props) {
   return (
     <div className='root'>
       <div ref={id_modal} id="modal-container" >
-        <div class="modal-background">
-          <div class="modal" >
-            <h2>{data && data.segment_value != 0 ? 'CHỨC MỪNG' : 'HÃY THỬ LẠI'}</h2>
-            <p>{data ? data.segment_name : ""}</p>
-            <button class='btn-comfirm' onClick={onPressOut} >Chơi tiếp</button>
-            <button class='btn-comfirm' onClick={onPressOut} >Quay Lại</button>
+        <div className="modal-background">
+          <div className="modal" >
+            <h1>{data && data.segment_value != 0 ? 'CHÚC MỪNG' : 'HÃY THỬ LẠI'}</h1>
+            <h2>{data ? data.segment_name : ""}</h2>
+            <p>{data ? "Số lượt còn lại: " +data.numTimes : "Số lượt còn lại: 0"}</p>
+            <button className='btn-comfirm' onClick={onPressOut} >Chơi tiếp</button>
+            <button className='btn-comfirm' onClick={onPressOut} >Quay Lại</button>
           </div>
         </div>
       </div>

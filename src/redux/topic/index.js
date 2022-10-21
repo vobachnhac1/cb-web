@@ -9,7 +9,7 @@ import { buildReducer } from '../wrapper';
 //Creating my reducer
 export default buildReducer(
   {
-    listTopic: []
+    listTopic: [],
   }, {
   [TYPES.TOPIC_SEARCH]: (state = listTopic, payload) => {
 
@@ -17,5 +17,9 @@ export default buildReducer(
       ...state,
       listTopic: payload
     }
-  },
+  },[TYPES.SIGN_OUT]: (state = init) => {
+    return {
+      listTopic: [],
+    }
+  }
 });

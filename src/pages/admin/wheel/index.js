@@ -6,160 +6,230 @@
 *------------------------------------------------------- */
 require("./styles.less");
 import * as classnames from 'classnames';
+import { useState, useEffect } from 'react';
 import LayoutHome from '@/containers/Home';
-import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Typography, Input } from 'antd';
-const { Text } = Typography;
+import { Button, Card, Col, Row, Space, Table, Popconfirm, Input, DatePicker } from 'antd';
+const { RangePicker } = DatePicker;
 import * as Message from '@/components/message';
-import ModalSegment from '@/containers/modal-segment';
 import ModalWheel from '@/containers/modal-wheel'
+import router from 'next/router';
 
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
-import { actions as actionSegment } from '@/redux/segment';
-import { getters as gettersSegment } from '@/redux/segment';
 import { actions as actionWheel } from '@/redux/wheel';
 import { getters as gettersWheel } from '@/redux/wheel';
 
 import moment from 'moment';
 import __ from 'lodash';
+import Link from 'next/link';
 
 export default function Wheel(props) {
-  const [dataSearch, setDataSearch] = useState('')
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
   const listWheel = useSelector(gettersWheel.getStateLoadPageWheel) || [];
   const [filter, setFilter] = useState({
     wheel_name: null,
+    from_date_act: null,
+    to_date_act: null
   });
 
-  // gọi 1 function rồi theo dõi nhưng thay đổi của param đó
   useEffect(() => {
-    initPage(); // chjay 1 lần duy nhất
+    initPage();
   }, [])
 
 
   const initPage = async () => {
-    const paramsInit = {
-      "wheel_id": 0,
-      "num_segments": 0,
-      "wheel_name": "string",
-      "account_nbr": "string",
-      "total_value": 0,
-      "remain_value": 0,
-      "outer_radius": 0,
-      "text_fontsize": 0,
-      "rotation_angle": 0,
-      "inactived_date": "2022-04-09T07:38:05.782Z",
-      "created_date": "2022-04-09T07:38:05.782Z",
-      "datelastmaint": "2022-04-09T07:38:05.782Z",
-      "is_approve": true
-    }
-    await dispatch(actionWheel.searchWheel(paramsInit));
-
+    setLoading(true);
+    await dispatch(actionWheel.searchWheel());
+    setLoading(false);
   }
-
   const onSearch = async () => {
-    const { wheel_name } = filter;
-    if (__.isNil(wheel_name)) {
+    const { wheel_name, from_date_act, to_date_act } = filter;
+    if (__.isNil(wheel_name) && __.isNil(from_date_act) && __.isNil(to_date_act)) {
       initPage();
     } else {
-      const result = await dispatch(actionWheel.filterWheel(filter));
+      setLoading(true);
+      await dispatch(actionWheel.filterWheel(filter));
+      setLoading(false)
       return;
     }
   }
-
-
-
   const handleDelete = async (record) => {
-    let dataRecord = { ...record }
-    const result = await dispatch(actionWheel.deleteWheelById(dataRecord));
+    const result = await dispatch(actionWheel.deleteWheelById(record));
     if (result) {
       initPage();
-      Message.Success("NOTYFICATON", "DELETE WHEEL SUCCESS");
+      Message.Success("Thông Báo", "Xóa Vòng Quay Thành Công");
       return
     }
-    Message.Error("NOTYFICATON", "DELETE WHEEL FAIL");
+    Message.Error("Thông Báo", "DELETE WHEEL FAIL");
   };
   const columns = [
+    {
+      title: 'Key',
+      dataIndex: 'key',
+      key: 'key',
+      fixed: 'left',
+      width: 50,
+      render: (text, record) => {
+        return parseInt(text) + 1
+      }
+    },
     {
       title: 'ID',
       dataIndex: 'wheel_id',
       key: 'wheel_id',
       fixed: 'left',
       width: 50
-      // render: text => <a>{text}</a>,
     },
     {
       title: 'Tên vòng quay',
       dataIndex: 'wheel_name',
       key: 'wheel_name',
       fixed: 'left',
-      width: 250
+      width: 200
     },
     {
       title: 'Số kết quả',
       dataIndex: 'num_segments',
       key: 'num_segments',
       fixed: 'center',
-      width: 100,
+      width: 75,
+    },
+    {
+      align: 'end',
+      title: 'Tổng giá trị giải(VNĐ)',
+      dataIndex: 'total_value',
+      key: 'total_value',
+      width: 180,
+      render: (text, record) => (
+        <Space size="large" style={{
+          'display': 'flex',
+          'justifyContent': 'flex-end',
+          'fontWeight': '500'
+        }}>
+          <span>
+            {`${text}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </span>
+        </Space>
+      )
 
     },
     {
-      title: 'Tổng giá trị giải',
-      dataIndex: 'total_value',
-      key: 'total_value',
-      width: 250,
-    },
-    {
-      title: 'Giá trị còn lại',
+      align: 'end',
+      title: 'Giá trị còn lại(VNĐ)',
       dataIndex: 'remain_value',
       key: 'remain_value',
-      width: 250,
+      width: 180,
+      render: (text, record) => (
+        <Space size="large" style={{
+          'display': 'flex',
+          'justifyContent': 'flex-end',
+          'fontWeight': '500'
+        }}>
+          <span >
+            {`${text}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </span>
+        </Space>
+      )
     },
     {
+      align: 'center',
+      title: 'Tài khoản khách hàng',
+      dataIndex: 'account_nbr',
+      key: 'account_nbr',
+      width: 220,
+      render: (text, record) => (
+        <Space size="large" style={{
+          'display': 'flex',
+          'justifyContent': 'flex-end',
+        }}>
+          <span>
+            {text}
+          </span>
+        </Space>
+      )
+
+    },
+    {
+      title: 'Kích thước chữ',
+      dataIndex: 'text_fontsize',
+      key: 'text_fontsize',
+      width: 120,
+      render: (text, record) => (
+        <Space size="large" style={{
+          'display': 'flex',
+          'justifyContent': 'flex-end',
+        }}>
+          <span>
+            {text}
+          </span>
+        </Space>
+      )
+    },
+    {
+      align: 'center',
       title: 'Ngày hết hiệu lực',
       dataIndex: 'inactived_date',
       key: 'inactived_date',
       width: 170,
       render: (text, record) => {
-        return <p>
-          {moment(text).format('YYYY-MM-DD, hh:mm:ss')}
-        </p>
+        return <span>
+          {moment(text).format('YYYY-MM-DD, HH:mm:ss')}
+        </span>
       }
     },
-
+    {
+      align: 'center',
+      title: 'Ngày tạo',
+      dataIndex: 'created_date',
+      key: 'created_date',
+      width: 170,
+      render: (text, record) => {
+        return <span>
+          {moment(text).format('YYYY-MM-DD, HH:mm:ss')}
+        </span>
+      }
+    },
     {
       title: 'Action',
       key: 'action',
-      width: 140,
+      width: 450,
       render: (text, record) => (
-
         <Space size="middle">
-          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateWheel(record)} >Edit</Button>
-
-          {listWheel.length >= 1 ? (
-            <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)} >
-              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Delete</Button>
-            </Popconfirm>
-          ) : null
+          <Button style={{ color: '#7cb305', borderColor: '#7cb305', borderWidth: 0.5 }}>
+            <Link href={`/admin/wheel-detail/${record.wheel_id}`}>
+              Chi tiết vòng quay
+            </Link>
+          </Button>
+          {
+            record.wheel_status === "APR" || record.wheel_status === "SAVE" ?
+              <span style={{ color: record.wheel_status === "APR" ? "green" : "#faad14", }} >
+                {record.wheel_status === "APR" ? "Vòng quay đã duyệt !" : "Vòng quay đang gửi phê duyệt !"}
+              </span>
+              : <>
+                <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateWheel(record)} >Cập nhật</Button>
+                {listWheel.length >= 1 ? (
+                  <Popconfirm title="Bạn có muốn?" onConfirm={() => handleDelete(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom">
+                    <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
+                  </Popconfirm>
+                ) : null
+                }
+                <Button style={{ color: record.wheel_status !== "ADD" ? "" : '#faad14', borderColor: record.wheel_status !== "ADD" ? "" : '#faad14', borderWidth: 0.5 }} disabled={record.wheel_status !== "ADD" ? true : false} onClick={() => sendApprove(record)} >Gửi phê duyệt</Button>
+              </>
           }
+
         </Space>
       ),
     },
   ];
-  const pagination = {
-    current: 1,
-    pageSize: 10,
-    total: 200,
-
-  };
 
 
   const [visible, setVisible] = useState(false);
+
   const [bodyModel, setBodyModel] = useState({
     isAdd: false,
     record: null
   });
-
   const addNewWheel = () => {
     setVisible(true);
     setBodyModel({
@@ -167,6 +237,7 @@ export default function Wheel(props) {
       isAdd: true
     });
   }
+
   const updateWheel = (record) => {
     setVisible(true);
     setBodyModel({
@@ -175,17 +246,41 @@ export default function Wheel(props) {
     });
   }
 
+  const sendApprove = async (record) => {
+    const param = {
+      wheel_id: record.wheel_id,
+      wheel_status: "SAVE"
+    }
+
+    const result = await dispatch(actionWheel.sendAppove(param));
+    if (result) {
+      Message.Success("Thông Báo", "Gửi phê duyệt thành công");
+      onSearch()
+      return;
+    }
+    Message.Error("Thông Báo", "Gửi phê duyệt thất bại");
+
+  }
+
 
   const callbackModal = (params) => {
     setVisible(params.visible);
-    initPage();
+    onSearch()
+  }
+
+  const onDoubleClick = (record, rowIndex) => {
+    // setVisible(true);
+    // setBodyModel({
+    //   record: record,
+    //   isAdd: false
+    // });
+    router.push(`/admin/wheel-detail/${record.wheel_id}`)
   }
 
   return (
     <LayoutHome>
       <Col style={{ marginBottom: 30 }}>
         <ModalWheel visible={visible} bodyModel={bodyModel} callback={callbackModal} />
-
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
           title="Vòng Quay"
@@ -193,9 +288,29 @@ export default function Wheel(props) {
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>
             <Row gutter={[16, 24]}>
-              <Col className="gutter-row" span={12}>
-                <Input placeholder="Tên vòng quay cần tìm" value={filter.wheel_name} onChange={(event) => setFilter({ ...filter, wheel_name: event.target.value })} />
+              <Col className="gutter-row" span={5}>
+                <RangePicker
+                  onChange={(dates, dateString) => {
+                    if (dates) {
+                      setFilter({
+                        ...filter,
+                        from_date_act: dateString[0],
+                        to_date_act: dateString[1],
+                      });
+                    } else {
+                      setFilter({
+                        ...filter,
+                        from_date_act: null,
+                        to_date_act: null,
+                      });
+                    }
+                  }}
+                />
               </Col>
+              <Col className="gutter-row" span={8}>
+                <Input allowClear placeholder="Tên vòng quay cần tìm" value={filter.wheel_name} onChange={(event) => setFilter({ ...filter, wheel_name: event.target.value })} />
+              </Col>
+
             </Row>
             <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
               <Col className="gutter-row" span={3}>
@@ -211,17 +326,28 @@ export default function Wheel(props) {
         <Card>
           <Col span={48} style={{ marginTop: 10 }}>
             <Table
+              className="table_layout"
               columns={columns}
               dataSource={listWheel}
-              size='large'
-              pagination={pagination}
-              loading={false}
-              scroll={{ x: 1300 }}
+              size='small'
+              loading={loading}
+              scroll={{ x: 1300, y: '45vh' }}
+              onRow={(record, rowIndex) => {
+                return {
+                  onClick: event => { }, // click row
+                  onDoubleClick: event => {
+                    onDoubleClick(record, rowIndex)
+                  }, // double click row { }
+                  onContextMenu: event => { }, // right button click row
+                  onMouseEnter: event => { }, // mouse enter row
+                  onMouseLeave: event => { }, // mouse leave row
+                };
+              }}
             />
           </Col>
         </Card>
       </Col>
-    </LayoutHome>
+    </LayoutHome >
   )
 }
 

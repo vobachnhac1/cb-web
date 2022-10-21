@@ -9,14 +9,41 @@ import { buildReducer } from '../wrapper';
 //Creating my reducer
 export default buildReducer(
   {
-    listWheelDetail: []
+    listWheelDetail: [],
+    wheelCurtValue: 0,
+    wheelTotalValue: 0,
+    wheelDetialTotalValue: 0,
+    no: 0,
+    num_segment_wheel: 0,
+    wheel_status:''
   },
   {
-    [TYPES.WHEELDETAIL_SEARCH]: (state = listWheelDetail, payload) => {
-
+    [TYPES.WHEELDETAIL_SEARCH]: (state, payload) => {
       return {
         ...state,
-        listWheelDetail: payload
+        listWheelDetail: payload.listData,
+        wheelCurtValue: payload.wheel_curt_value,
+        wheelTotalValue: payload.wheel_total_value,
+        wheelDetialTotalValue: payload.Wheel_detail_total_value,
+        no: payload.no
+      }
+    },
+    [TYPES.WHEELDETAIL_DATACHECKWHEEL]: (state, payload) => {
+      return {
+        ...state,
+        num_segment_wheel: payload.num_segment_wheel,
+        wheel_status: payload.wheel_status
+
+      }
+    },[TYPES.SIGN_OUT]: (state) => {
+      return {
+        listWheelDetail: [],
+        wheelCurtValue: 0,
+        wheelTotalValue: 0,
+        wheelDetialTotalValue: 0,
+        no: 0,
+        num_segment_wheel: 0,
+        wheel_status:''
       }
     }
   },

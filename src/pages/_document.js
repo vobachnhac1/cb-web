@@ -38,8 +38,8 @@ export default class MyDocument extends Document {
 					<meta name="msapplication-navbutton-color" content={METADATA.PRIMARY_COLOR} />
 					<meta name="theme-color" content={METADATA.PRIMARY_COLOR} />
 
-					<link rel="shortcut icon" type="image/x-icon" sizes="512x512" href="/favicon.ico" />
-					<link rel="shortcut icon" href="/favicon.ico" />
+					<link rel="shortcut icon" type="image/x-icon" sizes="512x512" href="/images/logo_cbbank.jpg" />
+					<link rel="shortcut icon" href="/images/logo_cbbank.jpg" />
 
 					<link rel="icon" type="image/png" sizes="512x512" href="/icons/512x512.png" />
 					<link rel="apple-touch-icon" type="image/png" sizes="512x512" href="/icons/512x512.png" />

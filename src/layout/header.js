@@ -4,25 +4,112 @@
 * Phone 0906.918.738
 * Created: 2022-03-10
 *------------------------------------------------------- */
-import { Layout, Menu } from 'antd';
-import React, { useState } from 'react';
+import { Layout, Menu, message } from 'antd';
+import React, { useState, memo, useEffect } from 'react';
 const { Header } = Layout;
 const { SubMenu } = Menu;
 import { UserOutlined } from '@ant-design/icons';
 
 import AccountProfileCustom from '@/components/AccountProfileBase';
 import NotificationCustom from '@/components/NotificationBase';
-
+import * as Message from '@/components/message';
 const stylesLess = require("./style.module.less");
 
 import logocbb from './images/logo_CB_color_vn.svg'
 import Image from 'next/image';
+import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
+import ModalProfile from '@/containers/modal-profile';
+import { getters, actions } from '@/redux/global';
+import { actions as actDashboard } from '@/redux/dashboard';
+import { actions as actEventWheel } from '@/redux/event-wheel';
+import { actions as actManageCb } from '@/redux/manager-cb-coin';
+import { actions as actManageDetailCb } from '@/redux/manager-detail-cb-coin';
+import { actions as actRules } from '@/redux/rules';
+import { actions as actSegment } from '@/redux/segment';
+import { actions as actSystem } from '@/redux/system';
+import { actions as actTopic } from '@/redux/topic';
+import { actions as actWheel } from '@/redux/wheel';
+import { actions as actWheelDet } from '@/redux/wheel-detail';
+import { actions as actWheelPM } from '@/redux/wheel-popup-menu';
+import ModalProfileChangePass from '@/containers/modal-profile-change-password';
 
 const HeaderCustom = (props) => {
+  const [visibleProfile, setVisibleProfile] = useState(false);
+  const [visiblePass, setVisibleChangePass] = useState(false);
+  const router = useRouter();
+  const profile=  useSelector(getters.getProfile)
+  const isAuth =  useSelector(getters.getAccessToken)
+  const dispatch = useDispatch();
   const [isLeave, setIsLeave] = useState(0);
   const onMouseLeave = () => {
     setIsLeave('0');
   };
+  useEffect(()=>{
+    if(!isAuth){
+      router.replace('/')
+    }
+  },[isAuth]);
+
+  const onSignOut =()=>{
+    dispatch(actions.SignOut());
+    dispatch(actDashboard.SignOut());
+    dispatch(actEventWheel.SignOut());
+    dispatch(actManageCb.SignOut());
+    dispatch(actManageDetailCb.SignOut());
+    dispatch(actRules.SignOut());
+    dispatch(actSegment.SignOut());
+    dispatch(actSystem.SignOut());
+    dispatch(actTopic.SignOut());
+    dispatch(actWheel.SignOut());
+    dispatch(actWheelDet.SignOut());
+    dispatch(actWheelPM.SignOut());
+  } 
+  const onPreview =()=>{
+    setVisibleProfile(true);
+  }
+  
+  const onCallback =(value)=>{
+    setVisibleProfile(value);
+  }
+
+  const onNotify
+   =()=>{
+    Message.Info('Thông báo',"Tính năng đang phát triển")
+  }
+
+  const onChangePassword = ()=>{
+    setVisibleChangePass(true)
+
+  }
+
+  const onCallbackChangePass = async (value)=>{
+    if(!value.visible){
+      setVisibleChangePass(false)
+      return;
+    }
+    const {userId,fullname, passwordOld, passwordNew, roleId, id} = value
+    const param = {
+      id:id,
+      userId: userId,
+      fullname: fullname,
+      password: passwordOld,
+      newPassword: passwordNew,
+      roleId: roleId,
+    }
+    const result = await dispatch(actSystem.changePassword(param))
+    if(!result?.success){
+      Message.Warning('Thông báo',result?.message);
+      return
+    }
+    Message.Success('Thông báo',result?.message)
+    setVisibleChangePass(false)
+    setTimeout(() => {
+      onSignOut();
+    }, 500);
+    // gọi API check
+
+  }
   return (
     <Header style={{ padding: 0, backgroundColor: '#034da2' }} >
       <div
@@ -51,23 +138,28 @@ const HeaderCustom = (props) => {
           selectedKeys={isLeave}
           className={stylesLess['header-sub']}
         >
-          <Menu.Item key='Notification'>
+          <Menu.Item key='Notification' onClick={onNotify}>
             <NotificationCustom />
           </Menu.Item>
           <SubMenu
             className={stylesLess['modified-title']}
             key='AccountSub'
             icon={<UserOutlined />}
-            title='Nhac Vo'>
-            <Menu.Item key='AccountSub_1'>
-              <span>{'Profile'}</span>
+            title={profile?.fullname}>
+            <Menu.Item key='AccountSub_1' onClick={onPreview}>
+              <span>{'Thông tin tài khoản'}</span>
+            </Menu.Item>  
+            <Menu.Item key='AccountSub_2' onClick={onChangePassword}>
+              <span>{'Đổi mật khẩu'}</span>
             </Menu.Item>
-            <Menu.Item key='AccountSub_2'>{'Setting'}</Menu.Item>
-            <Menu.Item key='AccountSub_3'>{'Sign Out'}</Menu.Item>
+            <Menu.Item key='AccountSub_3' onClick={onSignOut}>{'Đăng xuất'}</Menu.Item>
           </SubMenu>
         </Menu>
       </div>
+
+      { visibleProfile? <ModalProfile callback ={onCallback} visible={visibleProfile} />:<></>}
+      { visiblePass? <ModalProfileChangePass callback ={onCallbackChangePass} visible={visiblePass} />:<></>}
     </Header>
   );
 };
-export default HeaderCustom;
+export default memo(HeaderCustom) ;

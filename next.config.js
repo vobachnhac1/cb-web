@@ -15,9 +15,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 });
 const lessToJS = require('less-vars-to-js');
 const fs = require('fs');
-
 const loadEnvConfig = require('./bin/env');
-
 loadEnvConfig();
 
 const antdVariables = lessToJS(fs.readFileSync(path.resolve(__dirname, 'src/styles/variables.less'), 'utf8'));
@@ -50,5 +48,10 @@ module.exports = withBundleAnalyzer(withAntdLess({
 		config.infrastructureLogging = { debug: /PackFileCache/ }
 
 		return config;
+	},
+	eslint: {
+		// Warning: This allows production builds to successfully complete even if
+		// your project has ESLint errors.
+		ignoreDuringBuilds: true,
 	},
 }));

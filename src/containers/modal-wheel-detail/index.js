@@ -11,7 +11,8 @@ import { PlusOutlined } from '@ant-design/icons';
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
-import DisplayWheel from '@/pages/wheel/[wheel-info]';
+// import DisplayWheel from '@/pages/wheel-bkk/[wheel-info]';
+import DisplayWheel from '@/pages/wheel1/[wheel-info]';
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
 import { getters as gettersTopic } from '@/redux/topic';
@@ -357,7 +358,8 @@ const ModalWheelDetail = (props) => {
 
   return (
     <Modal
-      width={750}
+      width={'50vw'}
+      
       maskClosable={false}
       closable={isViewsWheel ? true : false}
       centered

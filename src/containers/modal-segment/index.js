@@ -33,13 +33,11 @@ const layoutContent = {
 };
 const ModalSegment = (props) => {
   const { callback, visible = false, bodyModel: { isAdd = false, record = null } } = props;
-  const [loading, setLoading] = useState(false);
   const [segmentId, setSegmentId] = useState(record ? record.segment_id : "");
   const [topicId, setTopicId] = useState(record ? record.topic_id : "");
   const [segmentName, setSegmentName] = useState(record ? record.segment_name : "");
-  const [segmentColor, setSegmentColor] = useState(record ? record.segment_color : "");
+  const [segmentValue, setSegmentValue] = useState(record ? record.segment_value : "");
   const [inactived_date, setInactived_date] = useState(record ? record.inactived_date : "");
-
   const dispatch = useDispatch();
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
 
@@ -51,72 +49,59 @@ const ModalSegment = (props) => {
     setSegmentId(record ? record.segment_id : "")
     setTopicId(record ? record.topic_id : "")
     setSegmentName(record ? record.segment_name : "")
-    setSegmentColor(record ? record.segment_color : "")
+    setSegmentValue(record ? record.segment_value : "")
     setInactived_date(record ? record.inactived_date : "")
   }
 
   const onCallback = async () => {
-    // if (!segmentId || segmentId.lenght == 0) {
-    //   Message.Warning("NOTYFICATON", "Mã kết quả chưa điền nội dung");
-    //   return;
-    // }
+    let msg_error = [];
     if (!topicId) {
-      Message.Warning("NOTYFICATON", "Chủ đề chưa được chọn");
-      return;
+      msg_error.push("- Chủ đề chưa được chọn");
     }
-    if (!segmentName || segmentName.lenght == 0) {
-      Message.Warning("NOTYFICATON", "Tên kết quả trúng thưởng chưa có nội dung");
-      return;
+    if (!segmentName || segmentName.length == 0) {
+      msg_error.push("- Tên kết quả trúng thưởng chưa có nội dung");
     }
-    if (!segmentColor || segmentColor.lenght == 0) {
-      Message.Warning("NOTYFICATON", "Màu sắc hiển thị chưa có nội dung");
-      return;
+    if (msg_error && msg_error.length > 0) {
+      Message.WarningArr("Thông Báo", msg_error);
+      return
     }
-    if (!inactived_date || inactived_date.lenght == 0) {
-      Message.Warning("NOTYFICATON", "Hãy chọn ngày kết thúc giải thưởng");
-      return;
-    }
-   
-
     const param = {
       ...record,
       segment_id: segmentId,
       topic_id: topicId,
       segment_name: segmentName,
-      segment_color: segmentColor,
+      segment_value: segmentValue,
       inactived_date: inactived_date,
       is_approve: true,
-      // status_yn: isApprove,
       visible: false
     }
-
 
     // add
     if (isAdd) {
       const result = await dispatch(actionSegment.insertSegment(param));
       if (result) {
-        callback({ visible: false });
-        Message.Success("NOTYFICATON", "ADD NEW SEGMENT SUCCESS");
+        callback({ visible: false, });
+        Message.Success("Thông Báo", "Thêm thành công");
         return;
       }
-      Message.Error("NOTYFICATON", "ADD NEW SEGMENT FAILED");
+      Message.Error("Thông Báo", "Thêm thất bại");
       return;
     }
     //edit
-    const result = await dispatch(actionSegment.updateTopic(param));
+    const result = await dispatch(actionSegment.updateSegment(param));
     if (result) {
       callback({ visible: false });
-      Message.Success("NOTYFICATON", "UPDATE SEGMENT SUCCESS");
+      Message.Success("Thông Báo", "Cập nhật thành công");
       return;
     }
-    Message.Error("NOTYFICATON", "UPDATE SEGMENT FAILED");
+    Message.Error("Thông Báo", "Cập nhật thất bại");
 
-
+    // false
   }
   const onCancel = () => {
     callback({ visible: false });
-
   }
+
   return (
     <Modal
       width={750}
@@ -124,8 +109,8 @@ const ModalSegment = (props) => {
       closable={false}
       centered
       visible={visible}
-      okText={'Comfirm'}
-      cancelText={'Cancel'}
+      okText={'Xác nhận'}
+      cancelText={'Quay lại'}
       onOk={onCallback}
       onCancel={onCancel}
     >
@@ -149,23 +134,19 @@ const ModalSegment = (props) => {
           labelAlign='left'
           size={'default'}
 
-
         >
-          {/*  */}
+
           {
             segmentId ? <Row >
               <Col {...layoutHeader} >
                 <Text className={classNames({ 'text-font': true })}>{'Mã kết quả trúng thưởng :'}</Text>
               </Col>
               <Col  {...layoutContent}>
-
                 <Input style={{ width: '100%' }} value={segmentId} onChange={(text) => setSegmentId(text.target.value)} disabled />
               </Col>
             </Row>
-              : ""
+              : null
           }
-
-
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
               <Text className={classNames({ 'text-font': true })}>{'Chủ đề :'}</Text>
@@ -173,6 +154,7 @@ const ModalSegment = (props) => {
             <Col  {...layoutContent}>
 
               <Select
+                disabled={isAdd ? false : true}
                 style={{ width: '100%' }}
                 defaultValue=""
                 value={
@@ -180,7 +162,6 @@ const ModalSegment = (props) => {
                 onChange={(value) => setTopicId(value)}>
                 {listTopic.map((Item, key) => (
                   <Select.Option value={Item.topic_id} key={key}>{Item.topic_name}</Select.Option>
-                  // <option value={option.value}>{option.label}</option>
                 ))}
               </Select>
             </Col>
@@ -190,7 +171,6 @@ const ModalSegment = (props) => {
               <Text className={classNames({ 'text-font': true })}>{'Tên giải thưởng '}</Text>
             </Col>
             <Col  {...layoutContent}>
-
               <Input style={{ width: '100%' }} value={segmentName} onChange={(text) => setSegmentName(text.target.value)} />
             </Col>
           </Row>
@@ -215,17 +195,15 @@ const ModalSegment = (props) => {
               <Text className={classNames({ 'text-font': true })}>{'Màu sắc hiển thị '}</Text>
             </Col>
             <Col  {...layoutContent}>
-
-              <Input style={{ width: '100%' }} value={segmentColor} onChange={(text) => setSegmentColor(text.target.value)} />
+              <Input type="color" style={{ width: '50%' }} value={segmentColor} onChange={(text) => setSegmentColor(text.target.value)} />
             </Col>
-          </Row>
+          </Row> */}
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
               <Text className={classNames({ 'text-font': true })}>{'Ngày hết hiệu lực '}</Text>
             </Col>
             <Col  {...layoutContent}>
-
-              <DatePicker value={inactived_date ? moment(inactived_date) : null} onChange={(date) => setInactived_date(date)} />
+              <DatePicker disabledDate={d => !d || d.isSameOrBefore(moment().set('date', (moment().date() - 1)))} style={{ width: '50%' }} value={!inactived_date || inactived_date === "0000-00-00 00:00:00" ? null : moment(inactived_date)} onChange={(date) => setInactived_date(date)} />
             </Col>
           </Row>
         </Form>

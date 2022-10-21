@@ -4,9 +4,9 @@
 * Phone 0906.918.738
 * Created: 2022-04-07
 *------------------------------------------------------- */
-require("./style.module.less");
+require("./styles.less");
 import { useEffect, useState } from 'react';
-import { Button, Card, Col, Input, Row, Space, Table, DatePicker } from 'antd';
+import { Button, Card, Col, Input, Row, Space, Table, DatePicker, Typography, Popconfirm } from 'antd';
 import moment from 'moment';
 import __ from 'lodash';
 import * as classnames from 'classnames';
@@ -14,10 +14,10 @@ import LayoutHome from '@/containers/Home';
 import * as Message from '@/components/message';
 
 const { RangePicker } = DatePicker;
+const { Text } = Typography;
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
-import { actions as actionTopic } from 
-'@/redux/topic';
+import { actions as actionTopic } from '@/redux/topic';
 import { getters as gettersTopic } from '@/redux/topic';
 import ModalTopic from '@/containers/modal-topic';
 
@@ -37,54 +37,73 @@ export default function Topic(props) {
   const columns = [
     {
       align: 'center',
-      title: 'Topic ID',
+      title: 'STT',
+      dataIndex: 'ord_numbers',
+      key: 'ord_numbers',
+      width: 50,
+    }, {
+      align: 'center',
+      title: 'Mã',
       dataIndex: 'topic_id',
       key: 'topic_id',
       width: 80,
-      render: text => <a>{text}</a>,
     },
     {
       width: 300,
-      title: 'Topic Name',
+      title: 'Tên chủ đề',
       dataIndex: 'topic_name',
       key: 'topic_name',
     },
     {
       align: 'center',
       width: 200,
-      title: 'InActive Date',
+      title: 'Ngày khởi tạo',
       dataIndex: 'inactived_date',
       key: 'inactived_date',
       render: (text) => (
-        <p>{text ? moment(text).format('HH:mm:ss,  YYYY-MM-DD') : ''}</p>
+        <Text>{text ? moment(text).format('HH:mm:ss,  YYYY-MM-DD') : ''}</Text>
       ),
 
     }, {
       align: 'center',
-      title: 'Status',
+      title: 'Trạng thái',
       dataIndex: 'status_yn',
       key: 'status_yn',
+      width: 100,
       render: (text) => (
-        <p>{text == 'Y' ? 'YES' : 'NO'}</p>
+        <Text>{text == 'Y' ? 'Đã phê duyệt' : 'Chưa phê duyệt'}</Text>
       ),
     },
     {
       align: 'center',
       title: 'Action',
       key: 'action',
+      width: 200,
       render: (text, record) => (
         <Space size="middle">
-          <Button style={{ color: 'green', borderColor: 'green', borderWidth: 0.5 }} onClick={() => approveTopic(record)} >Approve</Button>
-          <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateTopic(record)} >Edit</Button>
-          <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} onClick={() => deleteTopic(record)} >Delete</Button>
+          {record.wheel_id_apr === 1
+            ?
+            <span style={{ color: 'green', }} >
+              Có vòng quay đã duyệt và đang sử dụng chủ đề này !
+            </span>
+            : <>
+              {/* <Button style={{ color: record.status_yn == 'N' ? 'green' : 'red', borderColor: record.status_yn == 'N' ? 'green' : 'red', borderWidth: 0.5 }}
+                onClick={() => approveTopic(record)} >{
+                  record.status_yn == 'N' ? "Phê duyệt" : "Từ chối"
+                }</Button> */}
+              {/* {
+                record.status_yn == 'N' && <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateTopic(record)} >Cập nhật</Button>
+              } */}
+              <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateTopic(record)} >Cập nhật</Button>
+              <Popconfirm title="Bạn có muốn?" onConfirm={() => deleteTopic(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom" >
+                <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
+              </Popconfirm>
+            </>}
         </Space>
+
       ),
     },
   ];
-  const pagination = {
-    current: 1,
-    pageSize: 10,
-  };
 
   // gọi 1 function rồi theo dõi nhưng thay đổi của param đó
   useEffect(() => {
@@ -115,20 +134,20 @@ export default function Topic(props) {
     const result = await dispatch(actionTopic.deleteTopic(record));
     if (result) {
       initPage();
-      Message.Success("NOTYFICATON", "DELETE TOPIC SUCCESS");
+      Message.Success("Thông Báo", "Xóa thành công");
       return
     }
-    Message.Error("NOTYFICATON", "DELETE TOPIC FAIL");
+    Message.Error("Thông Báo", "Xóa không thành công");
   }
 
   const approveTopic = async (record) => {
     const result = await dispatch(actionTopic.approveTopic(record));
     if (result) {
       initPage();
-      Message.Success("NOTYFICATON", "APPROVE TOPIC SUCCESS");
+      Message.Success("Thông Báo", "Phê duyệt thành công");
       return
     }
-    Message.Error("NOTYFICATON", "APPROVE TOPIC FAILED");
+    Message.Error("Thông Báo", "Phê duyệt thất bại");
   }
 
   const callbackModal = (params) => {
@@ -157,16 +176,16 @@ export default function Topic(props) {
         <ModalTopic visible={visible} bodyModel={bodyModel} callback={callbackModal} />
         <Card
           headStyle={{
-            fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: '#0C74CF'
+            fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)"
           }}
-          title="TOPIC MANAGEMENT"
+          title="Quản lý chương trình Digital Loyalty"
           bordered={true}
           style={{ backgroundColor: '#FFFFFF' }}>
           <Col span={48} >
             <Row gutter={[16, 24]}>
               <Col className="gutter-row" span={4}>
                 <Input
-                  placeholder='Input Topic Name'
+                  placeholder='Nhập tên chủ đề'
                   style={{ width: '100%' }}
                   value={filter.topic_name}
                   onChange={(text) => setFilter({ ...filter, topic_name: text.target.value })} />
@@ -194,10 +213,10 @@ export default function Topic(props) {
             </Row>
             <Row gutter={[16, 24]} style={{ marginTop: 10 }}>
               <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewTopic}>Add</Button>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewTopic}>Thêm</Button>
               </Col>
               <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch} >Search</Button>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch} >Tìm kiếm</Button>
               </Col>
             </Row>
           </Col>
@@ -208,8 +227,10 @@ export default function Topic(props) {
             <Table
               columns={columns}
               dataSource={listTopic}
-              size='large'
-              pagination={pagination}
+              size='small'
+              scroll={{ x: 1300, y: '45vh' }}
+
+              // pagination={pagination}
               loading={false}
             />
           </Col>
