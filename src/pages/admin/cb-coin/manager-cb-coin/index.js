@@ -369,7 +369,7 @@ export default function ManagerCbCoin(props) {
     // });
     // manager-detail-cb-coin
     // router.push(`/admin/wheel-detail/${record.wheel_id}`)
-    router.push(`/admin/cbCoin/manager-detail-cb-coin/${record.criteria_code}`)
+    router.push(`/admin/cb-coin/manager-detail-cb-coin/${record.criteria_code}`)
     
   }
 
