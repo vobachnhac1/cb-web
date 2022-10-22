@@ -176,7 +176,7 @@ export default function AccountManagement(props) {
       Message.Error("Thông Báo", result.message);
       // call API update
     }else{
-      const {userId, fullname, password, newPassword, roleId, description, id, status, systemCode}= value;
+      const {userId, fullname, password, newPassword, roleId, description, status, systemCode}= value;
       const param = {        
         userId: userId,
         fullname: fullname,
