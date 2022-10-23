@@ -85,11 +85,7 @@ const ModalAccountManagement = (props) => {
       }
       
     }
-
-
-    console.log('body: ', body, record);
-
-    callback({...body, visible:true, id: record.id})
+    callback({...body, visible:true, id: record?.id})
   }
 
   const onCancel = () => {
@@ -263,7 +259,6 @@ const ModalAccountManagement = (props) => {
               <Select
                   placeholder="Trạng thái"
                   style={{ width: '100%' }}
-                  // defaultValue={'1'}
                   value={body?.status?.toString()}
                   onChange={(value)=>setBody({...body, status: value})}
                 >
