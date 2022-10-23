@@ -185,7 +185,7 @@ export default function PathsManagement(props) {
       key: 'systemName',
     }, {
       width: 100,
-      title: 'Mô tả',
+      title: 'Tên màn hình',
       dataIndex: 'description',
       key: 'description',
     },  {
