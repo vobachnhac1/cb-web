@@ -154,12 +154,12 @@ export default function PathsManagement(props) {
   }
 
   const columns = [
-    {
-      dataIndex: 'key',
-      key: 'key',
-      fixed: 'left',
-      width: 0
-    },
+    // {
+    //   dataIndex: 'key',
+    //   key: 'key',
+    //   fixed: 'left',
+    //   width: 0
+    // },
     {
       align: 'center',
       title: 'STT',
