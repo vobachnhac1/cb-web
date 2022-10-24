@@ -5,7 +5,7 @@
 * Created: 2022-04-08
 *------------------------------------------------------- */
 require("./styles.less");
-import { Card, Col, Form, Input, Modal, Row, Typography, DatePicker, Tag, Select } from 'antd';
+import { Card, Col, Form, Input, Modal, Row, Typography, DatePicker, Tag, Select, InputNumber } from 'antd';
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
@@ -36,7 +36,6 @@ const ModalRules = (props) => {
   const dispatch = useDispatch();
   const { callback, visible = false, bodyModel: { isAdd = false, record = null } } = props;
   const listWheel = useSelector(gettersRules.getListWheel) || [];
-
   const [body, setBody] = useState(record ? record : {
     created_date: null,
     datelastmaint: null,
@@ -49,7 +48,9 @@ const ModalRules = (props) => {
     status_rules: null,
     status_rules_name: null,
     to_date: null,
-    total_reward: null,
+    total_reward: 0,
+    reward: 0,
+    reward_per:0,
   });
 
   useEffect(() => {
@@ -69,7 +70,9 @@ const ModalRules = (props) => {
       status_rules: null,
       status_rules_name: null,
       to_date: null,
-      total_reward: null,
+      total_reward: 0,
+      reward: 0,
+      reward_per:0,
     });
     if (!isAdd) {
       const res = listWheel.filter(item => record && item.rules_id == record.rules_id);
@@ -95,19 +98,42 @@ const ModalRules = (props) => {
       setIsChangeText(false);
     }
   }
-
-  const onChangeText = (event) => {
+  const onChangetReward = (event) => {
     if (!isChangeText) {
       setIsChangeText(true);
       return;
     };
-    setBody({ ...body, total_reward: event.target.value })
+    let total  = 0;
+    if(!body.reward_per ||body?.reward_per ==0){
+      total = event
+    }else{
+      total  = Number( event)*100/Number( body.reward_per)
+    }
+    setBody({ ...body, reward: event, total_reward: total?.toFixed(0) })
+
+  }
+
+  const onChangeRewardPer = (event) => {
+    if (!isChangeText) {
+      setIsChangeText(true);
+      return;
+    };
+    let total  = Number( body.reward)*100/Number( event)
+    if(!event ||event ==0){
+      total = Number( body.reward)
+    }else{
+      const total  = Number( body.reward)*100/Number( event)
+    }
+
+    setBody({ ...body,  reward_per: event, total_reward: total?.toFixed(0) })
   }
 
   const onCallback = async () => {
-    const { total_reward = 0, rules_name = null, from_date = null, to_date = null } = body;
+    const {reward =0, reward_per =0, total_reward = 0, rules_name = null, from_date = null, to_date = null } = body;
+    if(reward <= 0){
+      msg_error.push("- Vui lòng nhập số giải muốn trúng thưởng\n");
+    }
     let msg_error = [];
-
     if (!total_reward || total_reward == 0) {
       msg_error.push("- Vui lòng nhập tổng giải thưởng trúng trong đợt\n");
     }
@@ -128,6 +154,8 @@ const ModalRules = (props) => {
     if (isAdd) {
       const result = await dispatch(actionsRules.insertRules({
         ...body,
+        reward: reward,
+        reward_per: reward_per,
         wheel_id: chooseWheel
       }));
       if (result) {
@@ -142,6 +170,8 @@ const ModalRules = (props) => {
     //edit
     const result = await dispatch(actionsRules.updateRules({
       ...body,
+      reward: reward,
+      reward_per: reward_per,
       wheel_id: chooseWheel
     }));
     if (result) {
@@ -206,11 +236,46 @@ const ModalRules = (props) => {
               <Text className={classNames({ 'text-font': true })}>{'Số lượng giải được trúng:'}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Input
+              <InputNumber
+                addonAfter={"Giải thưởng"}
+                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
                 onKeyPress={onKeyPress}
                 style={{ width: '100%' }}
-                value={body.total_reward}
-                onChange={onChangeText}
+                value={body?.reward}
+                onChange={onChangetReward}
+              />
+            </Col>
+          </Row> 
+          <Row style={{ marginTop: 10 }}>
+            <Col {...layoutHeader} >
+              <Text className={classNames({ 'text-font': true })}>{'Tỉ lệ trúng:'}</Text>
+            </Col>
+            <Col  {...layoutContent}>
+              <InputNumber
+                addonAfter={"%"}
+                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                onKeyPress={onKeyPress}
+                style={{ width: '100%' }}
+                value={body?.reward_per}
+                onChange={onChangeRewardPer}
+              />
+            </Col>
+          </Row>
+          <Row style={{ marginTop: 10 }}>
+            <Col {...layoutHeader} >
+              <Text className={classNames({ 'text-font': true })}>{'Tổng số giải:'}</Text>
+            </Col>
+            <Col  {...layoutContent}>
+              <InputNumber
+                disabled={true}
+                addonAfter={"Giải thưởng"}
+                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                onKeyPress={onKeyPress}
+                style={{ width: '100%' }}
+                value={body?.total_reward}
               />
             </Col>
           </Row>

@@ -12,7 +12,7 @@ import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
 // import DisplayWheel from '@/pages/wheel1/[wheel-info]';
-import DisplayWheel from '@/pages/wheel2/[wheel-info]';
+import DisplayWheel from '@/pages/wheel1/[wheel-info]';
 // khai báo store
 import { useSelector, useDispatch } from 'react-redux';
 import { getters as gettersTopic } from '@/redux/topic';
@@ -526,11 +526,10 @@ const ModalWheelDetail = (props) => {
                 <Text className={classNames({ 'text-font': true })}>{'Số thứ tự trên vòng quay '}</Text>
               </Col>
               <Col  {...layoutContent}>
-
                 <Input type="number" min="1" max="15" style={{ width: '100%' }} value={no} onChange={(text) => setNo(text.target.value)} />
               </Col>
             </Row>
-            <Row style={{ marginTop: 10 }}>
+            {/* <Row style={{ marginTop: 10 }}>
               <Col {...layoutHeader} >
                 <Text className={classNames({ 'text-font': true })}>{'Trúng thưởng '}</Text>
               </Col>
@@ -538,10 +537,9 @@ const ModalWheelDetail = (props) => {
                 <Radio.Group onChange={onChangeRadio} value={goalYn ? goalYn : 0}>
                   <Radio value={1}>Có</Radio>
                   <Radio value={0}>Không</Radio>
-
                 </Radio.Group>
               </Col>
-            </Row>
+            </Row> */}
             <Row style={{ marginTop: 10 }}>
               <Col {...layoutHeader} >
                 <Text className={classNames({ 'text-font': true })}>{'Màu sắc hiển thị '}</Text>

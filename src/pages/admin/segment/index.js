@@ -69,6 +69,7 @@ export default function Segment(props) {
     }
     Message.Error("Thông Báo", "Xóa thất bại!");
   };
+
   const columns = [
     {
       title: 'STT',
@@ -93,14 +94,12 @@ export default function Segment(props) {
       key: 'segment_name',
       fixed: 'left',
       width: 200
-
     },
     {
       title: 'Chủ đề',
       dataIndex: 'topic_name',
       key: 'topic_name',
       width: 200
-
     },
     {
       align: 'end',
@@ -169,7 +168,6 @@ export default function Segment(props) {
     },
   ];
 
-
   const [visible, setVisible] = useState(false);
   const [bodyModel, setBodyModel] = useState({
     isAdd: false,
@@ -183,6 +181,7 @@ export default function Segment(props) {
       isAdd: true
     });
   }
+
   const updateSegment = (record) => {
     setVisible(true);
     setBodyModel({
@@ -190,6 +189,7 @@ export default function Segment(props) {
       isAdd: false
     });
   }
+
   const callbackModal = (params) => {
     setVisible(params.visible);
     onSearch()

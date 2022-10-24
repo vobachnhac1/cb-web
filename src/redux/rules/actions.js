@@ -90,6 +90,8 @@ export const updateRules = (payload) => async (dispatch, getState, { $http }) =>
     from_date: moment(payload.from_date).format('YYYY-MM-DD'),
     to_date: moment(payload.to_date).format('YYYY-MM-DD'),
     rules_name: payload.rules_name,
+    reward_per: payload.reward_per,
+    reward: payload.reward,
     total_reward: parseInt(payload.total_reward) == 'NaN' ? 0 : parseInt(payload.total_reward),
     rules_id: payload.rules_id,
     status_rules: !payload.status_rules || payload.status_rules && payload.status_rules == 'N' ? 'N' : 'Y',
@@ -123,7 +125,9 @@ export const insertRules = (payload) => async (dispatch, getState, { $http }) =>
     "from_date": moment(payload.from_date).format('YYYY-MM-DD'),
     "to_date": moment(payload.to_date).format('YYYY-MM-DD'),
     "rules_name": payload.rules_name,
+    "reward_per": payload.reward_per,
     "total_reward": payload.total_reward,
+    "reward": payload.reward,
     "wheel_id": payload.wheel_id,
   }
   const result = await $http.post(URLSERVER.insertRules, param);

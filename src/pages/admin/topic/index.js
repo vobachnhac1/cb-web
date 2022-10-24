@@ -49,14 +49,14 @@ export default function Topic(props) {
       width: 80,
     },
     {
-      width: 300,
+      width: 200,
       title: 'Tên chủ đề',
       dataIndex: 'topic_name',
       key: 'topic_name',
     },
     {
       align: 'center',
-      width: 200,
+      width: 100,
       title: 'Ngày khởi tạo',
       dataIndex: 'inactived_date',
       key: 'inactived_date',
@@ -64,21 +64,12 @@ export default function Topic(props) {
         <Text>{text ? moment(text).format('HH:mm:ss,  YYYY-MM-DD') : ''}</Text>
       ),
 
-    }, {
-      align: 'center',
-      title: 'Trạng thái',
-      dataIndex: 'status_yn',
-      key: 'status_yn',
-      width: 100,
-      render: (text) => (
-        <Text>{text == 'Y' ? 'Đã phê duyệt' : 'Chưa phê duyệt'}</Text>
-      ),
     },
     {
       align: 'center',
       title: 'Action',
       key: 'action',
-      width: 200,
+      width: 100,
       render: (text, record) => (
         <Space size="middle">
           {record.wheel_id_apr === 1
@@ -87,13 +78,6 @@ export default function Topic(props) {
               Có vòng quay đã duyệt và đang sử dụng chủ đề này !
             </span>
             : <>
-              {/* <Button style={{ color: record.status_yn == 'N' ? 'green' : 'red', borderColor: record.status_yn == 'N' ? 'green' : 'red', borderWidth: 0.5 }}
-                onClick={() => approveTopic(record)} >{
-                  record.status_yn == 'N' ? "Phê duyệt" : "Từ chối"
-                }</Button> */}
-              {/* {
-                record.status_yn == 'N' && <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateTopic(record)} >Cập nhật</Button>
-              } */}
               <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateTopic(record)} >Cập nhật</Button>
               <Popconfirm title="Bạn có muốn?" onConfirm={() => deleteTopic(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom" >
                 <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
@@ -138,16 +122,6 @@ export default function Topic(props) {
       return
     }
     Message.Error("Thông Báo", "Xóa không thành công");
-  }
-
-  const approveTopic = async (record) => {
-    const result = await dispatch(actionTopic.approveTopic(record));
-    if (result) {
-      initPage();
-      Message.Success("Thông Báo", "Phê duyệt thành công");
-      return
-    }
-    Message.Error("Thông Báo", "Phê duyệt thất bại");
   }
 
   const callbackModal = (params) => {

@@ -5,7 +5,7 @@
 * Created: 2022-04-08
 *------------------------------------------------------- */
 require("./styles.less");
-import { Card, Col, Form, Input, Modal, Row, Typography, DatePicker, InputNumber } from 'antd';
+import { Card, Col, Form, Input, Modal, Row, Typography, DatePicker, InputNumber, Select } from 'antd';
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
@@ -29,6 +29,10 @@ const layoutContent = {
   md: { span: 12, offset: 0 },
   lg: { span: 16, offset: 0 },
 };
+
+const NUMBER_REWARD =[
+  8,10,12,14
+]
 const ModalSegment = (props) => {
   const { callback, visible = false, bodyModel: { isAdd = false, record = null } } = props;
   const [wheelId, setWheelId] = useState(record ? record.wheel_id : "");
@@ -202,7 +206,14 @@ const ModalSegment = (props) => {
               <Text className={classNames({ 'text-font': true })}>{'Số kết quả '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <Input type="number" min="1" max="14" style={{ width: '100%' }} value={numSegments} onChange={(text) => setNumSegments(text.target.value)} />
+              <Select
+                  disabled={false}
+                  value={numSegments}
+                  style={{ width: '100%' }}
+                  onChange={value => setNumSegments(value)}
+                >
+                  {NUMBER_REWARD.map((item,index)=><Select.Option key={index} value ={item}>{item}</Select.Option>)}
+                </Select>
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
@@ -255,7 +266,6 @@ const ModalSegment = (props) => {
               <Text className={classNames({ 'text-font': true })}>{'Ngày hết hiệu lực '}</Text>
             </Col>
             <Col  {...layoutContent}>
-
               <DatePicker disabledDate={d => !d || d.isSameOrBefore(moment().set('date', (moment().date())))} value={inactived_date ? moment(inactived_date) : null} onChange={(date) => setInactived_date(date)} />
             </Col>
           </Row>
