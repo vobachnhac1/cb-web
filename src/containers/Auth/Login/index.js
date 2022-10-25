@@ -13,6 +13,7 @@ import Logo from '@/components/Layout/Logo';
 import classes from './style.module.less';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions, getters } from '@/redux/global'
+import { actions as actionsSys  } from '@/redux/system'
 import { useRouter } from 'next/router';
 import HeadShare from '@/components/Head';
 import { PathTitle } from '@/constants/url-name'
@@ -29,12 +30,16 @@ const Login = (props) => {
 	const dispatch = useDispatch();
 	const [loading, setLoading] = React.useState(false);
 	const isAuth=  useSelector(getters.getAccessToken)
+
 	useEffect(() => {
 		if (isAuth) {
+			initLoadData();
 			router.push('/home');
 		}
 	}, [isAuth]);
-
+	const initLoadData = async()=>{
+    await dispatch(actionsSys.setSystemList());
+	} 
 	const onsubmitLogin = async (values) => {
 		try {
 			setLoading(true);
