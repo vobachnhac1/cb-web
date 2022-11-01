@@ -20,16 +20,16 @@ import { actions, getters } from '@/redux/system';
 import ModalAccountManagement from '@/containers/modal-system-account';
 
 const STATUS_ACCOUNT = {
-  '1':'Hoạt động',
-  '2':'Không Hoạt động',
-  '3':'Tạm khóa',
+  '1': 'Hoạt động',
+  '2': 'Không Hoạt động',
+  '3': 'Tạm khóa',
 }
 
 export default function AccountManagement(props) {
   const dispatch = useDispatch();
 
-  const [perSys, setSys]= useState(null);
-  const [perSysRoles, setSysRole]= useState(null);
+  const [perSys, setSys] = useState(null);
+  const [perSysRoles, setSysRole] = useState(null);
 
   const accountList = useSelector(getters.getAccountList);
   const listRoles = useSelector(getters.getRolesList);
@@ -39,9 +39,9 @@ export default function AccountManagement(props) {
   const [update, setUpdate] = useState(false);
   const [record, setRecord] = useState(null);
 
-  useEffect(()=>{
+  useEffect(() => {
     initPage();
-  },[]);
+  }, []);
   const columns = [
     {
       align: 'center',
@@ -55,7 +55,7 @@ export default function AccountManagement(props) {
       dataIndex: 'userId',
       key: 'userId',
       width: 100,
-    },  {
+    }, {
       align: 'center',
       title: 'Tên đầy đủ',
       dataIndex: 'fullname',
@@ -67,7 +67,7 @@ export default function AccountManagement(props) {
       dataIndex: 'roleId',
       key: 'roleId',
       render: (text) => (
-        <Text>{text ? listRoles?.find(item=>item.roleId ==text)?.roleName: ''}</Text>
+        <Text>{text ? listRoles?.find(item => item.roleId == text)?.roleName : ''}</Text>
 
       ),
     }, {
@@ -76,9 +76,9 @@ export default function AccountManagement(props) {
       dataIndex: 'status',
       key: 'status',
       render: (text) => (
-        <Text>{text ? STATUS_ACCOUNT[text]: ''}</Text>
+        <Text>{text ? STATUS_ACCOUNT[text] : ''}</Text>
       ),
-    },  {
+    }, {
       align: 'center',
       width: 120,
       title: 'Ngày tạo',
@@ -87,7 +87,7 @@ export default function AccountManagement(props) {
       render: (text) => (
         <Text>{text ? moment(text).format('HH:mm:ss,  YYYY-MM-DD') : ''}</Text>
       ),
-    },{
+    }, {
       width: 100,
       title: 'Người tạo',
       dataIndex: 'createdBy',
@@ -107,7 +107,7 @@ export default function AccountManagement(props) {
       title: 'Người cập nhật',
       dataIndex: 'updatedBy',
       key: 'updatedBy',
-    },{
+    }, {
       align: 'center',
       title: 'Action',
       key: 'action',
@@ -115,8 +115,8 @@ export default function AccountManagement(props) {
       render: (text, record) => (
         <Space size="middle">
           <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateAcount(record)} >Cập nhật</Button>
-              <Popconfirm title="Bạn có muốn?" onConfirm={() => deleteAcount(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom" >
-              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
+          <Popconfirm title="Bạn có muốn?" onConfirm={() => deleteAcount(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom" >
+            <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
           </Popconfirm>
         </Space>
 
@@ -125,35 +125,35 @@ export default function AccountManagement(props) {
 
   ];
 
-  const initPage = async ()=>{
+  const initPage = async () => {
     const res = await dispatch(actions.setAccountList());
     await dispatch(actions.setSystemList());
     await dispatch(actions.setRolesList());
   }
-  const onSearch =()=>{initPage()}
+  const onSearch = () => { initPage() }
 
-  const insertAccount =()=>{
+  const insertAccount = () => {
     setRecord(null)
     setUpdate(false)
     setOpen(true)
   }
-  const updateAcount =(value)=>{
+  const updateAcount = (value) => {
     setRecord(value)
     setUpdate(true)
     setOpen(true)
   }
-  const deleteAcount =(value)=>{
+  const deleteAcount = (value) => {
     Message.Info("Thông Báo", "Tính năng đang phát triển");
   }
-  
-  const callbackComfirm = async (value)=>{
-    if(!value.visible){
+
+  const callbackComfirm = async (value) => {
+    if (!value.visible) {
       setOpen(false)
       return;
     }
-    if(update){
-      const {userId, fullname, password, newPassword, roleId, description, id, status, systemCode}= value;
-      const param ={
+    if (update) {
+      const { userId, fullname, password, newPassword, roleId, description, id, status, systemCode } = value;
+      const param = {
         id: id,
         userId: userId,
         fullname: fullname,
@@ -165,7 +165,7 @@ export default function AccountManagement(props) {
         systemCode: systemCode
       }
       const result = await dispatch(actions.updateAccount(param));
-      if(result.success){ 
+      if (result.success) {
         setOpen(false)
         setUpdate(false)
         setRecord(null)
@@ -175,9 +175,9 @@ export default function AccountManagement(props) {
       }
       Message.Error("Thông Báo", result.message);
       // call API update
-    }else{
-      const {userId, fullname, password, newPassword, roleId, description, status, systemCode}= value;
-      const param = {        
+    } else {
+      const { userId, fullname, password, newPassword, roleId, description, status, systemCode } = value;
+      const param = {
         userId: userId,
         fullname: fullname,
         password: password,
@@ -188,7 +188,7 @@ export default function AccountManagement(props) {
         systemCode: systemCode
       }
       const result = await dispatch(actions.insertAccount(param));
-      if(result.success){
+      if (result.success) {
         setOpen(false)
         setUpdate(false)
         setRecord(null)
@@ -199,31 +199,31 @@ export default function AccountManagement(props) {
       Message.Error("Thông Báo", result.message);
     }
   }
-  
+
   return (
     <LayoutHome>
-        { open && <ModalAccountManagement  callback ={callbackComfirm} visible={ open }
-         bodyModel={{
-        record: record, 
-        update : update
+      {open && <ModalAccountManagement callback={callbackComfirm} visible={open}
+        bodyModel={{
+          record: record,
+          update: update
 
-      }}/>}
+        }} />}
       <Col style={{ marginBottom: 30 }}>
         <Card
-        headStyle={{
-          fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)"
-        }}
-        title="Quản lí thông tin tài khoản"
-        bordered={true}
-        style={{ backgroundColor: '#FFFFFF' }}>
+          headStyle={{
+            fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)"
+          }}
+          title="Quản lý thông tin tài khoản"
+          bordered={true}
+          style={{ backgroundColor: '#FFFFFF' }}>
           <Col span={48} >
-            <Row gutter={[16, 24]} style={{ marginTop: 10 }}>                
-                <Col className="gutter-row" span={3}>
-                  <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch} >Tìm kiếm</Button>
-                </Col>
-                <Col className="gutter-row" span={3}>
-                  <Button type='primary' size='middle' style={{ width: '100%' }} onClick={insertAccount}>Thêm</Button>
-                </Col>
+            <Row gutter={[16, 24]} style={{ marginTop: 10 }}>
+              <Col className="gutter-row" span={3}>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch} >Tìm kiếm</Button>
+              </Col>
+              <Col className="gutter-row" span={3}>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={insertAccount}>Thêm</Button>
+              </Col>
             </Row>
           </Col>
         </Card>
