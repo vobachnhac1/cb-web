@@ -54,7 +54,7 @@ const ModalTopic = (props) => {
     const param = {
       systemCode: sysCode,
       topic_name: topicName,
-      topic_id: record.topic_id,
+      topic_id: record?.topic_id,
       visible: false
     }
     // isAdd

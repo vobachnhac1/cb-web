@@ -13,6 +13,7 @@ import moment from 'moment';
 import { useDispatch } from 'react-redux';
 import { actions as actionWheel } from '@/redux/wheel';
 import _ from 'lodash';
+const { RangePicker } = DatePicker;
 
 const classNames = require("classnames");
 const { Text } = Typography;
@@ -45,6 +46,8 @@ const ModalSegment = (props) => {
   const [textFrontSize, setTextFrontSize] = useState(record ? record.text_fontsize : "");
   const [ratationAngle, setRatationAngle] = useState(record ? record.rotation_angle : "");
   const [inactived_date, setInactived_date] = useState(record ? record.inactived_date : "");
+  const [from_date_act, setFromDateAct] = useState(record ? record?.from_date_act : "");
+  const [to_date_act, setToDateAct] = useState(record ? record?.to_date_act : "");
 
 
   const dispatch = useDispatch();
@@ -94,7 +97,13 @@ const ModalSegment = (props) => {
     if (parseInt(textFrontSize) < 0) {
       msg_error.push("-Kích thước chữ đang là giá trị bé hơn 0");
     }
-    if (!inactived_date || inactived_date.length == 0) {
+    // if (!inactived_date || inactived_date.length == 0) {
+    //   msg_error.push("-Hãy chọn ngày kết thúc giải thưởng");
+    // }  
+    if (!from_date_act || from_date_act.length == 0) {
+      msg_error.push("-Hãy chọn ngày bắt đầu giải thưởng");
+    } 
+    if (!to_date_act || to_date_act.length == 0) {
       msg_error.push("-Hãy chọn ngày kết thúc giải thưởng");
     }
     if (msg_error && msg_error.length > 0) {
@@ -114,8 +123,10 @@ const ModalSegment = (props) => {
       "text_fontsize": textFrontSize,
       "rotation_angle": ratationAngle,
       "inactived_date": inactived_date,
-      "created_date": "2022-04-09T08:41:40.514Z",
-      "datelastmaint": "2022-04-09T08:41:40.514Z",
+      "from_date_act": from_date_act,
+      "to_date_act": to_date_act,
+      "created_date": null,
+      "datelastmaint": null,
       "is_approve": true
 
     }
@@ -266,7 +277,23 @@ const ModalSegment = (props) => {
               <Text className={classNames({ 'text-font': true })}>{'Ngày hết hiệu lực '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <DatePicker disabledDate={d => !d || d.isSameOrBefore(moment().set('date', (moment().date())))} value={inactived_date ? moment(inactived_date) : null} onChange={(date) => setInactived_date(date)} />
+
+              {/* <DatePicker disabledDate={d => !d || d.isSameOrBefore(moment().set('date', (moment().date())))} value={inactived_date ? moment(inactived_date) : null} onChange={(date) => setInactived_date(date)} /> */}
+              <RangePicker
+                placeholder={['Bắt đầu','Kết thúc']}
+                disabledDate={d => !d || d.isSameOrBefore(moment().set('date', (moment().date() )))}
+                value={from_date_act ? [moment(from_date_act, 'YYYY/MM/DD'), moment(to_date_act, 'YYYY/MM/DD')] : []}
+                onChange={(dates, dateString) => {
+                  if (dates) {
+                    setFromDateAct(dateString[0]);
+                    setToDateAct(dateString[1]);
+                    
+                  } else {
+                    setFromDateAct(null);
+                    setToDateAct(null);
+                  }
+                }}
+              />
             </Col>
           </Row>
         </Form>

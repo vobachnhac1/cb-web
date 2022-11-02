@@ -43,7 +43,6 @@ const ModalSegment = (props) => {
   const [isCheckTimes, setIsCheckTimes] = useState(record?.segment_value < 0 ? true  : false);
   const [isCheckCash, setIsCheckCash] = useState(record?.segment_value > 0 ? true  : false);
   const [isCheckGreet, setIsCheckGreet] = useState(record?.segment_value == 0 ? true  : false);
-
   useEffect(() => {
     initPage();
   }, [visible]);
@@ -208,11 +207,10 @@ const ModalSegment = (props) => {
                 disabled={isAdd ? false : true}
                 style={{ width: '100%' }}
                 defaultValue=""
-                value={
-                  topicId}
+                value={topicId}
                 onChange={(value) => setTopicId(value)}>
-                {listTopic.map((Item, key) => (
-                  <Select.Option value={Item.topic_id} key={key}>{Item.topic_name}</Select.Option>
+                {listTopic.map((item, key) => (                  
+                  <Select.Option value={item?.topic_id} key={key}>{item?.topic_name}</Select.Option>
                 ))}
               </Select>
             </Col>

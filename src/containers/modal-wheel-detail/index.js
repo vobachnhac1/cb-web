@@ -42,7 +42,7 @@ const layoutContent = {
   lg: { span: 16, offset: 0 },
 };
 const ModalWheelDetail = (props) => {
-  const { callback, visible = false, bodyModel: { isAdd = false, record = null, queryWheel_id, dataListSearch, isViews, isViewsWheel } } = props;
+  const { callback, visible = false, bodyModel: { isAdd = false, record = null, queryWheel_id, dataListSearch, isViews, isViewsWheel }, recordWheel } = props;
   const dispatch = useDispatch();
 
   const [wheelDetailId, setWheelDetailId] = useState(record ? record.wheel_detail_id : "")
@@ -271,7 +271,22 @@ const ModalWheelDetail = (props) => {
     }
     const { success, data } = await dispatch(actionSegment.filterSegmentByIdTopic(filter));
     if (success) {
-      setListSegmentSearch(data.listSegmentSearch)
+      let _from = new Date(recordWheel?.from_date_act);
+      let _to = new Date(recordWheel?.to_date_act);
+      const _arr = data.listSegmentSearch?.map(item=>{
+        const _current = new Date(item.inactived_date);
+        if(_to <= _current ||  _current == "Invalid Date"){
+          return {
+            ...item,
+            disabled: false
+          }
+        }
+        return {
+          ...item,
+          disabled: true
+        }
+      })
+      setListSegmentSearch(_arr)
       onChangeSegment(data.segment_id)
     }
     setTopicId(value)
@@ -450,11 +465,10 @@ const ModalWheelDetail = (props) => {
                 <Select disabled={true}
                   style={{ width: '100%' }}
                   defaultValue=""
-                  value={
-                    wheelId}
+                  value={wheelId}
                   onChange={(value) => setWheelId(value)}>
-                  {listWheel.map((Item, key) => (
-                    <Select.Option value={Item.wheel_id} key={key}>{Item.Wheel_name}</Select.Option>
+                  {listWheel.map((item, key) => (
+                    <Select.Option value={item?.wheel_id} key={key}>{item?.Wheel_name}</Select.Option>
                   ))}
                 </Select>
               </Col>
@@ -468,8 +482,8 @@ const ModalWheelDetail = (props) => {
                   style={{ width: '100%' }}
                   value={topicId}
                   onChange={onChangeTopic}>
-                  {listTopic.map((Item, key) => (
-                    <Select.Option value={Item.topic_id} key={key}>{Item.topic_name}</Select.Option>
+                  {listTopic.map((item, key) => (
+                    <Select.Option value={item?.topic_id} key={key}>{item?.topic_name}</Select.Option>
                   ))}
                 </Select>
               </Col>
@@ -484,8 +498,8 @@ const ModalWheelDetail = (props) => {
                   disabled={topicId ? false : true}
                   value={segmentId}
                   onChange={onChangeSegment}>
-                  {listSegmentSearch.map((Item, key) => (
-                    <Select.Option value={Item.segment_id} key={key}>{Item.segment_name}</Select.Option>
+                  {listSegmentSearch.map((item, key) => (
+                    <Select.Option disabled={item?.disabled} value={item.segment_id} key={key}>{item.segment_name}</Select.Option>
                   ))}
                 </Select>
               </Col>

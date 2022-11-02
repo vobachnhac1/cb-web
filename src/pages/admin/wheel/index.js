@@ -168,13 +168,24 @@ export default function Wheel(props) {
     },
     {
       align: 'center',
-      title: 'Ngày hết hiệu lực',
-      dataIndex: 'inactived_date',
-      key: 'inactived_date',
+      title: 'Ngày áp dụng',
+      dataIndex: 'from_date_act',
+      key: 'from_date_act',
       width: 170,
       render: (text, record) => {
         return <span>
-          {moment(text).format('YYYY-MM-DD, HH:mm:ss')}
+          {text && moment(text).format('YYYY-MM-DD, HH:mm:ss')}
+        </span>
+      }
+    },{
+      align: 'center',
+      title: 'Ngày kết thúc',
+      dataIndex: 'to_date_act',
+      key: 'to_date_act',
+      width: 170,
+      render: (text, record) => {
+        return <span>
+        {text && moment(text).format('YYYY-MM-DD, HH:mm:ss')}
         </span>
       }
     },
@@ -186,7 +197,7 @@ export default function Wheel(props) {
       width: 170,
       render: (text, record) => {
         return <span>
-          {moment(text).format('YYYY-MM-DD, HH:mm:ss')}
+        {text && moment(text).format('YYYY-MM-DD, HH:mm:ss')}
         </span>
       }
     },

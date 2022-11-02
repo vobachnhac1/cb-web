@@ -164,33 +164,12 @@ export default function Topic(props) {
                   value={filter.topic_name}
                   onChange={(text) => setFilter({ ...filter, topic_name: text.target.value })} />
               </Col>
-              <Col className="gutter-row" span={8}>
-                <RangePicker
 
-                  onChange={(dates, dateString) => {
-                    if (dates) {
-                      setFilter({
-                        ...filter,
-                        from_date_act: dateString[0],
-                        to_date_act: dateString[1],
-                      });
-                    } else {
-                      setFilter({
-                        ...filter,
-                        from_date_act: null,
-                        to_date_act: null,
-                      });
-                    }
-                  }}
-                />
-              </Col>
-            </Row>
-            <Row gutter={[16, 24]} style={{ marginTop: 10 }}>
-              <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewTopic}>Thêm</Button>
-              </Col>
               <Col className="gutter-row" span={3}>
                 <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch} >Tìm kiếm</Button>
+              </Col>
+              <Col className="gutter-row" span={3}>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewTopic}>Thêm</Button>
               </Col>
             </Row>
           </Col>
