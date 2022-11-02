@@ -3,6 +3,14 @@
 * Email lqn1604.dev@gmail.com
 * Phone 036.847.5269
 * Created: 2022-04-07
+*
+*
+*
+* 03-11-2022: Nhac Vo -[E]- thêm chức năng disable những kết quả giải thưởng có thời gian hiệu lực nhỏ hơn thời gian kết thúc vòng quay
+* còn thiếu bắt chỉ cho chọn 1 chủ đề giải thưởng khi đã chọn lưu 1 row
+*
+*
+*
 *------------------------------------------------------- */
 // require("./style.module.less");
 import { useState, useEffect } from 'react';

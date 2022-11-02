@@ -34,14 +34,14 @@ export default function Rules(props) {
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>
             <Row gutter={[16, 24]}>
-              <Col className="gutter-row" span={4}>
+              <Col className="gutter-row" span={6}>
                 <Input
                   placeholder='Tên quy tắc'
                   style={{ width: '100%' }}
                   value={filter.rules_name}
                   onChange={(text) => setFilter({ ...filter, rules_name: text.target.value })} />
               </Col>
-              <Col className="gutter-row" span={8}>
+              <Col className="gutter-row" span={4}>
                 <RangePicker
                   onChange={(dates, dateString) => {
                     if (dates) {

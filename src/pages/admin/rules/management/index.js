@@ -132,7 +132,7 @@ export default function RulesManagement(props) {
       render: (text, record) => {
         const isShow = record.status_rules == 'N' ? true : false;
         const color = record.status_rules == 'N' ? 'green' : 'red';
-        const tagName = record.status_rules == 'N' ? 'Phê duyệt' : 'Từ chối';
+        const tagName = record.status_rules == 'N' ? 'Áp dụng' : 'Ngừng sử dụng';
         const no_remove = record.no_remove == 1 ? true : false;
         if (no_remove) {
           return (
@@ -225,7 +225,7 @@ export default function RulesManagement(props) {
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>
             <Row gutter={[16, 24]}>
-              <Col className="gutter-row" span={4}>
+              <Col className="gutter-row" span={8}>
                 <Input
                   placeholder='Nhập tên quy tắc'
                   style={{ width: '100%' }}
