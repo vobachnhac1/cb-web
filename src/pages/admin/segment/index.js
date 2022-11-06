@@ -27,7 +27,7 @@ export default function Segment(props) {
   const [loading, setLoading] = useState(true);
   const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
   const pagination = useSelector(gettersSegment.getPagination) || [];
-  const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
+  const listTopic = useSelector(gettersTopic.getTopicCommon) || [];
   const [filter, setFilter] = useState({
     segment_name: null,
     topic_id: null,

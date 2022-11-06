@@ -5,6 +5,11 @@ export const getStateLoadPageTopic = (state) => {
   return listTopic?.map((item, index) => ({ ...item, key: index })) || []
 };
 
+export const getTopicCommon = (state) => {
+  const { topic: { listTopicCommon = [] } } = state;
+  return listTopicCommon?.map((item, index) => ({ ...item, key: index })) || []
+};
+
 
 export const getPagination = (state) => {
   const { topic: { pagination = [] } } = state;

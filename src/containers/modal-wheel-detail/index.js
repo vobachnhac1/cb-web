@@ -68,8 +68,8 @@ const ModalWheelDetail = (props) => {
   const [isChanged, setIsChanged] = useState(false);
 
 
-  const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
-  const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
+  const listTopic = useSelector(gettersTopic.getTopicCommon) || [];
+  const listSegment = useSelector(gettersSegment.getSegmentCommon) || [];
   const [listSegmentSearch, setListSegmentSearch] = useState([])
   const listWheel = useSelector(gettersWheel.getStateLoadPageWheel) || [];
   const noWheelDetail_length = useSelector(gettersWheelDetail.getStateWheelDetialNo);
@@ -100,6 +100,7 @@ const ModalWheelDetail = (props) => {
     setUrl(record ? record.url : '')
     setSegmentValue(record ? record.remain_value : 1)
     setListSegmentSearch(listSegment)
+    console.log('listSegment: ', listSegment);
 
     //xử lý file hình
 
@@ -266,29 +267,31 @@ const ModalWheelDetail = (props) => {
   }
 
   const onChangeTopic = async (value) => {
-    const filter = {
-      topic_id: value,
-    }
-    const { success, data } = await dispatch(actionSegment.filterSegmentByIdTopic(filter));
-    if (success) {
-      let _from = new Date(recordWheel?.from_date_act);
-      let _to = new Date(recordWheel?.to_date_act);
-      const _arr = data.listSegmentSearch?.map(item=>{
-        const _current = new Date(item.inactived_date);
-        if(_to <= _current ||  _current == "Invalid Date"){
-          return {
-            ...item,
-            disabled: false
-          }
-        }
+    const _rs = listSegment.filter(item=>item.topic_id == value)
+    let _from = new Date(recordWheel?.from_date_act);
+    let _to = new Date(recordWheel?.to_date_act);
+    const _arr = _rs?.map(item=>{
+      const _current = new Date(item.inactived_date);
+      if(_to <= _current ||  _current == "Invalid Date"){
         return {
           ...item,
-          disabled: true
+          disabled: false
         }
-      })
-      setListSegmentSearch(_arr)
-      onChangeSegment(data.segment_id)
+      }
+      return {
+        ...item,
+        disabled: true
+      }
+    })
+    let segment_id
+    if (listSegment !== []) {
+      for (let i = 0; i < listSegment.length; i++) {
+        segment_id = listSegment[i].segment_id
+        break
+      }
     }
+    setListSegmentSearch(_arr)
+    onChangeSegment(segment_id)
     setTopicId(value)
   }
 

@@ -10,6 +10,7 @@ import { buildReducer } from '../wrapper';
 export default buildReducer(
   {
     listSegment: [],
+    listSegmentCommon: [],
     pagination: {
       total_item: 0,
       num_page: 0,
@@ -23,6 +24,11 @@ export default buildReducer(
         ...state,
         listSegment: payload
       }
+    },[TYPES.SEGMENT_SEARCH_COMMON]: (state = listSegmentCommon, payload) => {
+      return {
+        ...state,
+        listSegmentCommon: payload
+      }
     },[TYPES.SEGMENT_PAGE]: (state = pagination, payload) => {
       return {
         ...state,
@@ -31,6 +37,7 @@ export default buildReducer(
     },[TYPES.SIGN_OUT]: (state = init) => {
       return {
         listSegment: [],
+        listSegmentCommon: [],
         pagination: {
           total_item: 0,
           num_page: 0,

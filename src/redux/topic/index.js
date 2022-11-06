@@ -10,6 +10,7 @@ import { buildReducer } from '../wrapper';
 export default buildReducer(
   {
     listTopic: [],
+    listTopicCommon: [],
     pagination: {
       total_item: 0,
       num_page: 0,
@@ -22,6 +23,11 @@ export default buildReducer(
       ...state,
       listTopic: payload
     }
+  },[TYPES.TOPIC_SEARCH_COMMON]: (state = listTopicCommon, payload) => {
+    return {
+      ...state,
+      listTopicCommon: payload
+    }
   }, [TYPES.TOPIC_PAGE]: (state = pagination, payload) => {
     console.log('payload: ', payload);
     return {
@@ -31,6 +37,7 @@ export default buildReducer(
   },[TYPES.SIGN_OUT]: (state = init) => {
     return {
       listTopic: [],
+      listTopicCommon: [],
       pagination: {
         total_item: 0,
         num_page: 0,

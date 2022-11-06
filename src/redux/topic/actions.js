@@ -4,6 +4,7 @@ import { setToken } from '../wrapper';
 
 // hàm thị thi nội bộ
 const setSearchTopic = (payload) => ({ type: TYPES.TOPIC_SEARCH, payload });
+const setTopicCommon = (payload) => ({ type: TYPES.TOPIC_SEARCH_COMMON, payload });
 const setPagination = (payload) => ({ type: TYPES.TOPIC_PAGE, payload });
 
 // hàm xử lý được gọi từ bên ngoài
@@ -17,7 +18,7 @@ export const searchTopic = (payload) => async (dispatch, getState, { $http }) =>
     return false;
   }
   const listTopic = data.data;
-  dispatch(setSearchTopic(listTopic))
+  dispatch(setTopicCommon(listTopic))
   return true
 }
 

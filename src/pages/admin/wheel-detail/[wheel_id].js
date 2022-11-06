@@ -50,7 +50,7 @@ export default function WheelDetail({ query }) {
     wheel_name: null,
   });
   const listWheel = useSelector(gettersWheel.getStateLoadPageWheel) || [];
-  const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
+  const listSegment = useSelector(gettersSegment.getSegmentCommon) || [];
   const listWheelDetail = useSelector(gettersWheelDetail.getStateLoadPageWheelDetail) || [];
   const wheelCurtValue = useSelector(gettersWheelDetail.getStateWheelCurtValue);
   const wheelTotalValue = useSelector(gettersWheelDetail.getStateWheelTotalValue);

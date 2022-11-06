@@ -1,5 +1,6 @@
 // TOPIC
 export const TOPIC_SEARCH = 'TOPIC_SEARCH';
+export const TOPIC_SEARCH_COMMON = 'TOPIC_SEARCH_COMMON';
 export const TOPIC_INSERT = 'TOPIC_INSERT';
 export const TOPIC_UPDATE = 'TOPIC_UPDATE';
 export const TOPIC_DELETE = 'TOPIC_DELETE';
