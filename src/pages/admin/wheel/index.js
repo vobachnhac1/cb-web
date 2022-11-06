@@ -19,7 +19,7 @@ require("./styles.less");
 import * as classnames from 'classnames';
 import { useState, useEffect } from 'react';
 import LayoutHome from '@/containers/Home';
-import { Button, Card, Col, Row, Space, Table, Popconfirm, Input, DatePicker } from 'antd';
+import { Button, Card, Col, Row, Space, Table, Popconfirm, Input, DatePicker, Pagination } from 'antd';
 const { RangePicker } = DatePicker;
 import * as Message from '@/components/message';
 import ModalWheel from '@/containers/modal-wheel'
@@ -38,6 +38,8 @@ export default function Wheel(props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const listWheel = useSelector(gettersWheel.getStateLoadPageWheel) || [];
+  const pagination = useSelector(gettersWheel.getPagination) || [];
+
   const [filter, setFilter] = useState({
     wheel_name: null,
     from_date_act: null,
@@ -51,7 +53,14 @@ export default function Wheel(props) {
 
   const initPage = async () => {
     setLoading(true);
-    await dispatch(actionWheel.searchWheel());
+    // thêm điều kiện wheel/select-all-wheel/current_page/item_page/wheel_status/from_date_act/to_date_act/wheel_name/wheel_status_arr
+    await dispatch(actionWheel.searchWheel(
+      {
+        ...filter,
+        item_page: 20,
+        current_page: 1
+      }
+    ));
     setLoading(false);
   }
   const onSearch = async () => {
@@ -60,7 +69,14 @@ export default function Wheel(props) {
       initPage();
     } else {
       setLoading(true);
-      await dispatch(actionWheel.filterWheel(filter));
+      // await dispatch(actionWheel.filterWheel(filter));
+      await dispatch(actionWheel.searchWheel(
+        {
+          ...filter,
+          item_page: 20,
+          current_page: 1
+        }
+      ));
       setLoading(false)
       return;
     }
@@ -298,7 +314,15 @@ export default function Wheel(props) {
     // });
     router.push(`/admin/wheel-detail/${record.wheel_id}`)
   }
-
+  const onChangePagination = async (value)=>{
+    await dispatch(actionWheel.searchWheel(
+      {
+        ...filter,
+        item_page: 20,
+        current_page: value
+      }
+    )); 
+  }    
   return (
     <LayoutHome>
       <Col style={{ marginBottom: 30 }}>
@@ -352,6 +376,7 @@ export default function Wheel(props) {
               columns={columns}
               dataSource={listWheel}
               size='small'
+              pagination={false}
               loading={loading}
               scroll={{ x: 1300, y: '45vh' }}
               onRow={(record, rowIndex) => {
@@ -365,6 +390,15 @@ export default function Wheel(props) {
                   onMouseLeave: event => { }, // mouse leave row
                 };
               }}
+            />
+             <Pagination 
+              style={{marginTop: 10}} 
+              pageSize={pagination?.item_page || 20}
+              defaultCurrent={pagination?.current_page} 
+              total={pagination?.total_item} 
+              current={pagination?.current_page} 
+              showSizeChanger={false}
+              onChange={onChangePagination}
             />
           </Col>
         </Card>
