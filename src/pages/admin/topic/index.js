@@ -6,7 +6,7 @@
 *------------------------------------------------------- */
 require("./styles.less");
 import { useEffect, useState } from 'react';
-import { Button, Card, Col, Input, Row, Space, Table, DatePicker, Typography, Popconfirm } from 'antd';
+import { Button, Card, Col, Input, Row, Space, Table, DatePicker, Typography, Popconfirm, Pagination } from 'antd';
 import moment from 'moment';
 import __ from 'lodash';
 import * as classnames from 'classnames';
@@ -24,6 +24,7 @@ import ModalTopic from '@/containers/modal-topic';
 export default function Topic(props) {
   const dispatch = useDispatch();
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
+  const pagination = useSelector(gettersTopic.getPagination) || [];
   const [visible, setVisible] = useState(false);
   const [filter, setFilter] = useState({
     topic_name: null,
@@ -95,7 +96,13 @@ export default function Topic(props) {
   }, [])
 
   const initPage = async () => {
-    await dispatch(actionTopic.searchTopic()); // hàm gọi xuống store call api search-all topic
+    await dispatch(actionTopic.filterTopic(
+      {
+        item_page: 20,
+        current_page: 1
+      }
+    )); // hàm gọi xuống store call api search-all topic phân page
+    // await dispatch(actionTopic.searchTopic()); // hàm gọi xuống store call api search-all topic
   }
 
   const addNewTopic = () => {
@@ -144,6 +151,15 @@ export default function Topic(props) {
     }
     initPage();
   }
+  const onChangePagination = async (value)=>{
+    await dispatch(actionTopic.filterTopic(
+      {
+        ...filter,
+        item_page: 20,
+        current_page: value
+      }
+    )); 
+  }        
   return (
     <LayoutHome>
       <Col style={{ marginBottom: 30 }}>
@@ -182,9 +198,17 @@ export default function Topic(props) {
               dataSource={listTopic}
               size='small'
               scroll={{ x: 1300, y: '45vh' }}
-
-              // pagination={pagination}
+              pagination={false}
               loading={false}
+            />
+            <Pagination 
+              style={{marginTop: 10}} 
+              pageSize={pagination?.item_page}
+              defaultCurrent={pagination?.current_page} 
+              total={pagination?.total_item} 
+              current={pagination?.current_page} 
+              showSizeChanger={false}
+              onChange={onChangePagination}
             />
           </Col>
         </Card>

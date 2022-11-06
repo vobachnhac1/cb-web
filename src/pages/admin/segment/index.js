@@ -7,7 +7,7 @@
 require("./styles.less");
 import { useState, useEffect } from 'react';
 import LayoutHome from '@/containers/Home';
-import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Input, DatePicker } from 'antd';
+import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Input, DatePicker, Pagination } from 'antd';
 
 const { RangePicker } = DatePicker;
 import * as Message from '@/components/message';
@@ -26,6 +26,7 @@ export default function Segment(props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
+  const pagination = useSelector(gettersSegment.getPagination) || [];
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
   const [filter, setFilter] = useState({
     segment_name: null,
@@ -40,21 +41,26 @@ export default function Segment(props) {
 
   const initPage = async () => {
     setLoading(true);
-    await dispatch(actionSegment.searchSegment());
+    await dispatch(actionSegment.filterSegment({
+      item_page: pagination?.item_page,
+      current_page: pagination?.current_page,
+    }));
     await dispatch(actionTopic.searchTopic());
     setLoading(false);
   }
 
   const onSearch = async () => {
-
     const { segment_name, topic_id, from_date_act, to_date_act } = filter;
     if (__.isNil(segment_name) && __.isNil(topic_id) && __.isNil(from_date_act) && __.isNil(to_date_act)) {
       initPage();
     } else {
       setLoading(true);
-      const { success } = await dispatch(actionSegment.filterSegment(filter));
-      if (success)
-        setLoading(false);
+      const { success } = await dispatch(actionSegment.filterSegment(
+        {...filter,
+        item_page: pagination?.item_page,
+        current_page: 1,
+      }));
+      if (success) setLoading(false);
     }
 
   }
@@ -78,7 +84,7 @@ export default function Segment(props) {
       fixed: 'left',
       width: 50,
       render: (text, record) => {
-        return parseInt(text) + 1
+        return (pagination.current_page - 1)*pagination.item_page  + parseInt(text) + 1
       }
     },
     {
@@ -195,6 +201,15 @@ export default function Segment(props) {
     onSearch()
   }
 
+  const onChangePagination = async (value)=>{
+    await dispatch(actionSegment.filterSegment(
+      {
+        ...filter,
+        item_page: 20,
+        current_page: value
+      }
+    )); 
+  }   
   return (
     <LayoutHome>
       <Col style={{ marginBottom: 30 }}>
@@ -262,7 +277,17 @@ export default function Segment(props) {
               dataSource={listSegment}
               size='small'
               loading={loading}
+              pagination={false}
               scroll={{ x: 1300, y: '45vh' }}
+            />
+             <Pagination 
+              style={{marginTop: 10}} 
+              pageSize={pagination?.item_page}
+              defaultCurrent={pagination?.current_page} 
+              total={pagination?.total_item} 
+              current={pagination?.current_page} 
+              showSizeChanger={false}
+              onChange={onChangePagination}
             />
           </Col>
         </Card>

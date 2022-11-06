@@ -3,6 +3,7 @@ import URLSERVER from '@/redux/urlServer.json';
 import { setToken } from '../wrapper';
 
 const setSearchSegment = (payload) => ({ type: TYPES.SEGMENT_SEARCH, payload });
+const setPagination = (payload) => ({ type: TYPES.SEGMENT_PAGE, payload });
 
 export const searchSegment = (payload) => async (dispatch, getState, { $http }) => {
   setToken(getState(),$http)
@@ -81,15 +82,15 @@ export const deleteSegmentById = (payload) => async (dispatch, getState, { $http
 
 export const filterSegment = (payload) => async (dispatch, getState, { $http }) => {
   setToken(getState(),$http)
-
   const result = await $http.post(URLSERVER.searchSegmentById, payload);
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
   }
-  const listSegment = data.data;
-  dispatch(setSearchSegment(listSegment))
-
+  const list = data.data?.list_segment;
+  const pagination = data.data?.pagination;
+  dispatch(setSearchSegment(list))
+  dispatch(setPagination(pagination))
   return {
     "success": true,
   }

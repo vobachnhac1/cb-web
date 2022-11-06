@@ -4,6 +4,7 @@ import { setToken } from '../wrapper';
 
 // hàm thị thi nội bộ
 const setSearchTopic = (payload) => ({ type: TYPES.TOPIC_SEARCH, payload });
+const setPagination = (payload) => ({ type: TYPES.TOPIC_PAGE, payload });
 
 // hàm xử lý được gọi từ bên ngoài
 export const searchTopic = (payload) => async (dispatch, getState, { $http }) => {
@@ -67,14 +68,16 @@ export const deleteTopic = (payload) => async (dispatch, getState, { $http }) =>
 
 export const filterTopic = (payload) => async (dispatch, getState, { $http }) => {
   setToken(getState(),$http)
-
-  const result = await $http.post(URLSERVER.searchTopicById, payload);
+  const _state = getState()
+  const result = await $http.post(URLSERVER.searchTopicById, {...payload});
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
   }
-  const listTopic = data.data;
-  dispatch(setSearchTopic(listTopic))
+  const list = data.data?.list_topic;
+  const pagination = data.data?.pagination;
+  dispatch(setSearchTopic(list))
+  dispatch(setPagination(pagination))
   return true
 }
 // function export ra ngoài
