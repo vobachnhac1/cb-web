@@ -98,8 +98,9 @@ export default function Wheel(props) {
       fixed: 'left',
       width: 50,
       render: (text, record) => {
-        return parseInt(text) + 1
+        return (pagination.current_page - 1) * pagination.item_page + parseInt(text) + 1
       }
+
     },
     {
       title: 'ID',
@@ -107,6 +108,7 @@ export default function Wheel(props) {
       key: 'wheel_id',
       fixed: 'left',
       width: 50
+
     },
     {
       title: 'Tên vòng quay',
@@ -204,7 +206,7 @@ export default function Wheel(props) {
           {text && moment(text).format('YYYY-MM-DD, HH:mm:ss')}
         </span>
       }
-    },{
+    }, {
       align: 'center',
       title: 'Ngày kết thúc',
       dataIndex: 'to_date_act',
@@ -212,7 +214,7 @@ export default function Wheel(props) {
       width: 170,
       render: (text, record) => {
         return <span>
-        {text && moment(text).format('YYYY-MM-DD, HH:mm:ss')}
+          {text && moment(text).format('YYYY-MM-DD, HH:mm:ss')}
         </span>
       }
     },
@@ -224,7 +226,7 @@ export default function Wheel(props) {
       width: 170,
       render: (text, record) => {
         return <span>
-        {text && moment(text).format('YYYY-MM-DD, HH:mm:ss')}
+          {text && moment(text).format('YYYY-MM-DD, HH:mm:ss')}
         </span>
       }
     },
@@ -314,15 +316,15 @@ export default function Wheel(props) {
     // });
     router.push(`/admin/wheel-detail/${record.wheel_id}`)
   }
-  const onChangePagination = async (value)=>{
+  const onChangePagination = async (value) => {
     await dispatch(actionWheel.searchWheel(
       {
         ...filter,
         item_page: 20,
         current_page: value
       }
-    )); 
-  }    
+    ));
+  }
   return (
     <LayoutHome>
       <Col style={{ marginBottom: 30 }}>
@@ -391,12 +393,12 @@ export default function Wheel(props) {
                 };
               }}
             />
-             <Pagination 
-              style={{marginTop: 10}} 
+            <Pagination
+              style={{ marginTop: 10 }}
               pageSize={pagination?.item_page || 20}
-              defaultCurrent={pagination?.current_page} 
-              total={pagination?.total_item} 
-              current={pagination?.current_page} 
+              defaultCurrent={pagination?.current_page}
+              total={pagination?.total_item}
+              current={pagination?.current_page}
               showSizeChanger={false}
               onChange={onChangePagination}
             />
