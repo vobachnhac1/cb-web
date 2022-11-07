@@ -203,7 +203,7 @@ export default function Topic(props) {
             />
             <Pagination 
               style={{marginTop: 10}} 
-              pageSize={pagination?.item_page}
+              pageSize={pagination?.item_page || 20}
               defaultCurrent={pagination?.current_page} 
               total={pagination?.total_item} 
               current={pagination?.current_page} 
