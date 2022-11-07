@@ -143,9 +143,9 @@ const ModalRules = (props) => {
     if (!from_date) {
       msg_error.push("- Vui lòng nhập thời gian hiệu lực \n");
     }
-    // if (!chooseWheel) {
-    //   msg_error.push("- Vui lòng chọn vòng quay \n");
-    // }
+    if (!chooseWheel) {
+      msg_error.push("- Vui lòng chọn vòng quay \n");
+    }
     if (msg_error && msg_error.length > 0) {
       Message.WarningArr("Thông Báo", msg_error);
       return
@@ -181,7 +181,6 @@ const ModalRules = (props) => {
     }
     Message.Error("Thông Báo", "Cập nhật quy tắc thất bại");
   }
-
   return (
     <Modal
       width={750}
@@ -288,7 +287,7 @@ const ModalRules = (props) => {
               <Col  {...layoutContent}>
                 <Select
                   allowClear
-                  // disabled={isAdd ? false : true}
+                  disabled={isAdd ? false : true}
                   style={{ width: '100%' }}
                   defaultValue=""
                   value={chooseWheel}
@@ -319,8 +318,12 @@ const ModalRules = (props) => {
             </Col>
             <Col  {...layoutContent}>
               <RangePicker
-                // defaultValue={[moment(body.from_date, 'YYYY/MM/DD'), moment(body.to_date, 'YYYY/MM/DD')]}
-                disabledDate={d => !d || d.isSameOrBefore(moment().set('date', (moment().date() - 1)))}
+                disabled={chooseWheel?false:true}
+                disabledDate={ current => 
+                  !current 
+                  || current.isSameOrBefore(moment().set('date', (moment(listWheel.find(item=>item.wheel_id == chooseWheel)?.from_date_act).date() - 1)))                  
+                  || current.isSameOrAfter(moment(listWheel.find(item=>item.wheel_id == chooseWheel)?.to_date_act))                  
+                  }            
                 value={body.from_date ? [moment(body.from_date, 'YYYY/MM/DD'), moment(body.to_date, 'YYYY/MM/DD')] : []}
                 onChange={(dates, dateString) => {
                   if (dates) {

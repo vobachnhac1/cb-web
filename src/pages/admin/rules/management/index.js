@@ -5,10 +5,10 @@
 * Created: 2022-04-22
 *------------------------------------------------------- */
 require("./styles.less");
-import * as classnames from 'classnames';
+import classNames, * as classnames from 'classnames';
 import { useState, useEffect } from 'react';
 import LayoutHome from '@/containers/Home';
-import { Button, Card, Col, Row, Space, Table, Typography, Popconfirm, Input, Tag, DatePicker } from 'antd';
+import { Button, Card, Col, Row, Space, Table, Typography, Popconfirm, Input, Tag, DatePicker, Select } from 'antd';
 import * as Message from '@/components/message';
 import ModalRules from '@/containers/modal-rules'
 const { Text } = Typography;
@@ -27,12 +27,14 @@ export default function RulesManagement(props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const listRules = useSelector(gettersRules.getStateLoadPageRules) || [];
+  const listWheel = useSelector(gettersRules.getListWheel) || [];
   const [filter, setFilter] = useState({
     rules_id: null,
     rules_name: null,
     from_date: null,
     to_date: null,
     status_rules: null,
+    wheel_id: null
   });
 
   useEffect(() => {
@@ -48,7 +50,7 @@ export default function RulesManagement(props) {
     setLoading(false);
   }
   const onSearch = async () => {
-    initPage()
+    await dispatch(actionsRules.filterRules(filter));
   }
   const columns = [
     {
@@ -212,45 +214,39 @@ export default function RulesManagement(props) {
       isAdd: false
     });
   }
+  const [wheelInfo, setWheelInfo ]=useState(null)
+  const onChangeSelectWheel = async(value)=>{
+    const _item_wheel = listWheel.find(item=>item.wheel_id == value)
+    setWheelInfo(_item_wheel)
+    setFilter({...filter, wheel_id:value}); 
+    await dispatch(actionsRules.filterRules({...filter, wheel_id:value}));
 
+  }
   return (
     <LayoutHome>
       <Col style={{ marginBottom: 30 }}>
-        <ModalRules visible={visible} bodyModel={bodyModel} callback={callbackModal} />
+        <ModalRules visible={visible} bodyModel={bodyModel} callback={callbackModal}/>
 
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
-          title="PHÂN BỐ TỈ LỆ TRÚNG THƯỞNG"
+          title="PHÂN BỐ TỈ LỆ TRÚNG THƯỞNG" 
           bordered={true}
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>
             <Row gutter={[16, 24]}>
               <Col className="gutter-row" span={8}>
-                <Input
-                  placeholder='Nhập tên quy tắc'
+                 <Select
+                  allowClear
+                  placeholder="Tên vòng quay"
                   style={{ width: '100%' }}
-                  value={filter.rules_name}
-                  onChange={(text) => setFilter({ ...filter, rules_name: text.target.value })} />
-              </Col>
-              <Col className="gutter-row" span={8}>
-                <RangePicker
-
-                  onChange={(dates, dateString) => {
-                    if (dates) {
-                      setFilter({
-                        ...filter,
-                        from_date: dateString[0],
-                        to_date: dateString[1],
-                      });
-                    } else {
-                      setFilter({
-                        ...filter,
-                        from_date: null,
-                        to_date: null,
-                      });
-                    }
-                  }}
-                />
+                  defaultValue={null}
+                  value={filter.wheel_id}
+                  onChange={onChangeSelectWheel}
+                >
+                  {listWheel?.map((item, key) => (
+                    <Select.Option value={item.wheel_id} key={key}>{`[${item.wheel_status}]`} - {item.wheel_name}</Select.Option>
+                  ))}
+                </Select>
               </Col>
             </Row>
             <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
@@ -262,6 +258,55 @@ export default function RulesManagement(props) {
               </Col>
             </Row>
           </Col>
+        </Card>
+        <div style={{ marginTop: 20 }} />
+        <Card>
+          <Row>
+            <Col span={24}>
+              <Row style={{ marginTop: 10 }}>
+                <Col className="gutter-row" span={12}>
+                  <Text className={classNames({ 'text-font': true })}>{'Mã vòng quay '}</Text>
+                </Col>
+                <Col  className="gutter-row" span={12}>
+                  <Text className={classNames({ 'text-font': true })}>{wheelInfo?.wheel_id}</Text>
+                </Col>
+              </Row> 
+            </Col>
+            <Col span={24}>
+              <Row style={{ marginTop: 10 }}>
+                <Col className="gutter-row" span={12}>
+                  <Text className={classNames({ 'text-font': true })}>{'Tên vòng quay'}</Text>
+                </Col>
+                <Col  className="gutter-row" span={12}>
+                  <Text className={classNames({ 'text-font': true })}>{wheelInfo?.wheel_name}</Text>
+                </Col>
+              </Row>
+            </Col>
+          </Row> 
+          <Row>
+              <Col span={24}>
+                <Row style={{ marginTop: 10 }}>
+                  <Col className="gutter-row" span={12}>
+                    <Text className={classNames({ 'text-font': true })}>{'Thời gian bắt đầu'}</Text>
+                  </Col>
+                  <Col  className="gutter-row" span={12}>
+                    <Text className={classNames({ 'text-font': true })}>{wheelInfo?.from_date_act &&  moment(wheelInfo?.from_date_act).format('HH:mm:ss , DD-MM-YYYY ')}</Text>
+                  </Col>
+                </Row> 
+              </Col>
+              <Col span={24}>
+                <Row style={{ marginTop: 10 }}>
+                  <Col className="gutter-row" span={12}>
+                    <Text className={classNames({ 'text-font': true })}>{'Thời gian kết thúc'}</Text>
+                  </Col>
+                  <Col  className="gutter-row" span={12}>
+                    <Text className={classNames({ 'text-font': true })}>{ wheelInfo?.to_date_act && moment(wheelInfo?.to_date_act).format('HH:mm:ss , DD-MM-YYYY ')}</Text>
+                  </Col>
+                </Row>
+            </Col>
+          </Row>
+          
+          
         </Card>
         <div style={{ marginTop: 20 }} />
         <Card>

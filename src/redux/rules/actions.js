@@ -11,10 +11,12 @@ const setRewardHis = (payload) => ({ type: TYPES.RULES_REWARD_HIS, payload });
 // const setListWheelDetail = (payload) => ({ type: TYPES.RULES_WHEEL_DETAIL, payload });
 
 // hàm xử lý được gọi từ bên ngoài
-
 export const filterRules = (payload) => async (dispatch, getState, { $http }) => {
   setToken(getState(),$http)
-
+  if(!payload.wheel_id){
+    dispatch(setRules([]))
+    return false;
+  }
   const result = await $http.post(URLSERVER.getRulesByFilter, payload);
   const { success, data } = result;
   if (!success || !data.success) {
@@ -29,11 +31,6 @@ export const approveRules = (payload) => async (dispatch, getState, { $http }) =
   setToken(getState(),$http)
 
   const param = {
-    // "from_date": moment(payload.from_date).format('YYYY-MM-DD'),
-    // "to_date": moment(payload.to_date).format('YYYY-MM-DD'),
-    // "rules_name": payload.rules_name,
-    // "total_reward": payload.total_reward,
-    // "status_rules": payload.status_rules,
     rules_id: payload.rules_id,
     status_rules: !payload.status_rules || payload.status_rules && payload.status_rules == 'N' ? 'Y' : 'N',
   }
