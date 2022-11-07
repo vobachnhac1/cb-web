@@ -15,7 +15,6 @@ import { actions as actionsRules } from '@/redux/rules';
 import { getters as gettersRules } from '@/redux/rules';
 
 import _ from 'lodash';
-
 const classNames = require("classnames");
 const { Text } = Typography;
 const { RangePicker } = DatePicker;
@@ -36,6 +35,7 @@ const ModalRules = (props) => {
   const dispatch = useDispatch();
   const { callback, visible = false, bodyModel: { isAdd = false, record = null } } = props;
   const listWheel = useSelector(gettersRules.getListWheel) || [];
+  const listRulesModal = useSelector(gettersRules.getRulesModal) || [];
   const [body, setBody] = useState(record ? record : {
     created_date: null,
     datelastmaint: null,
@@ -53,9 +53,51 @@ const ModalRules = (props) => {
     reward_per:0,
   });
 
+  const [expired, setExpired]= useState({
+    from_date: record? record.from_date: null ,
+    to_date: record? record.to_date: null ,
+    count: 0
+  })
+
   useEffect(() => {
     initPage();
   }, [visible]);
+
+  useEffect(() => {
+    if(chooseWheel){
+      formatFromToDate()
+    }else{
+      setExpired({
+        from_date: null ,
+        to_date: null ,
+        count: 0 ,
+      })
+    }
+    // nếu listRules ==0 => add fromdate = listWheel.find(item=>item.wheel_id ===chooseWheel).from_date
+    // nếu listRules >0 => kiểm tra todate lớn nhất
+    
+  }, [listRulesModal]);
+
+  const formatFromToDate =()=>{
+    const _wheel = listWheel.find(item=>item.wheel_id === chooseWheel);
+    if(!listRulesModal || listRulesModal&& listRulesModal.length == 0){
+      if(_wheel){
+        console.log('_wheel: ', _wheel);
+        setExpired({
+          from_date: _wheel? moment(_wheel?.from_date_act).add(0 ,'days'): null ,
+          to_date: _wheel? moment(_wheel?.to_date_act).add(0 ,'days'): null ,
+          count: 0
+        })
+      }
+    }else{
+      const _sort = listRulesModal.sort((a, b) => (moment(a.to_date) > moment(b.to_date) ? -1 : 1))
+      setExpired({
+        from_date: moment(_sort[0].to_date ).add(1 ,'days'),
+        to_date:  _wheel? moment(_wheel?.to_date_act).add(0 ,'days'): null ,
+        count: moment( _sort[0].to_date ).diff(moment(_wheel?.from_date_act), 'day')
+      })
+    }
+  }
 
   const initPage = () => {
     setBody(record ? record : {
@@ -74,6 +116,11 @@ const ModalRules = (props) => {
       reward: 0,
       reward_per:0,
     });
+    setExpired({
+      from_date: record? record.from_date: null ,
+      to_date: record? record.to_date: null ,
+      count: 0
+    })
     if (!isAdd) {
       const res = listWheel.filter(item => record && item.rules_id == record.rules_id);
       if (res.length > 0) {
@@ -98,6 +145,7 @@ const ModalRules = (props) => {
       setIsChangeText(false);
     }
   }
+
   const onChangetReward = (event) => {
     if (!isChangeText) {
       setIsChangeText(true);
@@ -124,16 +172,17 @@ const ModalRules = (props) => {
     }else{
       const total  = Number( body.reward)*100/Number( event)
     }
-
     setBody({ ...body,  reward_per: event, total_reward: total?.toFixed(0) })
   }
 
   const onCallback = async () => {
-    const {reward =0, reward_per =0, total_reward = 0, rules_name = null, from_date = null, to_date = null } = body;
+    const {reward =0, reward_per =0, total_reward = 0, rules_name = nullFormat } = body;
+    const { from_date = null, to_date = null } = expired;
+
+    let msg_error = [];
     if(reward <= 0){
       msg_error.push("- Vui lòng nhập số giải muốn trúng thưởng\n");
     }
-    let msg_error = [];
     if (!total_reward || total_reward == 0) {
       msg_error.push("- Vui lòng nhập tổng giải thưởng trúng trong đợt\n");
     }
@@ -154,6 +203,7 @@ const ModalRules = (props) => {
     if (isAdd) {
       const result = await dispatch(actionsRules.insertRules({
         ...body,
+        ...expired,
         reward: reward,
         reward_per: reward_per,
         wheel_id: chooseWheel
@@ -170,6 +220,7 @@ const ModalRules = (props) => {
     //edit
     const result = await dispatch(actionsRules.updateRules({
       ...body,
+      ...expired,
       reward: reward,
       reward_per: reward_per,
       wheel_id: chooseWheel
@@ -180,6 +231,11 @@ const ModalRules = (props) => {
       return;
     }
     Message.Error("Thông Báo", "Cập nhật quy tắc thất bại");
+  }
+
+  const onChangeSelect =async (value)=>{
+    setWheel(value)
+    await dispatch(actionsRules.filterRulesModal({wheel_id: value}))
   }
   return (
     <Modal
@@ -291,7 +347,7 @@ const ModalRules = (props) => {
                   style={{ width: '100%' }}
                   defaultValue=""
                   value={chooseWheel}
-                  onChange={(value) => setWheel(value)}>
+                  onChange={onChangeSelect}>
                   {listWheel.map((item, key) => (
                     <Select.Option value={item.wheel_id} key={key}>{item.wheel_name}</Select.Option>
                   ))}
@@ -318,23 +374,24 @@ const ModalRules = (props) => {
             </Col>
             <Col  {...layoutContent}>
               <RangePicker
+                allowClear={false}
                 disabled={chooseWheel?false:true}
                 disabledDate={ current => 
                   !current 
-                  || current.isSameOrBefore(moment().set('date', (moment(listWheel.find(item=>item.wheel_id == chooseWheel)?.from_date_act).date() - 1)))                  
+                  || current.isSameOrBefore(moment().set('date', (moment(listWheel.find(item=>item.wheel_id == chooseWheel)?.from_date_act).add(expired.count,'days').date() - 1)))                  
                   || current.isSameOrAfter(moment(listWheel.find(item=>item.wheel_id == chooseWheel)?.to_date_act))                  
                   }            
-                value={body.from_date ? [moment(body.from_date, 'YYYY/MM/DD'), moment(body.to_date, 'YYYY/MM/DD')] : []}
+                value={expired.from_date ? [moment(expired.from_date, 'YYYY/MM/DD'), moment(expired.to_date, 'YYYY/MM/DD')] : []}
                 onChange={(dates, dateString) => {
                   if (dates) {
-                    setBody({
-                      ...body,
-                      from_date: dateString[0],
-                      to_date: dateString[1],
-                    });
-                  } else {
-                    setBody({
-                      ...body,
+                    if(moment(dateString[0]).format('YYYY-MM-DD') == moment(expired.from_date).format('YYYY-MM-DD')){
+                      setExpired({
+                        from_date: dateString[0],
+                        to_date: dateString[1],
+                      });
+                    }
+                  } else {   
+                    setExpired({
                       from_date: null,
                       to_date: null,
                     });

@@ -66,14 +66,14 @@ const menu = [
     parentKey: null,
     path: '/admin/rules',
     icon: <AliyunOutlined />,
-    title: ' Quy tắc',
+    title: 'Quản lý tỉ lệ trúng thưởng',
     child: [
       {
         key: 'viewRules',
         parentKey: 'subRules',
         path: '/admin/rules/management',
         icon: <AliyunOutlined />,
-        title: 'Quản lý quy tắc',
+        title: 'Phân bố giải thưởng tự động',
         child: null,
       }, {
         key: 'subWheelApprove',

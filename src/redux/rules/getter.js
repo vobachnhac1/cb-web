@@ -4,6 +4,12 @@ export const getStateLoadPageRules = (state) => {
   const { rules: { listRules = [] } } = state;
   return listRules?.map((item, index) => ({ ...item, key: index })) || []
 };
+
+export const getRulesModal = (state) => {
+  const { rules: { listRulesModal = [] } } = state;
+  return listRulesModal?.map((item, index) => ({ ...item, key: index })) || []
+};
+
 export const getListRulesStateYes = (state) => {
   const { rules: { listRulesStateYes = [] } } = state;
   return listRulesStateYes?.map((item, index) => ({ ...item, key: index })) || []

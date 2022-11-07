@@ -18,6 +18,7 @@ const { RangePicker } = DatePicker;
 import { useSelector, useDispatch } from 'react-redux';
 import { actions as actionsRules } from '@/redux/rules';
 import { getters as gettersRules } from '@/redux/rules';
+import { STATE_WHEEL } from '@/constants/common';
 
 import moment from 'moment';
 import __ from 'lodash';
@@ -43,14 +44,31 @@ export default function RulesManagement(props) {
 
   const initPage = async () => {
     setLoading(true);
-    await dispatch(actionsRules.filterRules(filter));
+    await dispatch(actionsRules.filterRules({
+      rules_id: null,
+      rules_name: null,
+      from_date: null,
+      to_date: null,
+      status_rules: null,
+      wheel_id: null
+    }));
     await dispatch(actionsRules.getWheelScreenRules({
       wheel_status: 'SAVE'
     }));
+    setWheelInfo(null)
+    setEnableNextStep(false)
+    setFilter({
+      rules_id: null,
+      rules_name: null,
+      from_date: null,
+      to_date: null,
+      status_rules: null,
+      wheel_id: null
+    })
     setLoading(false);
   }
   const onSearch = async () => {
-    await dispatch(actionsRules.filterRules(filter));
+    initPage();
   }
   const columns = [
     {
@@ -163,7 +181,6 @@ export default function RulesManagement(props) {
     },
   ];
 
-
   const [visible, setVisible] = useState(false);
 
   const [bodyModel, setBodyModel] = useState({
@@ -190,11 +207,14 @@ export default function RulesManagement(props) {
   const deleteRules = async (record) => {
     await dispatch(actionsRules.deleteRules({
       rules_id: record.rules_id,
+      wheel_id: record.wheel_id,
       is_delete: 'Y'
     }))
   }
+
   const approveRules = async (record) => {
     await dispatch(actionsRules.approveRules({
+      wheel_id: record.wheel_id,
       rules_id: record.rules_id,
       status_rules: !record.status_rules || record.status_rules && record.status_rules == 'N' ? 'N' : 'Y',
     }))
@@ -207,6 +227,7 @@ export default function RulesManagement(props) {
       isAdd: false
     });
   }
+
   const onDoubleClick = (record, rowIndex) => {
     setVisible(true);
     setBodyModel({
@@ -214,7 +235,9 @@ export default function RulesManagement(props) {
       isAdd: false
     });
   }
+
   const [wheelInfo, setWheelInfo ]=useState(null)
+  const [enableNextStep, setEnableNextStep ]=useState(false)
   const onChangeSelectWheel = async(value)=>{
     const _item_wheel = listWheel.find(item=>item.wheel_id == value)
     setWheelInfo(_item_wheel)
@@ -222,6 +245,37 @@ export default function RulesManagement(props) {
     await dispatch(actionsRules.filterRules({...filter, wheel_id:value}));
 
   }
+
+  useEffect(()=>{    
+    if(listRules && listRules.length >0){
+      const _sort = listRules?.sort((a, b) => (moment(a.to_date) > moment(b.to_date) ? -1 : 1))
+      if(moment (_sort[0].to_date).format('YYYY-MM-DD') ==  moment(wheelInfo.to_date_act).format('YYYY-MM-DD')){
+        const _verify = listRules?.filter(item=> item.status_rules =='N')
+        if( !_verify ||  _verify&&_verify.length == 0){
+          setEnableNextStep(true)
+        }else{
+          setEnableNextStep(false)
+        }
+      }else{
+        setEnableNextStep(false)
+      }
+    }else{
+      setEnableNextStep(false)
+    }
+  },[listRules])
+
+  const onNextStep =async()=>{
+    // call chuyển step
+    // SAVE => tới RULE => record sẽ chuyển tới màn hình rules    //
+    setLoading(true);
+    const result = await dispatch(actionsRules.updateStateWheel({
+      wheel_id : wheelInfo.wheel_id,
+      wheel_status : STATE_WHEEL.RULE,
+    }))
+    initPage()
+    setLoading(false);
+  }
+
   return (
     <LayoutHome>
       <Col style={{ marginBottom: 30 }}>
@@ -248,14 +302,37 @@ export default function RulesManagement(props) {
                   ))}
                 </Select>
               </Col>
+              <Col className="gutter-row" span={3}>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>{'Làm mới'}</Button>
+              </Col>
+              <Col className="gutter-row" span={6}>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addRules}>{'Thêm quy luật trúng thưởng'}</Button>
+              </Col>
+              <Col className="gutter-row" span={6}>
+                {enableNextStep && <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onNextStep}>{'Chuyển bước tạo giải thưởng'}</Button>}
+              </Col>
             </Row>
-            <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
-              <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addRules}>Thêm</Button>
+            <Row style={{marginTop: 20}}>
+              <Col span={24}>
+                <Text style={{fontWeight:'bold'}}>               
+                  {`Nút nhấn chuyển bước chỉ xuất hiện khi đạt điều kiện phải có: `}
+                </Text>
               </Col>
-              <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>
+              <Col span={24}>
+                <Text>               
+                    {`1. Quy tắc trao trưởng có thời gian giống với thời gian hiệu lực vòng quay.`}
+                </Text>
               </Col>
+              <Col span={24}>
+                <Text>               
+                {`2. Trạng thái quy tắc phải là active`}
+                </Text>
+              </Col>  
+              <Col span={24}>
+                <Text>               
+                {`3. Không có trạng thái "RULE" tồn tại ở next step`}
+                </Text>
+              </Col>              
             </Row>
           </Col>
         </Card>

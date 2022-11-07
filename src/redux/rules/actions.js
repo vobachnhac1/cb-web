@@ -4,6 +4,7 @@ import moment from 'moment';
 import { setToken } from '../wrapper';
 // hàm thị thi nội bộ
 const setRules = (payload) => ({ type: TYPES.RULES_SEARCH, payload });
+const setRulesModal = (payload) => ({ type: TYPES.RULES_SEARCH_MODAL, payload });
 const setListWheelApproved = (payload) => ({ type: TYPES.RULES_WHEEL_APPROVED, payload });
 const setListWheel = (payload) => ({ type: TYPES.RULES_WHEEL, payload });
 const setListRulesStateYes = (payload) => ({ type: TYPES.RULES_STATE_YES, payload });
@@ -26,6 +27,22 @@ export const filterRules = (payload) => async (dispatch, getState, { $http }) =>
   dispatch(setRules(listRules))
   return true
 }
+export const filterRulesModal = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+  if(!payload.wheel_id){
+    dispatch(setRulesModal([]))
+    return false;
+  }
+  const result = await $http.post(URLSERVER.getRulesByFilter, payload);
+  console.log('result: ', result);
+  const { success, data } = result;
+  if (!success || !data.success) {
+    return false;
+  }
+  const listRules = data.data;
+  dispatch(setRulesModal(listRules))
+  return true
+}
 
 export const approveRules = (payload) => async (dispatch, getState, { $http }) => {
   setToken(getState(),$http)
@@ -41,13 +58,9 @@ export const approveRules = (payload) => async (dispatch, getState, { $http }) =
   }
 
   const getList = await $http.post(URLSERVER.getRulesByFilter, {
-    from_date: null,
-    rules_id: null,
-    rules_name: null,
-    status_rules: null,
-    to_date: null
+    wheel_id: payload.wheel_id,
   });
-  const listRules = getList.data.data;
+  const listRules = getList.data?.data;
   if (listRules && listRules.length > 0) {
     dispatch(setRules(listRules))
   }
@@ -67,11 +80,7 @@ export const deleteRules = (payload) => async (dispatch, getState, { $http }) =>
     return false;
   }
   const getList = await $http.post(URLSERVER.getRulesByFilter, {
-    from_date: null,
-    rules_id: null,
-    rules_name: null,
-    status_rules: null,
-    to_date: null
+    wheel_id: payload.wheel_id,
   });
   const listRules = getList.data.data;
   if (listRules && listRules.length > 0) {
@@ -103,10 +112,11 @@ export const updateRules = (payload) => async (dispatch, getState, { $http }) =>
   const getList = await $http.post(URLSERVER.getRulesByFilter, {
 
     from_date: null,
-    rules_id: null,
+    rules_id: payload.rules_id,
     rules_name: null,
     status_rules: null,
-    to_date: null
+    to_date: null,
+    wheel_id: payload.wheel_id,
   });
   const listRules = getList.data.data;
   if (listRules && listRules.length > 0) {
@@ -133,17 +143,15 @@ export const insertRules = (payload) => async (dispatch, getState, { $http }) =>
     return false;
   }
 
-  const getList = await $http.post(URLSERVER.getRulesByFilter, {
-    from_date: null,
-    rules_id: null,
-    rules_name: null,
-    status_rules: null,
-    to_date: null
-  });
-  const listRules = getList.data.data;
-  if (listRules && listRules.length > 0) {
-    dispatch(setRules(listRules))
-  }
+  // const getList = await $http.post(URLSERVER.getRulesByFilter, {
+  //   "wheel_id": payload.wheel_id,
+  //   "wheel_id": payload.wheel_id,
+  // });
+
+  // const listRules = getList.data.data;
+  // if (listRules && listRules.length > 0) {
+  //   dispatch(setRules(listRules))
+  // }
   return true;
 }
 // function export ra ngoài
@@ -228,11 +236,35 @@ export const generateRewardOfRules = (payload) => async (dispatch, getState, { $
   }
 }
 
+export const nextStepWheel = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+  try {
+    const { wheel_id, wheel_status } = payload;
+    const result = await $http.post(URLSERVER.updateStateWheel, {
+      wheel_id: wheel_id, wheel_status: wheel_status
+    });
+    const { success } = result;
+    if (success) {
+      const resultList = await $http.get(URLSERVER.selectWheelApproved);
+      console.log('resultList: ', resultList);
+      if (!resultList.success || !resultList.data.success) {
+        // dispatch(setListWheel([]))
+      }
+      // dispatch(setListWheel(resultList.data.data))
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    return false
+  }
+}
+
+
 // Màn hình Phê duyệt Wheel đã hợp lệ
 
 export const getWheelScreenRules = (payload) => async (dispatch, getState, { $http }) => {
   setToken(getState(),$http)
-
   try {
     const result = await $http.get(URLSERVER.selectWheelApproved, payload);
     const { success, data } = result;
@@ -256,16 +288,19 @@ export const updateStateWheel = (payload) => async (dispatch, getState, { $http 
       wheel_id: wheel_id, wheel_status: wheel_status
     });
     const { success } = result;
-    if (success) {
-      const resultList = await $http.get(URLSERVER.selectWheelApproved);
-      if (!resultList.success || !resultList.data.success) {
-        dispatch(setListWheel([]))
-      }
-      dispatch(setListWheel(resultList.data.data))
-      return true;
-    } else {
-      return false;
-    }
+    // if (success) {
+    //   const resultList = await $http.get(URLSERVER.selectWheelApproved);
+    //   console.log('resultList: ', resultList);
+    //   if (!resultList.success || !resultList.data.success) {
+    //     dispatch(setListWheel([]))
+    //   }
+    //   dispatch(setListWheel(resultList.data.data))
+    //   return true;
+    // } else {
+    //   return false;
+    // }
+    return success;
+
   } catch (error) {
     return false
   }
