@@ -9,7 +9,13 @@ import { buildReducer } from '../wrapper';
 //Creating my reducer
 export default buildReducer(
   {
-    listWheel: []
+    listWheel: [],
+    pagination: {
+      total_item: 0,
+      num_page: 0,
+      item_page: 20,
+      current_page: 1,
+    }
   },
   {
     [TYPES.WHEEL_SEARCH]: (state = listWheel, payload) => {
@@ -18,9 +24,20 @@ export default buildReducer(
         ...state,
         listWheel: payload
       }
+    },[TYPES.WHEEL_PAGE]: (state = pagination, payload) => {
+      return {
+        ...state,
+        pagination: payload
+      }
     },[TYPES.SIGN_OUT]: (state = init) => {
       return  {
-        listWheel: []
+        listWheel: [],
+        pagination: {
+          total_item: 0,
+          num_page: 0,
+          item_page: 20,
+          current_page: 1,
+        }
       }
     }
   },

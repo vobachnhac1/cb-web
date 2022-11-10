@@ -154,12 +154,12 @@ export default function PathsManagement(props) {
   }
 
   const columns = [
-    {
-      dataIndex: 'key',
-      key: 'key',
-      fixed: 'left',
-      width: 0
-    },
+    // {
+    //   dataIndex: 'key',
+    //   key: 'key',
+    //   fixed: 'left',
+    //   width: 0
+    // },
     {
       align: 'center',
       title: 'STT',
@@ -185,7 +185,7 @@ export default function PathsManagement(props) {
       key: 'systemName',
     }, {
       width: 100,
-      title: 'Mô tả',
+      title: 'Tên màn hình',
       dataIndex: 'description',
       key: 'description',
     },  {

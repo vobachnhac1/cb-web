@@ -4,19 +4,24 @@ import { setToken } from '../wrapper';
 
 // hàm thị thi nội bộ
 const setSearchWheel = (payload) => ({ type: TYPES.WHEEL_SEARCH, payload });
+const setPagination = (payload) => ({ type: TYPES.WHEEL_PAGE, payload });
+
 // hàm xử lý được gọi từ bên ngoài
 
 export const searchWheel = (payload) => async (dispatch, getState, { $http }) => {
   setToken(getState(),$http)
-
+  const {item_page,current_page, wheel_name='',from_date_act,to_date_act }= payload;
+  const _url = `/${current_page}/${item_page}/NONE/${from_date_act}/${to_date_act}/${wheel_name?.toString().trim().length > 0? wheel_name:'null'}/null`
   // call xuống backend url + param 
-  const result = await $http.get(URLSERVER.searchAllWheel);
+  const result = await $http.get(URLSERVER.searchAllWheel+_url);
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
   }
-  const listWheel = data.data;
+  const listWheel = data.data?.list_wheel;
+  const pagination = data.data?.pagination;
   dispatch(setSearchWheel(listWheel))
+  dispatch(setPagination(pagination))
   return true
 }
 
@@ -59,6 +64,7 @@ export const deleteWheelById = (payload) => async (dispatch, getState, { $http }
   return true
 }
 
+// check xem có bỏ được ko 
 export const filterWheel = (payload) => async (dispatch, getState, { $http }) => {
   setToken(getState(),$http)
 

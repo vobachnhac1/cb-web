@@ -3,6 +3,14 @@
 * Email lqn1604.dev@gmail.com
 * Phone 036.847.5269
 * Created: 2022-04-07
+*
+*
+*
+* 03-11-2022: Nhac Vo -[E]- thêm chức năng disable những kết quả giải thưởng có thời gian hiệu lực nhỏ hơn thời gian kết thúc vòng quay
+* còn thiếu bắt chỉ cho chọn 1 chủ đề giải thưởng khi đã chọn lưu 1 row
+*
+*
+*
 *------------------------------------------------------- */
 // require("./style.module.less");
 import { useState, useEffect } from 'react';
@@ -41,8 +49,8 @@ export default function WheelDetail({ query }) {
     segment_id: null,
     wheel_name: null,
   });
-
-  const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
+  const listWheel = useSelector(gettersWheel.getStateLoadPageWheel) || [];
+  const listSegment = useSelector(gettersSegment.getSegmentCommon) || [];
   const listWheelDetail = useSelector(gettersWheelDetail.getStateLoadPageWheelDetail) || [];
   const wheelCurtValue = useSelector(gettersWheelDetail.getStateWheelCurtValue);
   const wheelTotalValue = useSelector(gettersWheelDetail.getStateWheelTotalValue);
@@ -51,6 +59,8 @@ export default function WheelDetail({ query }) {
   const WheelNumbersegment = useSelector(gettersWheelDetail.getStateWheelNumbersegment);
   const WheelStatus = useSelector(gettersWheelDetail.getStateWheelStatus);
   const [listSearch, setListSearch] = useState([]);
+  const [recordWheel, setRecordWheel] = useState(null);
+  const [arrSegment, setArrSegment] = useState([]);
 
   // gọi 1 function rồi theo dõi nhưng thay đổi của param đó
 
@@ -63,12 +73,31 @@ export default function WheelDetail({ query }) {
     const data = {
       'wheel_id': query.wheel_id
     }
+    setRecordWheel(listWheel.find(item=>item?.wheel_id.toString() === query.wheel_id))
     await dispatch(actionTopic.searchTopic());
     await dispatch(actionSegment.searchSegment({}));
     const { listData } = await dispatch(actionWheelDetail.filterWheelDetail(data));
     setListSearch(listData)
     setLoading(false)
   }
+  useEffect(()=>{
+    let _from = new Date(recordWheel?.from_date_act);
+    let _to = new Date(recordWheel?.to_date_act);
+    const _arr = listSegment?.map(item=>{
+      const _current = new Date(item.inactived_date);
+      if(_to <= _current ||  _current == "Invalid Date"){
+        return {
+          ...item,
+          disabled: false
+        }
+      }
+      return {
+        ...item,
+        disabled: true
+      }
+    })
+    setArrSegment(_arr.filter(item=>item.disabled ===false).concat(_arr.filter(item=>item.disabled ===true)))
+  },[listSegment]);
 
   //tìm kiếm vòng quay
   const onSearch = async () => {
@@ -381,7 +410,7 @@ export default function WheelDetail({ query }) {
   return (
     <LayoutHome>
       <Col style={{ marginBottom: 30 }}>
-        <ModalWheelDetail visible={visible} bodyModel={bodyModel} callback={callbackModal} />
+        <ModalWheelDetail visible={visible} bodyModel={bodyModel} callback={callbackModal} recordWheel ={recordWheel} />
 
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
@@ -462,8 +491,8 @@ export default function WheelDetail({ query }) {
                 defaultValue=""
                 value={filter.segment_id}
                 onChange={(value) => setFilter({ ...filter, segment_id: value })}>
-                {listSegment.map((Item, key) => (
-                  <Select.Option value={Item.segment_id} key={key}>{Item.segment_name}</Select.Option>
+                {arrSegment.map((item, key) => (
+                  <Select.Option disabled={item?.disabled} value={item.segment_id} key={key}>{item.segment_name}</Select.Option>
                 ))}
               </Select>
             </Col>

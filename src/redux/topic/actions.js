@@ -4,6 +4,8 @@ import { setToken } from '../wrapper';
 
 // hàm thị thi nội bộ
 const setSearchTopic = (payload) => ({ type: TYPES.TOPIC_SEARCH, payload });
+const setTopicCommon = (payload) => ({ type: TYPES.TOPIC_SEARCH_COMMON, payload });
+const setPagination = (payload) => ({ type: TYPES.TOPIC_PAGE, payload });
 
 // hàm xử lý được gọi từ bên ngoài
 export const searchTopic = (payload) => async (dispatch, getState, { $http }) => {
@@ -16,7 +18,7 @@ export const searchTopic = (payload) => async (dispatch, getState, { $http }) =>
     return false;
   }
   const listTopic = data.data;
-  dispatch(setSearchTopic(listTopic))
+  dispatch(setTopicCommon(listTopic))
   return true
 }
 
@@ -25,6 +27,7 @@ export const insertTopic = (payload) => async (dispatch, getState, { $http }) =>
 
   const param = {
     "topic_name": payload.topic_name,
+    "systemCode": payload.systemCode,
   }
   const result = await $http.post(URLSERVER.insertTopic, param);
   const { success, data } = result;
@@ -40,7 +43,7 @@ export const updateTopic = (payload) => async (dispatch, getState, { $http }) =>
   const param = {
     "topic_id": payload.topic_id,
     "topic_name": payload.topic_name,
-    "is_approve": payload.status_yn
+    "systemCode": payload.systemCode
   }
   const result = await $http.put(URLSERVER.updateTopicById, param);
   const { success, data } = result;
@@ -64,31 +67,18 @@ export const deleteTopic = (payload) => async (dispatch, getState, { $http }) =>
   return true;
 }
 
-export const approveTopic = (payload) => async (dispatch, getState, { $http }) => {
-  setToken(getState(),$http)
-
-  const param = {
-    "topic_id": payload.topic_id,
-    "status": payload.status_yn
-  }
-  const result = await $http.put(URLSERVER.approveTopicById, param);
-  const { success, data } = result;
-  if (!success || !data.success) {
-    return false;
-  }
-  return true;
-}
-
 export const filterTopic = (payload) => async (dispatch, getState, { $http }) => {
   setToken(getState(),$http)
-
-  const result = await $http.post(URLSERVER.searchTopicById, payload);
+  const _state = getState()
+  const result = await $http.post(URLSERVER.searchTopicById, {...payload});
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
   }
-  const listTopic = data.data;
-  dispatch(setSearchTopic(listTopic))
+  const list = data.data?.list_topic;
+  const pagination = data.data?.pagination;
+  dispatch(setSearchTopic(list))
+  dispatch(setPagination(pagination))
   return true
 }
 // function export ra ngoài

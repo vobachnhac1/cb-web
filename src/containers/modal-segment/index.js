@@ -5,7 +5,7 @@
 * Created: 2022-04-08
 *------------------------------------------------------- */
 require("./styles.less");
-import { Card, Col, Form, Input, Modal, Row, Select, Typography, DatePicker, InputNumber } from 'antd';
+import { Card, Col, Form, Input, Modal, Row, Select, Typography, DatePicker, InputNumber, Checkbox } from 'antd';
 import * as Message from '@/components/message';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
@@ -40,20 +40,47 @@ const ModalSegment = (props) => {
   const [inactived_date, setInactived_date] = useState(record ? record.inactived_date : "");
   const dispatch = useDispatch();
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
-
+  const [isCheckTimes, setIsCheckTimes] = useState(record?.segment_value < 0 ? true  : false);
+  const [isCheckCash, setIsCheckCash] = useState(record?.segment_value > 0 ? true  : false);
+  const [isCheckGreet, setIsCheckGreet] = useState(record?.segment_value == 0 ? true  : false);
   useEffect(() => {
     initPage();
   }, [visible]);
 
   const initPage = async () => {
-    setSegmentId(record ? record.segment_id : "")
-    setTopicId(record ? record.topic_id : "")
-    setSegmentName(record ? record.segment_name : "")
-    setSegmentValue(record ? record.segment_value : "")
-    setInactived_date(record ? record.inactived_date : "")
+    setSegmentId(record ? record?.segment_id : "")
+    setTopicId(record ? record?.topic_id : "")
+    setSegmentName(record ? record?.segment_name : "")
+    setInactived_date(record ? record?.inactived_date : "")
+    if(record?.segment_value > 0 ){
+      setIsCheckCash(true)
+      setIsCheckGreet(false)
+      setIsCheckTimes(false)
+      setSegmentValue(record?.segment_value)
+    }else if(record?.segment_value == 0 ){
+      setIsCheckGreet(true)
+      setIsCheckCash(false)
+      setIsCheckTimes(false)
+      setSegmentValue(0)
+    }else if(record?.segment_value < 0 ){
+      setIsCheckTimes(true)
+      setIsCheckGreet(false)
+      setIsCheckCash(false)
+      setSegmentValue(-record?.segment_value)
+    }
   }
 
   const onCallback = async () => {
+    let _segmentValue = 0;
+    if(isCheckTimes){
+      _segmentValue = -segmentValue;
+    }
+    if(isCheckCash){
+      _segmentValue = segmentValue;
+    }
+    if(isCheckGreet){
+      _segmentValue = 0;
+    }
     let msg_error = [];
     if (!topicId) {
       msg_error.push("- Chủ đề chưa được chọn");
@@ -70,7 +97,7 @@ const ModalSegment = (props) => {
       segment_id: segmentId,
       topic_id: topicId,
       segment_name: segmentName,
-      segment_value: segmentValue,
+      segment_value: _segmentValue,
       inactived_date: inactived_date,
       is_approve: true,
       visible: false
@@ -100,6 +127,31 @@ const ModalSegment = (props) => {
   }
   const onCancel = () => {
     callback({ visible: false });
+  }
+  const onChangeCheckbox =(e)=>{
+    switch(e){
+      case 'TIMES':
+          setIsCheckTimes(!isCheckTimes)
+          if(!isCheckTimes==true){
+            setIsCheckCash(false)
+            setIsCheckGreet(false)
+          }
+        break;
+      case 'GREET':
+        setIsCheckGreet(!isCheckGreet)
+        if(!isCheckGreet==true){
+          setIsCheckCash(false)
+          setIsCheckTimes(false)
+        }
+        break;
+      case 'CASH_VOUCHER':
+        setIsCheckCash(!isCheckCash)
+        if(!isCheckCash==true){
+          setIsCheckGreet(false)
+          setIsCheckTimes(false)
+        }
+        break;
+    }
   }
 
   return (
@@ -133,9 +185,7 @@ const ModalSegment = (props) => {
           }}
           labelAlign='left'
           size={'default'}
-
         >
-
           {
             segmentId ? <Row >
               <Col {...layoutHeader} >
@@ -157,11 +207,10 @@ const ModalSegment = (props) => {
                 disabled={isAdd ? false : true}
                 style={{ width: '100%' }}
                 defaultValue=""
-                value={
-                  topicId}
+                value={topicId}
                 onChange={(value) => setTopicId(value)}>
-                {listTopic.map((Item, key) => (
-                  <Select.Option value={Item.topic_id} key={key}>{Item.topic_name}</Select.Option>
+                {listTopic.map((item, key) => (                  
+                  <Select.Option value={item?.topic_id} key={key}>{item?.topic_name}</Select.Option>
                 ))}
               </Select>
             </Col>
@@ -176,28 +225,34 @@ const ModalSegment = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ 'text-font': true })}>{'Giá trị giải thưởng '}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Hình thức giải thưởng '}</Text>
             </Col>
             <Col  {...layoutContent}>
-              <InputNumber style={{ width: '100%' }}
-                addonAfter={"VND"}
-                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                value={segmentValue}
-                onChange={(text) => {
-                  setSegmentValue(text ? text : 0);
-                }}
-              />
+              <Checkbox defaultChecked={false} checked={isCheckTimes} onChange={()=>onChangeCheckbox("TIMES")}>{`Thêm lượt`}</Checkbox>
+              <Checkbox defaultChecked={false} checked={isCheckGreet} onChange={()=>onChangeCheckbox("GREET")}>{`Lời chúc`}</Checkbox>
+              <Checkbox defaultChecked={false} checked={isCheckCash} onChange={()=>onChangeCheckbox("CASH_VOUCHER")}>{`Tiền mặt/Quà tặng`}</Checkbox>
             </Col>
           </Row>
-          {/* <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              <Text className={classNames({ 'text-font': true })}>{'Màu sắc hiển thị '}</Text>
-            </Col>
-            <Col  {...layoutContent}>
-              <Input type="color" style={{ width: '50%' }} value={segmentColor} onChange={(text) => setSegmentColor(text.target.value)} />
-            </Col>
-          </Row> */}
+          {
+            !isCheckGreet && <Row style={{ marginTop: 10 }}>
+              <Col {...layoutHeader} >
+                <Text className={classNames({ 'text-font': true })}>{'Giá trị giải thưởng '}</Text>
+              </Col>
+              <Col  {...layoutContent}>
+                
+                <InputNumber style={{ width: '100%' }}
+                  addonAfter={isCheckTimes?"Lượt":isCheckCash? "VND":""}
+                  min={0}
+                  formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                  parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                  value={segmentValue}
+                  onChange={(text) => {
+                    setSegmentValue(text ? text : 0);
+                  }}
+                />
+              </Col>
+            </Row>
+            }
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
               <Text className={classNames({ 'text-font': true })}>{'Ngày hết hiệu lực '}</Text>

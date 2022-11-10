@@ -152,7 +152,7 @@ const ModalURLManagement = (props) => {
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ 'text-font': true })}>{'Mô tả chi tiết'}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Tên màn hình'}</Text>
             </Col>
             <Col  {...layoutContent}>
               <Input

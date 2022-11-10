@@ -66,14 +66,14 @@ const menu = [
     parentKey: null,
     path: '/admin/rules',
     icon: <AliyunOutlined />,
-    title: ' Quy tắc',
+    title: 'Quản lý tỉ lệ trúng thưởng',
     child: [
       {
         key: 'viewRules',
         parentKey: 'subRules',
         path: '/admin/rules/management',
         icon: <AliyunOutlined />,
-        title: 'Quản lý quy tắc',
+        title: 'Phân bố giải thưởng tự động',
         child: null,
       }, {
         key: 'subWheelApprove',
@@ -88,6 +88,13 @@ const menu = [
         path: '/admin/rules/reward-generate',
         icon: <AliyunOutlined />,
         title: 'Tạo phần thưởng tự động',
+        child: null,
+      }, {
+        key: 'subRulesWheelApprove',
+        parentKey: 'subRules',
+        path: '/admin/rules/wheel-approve',
+        icon: <AliyunOutlined />,
+        title: 'Quản lý Phê duyệt',
         child: null,
       }, {
         key: 'subRewardHistory',
@@ -192,7 +199,7 @@ const permission = [
     child: null,
   }, {
     parent: 'subRules',
-    child: ['viewRules', 'subRulesReward', 'subRewardHistory']
+    child: ['viewRules', 'subRulesReward', 'subRulesWheelApprove','subRewardHistory']
   },
   {
     parent: 'subSys',

@@ -270,9 +270,8 @@ const ModalAccountManagement = (props) => {
           </Row>    
           <Row style={{ marginTop: 10 }}>
             <Text className={classNames({ 'text-font': true })} style={{color : 'red', fontSize:12}} >{messageWarn}</Text>
-
           </Row>    
- 
+
         </Form>
       </Card>
     </Modal>
