@@ -13,6 +13,7 @@ export default buildReducer(
     listRulesModal: [],
     listRulesStateYes: [],
     listWheelApproved: [],
+    listWheelRule: [],
     listWheelDetail: [],
     listWheel: [],
     listRewardHis: []
@@ -27,10 +28,15 @@ export default buildReducer(
       ...state,
       listRulesModal: payload
     }
-  }, [TYPES.RULES_WHEEL_APPROVED]: (state, payload) => {
+  }, [TYPES.RULES_WHEEL_APR]: (state, payload) => {
     return {
       ...state,
       listWheelApproved: payload
+    }
+  },[TYPES.RULES_WHEEL_RULE]: (state, payload) => {
+    return {
+      ...state,
+      listWheelRule: payload
     }
   }, [TYPES.RULES_WHEEL_DETAIL]: (state, payload) => {
     return {
@@ -58,6 +64,7 @@ export default buildReducer(
       listRulesModal: [],
       listRulesStateYes: [],
       listWheelApproved: [],
+      listWheelRule: [],
       listWheelDetail: [],
       listWheel: [],
       listRewardHis: []

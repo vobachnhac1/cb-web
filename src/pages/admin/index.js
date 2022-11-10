@@ -31,7 +31,7 @@ export default function Monitor() {
   const list_init = useSelector(gettersDashboard.getStateMonitorDWM);
   const recieved_total = useSelector(gettersDashboard.getStateMonitorRewardRecievedStateTotal);
   const list_recieved = useSelector(gettersDashboard.getStateMonitorRewardRecieved);
-  const listWheelApproved = useSelector(gettersRules.getListWheelApproved) || [];
+  const listWheelRule = useSelector(gettersRules.getListWheelRule) || [];
 
 
   useEffect(() => {
@@ -128,7 +128,7 @@ export default function Monitor() {
   }
   const onSearch = async () => {
     const param = {
-      wheel_id: theWheel ? theWheel : listWheelApproved[0].wheel_id,
+      wheel_id: theWheel ? theWheel : listWheelRule[0].wheel_id,
       month: month,
       year: year,
     }
@@ -271,7 +271,7 @@ export default function Monitor() {
             value={theWheel}
             onChange={onChangeSelectWheel}
           >
-            {listWheelApproved.map((item, key) => (
+            {listWheelRule.map((item, key) => (
               <Select.Option value={item.wheel_id} key={key}> {item.wheel_name}</Select.Option>
             ))}
           </Select>

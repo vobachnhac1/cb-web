@@ -21,6 +21,13 @@ export const getListWheelApproved = (state) => {
   if (listWheelApproved?.length == 0) return [];
   return listWheelApproved?.map((item, index) => ({ ...item, key: index })) || []
 };
+
+export const getListWheelRule = (state) => {
+  const { rules: data } = state;
+  const { listWheelRule } = data;
+  if (listWheelRule?.length == 0) return [];
+  return listWheelRule?.map((item, index) => ({ ...item, key: index })) || []
+};
 export const getListWheel = (state) => {
   const { rules: data } = state;
   const { listWheel = [] } = data;

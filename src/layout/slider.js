@@ -90,6 +90,13 @@ const menu = [
         title: 'Tạo phần thưởng tự động',
         child: null,
       }, {
+        key: 'subRulesWheelApprove',
+        parentKey: 'subRules',
+        path: '/admin/rules/wheel-approve',
+        icon: <AliyunOutlined />,
+        title: 'Quản lý Phê duyệt',
+        child: null,
+      }, {
         key: 'subRewardHistory',
         parentKey: 'subRules',
         path: '/admin/rules/reward-history',
@@ -192,7 +199,7 @@ const permission = [
     child: null,
   }, {
     parent: 'subRules',
-    child: ['viewRules', 'subRulesReward', 'subRewardHistory']
+    child: ['viewRules', 'subRulesReward', 'subRulesWheelApprove','subRewardHistory']
   },
   {
     parent: 'subSys',

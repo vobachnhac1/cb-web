@@ -254,7 +254,7 @@ export default function Wheel(props) {
                   </Popconfirm>
                 ) : null
                 }
-                <Button style={{ color: record.wheel_status !== "ADD" ? "" : '#faad14', borderColor: record.wheel_status !== "ADD" ? "" : '#faad14', borderWidth: 0.5 }} disabled={record.wheel_status !== "ADD" ? true : false} onClick={() => sendApprove(record)} >Gửi phê duyệt</Button>
+                <Button style={{ color: record.wheel_status !== "EDIT" ? "" : '#faad14', borderColor: record.wheel_status !== "EDIT" ? "" : '#faad14', borderWidth: 0.5 }} disabled={record.wheel_status !== "EDIT" ? true : false} onClick={() => sendApprove(record)} >Gửi phê duyệt</Button>
               </>
           }
 

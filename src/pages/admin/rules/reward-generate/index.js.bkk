@@ -8,7 +8,7 @@ require("./styles.less");
 import * as classnames from 'classnames';
 import { useState, useEffect } from 'react';
 import LayoutHome from '@/containers/Home';
-import { Button, Card, Col, Row, Space, Table, Typography, Select, Input, Form, Tag, DatePicker, Popconfirm, Modal } from 'antd';
+import { Button, Card, Col, Row, Space, Table, Typography, Select, Input, Form, Tag, DatePicker, Popconfirm } from 'antd';
 import * as Message from '@/components/message';
 const { Text } = Typography;
 const { RangePicker } = DatePicker;
@@ -21,16 +21,13 @@ import { getters as gettersRules } from '@/redux/rules';
 
 import moment from 'moment';
 import __ from 'lodash';
-import { STATE_WHEEL } from '@/constants/common';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
-import ModalCustom from '@/containers/modal-wheel-approve';
 
 export default function GenerateReward(props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [listWheelDt, setListWheelDt] = useState([]);
   const [listWheelDtTemp, setListWheelDtTemp] = useState([]);
-  const listWheelRule = useSelector(gettersRules.getListWheelRule) || [];
+  const listWheelApproved = useSelector(gettersRules.getListWheelApproved) || [];
   const listRules = useSelector(gettersRules.getListRulesStateYes) || [];
   const [filter, setFilter] = useState({
     wheel_id: null,
@@ -46,9 +43,10 @@ export default function GenerateReward(props) {
 
 
   const initPage = async () => {
+    // lấy danh sách wheel đã được Approved
     setLoading(true);
-    // lấy danh sách wheel có trạng thái  RULE
-    await dispatch(actionsRules.getWheelWithStateRule());
+    await dispatch(actionsRules.getWheelWithStateApprove());
+    await dispatch(actionsRules.getListRulesStateApprove());
     setLoading(false);
   };
 
@@ -363,7 +361,7 @@ export default function GenerateReward(props) {
       }
       const result = await dispatch(actionsRules.updateWheelDetailWithRules(params));
       if (result) {
-        onGenerated(true);
+        onGenerated();
         Message.Success("THÔNG BÁO", "CẬP NHẬT THÀNH CÔNG");
         setIsEditData(false);
         setListWheelDtTemp(listWheelDt);
@@ -374,10 +372,9 @@ export default function GenerateReward(props) {
     setLoading(false);
   };
 
-  const onGenerated = async (value) => {
+  const onGenerated = async () => {
     setLoading(true);
     const { wheel_id, rules_id } = filter;
-
     if (!wheel_id || wheel_id < 0) {
       Message.Warning("THÔNG BÁO", "Vui lòng chọn vòng quay và nhấn nút 'Search'");
       setLoading(false);
@@ -393,23 +390,19 @@ export default function GenerateReward(props) {
       setLoading(false);
       return;
     }
-    const recoreWheel = listWheelRule?.find(item => item.wheel_id == filter.wheel_id)
+    const recoreWheel = listWheelApproved?.find(item => item.wheel_id == filter.wheel_id)
 
     const result = await dispatch(actionsRules.generateRewardOfRules({
       wheel_id: recoreWheel.wheel_id,
       rules_id: filter.rules_id > 0 ? filter.rules_id : recoreWheel.rules_id,
     }));
     if (!result) {
-      if(!value){
-        Message.Warning("THÔNG BÁO", "Vui lòng chọn thử lại")
-      }
+      Message.Warning("THÔNG BÁO", "Vui lòng chọn thử lại")
       setLoading(false);
       return;
     }
-    if(!value){
-      Message.Success("THÔNG BÁO", "Đã Tạo thành công");
-
-    }
+    Message.Success("THÔNG BÁO", "Đã Tạo thành công");
+    initPage();
     onSearch();
     setLoading(false);
   }
@@ -429,59 +422,48 @@ export default function GenerateReward(props) {
     if (listWheelDt && listWheelDt.length > 0) {
       total_reward_list = listWheelDt.map(item => item.total_reward).reduce((a, b) => a + b);
     }
-    // if (!total_reward_list || total_reward_list != rules?.total_reward) {
-    //   Message.Warning("Thông Báo", "Vui lòng thực hiện tạo ngẫu nhiên trước");
-    //   return;
-    // }
-    // call API change status 'RULE' => 'APR'
+    if (!total_reward_list || total_reward_list != rules.total_reward) {
+      Message.Warning("Thông Báo", "Vui lòng thực hiện tạo ngẫu nhiên trước");
+      return;
+    }
+    // call API change status 'SAVE' => 'APR'
     setLoading(true);
     const param = {
       wheel_id: wheel_id,
-      wheel_status: STATE_WHEEL.APR,
+      wheel_status: 'APR',
+
     }
     const result = await dispatch(actionsRules.updateStateWheel(param))
     if (!result) {
-      Message.Error("THÔNG BÁO", `MÃ VÒNG QUAY ${wheel_id} CHUYỂN PHÊ DUYỆT THẤT BẠI`);
+      Message.Error("THÔNG BÁO", `MÃ VÒNG QUAY ${wheel_id} PHÊ DUYỆT THẤT BẠI`);
       setLoading(false);
       initPage();
       return;
     }
-    Message.Success("THÔNG BÁO", `MÃ VÒNG QUAY ${wheel_id} CHUYỂN PHÊ DUYỆT THÀNH CÔNG`);
+    Message.Success("THÔNG BÁO", `MÃ VÒNG QUAY ${wheel_id} PHÊ DUYỆT THÀNH CÔNG`);
     setLoading(false);
-    setFilter({
-      wheel_id: null,
-      wheel_name: null,
-      from_date: null,
-      to_date: null,
-      rules_id: null
-    })
     initPage();
-    setListWheelDt([]);
-    setListWheelDtTemp([]);
   }
 
   const onReject = async () => {
     const { wheel_id } = filter;
-    if(!wheel_id){
-      Message.Success("THÔNG BÁO", `VUI LÒNG CHỌN VÒNG QUAY`);
-      return;
-    }
-    // change status = "RULE"
+    // change status = "ADD"
     // set state filter null là dc
-    try {// call API change status 'RULE' => 'SAVE'
+    try {// call API change status 'SAVE' => 'APR'
       setLoading(true);
       const param = {
         wheel_id: wheel_id,
-        wheel_status: STATE_WHEEL.SAVE,
+        wheel_status: 'ADD',
+
       }
       const result = await dispatch(actionsRules.updateStateWheel(param))
       if (!result) {
-        Message.Error("THÔNG BÁO", `[ERROR] MÃ VÒNG QUAY ${wheel_id} CÀI ĐẶT LẠI QUY TẮC LỖI`);
+        Message.Error("THÔNG BÁO", `MÃ VÒNG QUAY ${wheel_id} Từ chối thất bại`);
         setLoading(false);
         initPage();
         return;
       }
-      Message.Success("THÔNG BÁO", `MÃ VÒNG QUAY ${wheel_id} CÀI ĐẶT LẠI QUY TẮC`);
+      Message.Success("THÔNG BÁO", `MÃ VÒNG QUAY ${wheel_id} Từ chối thành công`);
       setFilter({
         wheel_id: null,
         wheel_name: null,
@@ -500,22 +482,51 @@ export default function GenerateReward(props) {
     }
   }
 
-  const onChangeSelectWheel = async (value) => {
-    // lấy rules
-    if(value){
-      setLoading(true);
-      const _rs = await dispatch(actionsRules.getListRulesStateApprove({wheel_id: value}));
-      const _rule = listRules[0];
+  const onChangeSelectRules = (value) => {
+    if (!value) {
+      setFilter({ ...filter, rules_id: value });
+      return;
+    }
+    const rule = listRules.find(item => item.rules_id == value);
+    const wheel = listWheelApproved?.find(item => item.wheel_id == filter.wheel_id);
+    let num_date_wheel = 0;
+    if (!wheel) {
+      Message.Warning("Thông báo", "Vui lòng chọn Vòng Quay");
+      return;
+    } else {
+      const a = moment(wheel.inactived_date);
+      const current_time = moment();
+      num_date_wheel = a.diff(current_time, 'days')
+    }
+    const rule_to_date = moment(rule.to_date);
+    const current_time_rule = moment();
+    const num_date_rule = rule_to_date.diff(current_time_rule, 'days');
+    if (num_date_wheel < 0) {
+      Message.Warning("Thông báo", "Vòng quay hết hiệu lực");
+      return;
+    }
+    if (num_date_rule < 0) {
+      Message.Warning("Thông báo", "Quy tắc hết hiệu lực");
+      return;
+    }
 
-      setFilter({
-        ...filter,
-        wheel_id: value,
-        rules_id: listRules[0]?.rules_id,
-      });
-      // TH 1: lấy đúng 1 row trùng với thời gian hiệu lực vòng quay
-      // B1: lấy thông tin vòng quay
-      const _wheel = listWheelRule?.find(ele => ele.wheel_id == value);
-      const result = await dispatch(actionsRules.getWheelDtStateApprove(value));
+    if (num_date_rule > num_date_wheel) {
+      // console.log("Thời hạn quy tắc không phù hợp vòng quay hiện tại");
+      Message.Warning("Thông báo", "Thời hạn quy tắc không phù hợp vòng quay hiện tại");
+      return;
+    }
+    if (num_date_rule <= num_date_wheel) {
+      console.log("Phù hợp");
+    }
+    setFilter({ ...filter, rules_id: value })
+  }
+
+  const onChangeSelectWheel = async (value) => {
+    if (value) {
+      setLoading(true);
+      const { rules_id, wheel_id } = listWheelApproved?.find(ele => ele.wheel_id == value);
+      const result = await dispatch(actionsRules.getWheelDtStateApprove(wheel_id));
+      // console.log('rules_id: ', rules_id, listRules);
       if (result.length > 0) {
         setListWheelDt(result.map((item, index) => ({ ...item, key: index })))
         setListWheelDtTemp(result.map((item, index) => ({ ...item, key: index })))
@@ -523,74 +534,27 @@ export default function GenerateReward(props) {
         setListWheelDt([]);
         setListWheelDtTemp([]);
       }
-
-      // TH 2: lấy hiển thị hết trên 1 row
-      setLoading(false);
-    }else{
       setFilter({
         ...filter,
         wheel_id: value,
-        rules_id: null
+        rules_id: rules_id ? rules_id : null
       })
-      setListWheelDt([]);
-      setListWheelDtTemp([]);
+      setLoading(false);
+      return;
     }
-  }
-
-  const [contentModel, setContentModel] = useState({
-    _tittle: null,
-    _content1: null,
-    _content2: null
-  });
-  const [keyRows, setKeyRows] = useState(null);
-  const [visible, setVisible] = useState(false);
-  const actionRow = async (key)=>{ 
-    setVisible(true)
-    setKeyRows(key)
-    if(key == 'COMFIRM'){
-      if(!filter.wheel_id)return;
-      const _wheel =  listWheelRule?.find(item => item.wheel_id == filter.wheel_id)
-      const _content1 = `Tên vòng quay: ${_wheel?.wheel_name}`
-      const _content2 = `Thời gian bắt đầu: ${moment(_wheel?.from_date_act).format('YYYY-MM-DD')} - Thời gian kết thúc: ${moment(_wheel?.to_date_act).format('YYYY-MM-DD')}`
-      setContentModel({
-        _tittle:'Bạn có muốn chuyển bước Phê duyệt vòng quay',
-        _content1: _content1,
-        _content2: _content2    
-      })
-    }else if(key == 'REJECT'){
-      if(!filter.wheel_id)return;
-      const _wheel =  listWheelRule?.find(item => item.wheel_id == filter.wheel_id)
-      const _content1 = `Tên vòng quay: ${_wheel?.wheel_name}`
-      const _content2 = `Thời gian bắt đầu: ${moment(_wheel?.from_date_act).format('YYYY-MM-DD')} - Thời gian kết thúc: ${moment(_wheel?.to_date_act).format('YYYY-MM-DD')}`
-      setContentModel({
-        _tittle:'Bạn có muốn cài đặt lại quy tắc vòng quay',
-        _content1: _content1,
-        _content2: _content2    
-      })
-    }
-  }
-
-  const callback = async (value) => {
-    setVisible(false)
-    if(value.comfirm){
-      if(keyRows == 'COMFIRM'){
-        await onApproved()
-        setKeyRows(null)
-        return
-      }
-      else if(keyRows =='REJECT'){
-        await onReject();
-        setKeyRows(null)
-        return
-      }
-    }
-    initPage();
+    setFilter({
+      ...filter,
+      wheel_id: value,
+      rules_id: null
+    })
+    setListWheelDt([]);
+    setListWheelDtTemp([]);
   }
 
   return (
     <LayoutHome>
-      <ModalCustom visible={visible} callback={callback} contentModel={contentModel}  />
       <Col style={{ marginBottom: 30 }}>
+        {/* <ModalRules visible={visible} bodyModel={bodyModel} callback={callbackModal} /> */}
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
           title="Tạo giải thưởng ngẫu nhiên"
@@ -607,22 +571,34 @@ export default function GenerateReward(props) {
                   value={filter.wheel_id}
                   onChange={onChangeSelectWheel}
                 >
-                  {listWheelRule?.map((item, key) => (
+                  {listWheelApproved?.map((item, key) => (
                     <Select.Option value={item.wheel_id} key={key}> {item.wheel_name}</Select.Option>
                   ))}
                 </Select>
               </Col>
-              <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%', height: 30 }} onClick={initPage}>Làm mới</Button>
+              <Col className="gutter-row" span={8}>
+                <Select
+                  allowClear
+                  placeholder="Danh sách Quy tắc"
+                  style={{ width: '100%' }}
+                  defaultValue={null}
+                  value={filter.rules_id}
+                  onChange={onChangeSelectRules}
+                >
+                  {listRules.map((item, key) => (
+                    <Select.Option value={item.rules_id} key={key}> {item.rules_name}</Select.Option>
+                  ))}
+                </Select>
               </Col>
             </Row>
             <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
-              <Col className="gutter-row" span={6} style={{ margin: 10, height: 40 }}>
-                <Button type='primary' size='middle' style={{ width: '100%', height: 30 }} onClick={()=>actionRow('COMFIRM')}>Chuyển bước phê duyệt</Button>
-              </Col>
-              <Col className="gutter-row" span={4} style={{ margin: 10, height: 40 }}>
-                <Button type='primary' size='middle' style={{ width: '100%', height: 30 }} onClick={()=>actionRow('REJECT')}>Trả về tạo quy tắc</Button>
-              </Col>
+              {/* <Col className="gutter-row" span={3}>
+                <Button disabled={filter.wheel_id == null} type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>
+              </Col> */}
+              {/* <Col className="gutter-row" span={4}>
+                <Button disabled={filter.wheel_id == null || listWheelDt.length == 0} type='primary' size='middle' style={{ width: '100%' }} onClick={onGenerated}>Tạo giải ngẫu nhiên</Button>
+              </Col> */}
+
             </Row>
           </Col>
         </Card>
@@ -643,7 +619,12 @@ export default function GenerateReward(props) {
                   <Col className="gutter-row" span={6} style={{ margin: 10, height: 40 }}>
                     <Button disabled={filter.wheel_id == null || listWheelDt.length == 0} type='primary' size='middle' style={{ width: '100%', height: 30 }} onClick={onGenerated}>Tạo giải ngẫu nhiên</Button>
                   </Col>
-                
+                  <Col className="gutter-row" span={6} style={{ margin: 10, height: 40 }}>
+                    <Button type='primary' size='middle' style={{ width: '100%', height: 30 }} onClick={onApproved}>Phê duyệt Vòng quay</Button>
+                  </Col>
+                  <Col className="gutter-row" span={4} style={{ margin: 10, height: 40 }}>
+                    <Button type='primary' size='middle' style={{ width: '100%', height: 30 }} onClick={onReject}>Từ Chối</Button>
+                  </Col>
                 </Row>
               </Col>
             </Row>

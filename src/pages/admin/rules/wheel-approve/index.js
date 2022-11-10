@@ -18,17 +18,25 @@ import { getters as gettersRules } from '@/redux/rules';
 
 import moment from 'moment';
 import __ from 'lodash';
-import ModalWheelApprove from '@/containers/modal-wheel-approve';
+import ModalCustom from '@/containers/modal-wheel-approve';
+import { STATE_WHEEL } from '@/constants/common';
 
 export default function WheelApprove(props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
-  const listWheel = useSelector(gettersRules.getListWheel) || [];
+  const listWheel = useSelector(gettersRules.getListWheelApproved) || [];
   const listRules = useSelector(gettersRules.getListRulesStateYes) || [];
   const [filter, setFilter] = useState({
     wheel_name: null,
   });
-
+  const [recordRow, setRecord] = useState(null);
+  const [keyRows, setKeyRows] = useState(null);
+  const [contentModel, setContentModel] = useState({
+    _tittle: null,
+    _content1: null,
+    _content2: null
+  });
+  const [visible, setVisible] = useState(false);
   useEffect(() => {
     initPage();
   }, [])
@@ -36,21 +44,12 @@ export default function WheelApprove(props) {
 
   const initPage = async () => {
     setLoading(true);
-    await dispatch(actionsRules.getWheelScreenRules());
-    await dispatch(actionsRules.getListRulesStateApprove());
+    await dispatch(actionsRules.getWheelScreenRulesAPR());
     setLoading(false);
   }
 
   const onSearch = async () => {
-    const { wheel_name } = filter;
-    if (__.isNil(wheel_name)) {
-      initPage();
-    } else {
-      setLoading(true);
-      await dispatch(actionsRules.getWheelScreenRules({ wheel_name: wheel_name }));
-      setLoading(false)
-      return;
-    }
+    initPage();
   }
 
   const columns = [
@@ -61,13 +60,13 @@ export default function WheelApprove(props) {
       width: 40,
       align: 'center'
     },
-    {
-      title: 'Wheel ID',
-      dataIndex: 'wheel_id',
-      key: 'wheel_id',
-      width: 80,
-      align: 'center'
-    },
+    // {
+    //   title: 'Wheel ID',
+    //   dataIndex: 'wheel_id',
+    //   key: 'wheel_id',
+    //   width: 80,
+    //   align: 'center'
+    // },
     {
       title: 'Tên vòng quay',
       dataIndex: 'wheel_name',
@@ -75,10 +74,17 @@ export default function WheelApprove(props) {
       align: 'left',
       width: 300
     },
+    // {
+    //   title: 'Số kết quả',
+    //   dataIndex: 'num_segments',
+    //   key: 'num_segments',
+    //   align: 'center',
+    //   width: 100,
+    // }, 
     {
-      title: 'Số kết quả',
-      dataIndex: 'num_segments',
-      key: 'num_segments',
+      title: 'Trạng thái',
+      dataIndex: 'wheel_status',
+      key: 'wheel_status',
       align: 'center',
       width: 100,
     },
@@ -100,7 +106,6 @@ export default function WheelApprove(props) {
           </span>
         </Space>
       )
-
     },
     {
       title: 'Giá trị còn lại  (VNĐ)',
@@ -122,9 +127,9 @@ export default function WheelApprove(props) {
         </Space>
       )
     }, {
-      title: 'Ngày hết hiệu lực',
-      dataIndex: 'inactived_date',
-      key: 'inactived_date',
+      title: 'Thời gian bắt đầu',
+      dataIndex: 'from_date_act',
+      key: 'from_date_act',
       align: 'center',
 
       width: 170,
@@ -133,107 +138,125 @@ export default function WheelApprove(props) {
           {moment(text).format('YYYY-MM-DD, HH:mm:ss')}
         </span>
       }
-    },
-    {
-      title: 'Ngày tạo',
-      dataIndex: 'created_date',
-      key: 'created_date',
-      width: 170,
+    },{
+      title: 'Thời gian kết thúc',
+      dataIndex: 'to_date_act',
+      key: 'to_date_act',
       align: 'center',
+
+      width: 170,
       render: (text, record) => {
         return <span>
           {moment(text).format('YYYY-MM-DD, HH:mm:ss')}
         </span>
       }
-    }, {
-      title: 'Trạng thái',
-      dataIndex: 'is_valid',
-      key: 'is_valid',
+    },{
+      title: 'Xem quy tắc vòng quay',
+      key: 'link_rules',
+      align: 'center',
+
       width: 170,
       render: (text, record) => {
-        return <Tag color={text == 1 ? 'green' : 'error'}>
-          {
-            text == 1 ? 'Hợp lệ' : 'Không hợp lệ'
-          }
-        </Tag>
+        return <span style={{textDecorationLine:'underline', fontStyle:'italic'}}> {'Xem chi tiết quy tắc'} </span>
       }
     },
     {
-      title: 'Action',
+      title: 'Nút nhấn',
       key: 'action',
-      width: 210,
-      fixed: 'right',
+      dataIndex: 'wheel_status',
       align: 'center',
+      width: 170,
       render: (text, record) => {
-        const color = record.is_valid == 1 && record.wheel_status === 'APR' ? 'red' : 'green'
-        return (
-          <Space size="middle">
-            {
-              record.is_valid != 1 ?
-                <span style={{ color: '#d46b08' }} >
-                  Vui lòng kiểm tra lại vòng quay!
-                </span> : null
-            }
-            {
-              record.is_valid == 1 ? <Button style={{ width: 80, color: color, borderColor: color, borderWidth: 0.5 }}
-                onClick={() => onApproved(record)} > {record.wheel_status === 'APR' ? 'Từ chối' : 'Phê duyệt'}</Button> : null
-            }
-            {
-              record.is_valid == 1 && record.wheel_status === 'APR' && <Button style={{ width: '100%', color: 'blue', borderColor: 'blue', borderWidth: 0.5 }}
-                onClick={() => onAddRules(record)} >Thêm quy tắc</Button>
-            }
-          </Space>
-        )
-      },
+        if(text == STATE_WHEEL.APR){
+          return <Button style={{ width: '100%', color: 'blue', borderColor: 'blue', borderWidth: 0.5 }}
+            onClick={() => actionRow(record, text)} >Phê duyệt</Button>
+        }else if(text == STATE_WHEEL.START){
+          return <Button style={{ width: '100%', color: 'red', borderColor: 'red', borderWidth: 0.5 }}
+          onClick={() => actionRow(record, text)} >Ngừng khẩn cấp</Button>
+        }
+        return <></>
+      }
     },
   ];
 
-  const onApproved = async (record) => {
+  const actionRow = async (record, key)=>{ 
+    setVisible(true)
+    setRecord(record);
+    setKeyRows(key)
+    if(key == STATE_WHEEL.START){
+      const _tittle = 'Bạn có muốn NGỪNG VÒNG QUAY KHẨN CẤP';
+      const _content1 = `Tên vòng quay: ${record?.wheel_name}`
+      const _content2 = `Thời gian bắt đầu: ${moment(record?.from_date_act).format('YYYY-MM-DD')} - Thời gian kết thúc: ${moment(record?.to_date_act).format('YYYY-MM-DD')}`
+      setContentModel({
+        _tittle,
+        _content1,
+        _content2
+      })
+    }else if(key == STATE_WHEEL.APR){
+      const _tittle = 'Bạn có muốn Áp dụng ngay vòng quay';
+      const _content1 = `Tên vòng quay: ${record?.wheel_name}`
+      const _content2 = `Thời gian bắt đầu: ${moment(record?.from_date_act).format('YYYY-MM-DD')} - Thời gian kết thúc: ${moment(record?.to_date_act).format('YYYY-MM-DD')}`
+      setContentModel({
+        _tittle,
+        _content1,
+        _content2
+      })
+    }
+  }
+
+  const onStop = async (record) => {
     setLoading(true);
     const param = {
       wheel_id: record.wheel_id,
-      wheel_status: record.wheel_status === 'APR' ? 'NEW' : 'APR',
-
+      wheel_status: STATE_WHEEL.STOP,
     }
     const result = await dispatch(actionsRules.updateStateWheel(param))
     if (!result) {
-      Message.Error("THÔNG BÁO", `MÃ VÒNG QUAY ${record.wheel_id} PHÊ DUYỆT THẤT BẠI`);
+      Message.Error("THÔNG BÁO", `VÒNG QUAY ${record.wheel_name} ĐÃ ĐƯỢC DỪNG KHẨN CẤP`);
+      setLoading(false);
+      initPage();
       return;
     }
-    Message.Success("THÔNG BÁO", `MÃ VÒNG QUAY ${record.wheel_id} PHÊ DUYỆT THÀNH CÔNG`);
     setLoading(false);
   }
 
-  const onAddRules = (record) => {
-    // Message.Info("THÔNG BÁO", "TÍNH NĂNG ĐĂNG PHÁT TRIỂN");
-    setVisible(!visible);
-    setDataModal({
-      ...dataModal,
-      record: record
-    })
+  const onStart = async (record) => {
+    setLoading(true);
+    const param = {
+      wheel_id: record.wheel_id,
+      wheel_status: STATE_WHEEL.START,
+    }
+    const result = await dispatch(actionsRules.updateStateWheel(param))
+    if (!result) {
+      Message.Error("THÔNG BÁO", `VÒNG QUAY ${record.wheel_name} ĐÃ ĐƯỢC KÍCH HOẠT`);
+      setLoading(false);
+      initPage();
+      return;
+    }
+    setLoading(false);
   }
 
-  // xử lý modal approve
-  const [dataModal, setDataModal] = useState({
-    isAdd: false,
-    record: null
-  });
-
-  const [visible, setVisible] = useState(false);
-
-  const callback = ({ visible }) => {
-    setVisible(visible);
-    setDataModal({
-      isAdd: false,
-      record: null
-    });
-    onSearch()
+  const callback = async (value) => {
+    setVisible(false)
+    if(value.comfirm){
+      if(keyRows == STATE_WHEEL.START){
+        await onStop(recordRow)
+        setKeyRows(null)
+        setRecord(null)
+      }
+      else if(keyRows == STATE_WHEEL.APR){
+        await onStart(recordRow);
+        setKeyRows(null)
+        setRecord(null)
+      }
+    }
+    initPage();
   }
 
 
   return (
     <LayoutHome>
-      <ModalWheelApprove visible={visible} callback={callback} bodyModel={dataModal} listRules={listRules} />
+      <ModalCustom visible={visible} callback={callback} contentModel={contentModel}  />
       <Col style={{ marginBottom: 30 }}>
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
@@ -241,11 +264,11 @@ export default function WheelApprove(props) {
           bordered={true}
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>
-            <Row gutter={[16, 24]}>
+            {/* <Row gutter={[16, 24]}>
               <Col className="gutter-row" span={12}>
                 <Input allowClear placeholder="Tên vòng quay cần tìm" value={filter.wheel_name} onChange={(event) => setFilter({ ...filter, wheel_name: event.target.value })} />
               </Col>
-            </Row>
+            </Row> */}
             <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
               <Col className="gutter-row" span={5}>
                 <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>

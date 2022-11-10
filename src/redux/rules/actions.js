@@ -2,10 +2,12 @@ import * as TYPES from './type';
 import URLSERVER from '@/redux/urlServer.json';
 import moment from 'moment';
 import { setToken } from '../wrapper';
+import { STATE_WHEEL } from '@/constants/common';
 // hàm thị thi nội bộ
 const setRules = (payload) => ({ type: TYPES.RULES_SEARCH, payload });
 const setRulesModal = (payload) => ({ type: TYPES.RULES_SEARCH_MODAL, payload });
-const setListWheelApproved = (payload) => ({ type: TYPES.RULES_WHEEL_APPROVED, payload });
+const setListWheelRULE = (payload) => ({ type: TYPES.RULES_WHEEL_RULE, payload });
+const setListWheelAPR = (payload) => ({ type: TYPES.RULES_WHEEL_APR, payload });
 const setListWheel = (payload) => ({ type: TYPES.RULES_WHEEL, payload });
 const setListRulesStateYes = (payload) => ({ type: TYPES.RULES_STATE_YES, payload });
 const setRewardHis = (payload) => ({ type: TYPES.RULES_REWARD_HIS, payload });
@@ -21,10 +23,12 @@ export const filterRules = (payload) => async (dispatch, getState, { $http }) =>
   const result = await $http.post(URLSERVER.getRulesByFilter, payload);
   const { success, data } = result;
   if (!success || !data.success) {
+    dispatch(setRules([]))
     return false;
   }
   const listRules = data.data;
   dispatch(setRules(listRules))
+
   return true
 }
 export const filterRulesModal = (payload) => async (dispatch, getState, { $http }) => {
@@ -34,13 +38,17 @@ export const filterRulesModal = (payload) => async (dispatch, getState, { $http 
     return false;
   }
   const result = await $http.post(URLSERVER.getRulesByFilter, payload);
-  console.log('result: ', result);
   const { success, data } = result;
   if (!success || !data.success) {
     return false;
   }
   const listRules = data.data;
-  dispatch(setRulesModal(listRules))
+  if(listRules && listRules.length>0){
+    dispatch(setRulesModal(listRules))
+
+  }else{
+    dispatch(setRulesModal([]))
+  }
   return true
 }
 
@@ -157,25 +165,18 @@ export const insertRules = (payload) => async (dispatch, getState, { $http }) =>
 // function export ra ngoài
 // rules-reward
 
-export const getWheelWithStateApprove = (payload) => async (dispatch, getState, { $http }) => {
+export const getWheelWithStateRule = (payload) => async (dispatch, getState, { $http }) => {
   setToken(getState(),$http)
-
   try {
-    const params = {
-      wheel_name: null,
-      wheel_status: null,
-      wheel_status_arr: ['APR', 'SAVE'],
-      from_date_act: null,
-      to_date_act: null
-    }
-    const result = await $http.post(URLSERVER.getWheelWithStateApprove, params);
+    const params = { wheel_status: STATE_WHEEL.RULE }
+    const result = await $http.get(URLSERVER.selectWheelApproved, params);
     const { success, data } = result;
     if (!success || !data.success) {
-      dispatch(setListWheelApproved([]))
+      dispatch(setListWheelRULE([]))
       return false;
     }
     const listWheel = data.data;
-    dispatch(setListWheelApproved(listWheel))
+    dispatch(setListWheelRULE(listWheel))
     return true;
   } catch (error) {
     console.log('error: ', error);
@@ -186,7 +187,6 @@ export const getWheelWithStateApprove = (payload) => async (dispatch, getState, 
 export const getWheelDtStateApprove = (payload) => async (dispatch, getState, { $http }) => {
 
   setToken(getState(),$http)
-
   try {
     const params = {
       wheel_id: payload
@@ -194,11 +194,9 @@ export const getWheelDtStateApprove = (payload) => async (dispatch, getState, { 
     const result = await $http.get(URLSERVER.getWheelDtStateApprove, params);
     const { success, data } = result;
     if (!success || !data.success) {
-      // dispatch(setListWheelDetail([]))
       return [];
     }
     const listWheelDetail = data.data;
-    // dispatch(setListWheelDetail(listWheelDetail))
     return listWheelDetail;
   } catch (error) {
     console.log('error: ', error);
@@ -241,15 +239,16 @@ export const nextStepWheel = (payload) => async (dispatch, getState, { $http }) 
   try {
     const { wheel_id, wheel_status } = payload;
     const result = await $http.post(URLSERVER.updateStateWheel, {
-      wheel_id: wheel_id, wheel_status: wheel_status
+      wheel_id: wheel_id, 
+      wheel_status: STATE_WHEEL.APR
     });
     const { success } = result;
     if (success) {
       const resultList = await $http.get(URLSERVER.selectWheelApproved);
       console.log('resultList: ', resultList);
-      if (!resultList.success || !resultList.data.success) {
-        // dispatch(setListWheel([]))
-      }
+      // if (!resultList.success || !resultList.data.success) {
+      //   dispatch(setListWheel([]))
+      // }
       // dispatch(setListWheel(resultList.data.data))
       return true;
     } else {
@@ -273,6 +272,26 @@ export const getWheelScreenRules = (payload) => async (dispatch, getState, { $ht
       return false;
     }
     dispatch(setListWheel(data.data))
+    return true;
+  } catch (error) {
+    return false
+  }
+}
+
+export const getWheelScreenRulesAPR = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+  try {
+    const params = {
+      wheel_status_arr: [STATE_WHEEL.EDIT, STATE_WHEEL.NEW, STATE_WHEEL.SAVE, STATE_WHEEL.RULE]
+    }
+    const result = await $http.post(URLSERVER.getWheelWithStateApprove, params);
+    
+    const { success, data } = result;
+    if (!success || !data.success) {
+      dispatch(setListWheelAPR([]))
+      return false;
+    }
+    dispatch(setListWheelAPR(data.data))
     return true;
   } catch (error) {
     return false
@@ -308,11 +327,12 @@ export const updateStateWheel = (payload) => async (dispatch, getState, { $http 
 
 export const getListRulesStateApprove = (payload) => async (dispatch, getState, { $http }) => {
   setToken(getState(),$http)
-  // trạng thái = Y, thời gian còn hiệu lực
-  const param = {
-    status_rules: 'Y'
+  // lấy rules theo mã vòng quay
+  if(!payload.wheel_id){
+    dispatch(setListRulesStateYes([]))
+    return false;
   }
-  const result = await $http.post(URLSERVER.getRulesByFilter, param);
+  const result = await $http.post(URLSERVER.getRulesByFilter, payload);
   const { success, data } = result;
   if (!success || !data.success) {
     return false;

@@ -375,7 +375,8 @@ const ModalRules = (props) => {
             <Col  {...layoutContent}>
               <RangePicker
                 allowClear={false}
-                disabled={chooseWheel?false:true}
+                // disabled={chooseWheel?false:true}
+                disabled={true}
                 disabledDate={ current => 
                   !current 
                   || current.isSameOrBefore(moment().set('date', (moment(listWheel.find(item=>item.wheel_id == chooseWheel)?.from_date_act).add(expired.count,'days').date() - 1)))                  
