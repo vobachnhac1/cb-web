@@ -576,12 +576,10 @@ export default function GenerateReward(props) {
       if(keyRows == 'COMFIRM'){
         await onApproved()
         setKeyRows(null)
-        return
       }
       else if(keyRows =='REJECT'){
         await onReject();
         setKeyRows(null)
-        return
       }
     }
     initPage();

@@ -165,11 +165,16 @@ export default function WheelApprove(props) {
       key: 'action',
       dataIndex: 'wheel_status',
       align: 'center',
-      width: 170,
+      width: 300,
       render: (text, record) => {
         if(text == STATE_WHEEL.APR){
-          return <Button style={{ width: '100%', color: 'blue', borderColor: 'blue', borderWidth: 0.5 }}
-            onClick={() => actionRow(record, text)} >Phê duyệt</Button>
+          return <Space size="middle">
+
+          <Button style={{ width: '100%', color: 'blue', borderColor: 'blue', borderWidth: 0.5 }}
+            onClick={() => actionRow(record, text)} >Phê duyệt</Button>          
+          <Button style={{ width: '100%', color: 'green', borderColor: 'green', borderWidth: 0.5, marginRight:10 }}
+            onClick={() => actionRow(record, 'REJECT')} >Trả lại</Button>
+          </Space>
         }else if(text == STATE_WHEEL.START){
           return <Button style={{ width: '100%', color: 'red', borderColor: 'red', borderWidth: 0.5 }}
           onClick={() => actionRow(record, text)} >Ngừng khẩn cấp</Button>
@@ -177,6 +182,7 @@ export default function WheelApprove(props) {
         return <></>
       }
     },
+    
   ];
 
   const actionRow = async (record, key)=>{ 
@@ -194,6 +200,15 @@ export default function WheelApprove(props) {
       })
     }else if(key == STATE_WHEEL.APR){
       const _tittle = 'Bạn có muốn Áp dụng ngay vòng quay';
+      const _content1 = `Tên vòng quay: ${record?.wheel_name}`
+      const _content2 = `Thời gian bắt đầu: ${moment(record?.from_date_act).format('YYYY-MM-DD')} - Thời gian kết thúc: ${moment(record?.to_date_act).format('YYYY-MM-DD')}`
+      setContentModel({
+        _tittle,
+        _content1,
+        _content2
+      })
+    }else if(key == 'REJECT'){
+      const _tittle = 'Bạn có muốn vòng quay cài đặt lại cơ cấu trúng thưởng';
       const _content1 = `Tên vòng quay: ${record?.wheel_name}`
       const _content2 = `Thời gian bắt đầu: ${moment(record?.from_date_act).format('YYYY-MM-DD')} - Thời gian kết thúc: ${moment(record?.to_date_act).format('YYYY-MM-DD')}`
       setContentModel({
@@ -236,6 +251,21 @@ export default function WheelApprove(props) {
     setLoading(false);
   }
 
+  const onRule = async (record) => {
+    setLoading(true);
+    const param = {
+      wheel_id: record.wheel_id,
+      wheel_status: STATE_WHEEL.RULE,
+    }
+    const result = await dispatch(actionsRules.updateStateWheel(param))
+    if (!result) {
+      Message.Error("THÔNG BÁO", `VÒNG QUAY ${record.wheel_name} ĐÃ TRẢ VỀ BƯỚC TẠO GIẢI`);
+      setLoading(false);
+      initPage();
+      return;
+    }
+    setLoading(false);
+  }
   const callback = async (value) => {
     setVisible(false)
     if(value.comfirm){
@@ -246,6 +276,10 @@ export default function WheelApprove(props) {
       }
       else if(keyRows == STATE_WHEEL.APR){
         await onStart(recordRow);
+        setKeyRows(null)
+        setRecord(null)
+      }else if(keyRows == 'REJECT'){
+        await onRule(recordRow);
         setKeyRows(null)
         setRecord(null)
       }
