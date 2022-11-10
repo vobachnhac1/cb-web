@@ -22,6 +22,6 @@ export const setToken =(state,  $http)=>{
   if(access_token){
     $http.setAccessToken(access_token)
   }else{
-    dispatch(signOutDispatch());
+    $http.setAccessToken(null)
   }
 }

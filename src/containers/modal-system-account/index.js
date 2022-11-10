@@ -34,13 +34,13 @@ const layoutContent = {
   lg: { span: 16, offset: 0 },
 };
 const ModalAccountManagement = (props) => {
-  const { callback, visible = false, bodyModel: { update = false, record = null } } = props;
+  const { callback, visible = false, bodyModel: { update = false, record = null} } = props;
   const dispatch = useDispatch();
-  const _sysList = useSelector(getters.dropdownSysList)
-  const _roleList = useSelector(getters.dropdownRoleList)
+  const _sysList =useSelector(getters.dropdownSysList)
+  const _roleList =useSelector(getters.dropdownRoleList)
 
-  const [messageWarn, setMessageWarn] = useState('')
-  const [body, setBody] = useState(record ? record : {
+  const [messageWarn, setMessageWarn]= useState('')
+  const [body, setBody]=  useState(record ? record : {
     userId: null,
     fullname: null,
     password: null,
@@ -52,40 +52,40 @@ const ModalAccountManagement = (props) => {
     systemCode: null
   })
 
-  const onChangeSelectPer = (value) => {
+  const onChangeSelectPer =(value)=>{
     body?.perSystem
     setPerSystem(value)
   }
 
   const onCallback = async () => {
 
-    const { systemCode, status, roleId } = body
-    if (!systemCode) {
+    const {systemCode, status, roleId}= body
+    if(!systemCode){
       setMessageWarn('Hệ thống không được để trống');
       return
     }
-    if (!status) {
+    if(!status){
       setMessageWarn('Trạng thái không được để trống');
       return
     }
-    if (!roleId) {
+    if(!roleId){
       setMessageWarn('Chức vụ không được để trống');
       return
     }
 
-    if (!update) {
-      const { password, passwordComfirm } = body;
-      if (password != passwordComfirm) {
+    if(!update){
+      const {password, passwordComfirm }= body;
+      if(password != passwordComfirm){
         Message.Warning("Thông Báo", "Mật khẩu xác nhận không đúng!");
         return;
       }
-      if (!password || !passwordComfirm) {
+      if(!password || !passwordComfirm){
         Message.Warning("Thông Báo", "Mật khẩu không được để trống");
         return;
       }
-
+      
     }
-    callback({ ...body, visible: true, id: record?.id })
+    callback({...body, visible:true, id: record?.id})
   }
 
   const onCancel = () => {
@@ -93,21 +93,21 @@ const ModalAccountManagement = (props) => {
     callback({ visible: false });
   }
 
-  const onCheck = () => {
-    if (!update) {
-      const { password, passwordComfirm } = body;
+  const onCheck =()=>{
+    if(!update){
+      const {password, passwordComfirm }= body;
       let _str = '';
-      if (password && passwordComfirm) {
-        if (password == passwordComfirm) {
+      if(password && passwordComfirm){
+        if(password == passwordComfirm){
           setMessageWarn('')
-        } else {
+        }else{
           setMessageWarn('Mật khẩu xác nhận không giống')
         }
-      } else {
-        if (!password || password && password.length == 0) {
+      }else{
+        if(!password || password && password.length ==0){
           _str += '\n Mật khẩu không để trống';
         }
-        if (!passwordComfirm || passwordComfirm && passwordComfirm.length == 0) {
+        if(!passwordComfirm || passwordComfirm && passwordComfirm.length ==0){
           _str += ' - Mật khẩu nhập lại không để trống';
         }
         setMessageWarn(_str)
@@ -115,15 +115,15 @@ const ModalAccountManagement = (props) => {
     }
   }
 
-  const onCreateUserId = () => {
-    if (!update) {
+  const onCreateUserId =()=>{
+    if(!update){
       const arrFullname = body.fullname?.trim().split(" ");
-      if (arrFullname && arrFullname.length > 0) {
+      if(arrFullname && arrFullname.length >0){
         let _str = ""
-        for (let i = 0; i < arrFullname.length - 1; i++) {
+        for(let i =0; i < arrFullname.length- 1; i++){
           _str += arrFullname[i].substring(0, 1)
         }
-        const _userId = removeVietnameseTones(arrFullname[arrFullname.length - 1]) + _str
+        const _userId = removeVietnameseTones(arrFullname[arrFullname.length-1])+_str
         setBody({
           ...body,
           userId: _userId.toLowerCase()
@@ -154,7 +154,7 @@ const ModalAccountManagement = (props) => {
           wrapperCol={{ span: 14 }}
           layout="horizontal"
         >
-          <Row style={{ marginTop: 10 }}>
+           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
               <Text className={classNames({ 'text-font': true })}>{'Tài khoản'}</Text>
             </Col>
@@ -167,19 +167,19 @@ const ModalAccountManagement = (props) => {
                   ...body,
                   userId: text.target.value
                 })} />
-            </Col>
+            </Col>    
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
-              <Text className={classNames({ 'text-font': true })}>{'Hệ thống phòng ban'}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Hệ thống'}</Text>
             </Col>
-            <Col {...layoutContent} >
-              <Select
-                // disabled={true}
+            <Col {...layoutContent} >             
+              <Select 
+              // disabled={true}
                 style={{ width: '100%' }}
                 defaultValue=""
                 value={body?.systemCode}
-                onChange={(value) => setBody({ ...body, systemCode: value })}>
+                onChange={(value) => setBody({...body, systemCode: value})}>
                 {_sysList?.map((item, key) => (
                   <Select.Option value={item.sysCode} key={key}>{item.sysName}</Select.Option>
                 ))}
@@ -190,12 +190,12 @@ const ModalAccountManagement = (props) => {
             <Col {...layoutHeader} >
               <Text className={classNames({ 'text-font': true })}>{'Chức vụ'}</Text>
             </Col>
-            <Col {...layoutContent} >
-              <Select
+            <Col {...layoutContent} >             
+              <Select 
                 style={{ width: '100%' }}
                 defaultValue=""
                 value={body?.roleId}
-                onChange={(value) => setBody({ ...body, roleId: value })}>
+                onChange={(value) => setBody({...body, roleId: value})}>
                 {_roleList?.map((item, key) => (
                   <Select.Option value={item.roleId} key={key}>{item.roleName}</Select.Option>
                 ))}
@@ -215,63 +215,62 @@ const ModalAccountManagement = (props) => {
                   ...body,
                   fullname: text.target.value
                 })} />
-            </Col>
+            </Col>    
           </Row>
-          {!update && <>
+          {!update && <>          
             <Row style={{ marginTop: 10 }}>
-              <Col {...layoutHeader} >
-                <Text className={classNames({ 'text-font': true })}>{'Mật khẩu'}</Text>
-              </Col>
-              <Col  {...layoutContent}>
-                <Input
-                  onBlur={onCheck}
-                  type="password"
-                  style={{ width: '100%' }}
-                  value={body?.password}
-                  onChange={(text) => setBody({
-                    ...body,
-                    password: text.target.value
-                  })} />
-              </Col>
-            </Row>
-            <Row style={{ marginTop: 10 }}>
-              <Col {...layoutHeader} >
-                <Text className={classNames({ 'text-font': true })}>{'Xác nhận lại mật khẩu'}</Text>
-              </Col>
-              <Col  {...layoutContent}>
-                <Input
-                  onBlur={onCheck}
-                  type="password"
-                  style={{ width: '100%' }}
-                  value={body?.passwordComfirm}
-                  onChange={(text) => setBody({
-                    ...body,
-                    passwordComfirm: text.target.value
-                  })} />
-              </Col>
-            </Row>
-          </>}
+            <Col {...layoutHeader} >
+              <Text className={classNames({ 'text-font': true })}>{'Mật khẩu'}</Text>
+            </Col>
+            <Col  {...layoutContent}>
+              <Input
+                onBlur={onCheck}
+                type="password"
+                style={{ width: '100%' }}
+                value={body?.password}
+                onChange={(text) => setBody({
+                  ...body,
+                  password: text.target.value
+                })}  />
+            </Col>    
+          </Row>           
+          <Row style={{ marginTop: 10 }}>
+            <Col {...layoutHeader} >
+              <Text className={classNames({ 'text-font': true })}>{'Xác nhận lại mật khẩu'}</Text>
+            </Col>
+            <Col  {...layoutContent}>
+              <Input
+                onBlur={onCheck}
+               type="password"
+                style={{ width: '100%' }}
+                value={body?.passwordComfirm}
+                onChange={(text) => setBody({
+                  ...body,
+                  passwordComfirm: text.target.value
+                })}  />
+            </Col>    
+          </Row>                    
+          </>}         
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
               <Text className={classNames({ 'text-font': true })}>{'Trạng thái'}</Text>
             </Col>
-            <Col {...layoutContent} >
+            <Col {...layoutContent} >             
               <Select
-                placeholder="Trạng thái"
-                style={{ width: '100%' }}
-                value={body?.status?.toString()}
-                onChange={(value) => setBody({ ...body, status: value })}
-              >
-                <Select.Option value={'1'} key={'1'}> {'Hoạt động'}</Select.Option>
-                <Select.Option value={'2'} key={'2'}> {'Không Hoạt động'}</Select.Option>
-                <Select.Option value={'3'} key={'3'}> {'Tạm khóa'}</Select.Option>
-              </Select>
+                  placeholder="Trạng thái"
+                  style={{ width: '100%' }}
+                  value={body?.status?.toString()}
+                  onChange={(value)=>setBody({...body, status: value})}
+                >
+                  <Select.Option value={'1'} key={'1'}> {'Hoạt động'}</Select.Option>
+                  <Select.Option value={'2'} key={'2'}> {'Không Hoạt động'}</Select.Option>
+                  <Select.Option value={'3'} key={'3'}> {'Tạm khóa'}</Select.Option>
+                </Select>
             </Col>
-          </Row>
+          </Row>    
           <Row style={{ marginTop: 10 }}>
-            <Text className={classNames({ 'text-font': true })} style={{ color: 'red', fontSize: 12 }} >{messageWarn}</Text>
-
-          </Row>
+            <Text className={classNames({ 'text-font': true })} style={{color : 'red', fontSize:12}} >{messageWarn}</Text>
+          </Row>    
 
         </Form>
       </Card>

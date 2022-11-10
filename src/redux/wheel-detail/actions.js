@@ -77,7 +77,7 @@ export const SaveOnListWheelDetail = (payload) => async (dispatch, getState, { $
   // call api status 
   const data_api_wheel_status = {
     wheel_id: payload.wheel_id,
-    wheel_status: "ADD"
+    wheel_status: "EDIT"
   }
   const result_status = await $http.post(URLSERVER.updateStateWheel, data_api_wheel_status);
 

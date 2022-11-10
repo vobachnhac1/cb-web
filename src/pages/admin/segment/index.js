@@ -7,7 +7,7 @@
 require("./styles.less");
 import { useState, useEffect } from 'react';
 import LayoutHome from '@/containers/Home';
-import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Input, DatePicker } from 'antd';
+import { Button, Card, Col, Row, Space, Table, Popconfirm, Select, Input, DatePicker, Pagination } from 'antd';
 
 const { RangePicker } = DatePicker;
 import * as Message from '@/components/message';
@@ -26,7 +26,8 @@ export default function Segment(props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const listSegment = useSelector(gettersSegment.getStateLoadPageSegment) || [];
-  const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
+  const pagination = useSelector(gettersSegment.getPagination) || [];
+  const listTopic = useSelector(gettersTopic.getTopicCommon) || [];
   const [filter, setFilter] = useState({
     segment_name: null,
     topic_id: null,
@@ -40,21 +41,26 @@ export default function Segment(props) {
 
   const initPage = async () => {
     setLoading(true);
-    await dispatch(actionSegment.searchSegment());
+    await dispatch(actionSegment.filterSegment({
+      item_page: pagination?.item_page,
+      current_page: pagination?.current_page,
+    }));
     await dispatch(actionTopic.searchTopic());
     setLoading(false);
   }
 
   const onSearch = async () => {
-
     const { segment_name, topic_id, from_date_act, to_date_act } = filter;
     if (__.isNil(segment_name) && __.isNil(topic_id) && __.isNil(from_date_act) && __.isNil(to_date_act)) {
       initPage();
     } else {
       setLoading(true);
-      const { success } = await dispatch(actionSegment.filterSegment(filter));
-      if (success)
-        setLoading(false);
+      const { success } = await dispatch(actionSegment.filterSegment(
+        {...filter,
+        item_page: pagination?.item_page,
+        current_page: 1,
+      }));
+      if (success) setLoading(false);
     }
 
   }
@@ -69,6 +75,7 @@ export default function Segment(props) {
     }
     Message.Error("Thông Báo", "Xóa thất bại!");
   };
+
   const columns = [
     {
       title: 'STT',
@@ -77,7 +84,7 @@ export default function Segment(props) {
       fixed: 'left',
       width: 50,
       render: (text, record) => {
-        return parseInt(text) + 1
+        return (pagination.current_page - 1)*pagination.item_page  + parseInt(text) + 1
       }
     },
     {
@@ -93,14 +100,12 @@ export default function Segment(props) {
       key: 'segment_name',
       fixed: 'left',
       width: 200
-
     },
     {
       title: 'Chủ đề',
       dataIndex: 'topic_name',
       key: 'topic_name',
       width: 200
-
     },
     {
       align: 'end',
@@ -169,7 +174,6 @@ export default function Segment(props) {
     },
   ];
 
-
   const [visible, setVisible] = useState(false);
   const [bodyModel, setBodyModel] = useState({
     isAdd: false,
@@ -183,6 +187,7 @@ export default function Segment(props) {
       isAdd: true
     });
   }
+
   const updateSegment = (record) => {
     setVisible(true);
     setBodyModel({
@@ -190,11 +195,21 @@ export default function Segment(props) {
       isAdd: false
     });
   }
+
   const callbackModal = (params) => {
     setVisible(params.visible);
     onSearch()
   }
 
+  const onChangePagination = async (value)=>{
+    await dispatch(actionSegment.filterSegment(
+      {
+        ...filter,
+        item_page: 20,
+        current_page: value
+      }
+    )); 
+  }   
   return (
     <LayoutHome>
       <Col style={{ marginBottom: 30 }}>
@@ -219,6 +234,9 @@ export default function Segment(props) {
                   ))}
                 </Select>
               </Col>
+              <Col className="gutter-row" span={4}>
+                <Input placeholder="Tên giải thưởng cần tìm" allowClear value={filter.segment_name} onChange={(event) => setFilter({ ...filter, segment_name: event.target.value ? event.target.value : null })} />
+              </Col>
               <Col className="gutter-row" span={5}>
                 <RangePicker
                   onChange={(dates, dateString) => {
@@ -238,9 +256,7 @@ export default function Segment(props) {
                   }}
                 />
               </Col>
-              <Col className="gutter-row" span={6}>
-                <Input placeholder="Tên giải thưởng cần tìm" allowClear value={filter.segment_name} onChange={(event) => setFilter({ ...filter, segment_name: event.target.value ? event.target.value : null })} />
-              </Col>
+           
             </Row>
             <Row gutter={[16, 24]} style={{ marginTop: '10px' }}>
               <Col className="gutter-row" span={3}>
@@ -261,7 +277,17 @@ export default function Segment(props) {
               dataSource={listSegment}
               size='small'
               loading={loading}
+              pagination={false}
               scroll={{ x: 1300, y: '45vh' }}
+            />
+             <Pagination 
+              style={{marginTop: 10}} 
+              pageSize={pagination?.item_page || 20}
+              defaultCurrent={pagination?.current_page} 
+              total={pagination?.total_item} 
+              current={pagination?.current_page} 
+              showSizeChanger={false}
+              onChange={onChangePagination}
             />
           </Col>
         </Card>

@@ -4,6 +4,12 @@ export const getStateLoadPageRules = (state) => {
   const { rules: { listRules = [] } } = state;
   return listRules?.map((item, index) => ({ ...item, key: index })) || []
 };
+
+export const getRulesModal = (state) => {
+  const { rules: { listRulesModal = [] } } = state;
+  return listRulesModal?.map((item, index) => ({ ...item, key: index })) || []
+};
+
 export const getListRulesStateYes = (state) => {
   const { rules: { listRulesStateYes = [] } } = state;
   return listRulesStateYes?.map((item, index) => ({ ...item, key: index })) || []
@@ -14,6 +20,13 @@ export const getListWheelApproved = (state) => {
   const { listWheelApproved } = data;
   if (listWheelApproved?.length == 0) return [];
   return listWheelApproved?.map((item, index) => ({ ...item, key: index })) || []
+};
+
+export const getListWheelRule = (state) => {
+  const { rules: data } = state;
+  const { listWheelRule } = data;
+  if (listWheelRule?.length == 0) return [];
+  return listWheelRule?.map((item, index) => ({ ...item, key: index })) || []
 };
 export const getListWheel = (state) => {
   const { rules: data } = state;

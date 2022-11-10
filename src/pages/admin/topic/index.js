@@ -6,7 +6,7 @@
 *------------------------------------------------------- */
 require("./styles.less");
 import { useEffect, useState } from 'react';
-import { Button, Card, Col, Input, Row, Space, Table, DatePicker, Typography, Popconfirm } from 'antd';
+import { Button, Card, Col, Input, Row, Space, Table, DatePicker, Typography, Popconfirm, Pagination } from 'antd';
 import moment from 'moment';
 import __ from 'lodash';
 import * as classnames from 'classnames';
@@ -24,6 +24,7 @@ import ModalTopic from '@/containers/modal-topic';
 export default function Topic(props) {
   const dispatch = useDispatch();
   const listTopic = useSelector(gettersTopic.getStateLoadPageTopic) || [];
+  const pagination = useSelector(gettersTopic.getPagination) || [];
   const [visible, setVisible] = useState(false);
   const [filter, setFilter] = useState({
     topic_name: null,
@@ -49,14 +50,14 @@ export default function Topic(props) {
       width: 80,
     },
     {
-      width: 300,
+      width: 200,
       title: 'Tên chủ đề',
       dataIndex: 'topic_name',
       key: 'topic_name',
     },
     {
       align: 'center',
-      width: 200,
+      width: 100,
       title: 'Ngày khởi tạo',
       dataIndex: 'inactived_date',
       key: 'inactived_date',
@@ -64,21 +65,12 @@ export default function Topic(props) {
         <Text>{text ? moment(text).format('HH:mm:ss,  YYYY-MM-DD') : ''}</Text>
       ),
 
-    }, {
-      align: 'center',
-      title: 'Trạng thái',
-      dataIndex: 'status_yn',
-      key: 'status_yn',
-      width: 100,
-      render: (text) => (
-        <Text>{text == 'Y' ? 'Đã phê duyệt' : 'Chưa phê duyệt'}</Text>
-      ),
     },
     {
       align: 'center',
       title: 'Action',
       key: 'action',
-      width: 200,
+      width: 100,
       render: (text, record) => (
         <Space size="middle">
           {record.wheel_id_apr === 1
@@ -87,13 +79,6 @@ export default function Topic(props) {
               Có vòng quay đã duyệt và đang sử dụng chủ đề này !
             </span>
             : <>
-              {/* <Button style={{ color: record.status_yn == 'N' ? 'green' : 'red', borderColor: record.status_yn == 'N' ? 'green' : 'red', borderWidth: 0.5 }}
-                onClick={() => approveTopic(record)} >{
-                  record.status_yn == 'N' ? "Phê duyệt" : "Từ chối"
-                }</Button> */}
-              {/* {
-                record.status_yn == 'N' && <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateTopic(record)} >Cập nhật</Button>
-              } */}
               <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateTopic(record)} >Cập nhật</Button>
               <Popconfirm title="Bạn có muốn?" onConfirm={() => deleteTopic(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom" >
                 <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
@@ -111,7 +96,13 @@ export default function Topic(props) {
   }, [])
 
   const initPage = async () => {
-    await dispatch(actionTopic.searchTopic()); // hàm gọi xuống store call api search-all topic
+    await dispatch(actionTopic.filterTopic(
+      {
+        item_page: 20,
+        current_page: 1
+      }
+    )); // hàm gọi xuống store call api search-all topic phân page
+    // await dispatch(actionTopic.searchTopic()); // hàm gọi xuống store call api search-all topic
   }
 
   const addNewTopic = () => {
@@ -140,16 +131,6 @@ export default function Topic(props) {
     Message.Error("Thông Báo", "Xóa không thành công");
   }
 
-  const approveTopic = async (record) => {
-    const result = await dispatch(actionTopic.approveTopic(record));
-    if (result) {
-      initPage();
-      Message.Success("Thông Báo", "Phê duyệt thành công");
-      return
-    }
-    Message.Error("Thông Báo", "Phê duyệt thất bại");
-  }
-
   const callbackModal = (params) => {
     setVisible(params.visible);
     initPage();
@@ -170,6 +151,15 @@ export default function Topic(props) {
     }
     initPage();
   }
+  const onChangePagination = async (value)=>{
+    await dispatch(actionTopic.filterTopic(
+      {
+        ...filter,
+        item_page: 20,
+        current_page: value
+      }
+    )); 
+  }        
   return (
     <LayoutHome>
       <Col style={{ marginBottom: 30 }}>
@@ -190,33 +180,12 @@ export default function Topic(props) {
                   value={filter.topic_name}
                   onChange={(text) => setFilter({ ...filter, topic_name: text.target.value })} />
               </Col>
-              <Col className="gutter-row" span={8}>
-                <RangePicker
 
-                  onChange={(dates, dateString) => {
-                    if (dates) {
-                      setFilter({
-                        ...filter,
-                        from_date_act: dateString[0],
-                        to_date_act: dateString[1],
-                      });
-                    } else {
-                      setFilter({
-                        ...filter,
-                        from_date_act: null,
-                        to_date_act: null,
-                      });
-                    }
-                  }}
-                />
-              </Col>
-            </Row>
-            <Row gutter={[16, 24]} style={{ marginTop: 10 }}>
-              <Col className="gutter-row" span={3}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewTopic}>Thêm</Button>
-              </Col>
               <Col className="gutter-row" span={3}>
                 <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch} >Tìm kiếm</Button>
+              </Col>
+              <Col className="gutter-row" span={3}>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewTopic}>Thêm</Button>
               </Col>
             </Row>
           </Col>
@@ -229,9 +198,17 @@ export default function Topic(props) {
               dataSource={listTopic}
               size='small'
               scroll={{ x: 1300, y: '45vh' }}
-
-              // pagination={pagination}
+              pagination={false}
               loading={false}
+            />
+            <Pagination 
+              style={{marginTop: 10}} 
+              pageSize={pagination?.item_page || 20}
+              defaultCurrent={pagination?.current_page} 
+              total={pagination?.total_item} 
+              current={pagination?.current_page} 
+              showSizeChanger={false}
+              onChange={onChangePagination}
             />
           </Col>
         </Card>
