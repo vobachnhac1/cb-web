@@ -284,14 +284,8 @@ const ModalWheelDetail = (props) => {
       }
     })
     let segment_id
-    if (listSegment !== []) {
-      for (let i = 0; i < listSegment.length; i++) {
-        segment_id = listSegment[i].segment_id
-        break
-      }
-    }
     setListSegmentSearch(_arr)
-    onChangeSegment(segment_id)
+    onChangeSegment(null)
     setTopicId(value)
   }
 
@@ -499,6 +493,7 @@ const ModalWheelDetail = (props) => {
                 <Select
                   style={{ width: '100%' }}
                   disabled={topicId ? false : true}
+                  defaultValue={segmentId}
                   value={segmentId}
                   onChange={onChangeSegment}>
                   {listSegmentSearch.map((item, key) => (
