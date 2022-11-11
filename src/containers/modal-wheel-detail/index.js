@@ -80,6 +80,7 @@ const ModalWheelDetail = (props) => {
   let wheelTotalValue = useSelector(gettersWheelDetail.getStateWheelTotalValue);
   let wheelDetialTotalValue = useSelector(gettersWheelDetail.getStateWheelDetialTotalValue);
 
+  const [segment, setSegment] = useState(null);
   useEffect(() => {
     initPage();
   }, [visible]);
@@ -100,8 +101,6 @@ const ModalWheelDetail = (props) => {
     setUrl(record ? record.url : '')
     setSegmentValue(record ? record.remain_value : 1)
     setListSegmentSearch(listSegment)
-    console.log('listSegment: ', listSegment);
-
     //xử lý file hình
 
     const dataImg = record && record.imgBase64 ? [{
@@ -248,7 +247,6 @@ const ModalWheelDetail = (props) => {
           setWheelCurtValue_update(totalWheelDetailcur)
           setWheelDetailTotalValue_update(totalWheelDetail)
           setSegmentValue(listSegment[i].segment_value)
-
           break
         }
       }
@@ -262,8 +260,14 @@ const ModalWheelDetail = (props) => {
   }
 
   const onChangeSegment = async (value) => {
-    calculator(1, value)
-    setSegmentId(value)
+    const _segment = listSegmentSearch?.find(item => item.segment_id == value)
+    setSegment(_segment)
+    if(_segment && _segment.segment_value <= 0){
+      setSegmentId(value)
+    }else{
+      calculator(1, value)
+      setSegmentId(value)
+    }
   }
 
   const onChangeTopic = async (value) => {
@@ -502,37 +506,40 @@ const ModalWheelDetail = (props) => {
                 </Select>
               </Col>
             </Row>
-            <Row style={{ marginTop: 10 }}>
-              <Col {...layoutHeader} >
-                <Text className={classNames({ 'text-font': true })}>{'Số lần trúng thưởng '}</Text>
-              </Col>
-              <Col  {...layoutContent}>
-                <Input type="number" style={{ width: '100%' }} value={remainNumber} disabled={segmentValue == 0 ? true : false} onChange={onChangeRemainNumber} />
-              </Col>
-            </Row>
-            <Row style={{ marginTop: 10 }}>
-              <Col {...layoutHeader} >
-                <Text className={classNames({ 'text-font': true })}>{'Tổng tiền chi tiết vòng quay '}</Text>
-              </Col>
-              <Col  {...layoutContent}>
+            { segment && segment.segment_value > 0 && <>
+              <Row style={{ marginTop: 10 }}>
+                <Col {...layoutHeader} >
+                  <Text className={classNames({ 'text-font': true })}>{'Số lần trúng thưởng '}</Text>
+                </Col>
+                <Col  {...layoutContent}>
+                  <Input type="number" style={{ width: '100%' }} value={remainNumber} disabled={segmentValue == 0 ? true : false} onChange={onChangeRemainNumber} />
+                </Col>
+              </Row>
+              <Row style={{ marginTop: 10 }}>
+                <Col {...layoutHeader} >
+                  <Text className={classNames({ 'text-font': true })}>{'Tổng tiền chi tiết vòng quay '}</Text>
+                </Col>
+                <Col  {...layoutContent}>
 
-                {/* <Input disabled type="number" style={{ width: '100%' }} value={wheelCurtValue_update === wheelCurtValue ? 0 : wheelCurtValue_update} /> */}
+                  {/* <Input disabled type="number" style={{ width: '100%' }} value={wheelCurtValue_update === wheelCurtValue ? 0 : wheelCurtValue_update} /> */}
 
-                <InputNumber
-                  style={{ width: '100%' }}
-                  addonAfter={"VND"}
-                  formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                  parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                  disabled
-                  value={wheelDetailTotalValue_update}
-                />
-                {/* viêt span ở đây, nếu Tổng tiền chi tiết vòng quay > wheelcur thì báo lỗi */}
-                {wheelCurtValue_update < 0 ? <span style={{ color: 'red' }}>
-                  Số tiền giải thưởng hiện tại đang lớn hơn số tiền còn lại của vòng quay !
-                </span> : ""
-                }
-              </Col>
-            </Row>
+                  <InputNumber
+                    style={{ width: '100%' }}
+                    addonAfter={"VND"}
+                    formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                    parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                    disabled
+                    value={wheelDetailTotalValue_update}
+                  />
+                  {/* viêt span ở đây, nếu Tổng tiền chi tiết vòng quay > wheelcur thì báo lỗi */}
+                  {wheelCurtValue_update < 0 ? <span style={{ color: 'red' }}>
+                    Số tiền giải thưởng hiện tại đang lớn hơn số tiền còn lại của vòng quay !
+                  </span> : ""
+                  }
+                </Col>
+              </Row>
+            </>            
+            }
             <Row style={{ marginTop: 10 }}>
               <Col {...layoutHeader} >
                 <Text className={classNames({ 'text-font': true })}>{'Số thứ tự trên vòng quay '}</Text>
@@ -541,6 +548,7 @@ const ModalWheelDetail = (props) => {
                 <Input type="number" min="1" max="15" style={{ width: '100%' }} value={no} onChange={(text) => setNo(text.target.value)} />
               </Col>
             </Row>
+            {/* số lần */}
             {/* <Row style={{ marginTop: 10 }}>
               <Col {...layoutHeader} >
                 <Text className={classNames({ 'text-font': true })}>{'Trúng thưởng '}</Text>
