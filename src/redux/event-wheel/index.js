@@ -9,6 +9,7 @@ const init = {
   body: {
     wheel_id: null,
     rules_id: null,
+    wheel_status: null,
     listContentReward: [],
   },
   process: {
@@ -23,6 +24,7 @@ export default buildReducer(
     body: {
       wheel_id: null,
       rules_id: null,
+      wheel_status: null,
       listContentReward: [],
     },
     process: {
@@ -46,6 +48,7 @@ export default buildReducer(
         customerProfile: _profile,
         body: {
           wheel_id: payload?.wheel_id,
+          wheel_status: payload?.wheel_status,
           rules_id: payload?.rules_id,
           listContentReward: payload?.list_wheel_dt,
         }
@@ -73,6 +76,7 @@ export default buildReducer(
         body: {
           wheel_id: null,
           rules_id: null,
+          wheel_status: null,
           listContentReward: [],
         },
         process: {

@@ -9,6 +9,7 @@ import { actions as actionsEventWheel } from '@/redux/event-wheel';
 import { getters as gettersEventWheel } from '@/redux/event-wheel';
 import * as Message from '@/components/message';
 import ModalComfirmReward from '@/containers/modal-comfirm-reward';
+import { STATE_WHEEL } from "@/constants/common";
 
 const MainWheel = (props) => {
   const { arrItem = [], roles = null } = props;
@@ -19,6 +20,7 @@ const MainWheel = (props) => {
   const isProcessing = useSelector(gettersEventWheel.getProccessing);
   const eventInfo = useSelector(gettersEventWheel.getEventInfo);
   const [rewardBody, setRewardBody] = useState(null);
+  const stateWheel = useSelector(gettersEventWheel.getStateWheel);
 
   const onPress = async () => {
     let keyHost = 0;
@@ -29,7 +31,7 @@ const MainWheel = (props) => {
       if (eventInfo) {
         rsReward = await dispatch(actionsEventWheel.getRewardOfWheel());
         setRewardBody(rsReward);
-        if (rsReward) {
+        if (rsReward?.success) {
           if (selectedItem === 0) {
             setAnimation(true)
             setSelectedItem(places.length - (parseInt(rsReward.no)));
@@ -41,12 +43,12 @@ const MainWheel = (props) => {
             setup();
           }
         } else {
+          Message.Warning("Thông Báo", rsReward?.message);
           setup();
         }
       }
     } else {
       const randomItem = Math.floor(Math.random() * places.length);
-
       if (selectedItem === 0) {
         setAnimation(true)
         setSelectedItem(places[randomItem].key);
@@ -72,6 +74,11 @@ const MainWheel = (props) => {
       Message.Warning("Thông Báo", "Đang lấy kết quả vòng quay");
       return;
     };
+    if(STATE_WHEEL.START != stateWheel) {
+      Message.Warning("Thông Báo", "Vòng quay đã quá hạn hoặc chưa được áp dụng");
+      return;
+    };
+
     if (selectedItem != null) {
       setup();
     }

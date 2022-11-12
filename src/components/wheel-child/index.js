@@ -21,6 +21,7 @@ const WheelChild = (props) => {
   const isProcessing = useSelector(gettersEventWheel.getProccessing);
   const eventInfo = useSelector(gettersEventWheel.getEventInfo);
   const [rewardBody, setRewardBody] = useState(null);
+  const stateWheel = useSelector(gettersEventWheel.getStateWheel);
 
   const wheelVars = {
     '--nb-item': places.length,
@@ -42,6 +43,11 @@ const WheelChild = (props) => {
       Message.Warning("Thông Báo", "Đang lấy kết quả vòng quay");
       return;
     };
+    if(STATE_WHEEL.START != stateWheel) {
+      Message.Warning("Thông Báo", "Vòng quay đã quá hạn hoặc chưa được áp dụng");
+      return
+    };
+
     if (selectedItem != null) {
       setup();
     }
@@ -60,13 +66,14 @@ const WheelChild = (props) => {
       if (eventInfo) {
         rsReward = await dispatch(actionsEventWheel.getRewardOfWheel());
         setRewardBody(rsReward);
-        if (rsReward) {
+        if (rsReward?.success) {
           if (props.onSelectItem) {
             props.onSelectItem(places.length - (parseInt(rsReward.no)));
           } else {
             setup();
           }
         } else {
+          Message.Warning("Thông Báo", rsReward?.message);
           setup(); 
         }
       }

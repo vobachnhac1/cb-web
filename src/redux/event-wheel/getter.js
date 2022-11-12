@@ -25,6 +25,11 @@ export const getEventInfo = ({ wheelreward }) => {
   const { event_info: data = {} } = wheelreward;
   return data;
 };
+
+export const getStateWheel = ({ wheelreward }) => {
+  const { body } = wheelreward;
+  return body?.wheel_status || null;
+};
 export const getCustomerInfo = ({ wheelreward }) => {
   return wheelreward?.customerProfile;
 };

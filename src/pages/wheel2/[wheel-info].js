@@ -27,7 +27,7 @@ const {Text}= Typography
 
 
 export default function DisplayWheel(props) {
-  /// url mẫu http://localhost:3000/wheel2/000001000012-0000000001
+  /// url mẫu http://localhost:3000/wheel2/000001000042-0000000001
   const router = useRouter()
   const { manager = null, arrItem = [] } = props;
   const [selectedItem, setSelectedItem] = useState(null);
@@ -37,25 +37,16 @@ export default function DisplayWheel(props) {
   const [wheelId, setWheelId] = useState("")
   const [userInfo, setUserInfo] = useState({})
   const getCustomerInfo = useSelector(gettersEventWheel.getCustomerInfo);
+  
   useEffect(() => {
     checkWheelDetail();
   }, [places]);
 
   const checkWheelDetail = () => {
     if (!manager && (!places || places.length == 0)) {
-      // Message.Warning("THÔNG BÁO", "Vòng quay chưa có giải thưởng")
       setInvalid(true)
     }
   }
-  // const [userInfo, setUserInfo] = useState({
-  //   wheel_type: null,
-  //   wheel_id: null,
-  //   rules_id: null,
-  //   usr_info: {
-  //     user_id: null,
-  //     num: 0
-  //   },
-  // });
   const dispatch = useDispatch();
 
   useEffect(() => {

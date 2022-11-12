@@ -47,7 +47,7 @@ export const getRewardOfWheel = (payload) => async (dispatch, getState, { $http 
   const result = await $http.post(URLSERVER.getReward, param);
   const { success, data } = result;
   if (!success || !data.success) {
-    return false;
+    return data;
   }
   const body = data.data;
   dispatch(setCustomerInfo(body?.customerProfile))

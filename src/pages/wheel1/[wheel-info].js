@@ -21,6 +21,7 @@ import Header from '@/components/Head';
 import PopupMenu from '@/containers/popup-menu-wheel'
 import { Col, Row, Typography } from "antd";
 const {Text}= Typography
+  /// url mẫu http://localhost:3000/wheel1/000001000042-0000000001
 
 const URL ='/wheel1/';
 const URL_NAME ='wheel1';
@@ -28,7 +29,6 @@ const DisplayWheel = (props) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [list, setList] = useState([]);
-  /// url mẫu http://localhost:3000/wheel1/000001000012-0000000001
   const { manager = null, arrItem = [] } = props;
   const [path, setPath] = useState(router.pathname);
   const [invalid, setInvalid] = useState(false);
@@ -82,6 +82,7 @@ const DisplayWheel = (props) => {
     }
   }, []);
 
+
   const initPage = async () => {
     const locationUrl = window.location;
     const params = locationUrl.pathname;
@@ -119,6 +120,7 @@ const DisplayWheel = (props) => {
   const onSelectItem = (value) => {
     setSelectedItem(value)
   }
+
 
   const [statePage, setStatePage] = useState(1);
   useEffect(() => {
