@@ -8,6 +8,7 @@ const setRules = (payload) => ({ type: TYPES.RULES_SEARCH, payload });
 const setRulesModal = (payload) => ({ type: TYPES.RULES_SEARCH_MODAL, payload });
 const setListWheelRULE = (payload) => ({ type: TYPES.RULES_WHEEL_RULE, payload });
 const setListWheelAPR = (payload) => ({ type: TYPES.RULES_WHEEL_APR, payload });
+const setListWheelSTART = (payload) => ({ type: TYPES.RULES_WHEEL_START, payload });
 const setListWheel = (payload) => ({ type: TYPES.RULES_WHEEL, payload });
 const setListRulesStateYes = (payload) => ({ type: TYPES.RULES_STATE_YES, payload });
 const setRewardHis = (payload) => ({ type: TYPES.RULES_REWARD_HIS, payload });
@@ -150,16 +151,6 @@ export const insertRules = (payload) => async (dispatch, getState, { $http }) =>
   if (!success || !data.success) {
     return false;
   }
-
-  // const getList = await $http.post(URLSERVER.getRulesByFilter, {
-  //   "wheel_id": payload.wheel_id,
-  //   "wheel_id": payload.wheel_id,
-  // });
-
-  // const listRules = getList.data.data;
-  // if (listRules && listRules.length > 0) {
-  //   dispatch(setRules(listRules))
-  // }
   return true;
 }
 // function export ra ngoài
@@ -377,6 +368,27 @@ export const comfirmReceived = (payload) => async (dispatch, getState, { $http }
     return false;
   }
   return true
+}
+
+// màn hình Quản lý thông tin trúng thưởng
+export const getWheelScreenRulesSTART = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+  try {
+    const params = {
+      wheel_status_arr: [STATE_WHEEL.EDIT, STATE_WHEEL.NEW, STATE_WHEEL.SAVE, STATE_WHEEL.RULE, STATE_WHEEL.APR]
+    }
+    const result = await $http.post(URLSERVER.getWheelWithStateApprove, params);
+    
+    const { success, data } = result;
+    if (!success || !data.success) {
+      dispatch(setListWheelSTART([]))
+      return false;
+    }
+    dispatch(setListWheelSTART(data.data))
+    return true;
+  } catch (error) {
+    return false
+  }
 }
 
 

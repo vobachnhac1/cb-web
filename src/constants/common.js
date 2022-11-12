@@ -10,3 +10,44 @@ export const STATE_WHEEL = {
   FINS :'FINS', // KẾT THÚC CHƯƠNG TRÌNH
   STOP :'STOP', // NGỪNG KHẨN CẤP
 }
+
+// danh sách trao thưởng
+export const STATE_REWARD = [
+  {
+    id: 'NONE',
+    value: 'Tất cả'
+  }, {
+    id: 'NEW',
+    value: 'Mới'
+  }, {
+    id: 'IN-PROGRESS',
+    value: 'Đang xử lý'
+  }, {
+    id: 'FINISHED',
+    value: 'Đã trao giải'
+  }
+];
+
+export const STATE_FOR_CONTROL = [
+ {
+    id: 'SEND_TO_ACCOUNTANT',
+    value: 'Kế toán phê duyệt'
+  }, {
+    id: 'SEND_TO_ADMIN',
+    value: 'Vận Hành'
+  }, {
+    id: 'FINISHED',
+    value: 'Kết thúc'
+  }, {
+    id: 'ERROR_1',
+    value: 'Giải ngân thiếu'
+  }
+];
+
+// danh sách trao thưởng
+export const TYPE_REWARD = [
+  'Tất cả',
+   'Trúng lượt',
+   'Lời chúc',
+   'Tiền mặt/quà tặng',
+]
