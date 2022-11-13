@@ -350,7 +350,7 @@ export const getRewardHistory = (payload) => async (dispatch, getState, { $http 
   const { success, data } = result;
   if (!success || !data.success) {
     dispatch(setRewardHis([]))
-    return false;
+    return data;
   }
   const {list_reward, pagination } = data.data;  
   if (list_reward && list_reward.length > 0) {

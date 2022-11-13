@@ -199,13 +199,15 @@ export default function RewardHistory(props) {
   ];
 
   const onSearch = async () => {
-    await dispatch(actionsRules.getRewardHistory({
+    const _rs = await dispatch(actionsRules.getRewardHistory({
       ...filter,
       type_reward : formatStateReward(filter.state_reward),
       item_page: 10,
       current_page: pagination.current_page
     })); 
-    // Message.Info('Thông Báo', 'Tính năng đang được phát triển')
+    if(!_rs.success){
+        Message.Info('Thông Báo',_rs?.message )
+    }
   }
   const onComfirm = async (record) => {
     const result = await dispatch(actionsRules.comfirmReceived({ reward_id: record.reward_id }));
