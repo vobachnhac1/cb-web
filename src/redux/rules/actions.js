@@ -363,6 +363,18 @@ export const getRewardHistory = (payload) => async (dispatch, getState, { $http 
   return true
 }
 
+export const exportRewardHistory = (payload) => async (dispatch, getState, { $http }) => {
+  setToken(getState(),$http)
+  payload.type= 'export'
+  const result = await $http.post(URLSERVER.getRewardHistory, payload);
+  const { success, data } = result;
+  if (!success || !data.success) {
+    return data;
+  }
+  const {list_reward, pagination } = data.data;  
+  return list_reward
+}
+
 export const comfirmReceived = (payload) => async (dispatch, getState, { $http }) => {
   setToken(getState(),$http)
   const result = await $http.get(URLSERVER.comfirmReceived, payload);

@@ -24,6 +24,8 @@ import moment from 'moment';
 import __, { set } from 'lodash';
 import Link from 'next/link';
 import { STATE_REWARD, TYPE_REWARD } from '@/constants/common';
+import { ExportCSV } from '@/components/export-excel';
+import { removeVietnameseTones } from '@/core/constants';
 
 
 export default function RewardHistory(props) {
@@ -210,6 +212,7 @@ export default function RewardHistory(props) {
       Message.Info('Thông Báo',_rs?.message )
     }
   }
+  
   const onComfirm = async (record) => {
     const result = await dispatch(actionsRules.comfirmReceived({ reward_id: record.reward_id }));
     if (result) {
@@ -222,7 +225,26 @@ export default function RewardHistory(props) {
 
   const onSearchCommon = ()=>{
     Message.Info('Thông Báo', 'Tính năng đang phát triển')
+  } 
+
+   const onExportExcel = async ()=>{
+    // lấy danh sách theo filter
+    if(!filter.wheel_id) return;
+    const _data = await dispatch(actionsRules.exportRewardHistory(filter))
+    const _fileName = moment().format('YYYY_MM_DD_hh_mm_ss ') + '_' + removeVietnameseTones(listWheelStart?.find(item=>item.wheel_id == filter.wheel_id)?.wheel_name);
+    const data = _data.filter(item => item.segment_value > 0).map((item,index)=>({
+      'STT': index +1,
+      'Mã Khách hàng':item.user_id,
+      'Tên Khách Hàng':item.user_name,
+      'Tên Chương trình':item.wheel_name,
+      'Giải trúng':item.segment_name,
+      'Giá trị giải':item.segment_value,
+      'Ngày trúng giải': moment(item.created_date).format('YYYY-MM-DD hh:mm:ss'),
+    }))
+    ExportCSV(data,_fileName);
+    Message.Info('Thông Báo', 'Đã xuất file thành công')
   }
+
   const onChangePagination = async (value)=>{
     await dispatch(actionsRules.getRewardHistory(
       {
@@ -233,7 +255,6 @@ export default function RewardHistory(props) {
       }
     )); 
   }   
-
   return (
     <LayoutHome>
       <Col style={{ marginBottom: 30 }}>
@@ -357,7 +378,7 @@ export default function RewardHistory(props) {
                 <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>
               </Col>
               <Col className="gutter-row" span={5}>
-                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearchCommon}>Xuất Excel</Button>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onExportExcel}>Xuất Excel</Button>
               </Col>
               <Col className="gutter-row" span={5}>
                 <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearchCommon}>Update  file đối soát</Button>
@@ -398,7 +419,7 @@ export default function RewardHistory(props) {
               onChange={onChangePagination}
             />
         </Card>
-      </Col >
+      </Col>
     </LayoutHome >
   )
 }
