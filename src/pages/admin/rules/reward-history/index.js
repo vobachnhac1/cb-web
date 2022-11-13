@@ -205,8 +205,9 @@ export default function RewardHistory(props) {
       item_page: 10,
       current_page: pagination.current_page
     })); 
-    if(!_rs.success){
-        Message.Info('Thông Báo',_rs?.message )
+    if(_rs ==true) return;
+    if(!_rs?.success){
+      Message.Info('Thông Báo',_rs?.message )
     }
   }
   const onComfirm = async (record) => {
