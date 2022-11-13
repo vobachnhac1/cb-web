@@ -8,7 +8,7 @@ require("./styles.less");
 import * as classnames from 'classnames';
 import { useState, useEffect } from 'react';
 import LayoutHome from '@/containers/Home';
-import { Button, Card, Col, Row, Space, Table, Typography, Tag, Select, Input, DatePicker } from 'antd';
+import { Button, Card, Col, Row, Space, Table, Typography, Tag, Select, Input, DatePicker, Pagination } from 'antd';
 import * as Message from '@/components/message';
 
 const { Text } = Typography;
@@ -31,9 +31,9 @@ export default function RewardHistory(props) {
   const [loading, setLoading] = useState(false);
   const listRewardHis = useSelector(gettersRules.getListRewardHis) || [];
   const listWheelStart = useSelector(gettersRules.getListWheelStart) || [];
+  const pagination = useSelector(gettersRules.getPagination) || [];
 
   const [filter, setFilter] = useState({
-    
     systemCode: null,
     wheel_id: null,
     wheel_name: null,
@@ -50,11 +50,40 @@ export default function RewardHistory(props) {
   const initPage = async () => {
     // lấy danh sách History
     setLoading(true);
-    await dispatch(actionsRules.getRewardHistory());
     await dispatch(actionsRules.getWheelScreenRulesSTART());
     setLoading(false);
   };
 
+  const formatTypeSegment = (value)=>{
+    if(value < 0){
+      return {
+        text:TYPE_REWARD[1],
+        color: 'green'
+      }
+    }else if(value == 0){
+      return {
+        text:TYPE_REWARD[2],
+        color: 'blue'
+      }
+    }else{
+      return {
+        text:TYPE_REWARD[3],
+        color: 'red'
+      }
+    }
+  }
+
+  const formatStateReward = (value)=>{
+    if(TYPE_REWARD[0] == filter.type_reward){
+      return  null
+    }else if(TYPE_REWARD[1] == filter.type_reward){
+      return'<'
+    }else if(TYPE_REWARD[2] == filter.type_reward){
+      return '='
+    }else if(TYPE_REWARD[3] == filter.type_reward){
+      return '>'
+    }
+  }
   const columns = [
     {
       title: 'STT',
@@ -62,6 +91,7 @@ export default function RewardHistory(props) {
       key: 'ord_numbers',
       width: 30,
       align: 'center',
+      fixed: 'left',
       render: (text, record) => {
         return (
           <>
@@ -74,11 +104,12 @@ export default function RewardHistory(props) {
       dataIndex: 'reward_id',
       key: 'reward_id',
       align: 'center',
-      width: 300,
+      fixed: 'left',
+      width: 150,
       render: (text, record) => {
         return (
           <>
-            <Text style={{ flexDirection: "row", justifyContent: "center" }}> {text}</Text>
+            <Text style={{ flexDirection: "row", justifyContent: "center" }}> {text?.toLowerCase()}</Text>
           </>
         )
       }
@@ -86,17 +117,33 @@ export default function RewardHistory(props) {
       title: 'Tài khoản trúng thưởng',
       dataIndex: 'user_id',
       key: 'user_id',
+      fixed: 'left',
       width: 100,
+    }, {
+      title: 'Tên Khách Hàng',
+      dataIndex: 'user_name',
+      key: 'user_name',
+      width: 150,
     }, {
       title: 'Vòng quay',
       dataIndex: 'wheel_name',
       key: 'wheel_name',
-      width: 100,
+      width: 150,
     }, {
       title: 'Nội dung trúng thưởng',
       dataIndex: 'segment_name',
       key: 'segment_name',
-      width: 100,
+      width: 150,
+    }, {
+      title: 'Thuộc tính giải thưởng',
+      dataIndex: 'segment_value',
+      key: 'segment_value',
+      width: 150,
+      render: (text, record) => {
+        return <Tag color={formatTypeSegment(text)?.color}>
+          {formatTypeSegment(text)?.text}
+        </Tag>
+      }
     }, {
       title: 'Trạng thái nhận thưởng',
       dataIndex: 'status',
@@ -105,7 +152,7 @@ export default function RewardHistory(props) {
       width: 100,
       render: (text, record) => {
         let color = 'blue';
-        if (record.status == 'FINISH') {
+        if (record.status == 'FINISHED') {
           color = 'green';
         } else if (record.status == 'IN-PROCCESS') {
           color = 'yellow';
@@ -134,12 +181,11 @@ export default function RewardHistory(props) {
           {text && moment(text).format('YYYY-MM-DD, HH:mm:ss')}
         </Text>
       }
-    },
-    {
+    }, {
       title: 'Action',
       key: 'action',
       width: 200,
-      fixed: 'right',
+      // fixed: 'right',
       align: 'center',
       render: (text, record) => {
         return (
@@ -152,9 +198,13 @@ export default function RewardHistory(props) {
     }
   ];
 
-  const onSearch = () => {
-    console.log('filter: ', filter);
-    initPage();
+  const onSearch = async () => {
+    await dispatch(actionsRules.getRewardHistory({
+      ...filter,
+      type_reward : formatStateReward(filter.state_reward),
+      item_page: 10,
+      current_page: pagination.current_page
+    })); 
     // Message.Info('Thông Báo', 'Tính năng đang được phát triển')
   }
   const onComfirm = async (record) => {
@@ -170,6 +220,16 @@ export default function RewardHistory(props) {
   const onSearchCommon = ()=>{
     Message.Info('Thông Báo', 'Tính năng đang phát triển')
   }
+  const onChangePagination = async (value)=>{
+    await dispatch(actionsRules.getRewardHistory(
+      {
+        ...filter,
+        type_reward : formatStateReward(filter.state_reward),
+        item_page: 10,
+        current_page: value
+      }
+    )); 
+  }   
 
   return (
     <LayoutHome>
@@ -314,6 +374,7 @@ export default function RewardHistory(props) {
             size='small'
             loading={loading}
             scroll={{ x: 1300, y: '48vh' }}
+            pagination={false}
             onRow={(record, rowIndex) => {
               return {
                 onClick: event => { }, // click row
@@ -324,7 +385,15 @@ export default function RewardHistory(props) {
               };
             }}
           />
-          {/* </Form> */}
+            <Pagination 
+              style={{marginTop: 10}} 
+              pageSize={pagination?.item_page || 20}
+              defaultCurrent={pagination?.current_page} 
+              total={pagination?.total_item} 
+              current={pagination?.current_page} 
+              showSizeChanger={false}
+              onChange={onChangePagination}
+            />
         </Card>
       </Col >
     </LayoutHome >

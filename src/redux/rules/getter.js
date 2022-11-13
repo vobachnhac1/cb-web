@@ -49,3 +49,8 @@ export const getListRewardHis = (state) => {
   if (listRewardHis?.length == 0) return [];
   return listRewardHis?.map((item, index) => ({ ...item, key: index })) || []
 };
+// phân page
+export const getPagination = (state) => {
+  const { rules  } = state;
+  return rules?.pagination || {}
+};

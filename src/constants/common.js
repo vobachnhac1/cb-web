@@ -46,7 +46,7 @@ export const STATE_FOR_CONTROL = [
 
 // danh sách trao thưởng
 export const TYPE_REWARD = [
-  'Tất cả',
+   'Tất cả',
    'Trúng lượt',
    'Lời chúc',
    'Tiền mặt/quà tặng',

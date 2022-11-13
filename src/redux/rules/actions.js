@@ -13,6 +13,7 @@ const setListWheel = (payload) => ({ type: TYPES.RULES_WHEEL, payload });
 const setListRulesStateYes = (payload) => ({ type: TYPES.RULES_STATE_YES, payload });
 const setRewardHis = (payload) => ({ type: TYPES.RULES_REWARD_HIS, payload });
 // const setListWheelDetail = (payload) => ({ type: TYPES.RULES_WHEEL_DETAIL, payload });
+const setPagination = (payload) => ({ type: TYPES.RULES_PAGE, payload });
 
 // hàm xử lý được gọi từ bên ngoài
 export const filterRules = (payload) => async (dispatch, getState, { $http }) => {
@@ -351,11 +352,13 @@ export const getRewardHistory = (payload) => async (dispatch, getState, { $http 
     dispatch(setRewardHis([]))
     return false;
   }
-  const listRewardHis = data.data;
-  if (listRewardHis && listRewardHis.length > 0) {
-    dispatch(setRewardHis(listRewardHis))
+  const {list_reward, pagination } = data.data;  
+  if (list_reward && list_reward.length > 0) {
+    dispatch(setRewardHis(list_reward))
+    dispatch(setPagination(pagination))
   } else {
     dispatch(setRewardHis([]))
+    dispatch(setPagination(pagination))
   }
   return true
 }

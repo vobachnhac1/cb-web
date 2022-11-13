@@ -29,7 +29,6 @@ export default buildReducer(
       listTopicCommon: payload
     }
   }, [TYPES.TOPIC_PAGE]: (state = pagination, payload) => {
-    console.log('payload: ', payload);
     return {
       ...state,
       pagination: payload

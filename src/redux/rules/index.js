@@ -17,8 +17,20 @@ export default buildReducer(
     listWheelStart: [],
     listWheelDetail: [],
     listWheel: [],
-    listRewardHis: []
+    listRewardHis: [],
+    pagination: {
+      total_item: 0,
+      num_page: 0,
+      item_page: 20,
+      current_page: 1,
+    }
   }, {
+    [TYPES.RULES_PAGE ]: (state = pagination, payload) => {
+      return {
+        ...state,
+        pagination: payload
+      }
+    },
   [TYPES.RULES_SEARCH]: (state = listRules, payload) => {
     return { 
       ...state,
@@ -74,7 +86,13 @@ export default buildReducer(
       listWheelStart: [],
       listWheelDetail: [],
       listWheel: [],
-      listRewardHis: []
+      listRewardHis: [],
+      pagination: {
+        total_item: 0,
+        num_page: 0,
+        item_page: 20,
+        current_page: 1,
+      }
     }
   }
 });

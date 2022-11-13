@@ -1,5 +1,6 @@
 // RULES
 export const RULES_SEARCH = 'RULES_SEARCH';
+export const RULES_PAGE   = 'RULES_PAGE';
 export const RULES_SEARCH_MODAL = 'RULES_SEARCH_MODAL';
 export const RULES_INSERT = 'RULES_INSERT';
 export const RULES_UPDATE = 'RULES_UPDATE';
