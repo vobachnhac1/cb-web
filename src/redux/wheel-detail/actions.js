@@ -13,7 +13,7 @@ const setDataCheckWheel = (payload) => ({ type: TYPES.WHEELDETAIL_DATACHECKWHEEL
 // const setWheelDetailNo = (payload) => ({ type: TYPES.WHEELDETAIL_NO, payload });
 // // hàm xử lý được gọi từ bên ngoài
 export const searchWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
-  setToken(getState(),$http)
+  setToken(getState(), $http)
   const param = {
     "wheel_id": 0,
     "wheel_detail_id": 0,
@@ -39,16 +39,32 @@ export const searchWheelDetail = (payload) => async (dispatch, getState, { $http
 }
 
 export const SaveOnListWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
-  setToken(getState(),$http)
+  setToken(getState(), $http)
+  // start new code 14/11/2022 test 
+  let newDataList_wheel_detail = [...payload.data]
+  let new_list_wheel_detail = []
+  for (let i = 0; i < newDataList_wheel_detail.length; i++) {
+    if (newDataList_wheel_detail[i].wheel_detail_id === 0 && newDataList_wheel_detail[i].is_delete === 1) {
+      continue
+    } else {
+      new_list_wheel_detail.push(newDataList_wheel_detail[i])
+    }
+  }
+  // end new code 14/11/2022
+
   const param = {
     "wheel_id": payload.wheel_id,
-    "list_wheel_detail": payload.data,
-    "list_length": payload.data.length,
+    "list_wheel_detail": new_list_wheel_detail,//payload.data
+    "list_length": new_list_wheel_detail.length,
     'wheel_curt_value': payload.wheel_curt_value,
     "wheel_total_value": payload.wheel_total_value,
     "num_segment_wheel": payload.num_segment_wheel,
     "wheel_status": payload.wheel_status
   }
+  //list_wheel_detail wheel_detail_id = 0,is_delete = 1
+
+
+
   const result = await $http.post(URLSERVER.updateWheelDetailUpdateList, param);
   const { success, data } = result;
   if (!success || !data.success) {
@@ -92,7 +108,7 @@ export const SaveOnListWheelDetail = (payload) => async (dispatch, getState, { $
 }
 
 export const insertWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
-  setToken(getState(),$http)
+  setToken(getState(), $http)
   const param = {
     "wheel_id": parseInt(payload.wheel_id),
     "wheel_name": payload.wheel_name,
@@ -138,7 +154,7 @@ export const insertWheelDetail = (payload) => async (dispatch, getState, { $http
 }
 
 export const updateWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
-  setToken(getState(),$http)
+  setToken(getState(), $http)
   const param = {
     "wheel_detail_id": payload.wheel_detail_id,
     "no": parseInt(payload.no),
@@ -190,7 +206,7 @@ export const updateWheelDetail = (payload) => async (dispatch, getState, { $http
 
 // xóa phần tử trong state wheelDetail bằng is_delete = 1
 export const deleteWheelDetailById = (payload) => async (dispatch, getState, { $http }) => {
-  setToken(getState(),$http)
+  setToken(getState(), $http)
 
   const param = {
     "wheel_detail_id": payload.wheel_detail_id,
@@ -223,7 +239,7 @@ export const deleteWheelDetailById = (payload) => async (dispatch, getState, { $
 
 // phục hồi phần tử trong state wheelDetail bằng is_delete = 0
 export const restoreWheelDetailById = (payload) => async (dispatch, getState, { $http }) => {
-  setToken(getState(),$http)
+  setToken(getState(), $http)
   const param = {
     "wheel_detail_id": payload.wheel_detail_id,
     "key": payload.key
@@ -256,7 +272,7 @@ export const restoreWheelDetailById = (payload) => async (dispatch, getState, { 
 
 // get all data wheel_Detail from wheel_id
 export const filterWheelDetail = (payload) => async (dispatch, getState, { $http }) => {
-  setToken(getState(),$http)
+  setToken(getState(), $http)
   let param = {
     "wheel_id": payload.wheel_id ? parseInt(payload.wheel_id) : null,
     "wheel_detail_id": payload.wheel_detail_id ? parseInt(payload.wheel_detail_id) : null,
@@ -395,7 +411,7 @@ function sumTotalValueWheelDetail(data) {
 
 
 
-const signOutDispatch = () => ({ type: TYPES.SIGN_OUT})
+const signOutDispatch = () => ({ type: TYPES.SIGN_OUT })
 
 export const SignOut = () => async (dispatch, getState, { $http }) => {
   dispatch(signOutDispatch());
