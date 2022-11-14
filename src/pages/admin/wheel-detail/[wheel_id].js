@@ -73,19 +73,19 @@ export default function WheelDetail({ query }) {
     const data = {
       'wheel_id': query.wheel_id
     }
-    setRecordWheel(listWheel.find(item=>item?.wheel_id.toString() === query.wheel_id))
+    setRecordWheel(listWheel.find(item => item?.wheel_id.toString() === query.wheel_id))
     await dispatch(actionTopic.searchTopic());
     await dispatch(actionSegment.searchSegment({}));
     const { listData } = await dispatch(actionWheelDetail.filterWheelDetail(data));
     setListSearch(listData)
     setLoading(false)
   }
-  useEffect(()=>{
+  useEffect(() => {
     let _from = new Date(recordWheel?.from_date_act);
     let _to = new Date(recordWheel?.to_date_act);
-    const _arr = listSegment?.map(item=>{
+    const _arr = listSegment?.map(item => {
       const _current = new Date(item.inactived_date);
-      if(_to <= _current ||  _current == "Invalid Date"){
+      if (_to <= _current || _current == "Invalid Date") {
         return {
           ...item,
           disabled: false
@@ -96,8 +96,8 @@ export default function WheelDetail({ query }) {
         disabled: true
       }
     })
-    setArrSegment(_arr.filter(item=>item.disabled ===false).concat(_arr.filter(item=>item.disabled ===true)))
-  },[listSegment]);
+    setArrSegment(_arr.filter(item => item.disabled === false).concat(_arr.filter(item => item.disabled === true)))
+  }, [listSegment]);
 
   //tìm kiếm vòng quay
   const onSearch = async () => {
@@ -410,7 +410,7 @@ export default function WheelDetail({ query }) {
   return (
     <LayoutHome>
       <Col style={{ marginBottom: 30 }}>
-        <ModalWheelDetail visible={visible} bodyModel={bodyModel} callback={callbackModal} recordWheel ={recordWheel} />
+        <ModalWheelDetail visible={visible} bodyModel={bodyModel} callback={callbackModal} recordWheel={recordWheel} />
 
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
@@ -441,7 +441,18 @@ export default function WheelDetail({ query }) {
               }}
               >
                 <Col className="gutter-row" style={{
-                  'width': '225px'
+                  'width': '85px',
+                  'textAlign': 'center !improtant'
+                }}>
+                  <Text className={classNames({ 'text-font': true })}>{'Tổng giải:'}</Text>
+                  <InputNumber style={{ width: '100%' }}
+                    formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                    parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                    disabled
+                    value={8} />
+                </Col>
+                <Col className="gutter-row" style={{
+                  'width': '200px'
                 }}>
                   <Text className={classNames({ 'text-font': true })}>{'Tổng tiền vòng quay: '}</Text>
                   <InputNumber style={{ width: '100%' }}
@@ -452,9 +463,9 @@ export default function WheelDetail({ query }) {
                     value={wheelTotalValue} />
                 </Col>
                 <Col className="gutter-row" style={{
-                  'width': '225px'
+                  'width': '200px'
                 }}>
-                  <Text className={classNames({ 'text-font': true })}>{'Tiền vòng quay còn lại: '}</Text>
+                  <Text className={classNames({ 'text-font': true })}>{'Tiền còn lại: '}</Text>
                   <InputNumber
                     style={{ width: '100%' }}
                     addonAfter={"VND"}
@@ -464,9 +475,9 @@ export default function WheelDetail({ query }) {
                     value={wheelCurtValue} />
                 </Col>
                 <Col className="gutter-row" style={{
-                  'width': '225px'
+                  'width': '200px'
                 }}>
-                  <Text className={classNames({ 'text-font': true })}>{'Tổng tiền chi tiết vòng quay '}</Text>
+                  <Text className={classNames({ 'text-font': true })}>{'Tổng tiền hiện tại '}</Text>
                   <InputNumber
                     style={{ width: '100%' }}
                     addonAfter={"VND"}
@@ -483,7 +494,7 @@ export default function WheelDetail({ query }) {
         <div style={{ marginTop: 20 }} />
         <Card>
           <Row gutter={[16, 24]}>
-            <Col className="gutter-row" span={6}>
+            {/* <Col className="gutter-row" span={6}>
               <Select
                 allowClear
                 placeholder="Tên giải thưởng"
@@ -495,15 +506,15 @@ export default function WheelDetail({ query }) {
                   <Select.Option disabled={item?.disabled} value={item.segment_id} key={key}>{item.segment_name}</Select.Option>
                 ))}
               </Select>
-            </Col>
+            </Col> */}
           </Row>
           <Row gutter={[12, 24]} style={{ marginTop: '10px' }}>
             <Col className="gutter-row" span={3}>
               <Button type='primary' size='middle' style={{ width: '100%' }} onClick={addNewWheelDetail} disabled={WheelStatus === 'APR' || WheelStatus === 'SAVE' ? true : false}>Thêm</Button>
             </Col>
-            <Col className="gutter-row" span={3}>
+            {/* <Col className="gutter-row" span={3}>
               <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch}>Tìm kiếm</Button>
-            </Col>
+            </Col> */}
             <Col className="gutter-row" span={4}>
               <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onViewsWheel}>Xem vòng quay</Button>
             </Col>

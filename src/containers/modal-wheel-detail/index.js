@@ -122,8 +122,8 @@ const ModalWheelDetail = (props) => {
     if (!segmentId) {
       msg_error.push('-Kết quả trúng thưởng chưa được chọn')
     }
-    if(segment.segment_value > 0){
-      
+    if (segment.segment_value > 0) {
+
       if (!remainNumber.toString() || parseInt(remainNumber) < 0) {
         msg_error.push('-Số lần trúng thưởng chưa hợp lệ hoặc chưa có nội dung')
       }
@@ -157,7 +157,7 @@ const ModalWheelDetail = (props) => {
       no: no,
       // goal_yn: goalYn,
       wheel_color: wheelColor,
-      remain_number:  parseInt(remainNumber) || 0,
+      remain_number: parseInt(remainNumber) || 0,
       imgBase64: imgBase64,
       url: url,
       topic_id: topicId
@@ -265,21 +265,22 @@ const ModalWheelDetail = (props) => {
   const onChangeSegment = async (value) => {
     const _segment = listSegmentSearch?.find(item => item.segment_id == value)
     setSegment(_segment)
-    if(_segment && _segment.segment_value <= 0){
+    if (_segment && _segment.segment_value <= 0) {
+      calculator(0, value)
       setSegmentId(value)
-    }else{
+    } else {
       calculator(1, value)
       setSegmentId(value)
     }
   }
 
   const onChangeTopic = async (value) => {
-    const _rs = listSegment.filter(item=>item.topic_id == value)
+    const _rs = listSegment.filter(item => item.topic_id == value)
     let _from = new Date(recordWheel?.from_date_act);
     let _to = new Date(recordWheel?.to_date_act);
-    const _arr = _rs?.map(item=>{
+    const _arr = _rs?.map(item => {
       const _current = new Date(item.inactived_date);
-      if(_to <= _current ||  _current == "Invalid Date"){
+      if (_to <= _current || _current == "Invalid Date") {
         return {
           ...item,
           disabled: false
@@ -378,7 +379,7 @@ const ModalWheelDetail = (props) => {
   return (
     <Modal
       width={'50vw'}
-      
+
       maskClosable={false}
       closable={isViewsWheel ? true : false}
       centered
@@ -509,7 +510,7 @@ const ModalWheelDetail = (props) => {
                 </Select>
               </Col>
             </Row>
-            { segment && segment.segment_value > 0 && <>
+            {segment && segment.segment_value > 0 && <>
               <Row style={{ marginTop: 10 }}>
                 <Col {...layoutHeader} >
                   <Text className={classNames({ 'text-font': true })}>{'Số lần trúng thưởng '}</Text>
@@ -541,7 +542,7 @@ const ModalWheelDetail = (props) => {
                   }
                 </Col>
               </Row>
-            </>            
+            </>
             }
             <Row style={{ marginTop: 10 }}>
               <Col {...layoutHeader} >
