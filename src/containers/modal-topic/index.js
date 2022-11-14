@@ -114,7 +114,7 @@ const ModalTopic = (props) => {
                 onChange={(text) => setTopicName(text.target.value)} />
             </Col>
           </Row>
-          {/* <Row style={{ marginTop: 10 }}>
+          <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
               <Text className={classNames({ 'text-font': true })}>{'Hệ thống'}</Text>
             </Col>
@@ -128,17 +128,7 @@ const ModalTopic = (props) => {
                   {listSystem.map((item,index)=><Option key={index} value ={item.sysCode}>{item.sysName}</Option>)}
                 </Select>
               </Col>
-          </Row> */}
-          {isApprove == '0' && <Row style={{ marginTop: 10 }}>
-            <Col {...layoutHeader} >
-              {/* <Text className={classNames({ 'text-font': true })}>{'Hệ thống'}</Text> */}
-            </Col>
-            <Col  {...layoutContent}>
-              <Input></Input>
-            </Col>
-          </Row>
-          }
-
+          </Row>         
         </Form>
       </Card>
     </Modal>
