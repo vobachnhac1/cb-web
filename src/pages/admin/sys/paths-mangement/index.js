@@ -20,9 +20,9 @@ import { actions, getters } from '@/redux/system';
 import ModalURLManagement from '@/containers/modal-system-url-management';
 
 export default function PathsManagement(props) {
-  const [perSystem, setPerSystem]= useState('FE');
-  const [perSys, setSys]= useState(null);
-  const [perSysRoles, setSysRole]= useState(null);
+  const [perSystem, setPerSystem] = useState('FE');
+  const [perSys, setSys] = useState(null);
+  const [perSysRoles, setSysRole] = useState(null);
 
   const pathsFEList = useSelector(getters.getPathsFEList);
   const pathsBEList = useSelector(getters.getPathsBEList);
@@ -34,57 +34,57 @@ export default function PathsManagement(props) {
   const [record, setRecord] = useState(null);
 
   const dispatch = useDispatch();
-  useEffect(()=>{
+  useEffect(() => {
     initPage();
-  },[]);
+  }, []);
 
-  const initPage = async ()=>{
+  const initPage = async () => {
     const params = {
-      roleId : perSysRoles,
-      systemCode : perSys,
-      perSystem : perSystem,
+      roleId: perSysRoles,
+      systemCode: perSys,
+      perSystem: perSystem,
     }
     await dispatch(actions.setPathsList(params))
     await dispatch(actions.setSystemList());
     await dispatch(actions.setRolesList());
   }
 
-  const insertSysPerURL =()=>{
+  const insertSysPerURL = () => {
     setUpdate(false)
     setOpen(true)
-  }  
+  }
 
-  const onSearch = async()=>{
+  const onSearch = async () => {
     const params = {
-      roleId : perSysRoles,
-      systemCode : perSys,
-      perSystem : perSystem,
+      roleId: perSysRoles,
+      systemCode: perSys,
+      perSystem: perSystem,
     }
-      await dispatch(actions.setPathsList(params))
-  }  
+    await dispatch(actions.setPathsList(params))
+  }
 
-  const onChangeSelectRoles =(value)=>{
+  const onChangeSelectRoles = (value) => {
     setSysRole(value)
-  }  
-  
-  const onChangeSelectPer =(value)=>{
+  }
+
+  const onChangeSelectPer = (value) => {
     setPerSystem(value)
   }
 
-  const onChangeSelectSys =(value)=>{
+  const onChangeSelectSys = (value) => {
     setSys(value)
   }
 
-  const updateSysPerURL =(value)=>{
+  const updateSysPerURL = (value) => {
     setRecord(value)
     setUpdate(true)
     setOpen(true)
   }
 
-  const deleteSysPerURL = async (value)=>{
+  const deleteSysPerURL = async (value) => {
     const param = `/${value.id}/${true}/${value.systemCode}`
     const result = await dispatch(actions.deleteSysPerURL(param));
-    if(result.success){
+    if (result.success) {
       Message.Success("Thông Báo", result.message);
       initPage();
       return;
@@ -92,26 +92,26 @@ export default function PathsManagement(props) {
     Message.Error("Thông Báo", result.message);
   }
 
-  const callbackComfirm = async (value)=>{
-    if(!value.visible){
+  const callbackComfirm = async (value) => {
+    if (!value.visible) {
       setOpen(false)
       return;
     }
-    if(update){
-      const {roleId,sysCode, url, description, id, perSystem}= value;
-      if(!sysCode){
+    if (update) {
+      const { roleId, sysCode, url, description, id, perSystem } = value;
+      if (!sysCode) {
         Message.Success("Thông Báo", "Hệ thống không được để trống");
         return;
       }
-      if(!perSystem){
+      if (!perSystem) {
         Message.Success("Thông Báo", "Quyền");
         return;
       }
-      if(!roleId){
+      if (!roleId) {
         Message.Success("Thông Báo", "Chức vụ không để trống");
         return;
       }
-      const param ={
+      const param = {
         roleId: roleId,
         systemCode: sysCode,
         url: url,
@@ -121,8 +121,8 @@ export default function PathsManagement(props) {
       }
       console.log('param: ', param);
       const result = await dispatch(actions.updateSysPerURL(param));
-      
-      if(result.success){
+
+      if (result.success) {
         setOpen(false)
         setUpdate(false)
         setRecord(null)
@@ -132,7 +132,7 @@ export default function PathsManagement(props) {
       }
       Message.Error("Thông Báo", result.message);
       // call API update
-    }else{
+    } else {
       const param = {
         perSystem: value.perSystem,
         roleId: value.roleId,
@@ -141,7 +141,7 @@ export default function PathsManagement(props) {
         description: value.description
       }
       const result = await dispatch(actions.insertSysPerURL(param));
-      if(result.success){
+      if (result.success) {
         setOpen(false)
         setUpdate(false)
         setRecord(null)
@@ -180,7 +180,7 @@ export default function PathsManagement(props) {
     }, {
       width: 180
       ,
-      title: 'Hệ thống',
+      title: 'Hệ thống phòng ban',
       dataIndex: 'systemName',
       key: 'systemName',
     }, {
@@ -188,7 +188,7 @@ export default function PathsManagement(props) {
       title: 'Tên màn hình',
       dataIndex: 'description',
       key: 'description',
-    },  {
+    }, {
       align: 'center',
       width: 120,
       title: 'Ngày tạo',
@@ -197,7 +197,7 @@ export default function PathsManagement(props) {
       render: (text) => (
         <Text>{text ? moment(text).format('HH:mm:ss,  YYYY-MM-DD') : ''}</Text>
       ),
-    },{
+    }, {
       width: 100,
       title: 'Người tạo',
       dataIndex: 'createdBy',
@@ -217,7 +217,7 @@ export default function PathsManagement(props) {
       title: 'Người cập nhật',
       dataIndex: 'updatedBy',
       key: 'updatedBy',
-    },{
+    }, {
       align: 'center',
       title: 'Action',
       key: 'action',
@@ -225,8 +225,8 @@ export default function PathsManagement(props) {
       render: (text, record) => (
         <Space size="middle">
           <Button style={{ color: 'blue', borderColor: 'blue', borderWidth: 0.5 }} onClick={() => updateSysPerURL(record)} >Cập nhật</Button>
-              <Popconfirm title="Bạn có muốn?" onConfirm={() => deleteSysPerURL(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom" >
-              <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
+          <Popconfirm title="Bạn có muốn?" onConfirm={() => deleteSysPerURL(record)} okText="Xác nhận" cancelText="Thoát" placement="leftBottom" >
+            <Button style={{ color: 'red', borderColor: 'red', borderWidth: 0.5 }} >Xóa</Button>
           </Popconfirm>
         </Space>
 
@@ -236,23 +236,23 @@ export default function PathsManagement(props) {
 
   return (
     <LayoutHome>
-      { open && <ModalURLManagement  callback ={callbackComfirm} visible={ open }
-         bodyModel={{
-        record: record, 
-        update : update,
-        perSystem : perSystem
+      {open && <ModalURLManagement callback={callbackComfirm} visible={open}
+        bodyModel={{
+          record: record,
+          update: update,
+          perSystem: perSystem
 
-      }}/>}
-        <Col style={{ marginBottom: 30 }}>
-          <Card
+        }} />}
+      <Col style={{ marginBottom: 30 }}>
+        <Card
           headStyle={{
             fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)"
           }}
           title="Quản lý Phân quyền URL theo chức vụ"
           bordered={true}
           style={{ backgroundColor: '#FFFFFF' }}>
-            <Col span={48} >
-              <Row gutter={[16, 24]} style={{ marginTop: 10 }}>
+          <Col span={48} >
+            <Row gutter={[16, 24]} style={{ marginTop: 10 }}>
               <Col className="gutter-row" span={6}>
                 <Select
                   placeholder="Hệ thống (Phòng Ban)"
@@ -261,7 +261,7 @@ export default function PathsManagement(props) {
                   value={perSys}
                   onChange={onChangeSelectSys}
                 >
-                {listSystem?.map(item=> <Select.Option value={item.sysCode} key={item.sysCode}> {item.sysName}</Select.Option> )}
+                  {listSystem?.map(item => <Select.Option value={item.sysCode} key={item.sysCode}> {item.sysName}</Select.Option>)}
                 </Select>
               </Col>
               <Col className="gutter-row" span={6}>
@@ -272,7 +272,7 @@ export default function PathsManagement(props) {
                   value={perSysRoles}
                   onChange={onChangeSelectRoles}
                 >
-                  {listRoles?.map(item=> <Select.Option value={item.roleId} key={item.roleId}> {item.roleName}</Select.Option> )}
+                  {listRoles?.map(item => <Select.Option value={item.roleId} key={item.roleId}> {item.roleName}</Select.Option>)}
                   {/* <Select.Option value={'BE'} key={'BE'}> {'Quyền Server'}</Select.Option>
                   <Select.Option value={'FE'} key={'FE'}> {'Quyền Client'}</Select.Option> */}
                 </Select>
@@ -289,30 +289,30 @@ export default function PathsManagement(props) {
                   <Select.Option value={'FE'} key={'FE'}> {'Quyền Client'}</Select.Option>
                 </Select>
               </Col>
-               
-                <Col className="gutter-row" span={3}>
-                  <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch} >Tìm kiếm</Button>
-                </Col>
-                <Col className="gutter-row" span={3}>
-                  <Button type='primary' size='middle' style={{ width: '100%' }} onClick={insertSysPerURL}>Thêm</Button>
-                </Col>
-              </Row>
-            </Col>
-          </Card>
 
-          <div style={{ marginTop: 20 }} />
-          <Card>
-            <Col span={48} style={{ marginTop: 10 }}>
-              <Table
-                columns={columns}
-                dataSource={perSystem =='FE'? pathsFEList: pathsBEList}
-                size='small'
-                scroll={{ x: 1300, y: '45vh' }}
-                loading={false}
-              />
-            </Col>
-          </Card>
-        </Col>
+              <Col className="gutter-row" span={3}>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch} >Tìm kiếm</Button>
+              </Col>
+              <Col className="gutter-row" span={3}>
+                <Button type='primary' size='middle' style={{ width: '100%' }} onClick={insertSysPerURL}>Thêm</Button>
+              </Col>
+            </Row>
+          </Col>
+        </Card>
+
+        <div style={{ marginTop: 20 }} />
+        <Card>
+          <Col span={48} style={{ marginTop: 10 }}>
+            <Table
+              columns={columns}
+              dataSource={perSystem == 'FE' ? pathsFEList : pathsBEList}
+              size='small'
+              scroll={{ x: 1300, y: '45vh' }}
+              loading={false}
+            />
+          </Col>
+        </Card>
+      </Col>
     </LayoutHome >
   )
 }

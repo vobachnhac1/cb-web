@@ -33,33 +33,33 @@ const layoutContent = {
   lg: { span: 16, offset: 0 },
 };
 const ModalURLManagement = (props) => {
-  const { callback, visible = false, bodyModel: { update = false, record = null, perSystem =null } } = props;
+  const { callback, visible = false, bodyModel: { update = false, record = null, perSystem = null } } = props;
   const dispatch = useDispatch();
-  const _sysList =useSelector(getters.dropdownSysList)
-  const _roleList =useSelector(getters.dropdownRoleList)
+  const _sysList = useSelector(getters.dropdownSysList)
+  const _roleList = useSelector(getters.dropdownRoleList)
   // const [_system,setSystem] = useState('')
   // const [_roles,setRole] = useState('')
   // const [perSystem, setPerSystem]= useState('FE');
 
-  const [body, setBody]=  useState(record ? record : {
-    roleId:null,
-    url:null,
-    sysCode:null,
-    description:null,
+  const [body, setBody] = useState(record ? record : {
+    roleId: null,
+    url: null,
+    sysCode: null,
+    description: null,
     perSystem: perSystem
   })
-  const onChangeSelectPer =(value)=>{
+  const onChangeSelectPer = (value) => {
     body?.perSystem
     setPerSystem(value)
   }
 
   const onCallback = async () => {
-    const {url, description}= body;
+    const { url, description } = body;
     if (!url || url.length == 0) {
       Message.Warning("Thông Báo", "Đường dẫn URL không được để trống!");
       return;
     }
-    callback({...body, visible:true})
+    callback({ ...body, visible: true })
   }
   const onCancel = () => {
     callback({ visible: false });
@@ -88,15 +88,15 @@ const ModalURLManagement = (props) => {
         >
           <Row >
             <Col {...layoutHeader} >
-              <Text className={classNames({ 'text-font': true })}>{'Hệ thống'}</Text>
+              <Text className={classNames({ 'text-font': true })}>{'Hệ thống phòng ban'}</Text>
             </Col>
-            <Col {...layoutContent} >             
-              <Select 
-              // disabled={true}
+            <Col {...layoutContent} >
+              <Select
+                // disabled={true}
                 style={{ width: '100%' }}
                 defaultValue=""
                 value={body?.systemCode}
-                onChange={(value) => setBody({...body, sysCode: value})}>
+                onChange={(value) => setBody({ ...body, sysCode: value })}>
                 {_sysList?.map((item, key) => (
                   <Select.Option value={item.sysCode} key={key}>{item.sysName}</Select.Option>
                 ))}
@@ -107,12 +107,12 @@ const ModalURLManagement = (props) => {
             <Col {...layoutHeader} >
               <Text className={classNames({ 'text-font': true })}>{'Chức vụ'}</Text>
             </Col>
-            <Col {...layoutContent} >             
-              <Select 
+            <Col {...layoutContent} >
+              <Select
                 style={{ width: '100%' }}
                 defaultValue=""
                 value={body?.roleId}
-                onChange={(value) => setBody({...body, roleId: value})}>
+                onChange={(value) => setBody({ ...body, roleId: value })}>
                 {_roleList?.map((item, key) => (
                   <Select.Option value={item.roleId} key={key}>{item.roleName}</Select.Option>
                 ))}
@@ -123,17 +123,17 @@ const ModalURLManagement = (props) => {
             <Col {...layoutHeader} >
               <Text className={classNames({ 'text-font': true })}>{'Quyền'}</Text>
             </Col>
-            <Col {...layoutContent} >             
+            <Col {...layoutContent} >
               <Select
-                  placeholder="Quyền hệ thống"
-                  style={{ width: '100%' }}
-                  defaultValue={'FE'}
-                  value={body?.perSystem}
-                  onChange={(value)=>setBody({...body, perSystem: value})}
-                >
-                  <Select.Option value={'BE'} key={'BE'}> {'Quyền Server'}</Select.Option>
-                  <Select.Option value={'FE'} key={'FE'}> {'Quyền Client'}</Select.Option>
-                </Select>
+                placeholder="Quyền hệ thống"
+                style={{ width: '100%' }}
+                defaultValue={'FE'}
+                value={body?.perSystem}
+                onChange={(value) => setBody({ ...body, perSystem: value })}
+              >
+                <Select.Option value={'BE'} key={'BE'}> {'Quyền Server'}</Select.Option>
+                <Select.Option value={'FE'} key={'FE'}> {'Quyền Client'}</Select.Option>
+              </Select>
             </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
@@ -148,7 +148,7 @@ const ModalURLManagement = (props) => {
                   ...body,
                   url: text.target.value
                 })} />
-            </Col>    
+            </Col>
           </Row>
           <Row style={{ marginTop: 10 }}>
             <Col {...layoutHeader} >
@@ -161,9 +161,9 @@ const ModalURLManagement = (props) => {
                 onChange={(text) => setBody({
                   ...body,
                   description: text.target.value
-                })}  />
-            </Col>    
-          </Row>                   
+                })} />
+            </Col>
+          </Row>
         </Form>
       </Card>
     </Modal>
