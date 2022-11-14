@@ -58,7 +58,7 @@ const ModalWheelDetail = (props) => {
   const [topicId, setTopicId] = useState(record ? record.topic_id : '')
   const [wheelCurtValue_update, setWheelCurtValue_update] = useState(0)
   const [wheelDetailTotalValue_update, setWheelDetailTotalValue_update] = useState(0)
-  const [goalYn, setGoalYn] = useState(record ? record.goal_yn : 0)
+  // const [goalYn, setGoalYn] = useState(record ? record.goal_yn : 0)
 
   // state xử lý hình ảnh
   const [previewVisible, setPreviewVisible] = useState(false)
@@ -96,7 +96,7 @@ const ModalWheelDetail = (props) => {
     setRemainNumber(record ? record.remain_number : "")
     setRemainValue(record ? record.remain_value : 0)
     setWheelColor(record ? record.wheel_color : "#659bc9")
-    setGoalYn(record ? record.goal_yn : -1)
+    // setGoalYn(record ? record.goal_yn : -1)
     setImgBase64(record ? record.imgBase64 : '')
     setUrl(record ? record.url : '')
     setSegmentValue(record ? record.remain_value : 1)
@@ -122,8 +122,11 @@ const ModalWheelDetail = (props) => {
     if (!segmentId) {
       msg_error.push('-Kết quả trúng thưởng chưa được chọn')
     }
-    if (!remainNumber.toString() || parseInt(remainNumber) < 0) {
-      msg_error.push('-Số lần trúng thưởng chưa hợp lệ hoặc chưa có nội dung')
+    if(segment.segment_value > 0){
+      
+      if (!remainNumber.toString() || parseInt(remainNumber) < 0) {
+        msg_error.push('-Số lần trúng thưởng chưa hợp lệ hoặc chưa có nội dung')
+      }
     }
     if (!no || no <= 0) {
       msg_error.push('-Số thứ tự chưa hợp lệ hoặc chưa có nội dung')
@@ -134,9 +137,9 @@ const ModalWheelDetail = (props) => {
     if (isAdd && no > WheelNumbersegment) {
       msg_error.push("-Số thứ tự phải nhỏ hơn hoặc bằng " + ' ' + (WheelNumbersegment))
     }
-    if (goalYn === -1) {
-      msg_error.push('-Trúng thưởng chưa được chọn')
-    }
+    // if (goalYn === -1) {
+    //   msg_error.push('-Trúng thưởng chưa được chọn')
+    // }
     if (!wheelColor || wheelColor.length == 0) {
       msg_error.push("- Màu sắc hiển thị chưa chọn");
     }
@@ -152,9 +155,9 @@ const ModalWheelDetail = (props) => {
       wheel_id: wheelId,
       segment_id: segmentId,
       no: no,
-      goal_yn: goalYn,
+      // goal_yn: goalYn,
       wheel_color: wheelColor,
-      remain_number: remainNumber,
+      remain_number:  parseInt(remainNumber) || 0,
       imgBase64: imgBase64,
       url: url,
       topic_id: topicId
@@ -298,9 +301,9 @@ const ModalWheelDetail = (props) => {
     callback({ visible: false, data: dataListSearch });
   }
 
-  const onChangeRadio = (e) => {
-    setGoalYn(e.target.value);
-  }
+  // const onChangeRadio = (e) => {
+  //   setGoalYn(e.target.value);
+  // }
 
   //flow xử lý hình ảnh
 
