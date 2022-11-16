@@ -190,6 +190,14 @@ export default function RulesManagement(props) {
   });
 
   const addRules = () => {
+    if(!wheelInfo){
+      Message.Warning("Thông Báo", "Vui lòng chọn vòng quay");
+      return;
+    }
+    if(listRules && listRules.length > 0){
+      Message.Warning("Thông Báo", "Vòng quay đã có quy tắc");
+      return;
+    }
     setVisible(true);
     setBodyModel({
       record: null,

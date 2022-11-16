@@ -95,6 +95,8 @@ export const deleteRules = (payload) => async (dispatch, getState, { $http }) =>
   const listRules = getList.data.data;
   if (listRules && listRules.length > 0) {
     dispatch(setRules(listRules))
+  }else{
+    dispatch(setRules([]))
   }
   return true;
 }

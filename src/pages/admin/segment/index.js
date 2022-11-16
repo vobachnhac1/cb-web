@@ -42,8 +42,10 @@ export default function Segment(props) {
   const initPage = async () => {
     setLoading(true);
     await dispatch(actionSegment.filterSegment({
-      item_page: pagination?.item_page,
-      current_page: pagination?.current_page,
+      item_page: 20,
+      current_page: 1,
+      // item_page: pagination?.item_page,
+      // current_page: pagination?.current_page,
     }));
     await dispatch(actionTopic.searchTopic());
     setLoading(false);
