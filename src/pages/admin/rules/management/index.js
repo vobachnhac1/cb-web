@@ -336,7 +336,7 @@ export default function RulesManagement(props) {
         <ModalRules visible={visible} bodyModel={bodyModel} callback={callbackModal}/>
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
-          title="PHÂN BỐ TỈ LỆ TRÚNG THƯỞNG" 
+          title="PHÂN BỐ GIẢI THƯỞNG TỰ ĐỘNG" 
           bordered={true}
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>

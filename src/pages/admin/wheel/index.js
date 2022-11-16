@@ -92,7 +92,7 @@ export default function Wheel(props) {
   };
   const columns = [
     {
-      title: 'Key',
+      title: 'STT',
       dataIndex: 'key',
       key: 'key',
       fixed: 'left',

@@ -75,7 +75,7 @@ export default function GenerateReward(props) {
 
   const columns = [
     {
-      title: 'Key',
+      title: 'STT',
       dataIndex: 'ord_numbers',
       key: 'ord_numbers',
       width: 30,
@@ -591,7 +591,7 @@ export default function GenerateReward(props) {
       <Col style={{ marginBottom: 30 }}>
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
-          title="Tạo giải thưởng ngẫu nhiên"
+          title="Tạo phần thưởng tự động"
           bordered={true}
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>

@@ -12,7 +12,7 @@
 *
 *
 *------------------------------------------------------- */
-// require("./style.module.less");
+
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Router } from 'next/router';
@@ -185,7 +185,7 @@ export default function WheelDetail({ query }) {
   // define colums
   const columns = [
     {
-      title: 'Key',
+      title: 'STT',
       dataIndex: 'key',
       key: 'key',
       fixed: 'left',
@@ -442,14 +442,12 @@ export default function WheelDetail({ query }) {
               >
                 <Col className="gutter-row" style={{
                   'width': '85px',
-                  'textAlign': 'center !improtant'
+                  // 'textAlign': 'center !improtant'
                 }}>
                   <Text className={classNames({ 'text-font': true })}>{'Tổng giải:'}</Text>
-                  <InputNumber style={{ width: '100%' }}
-                    formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                    parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                  <InputNumber className="wheel-number-segment" style={{ width: '100%','textAlign': 'center !important' }}
                     disabled
-                    value={8} />
+                    value={WheelNumbersegment} />
                 </Col>
                 <Col className="gutter-row" style={{
                   'width': '200px'
