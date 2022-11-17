@@ -68,7 +68,7 @@ export default function Topic(props) {
     },
     {
       align: 'center',
-      title: 'Action',
+      title: 'Chức năng',
       key: 'action',
       width: 100,
       render: (text, record) => (

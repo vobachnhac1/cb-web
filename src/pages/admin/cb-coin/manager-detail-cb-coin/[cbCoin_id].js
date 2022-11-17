@@ -110,7 +110,7 @@ export default function ManagerDetailCbCoin({ query }) {
     },
     {
       align: 'center',
-      title: 'Action',
+      title: 'Chức năng',
       key: 'action',
       width: 40,
       render: (text, record) => (

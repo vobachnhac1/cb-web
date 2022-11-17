@@ -107,7 +107,7 @@ export default function HisotryCbCoin(props) {
           headStyle={{
             fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)"
           }}
-          title="Lịch sử tích điểm trên hệ thống"
+          title="Quản lý lịch sử tích điểm trên hệ thống"
           bordered={true}
           style={{ backgroundColor: '#FFFFFF' }}>
           <Col span={48} >

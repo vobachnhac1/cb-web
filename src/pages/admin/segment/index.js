@@ -154,7 +154,7 @@ export default function Segment(props) {
     },
 
     {
-      title: 'Action',
+      title: 'Chức năng',
       key: 'action',
       width: 170,
       render: (text, record) => (
@@ -218,7 +218,7 @@ export default function Segment(props) {
         <ModalSegment visible={visible} bodyModel={bodyModel} callback={callbackModal} />
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
-          title="Tất cả kết quả giải thưởng"
+          title="Quản lý giải thưởng"
           bordered={true}
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>

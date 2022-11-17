@@ -323,7 +323,7 @@ export default function WheelDetail({ query }) {
       ),
     },
     {
-      title: 'Action',
+      title: 'Chức năng',
       key: 'action',
       width: 180,
       render: (text, record) => (

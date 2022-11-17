@@ -109,7 +109,7 @@ export default function AccountManagement(props) {
       key: 'updatedBy',
     }, {
       align: 'center',
-      title: 'Action',
+      title: 'Chức năng',
       key: 'action',
       width: 200,
       render: (text, record) => (
@@ -213,7 +213,7 @@ export default function AccountManagement(props) {
           headStyle={{
             fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)"
           }}
-          title="Quản lý thông tin tài khoản"
+          title="Quản lý danh sách tài khoản"
           bordered={true}
           style={{ backgroundColor: '#FFFFFF' }}>
           <Col span={48} >

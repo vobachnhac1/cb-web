@@ -130,7 +130,7 @@ export default function HistoryUser(props) {
           headStyle={{
             fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)"
           }}
-          title="Danh sách khách hàng trên hệ thống"
+          title="Quản lý danh sách khách hàng trên hệ thống"
           bordered={true}
           style={{ backgroundColor: '#FFFFFF' }}>
           <Col span={48} >

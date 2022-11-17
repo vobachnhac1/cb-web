@@ -91,7 +91,7 @@ export default function RewardHistory(props) {
       title: 'STT',
       dataIndex: 'ord_numbers',
       key: 'ord_numbers',
-      width: 30,
+      width: 60,
       align: 'center',
       fixed: 'left',
       render: (text, record) => {
@@ -184,7 +184,7 @@ export default function RewardHistory(props) {
         </Text>
       }
     }, {
-      title: 'Action',
+      title: 'Chức năng',
       key: 'action',
       width: 200,
       // fixed: 'right',
@@ -261,7 +261,7 @@ export default function RewardHistory(props) {
         {/* <ModalRules visible={visible} bodyModel={bodyModel} callback={callbackModal} /> */}
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
-          title="Màn hình quản lý thông tin trúng thưởng"
+          title="Quản lý danh sách trúng thưởng"
           bordered={true}
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>
