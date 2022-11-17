@@ -205,7 +205,8 @@ export default function ManagerCbCoin(props) {
       title: "Hệ thống tích điểm",
       dataIndex: "criteria_name",
       width: 250,
-      editable: true
+      editable: true,
+      fixed: 'left',
     },
     {
       align: 'center',
@@ -272,7 +273,7 @@ export default function ManagerCbCoin(props) {
       align: 'center',
       title: "Action",
       dataIndex: "operation",
-      width: 110,
+      width: 200,
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (
@@ -307,6 +308,15 @@ export default function ManagerCbCoin(props) {
               fontWeight: "500"
             }}
           >
+            <Typography.Link
+              disabled={editingord_numbers !== ""}
+              onClick={() => onDoubleClick(record)}
+            >
+
+              <Button style={{ color: 'green', borderColor: 'green', borderWidth: 0.5 }}>
+                Xem chi tiết
+              </Button>
+            </Typography.Link>
             <Typography.Link
               disabled={editingord_numbers !== ""}
               onClick={() => edit(record)}

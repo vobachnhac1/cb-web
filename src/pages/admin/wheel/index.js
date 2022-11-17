@@ -92,7 +92,7 @@ export default function Wheel(props) {
   };
   const columns = [
     {
-      title: 'Key',
+      title: 'STT',
       dataIndex: 'key',
       key: 'key',
       fixed: 'left',
@@ -231,7 +231,7 @@ export default function Wheel(props) {
       }
     },
     {
-      title: 'Action',
+      title: 'Chức năng',
       key: 'action',
       width: 450,
       render: (text, record) => (
@@ -331,7 +331,7 @@ export default function Wheel(props) {
         <ModalWheel visible={visible} bodyModel={bodyModel} callback={callbackModal} />
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
-          title="Vòng Quay"
+          title="Quản lý vòng Quay"
           bordered={true}
           style={{ backgroundColor: '#FFFFFF', padding: 0 }}>
           <Col span={48}>

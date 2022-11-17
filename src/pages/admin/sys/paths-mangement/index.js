@@ -219,7 +219,7 @@ export default function PathsManagement(props) {
       key: 'updatedBy',
     }, {
       align: 'center',
-      title: 'Action',
+      title: 'Chức năng',
       key: 'action',
       width: 200,
       render: (text, record) => (
