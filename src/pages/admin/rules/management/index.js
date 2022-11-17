@@ -90,7 +90,8 @@ export default function RulesManagement(props) {
       dataIndex: 'rules_name',
       key: 'rules_name',
       width: 100,
-    }, {
+    }, 
+    {
       title: 'Tổng số giải trúng',
       dataIndex: 'total_reward',
       key: 'total_reward',
@@ -106,6 +107,29 @@ export default function RulesManagement(props) {
           </Text>
         </Space>
       )
+    },
+    {
+      title: 'Tỉ lệ trúng',
+      dataIndex: 'reward_per',
+      key: 'reward_per',
+      width: 50,
+      render: (text, record) => (
+        <Space size="large" style={{
+          'display': 'flex',
+          'justifyContent': 'space-between',
+          fontWeight: '500'
+        }}>
+          <Text>
+            {`${text}%`}
+          </Text>
+        </Space>
+      )
+    },
+    {
+      title: 'Giải được trúng',
+      dataIndex: 'reward',
+      key: 'reward',
+      width: 80,
     },
     {
       title: 'Trạng thái',
@@ -209,7 +233,8 @@ export default function RulesManagement(props) {
     setVisible(true);
     setBodyModel({
       record: record,
-      isAdd: false
+      isAdd: false,
+      wheelInfo:wheelInfo
     });
   }
 
@@ -229,7 +254,7 @@ export default function RulesManagement(props) {
     }))
   }
 
-  const callbackModal = (params) => {
+  const callbackModal = async (params) => {
     setVisible(params.visible);
     setBodyModel({
       record: null,

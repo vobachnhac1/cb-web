@@ -33,9 +33,12 @@ const layoutContent = {
 };
 const ModalRules = (props) => {
   const dispatch = useDispatch();
-  const { callback, visible = false, bodyModel: { isAdd = false, record = null } } = props;
+  const { callback, visible = false, bodyModel: { isAdd = false, record = null,wheelInfo=null } } = props;
   const listWheel = useSelector(gettersRules.getListWheel) || [];
   const listRulesModal = useSelector(gettersRules.getRulesModal) || [];
+  const [isChangeText, setIsChangeText] = useState(false)
+  const [chooseWheel, setWheel] = useState(null)
+  // console.log('wheelInfo',wheelInfo)
   const [body, setBody] = useState(record ? record : {
     created_date: null,
     datelastmaint: null,
@@ -116,26 +119,30 @@ const ModalRules = (props) => {
       reward: 0,
       reward_per:0,
     });
+    // wheelInfo
+    
     setExpired({
       from_date: record? record.from_date: null ,
       to_date: record? record.to_date: null ,
       count: 0
     })
     if (!isAdd) {
-      const res = listWheel.filter(item => record && item.rules_id == record.rules_id);
-      if (res.length > 0) {
-        setWheel(res[0].wheel_id);
-      } else {
-        setWheel(null)
-      }
+      // const res = listWheel.filter(item => record && item.rules_id == record.rules_id);
+      // console.log('res',res)
+      // if (res.length > 0) {
+      //   setWheel(res[0].wheel_id);
+      // } else {
+      //   setWheel(null)
+      // }
+
+      setWheel(wheelInfo?wheelInfo.wheel_id:null);
     }
   }
 
   const onCancel = () => {
-    callback({ visible: false });
+    callback({ visible: false,});
   }
-  const [isChangeText, setIsChangeText] = useState(false)
-  const [chooseWheel, setWheel] = useState(null)
+
 
   const onKeyPress = (event) => {
     let code = event.keyCode || event.charCode;
