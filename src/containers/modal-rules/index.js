@@ -33,7 +33,7 @@ const layoutContent = {
 };
 const ModalRules = (props) => {
   const dispatch = useDispatch();
-  const { callback, visible = false, bodyModel: { isAdd = false, record = null } } = props;
+  const { callback, visible = false, bodyModel: { isAdd = false, record = null }, filter } = props;
   const listWheel = useSelector(gettersRules.getListWheel) || [];
   const listRulesModal = useSelector(gettersRules.getRulesModal) || [];
   const [body, setBody] = useState(record ? record : {
@@ -82,7 +82,6 @@ const ModalRules = (props) => {
     const _wheel = listWheel.find(item=>item.wheel_id === chooseWheel);
     if(!listRulesModal || listRulesModal&& listRulesModal.length == 0){
       if(_wheel){
-        console.log('_wheel: ', _wheel);
         setExpired({
           from_date: _wheel? moment(_wheel?.from_date_act).add(0 ,'days'): null ,
           to_date: _wheel? moment(_wheel?.to_date_act).add(0 ,'days'): null ,
@@ -122,12 +121,27 @@ const ModalRules = (props) => {
       count: 0
     })
     if (!isAdd) {
-      const res = listWheel.filter(item => record && item.rules_id == record.rules_id);
+      const res = listWheel.filter(item => record && item.wheel_id == filter?.wheel_id);
       if (res.length > 0) {
         setWheel(res[0].wheel_id);
+        setExpired({
+          from_date: res[0]? res[0].from_date_act: null ,
+          to_date: res[0]? res[0].to_date_act: null ,
+          count: 0
+        })
       } else {
         setWheel(null)
       }
+      return;
+    }
+    if(filter?.wheel_id){
+      const _wheel = listWheel.find(item=> item.wheel_id  == filter?.wheel_id);
+      setExpired({
+        from_date: _wheel? _wheel.from_date_act: null ,
+        to_date: _wheel? _wheel.to_date_act: null ,
+        count: 0
+      })
+      setWheel(filter.wheel_id);
     }
   }
 
@@ -208,12 +222,12 @@ const ModalRules = (props) => {
         reward_per: reward_per,
         wheel_id: chooseWheel
       }));
-      if (result) {
+      if (result?.success) {
         callback({ visible: false });
-        Message.Success("Thông Báo", "Thêm quy tắc thành công");
+        Message.Success("Thông Báo", result?.message);
         return;
       }
-      Message.Error("Thông Báo", "Thêm quy tắc thất bại");
+      Message.Error("Thông Báo", result?.message);
       return;
     }
 
@@ -343,7 +357,7 @@ const ModalRules = (props) => {
               <Col  {...layoutContent}>
                 <Select
                   allowClear
-                  disabled={isAdd ? false : true}
+                  disabled= {true} //{isAdd ? false : true}
                   style={{ width: '100%' }}
                   defaultValue=""
                   value={chooseWheel}

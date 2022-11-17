@@ -103,7 +103,6 @@ export const deleteRules = (payload) => async (dispatch, getState, { $http }) =>
 
 export const updateRules = (payload) => async (dispatch, getState, { $http }) => {
   setToken(getState(),$http)
-
   const param = {
     from_date: moment(payload.from_date).format('YYYY-MM-DD'),
     to_date: moment(payload.to_date).format('YYYY-MM-DD'),
@@ -120,19 +119,15 @@ export const updateRules = (payload) => async (dispatch, getState, { $http }) =>
   if (!success || !data.success) {
     return false;
   }
-
   const getList = await $http.post(URLSERVER.getRulesByFilter, {
-
-    from_date: null,
-    rules_id: payload.rules_id,
-    rules_name: null,
-    status_rules: null,
-    to_date: null,
+    // rules_id: payload.rules_id,
     wheel_id: payload.wheel_id,
   });
   const listRules = getList.data.data;
   if (listRules && listRules.length > 0) {
     dispatch(setRules(listRules))
+  }else{
+    dispatch(setRules([]))
   }
   return true;
 }
@@ -152,9 +147,9 @@ export const insertRules = (payload) => async (dispatch, getState, { $http }) =>
   const result = await $http.post(URLSERVER.insertRules, param);
   const { success, data } = result;
   if (!success || !data.success) {
-    return false;
+    return data;
   }
-  return true;
+  return data;
 }
 // function export ra ngoài
 // rules-reward

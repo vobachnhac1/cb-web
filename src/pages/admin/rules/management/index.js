@@ -341,7 +341,7 @@ export default function RulesManagement(props) {
     <LayoutHome>
       <ModalCustom visible={visibleModal} callback={callback} contentModel={contentModel}  />
       <Col style={{ marginBottom: 30 }}>
-        <ModalRules visible={visible} bodyModel={bodyModel} callback={callbackModal}/>
+        <ModalRules visible={visible} bodyModel={bodyModel} callback={callbackModal} filter={filter}/>
         <Card
           headStyle={{ fontSize: 20, color: 'rgba(255, 255, 255, 1)', fontWeight: 'bold', textAlign: 'start', backgroundColor: "rgb(3, 77, 162)" }}
           title="PHÂN BỐ TỈ LỆ TRÚNG THƯỞNG" 
