@@ -5,7 +5,6 @@
   --wheel-size: 500px;
   --wheel-position-wheel: 15%;
   --wheel-slice-spacing: 50px;
-  --wheel-border-size: 5px;
   --wheel-color: #337ab7;
   --background-color: white;
   --neutral-color: white;
@@ -18,6 +17,9 @@
   --reset-duration: 0.25s;
   --item-reward-url: url("/images/reward/reward1.png");
   --scale-distance: 2;
+  // boder spin win
+  --wheel-container--border:8px;
+  --wheel-border-size: 8px;
 }
 
 // Nhac custom
@@ -29,7 +31,7 @@
   width: 150px;
   height: 150px;
   border-radius: 100px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 1) 31%, rgba(0, 155, 217, 1) 80%);
+  background: #fcca60;
 
 }
 
@@ -69,7 +71,6 @@
     left: 39%;
   }
 }
-
 
 // done
 @media screen and (min-width: 1200px) {
@@ -693,8 +694,8 @@
   height: calc(var(--wheel-size) + 2 * var(--wheel-border-size));
   padding: 3px;
   margin: auto;
-  background-color: var(--neutral-color);
-  border: solid var(--wheel-color) 3px;
+  background-color: #FBD455;
+  border: solid #FBD455 var(--wheel-container--border);
   border-radius: 50%;
   user-select: none;
   top: var(--wheel-position-wheel);
@@ -718,12 +719,12 @@
 
 .wheel-container::before {
   right: 0px;
-  border-right-color: var(--wheel-color);
+  border-right-color:#FBD455;
 }
 
 .wheel-container::after {
   right: -5px;
-  border-right-color: var(--neutral-color);
+  border-right-color: #FBD455;
 }
 
 /* Wheel */
@@ -736,7 +737,7 @@
   height: var(--wheel-size);
   overflow: hidden;
   border-radius: 50%;
-  border: solid var(--wheel-color) var(--wheel-border-size);
+  border: solid #FAAC18 var(--wheel-border-size);
   background-color: var(--background-color);
   transition: transform var(--reset-duration);
   transform: rotate(0deg);

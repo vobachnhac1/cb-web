@@ -61,7 +61,7 @@ export default function PopupMenu(props) {
 			<div
 				className={classNames(
 					{ "reward-list": true },
-					{ show: flagOpen }
+					{ "show": flagOpen }
 				)}
 			>
 				{/* tabs info */}

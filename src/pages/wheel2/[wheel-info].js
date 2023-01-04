@@ -39,6 +39,7 @@ export default function DisplayWheel(props) {
 	const [userInfo, setUserInfo] = useState({});
 	const [flagOpenPopupMenu, setFlagOpenPopupMenu] = useState(false);
 	const [btnNameClick, setBtnNameClick] = useState({});
+	const [flagOpenBtnStart, setFlagOpenBtnStart] = useState(true);
 	const getCustomerInfo = useSelector(gettersEventWheel.getCustomerInfo);
 
 	useEffect(() => {
@@ -209,6 +210,7 @@ export default function DisplayWheel(props) {
 							onSelectItem={onSelectItem}
 							selectedItem={selectedItem}
 							roles={manager}
+							flagOpenWheelBanner={flagOpenBtnStart}
 						/>
 					</Row>
 				</>
@@ -233,12 +235,23 @@ export default function DisplayWheel(props) {
 						}}
 					>
 						<span className="content_wheel__btn">
-							<button>
-								<img
-									className="wheeld__btn"
-									src="/images/wheel/icon_btn_start.png"
-								></img>
-							</button>
+							{flagOpenBtnStart ? (
+								<button
+									onClick={() => setFlagOpenBtnStart(false)}
+								>
+									<img
+										className="wheeld__btn"
+										src="/images/wheel/icon_btn_start.png"
+									></img>
+								</button>
+							) : (
+								<button>
+									<img
+										className="wheeld__btn"
+										src="/images/wheel/icon_btn_spin.png"
+									></img>
+								</button>
+							)}
 						</span>
 					</Col>
 					<Col
