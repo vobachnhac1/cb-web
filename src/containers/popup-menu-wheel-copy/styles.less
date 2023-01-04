@@ -1,0 +1,137 @@
+.items-subs {
+  display: flex;
+  flex-direction: column;
+  align-items: self-start;
+  &__noti{
+    font-weight: 500;
+  }
+}
+
+ul li {
+  list-style: none;
+}
+
+.ant-tabs-nav-list .ant-tabs-tab-btn {
+  color: #292929;
+}
+
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #292929;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-radius: 4px;
+  background: -webkit-linear-gradient(left, #f5ce62, #e43603, #fa7199, #e85a19);
+}
+
+.ant-tabs-content {
+  color: #292929;
+}
+
+.ant-tabs>.ant-tabs-nav .ant-tabs-nav-wrap::before {
+  position: static;
+}
+
+.ant-tabs-ink-bar {
+  background: -webkit-linear-gradient(left, #f5ce62, #e43603, #fa7199, #e85a19);
+}
+
+.reward-list {
+  visibility: visible;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  // background: rgba(0, 0, 0, 0.3);
+  visibility: hidden;
+  -webkit-transform: scale(0);
+  -ms-transform: scale(0);
+  transform: scale(0);
+  -webkit-transition: all 0.8s;
+  -o-transition: all 0.8s;
+  transition: all 0.8s;
+}
+
+
+.reward-list.show {
+  visibility: visible;
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1);
+  -webkit-transition: all 0.8s;
+  -o-transition: all 0.8s;
+  transition: all 0.8s;
+  z-index: 3;
+}
+
+.show {
+  display: block !important;
+}
+
+.reward-list .items {
+  // background: url(/images/reward_bg.jpg) no-repeat;
+  // background-size: 100% 100%;
+  background-color: #fff;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 500px;
+  // height: 70vh;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border-radius: 8px;
+  overflow: auto;
+  background: transparent;
+  // padding: 2rem;
+  // opacity: 0.9;
+}
+
+@media screen and (min-width: 320px) and (max-width: 359px) {
+  .reward-list .items {
+    width: 300px !important;
+  }
+}
+
+@media screen and (min-width: 360px) and (max-width: 413px) {
+  .reward-list .items {
+    width: 350px !important;
+  }
+  .items-subs{  
+    margin-left: -28px;
+    li {
+      font-size: 10px;
+    }
+  }
+}
+
+// card body
+
+.items .ant-card-head-title{
+  height: 50px;
+  text-align: center;
+  line-height: 46px;
+  color: #ffff;
+  font-size: 17px;
+  font-weight: 700;
+  background-image: url(/images/popup/bg-header-popup.png);
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+.items .ant-card{
+  background: transparent;
+}
+.items .ant-card-head{
+  padding: 0;
+  background: transparent;
+}
+
+.ant-card-body{
+  background-color: #fff;
+  height: 70vh;
+  overflow:auto
+}
+
+

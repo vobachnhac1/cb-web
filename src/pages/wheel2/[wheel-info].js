@@ -20,9 +20,9 @@ import { useRouter } from "next/router";
 import { PathTitle } from "@/constants/url-name";
 import Header from "@/components/Head";
 // pop up menu
-import PopupMenu from "@/containers/popup-menu-wheel";
+// import PopupMenu from "@/containers/popup-menu-wheel";
+import PopupMenuCopy from "@/containers/popup-menu-wheel-copy";
 import { Row, Col, Typography, Button } from "antd";
-import { LeftOutlined } from "@ant-design/icons";
 const { Text } = Typography;
 // img
 export default function DisplayWheel(props) {
@@ -37,7 +37,10 @@ export default function DisplayWheel(props) {
 		: arrItem || [];
 	const [wheelId, setWheelId] = useState("");
 	const [userInfo, setUserInfo] = useState({});
+	const [flagOpenPopupMenu, setFlagOpenPopupMenu] = useState(false);
+	const [btnNameClick, setBtnNameClick] = useState({});
 	const getCustomerInfo = useSelector(gettersEventWheel.getCustomerInfo);
+
 	useEffect(() => {
 		checkWheelDetail();
 	}, [places]);
@@ -119,6 +122,19 @@ export default function DisplayWheel(props) {
 	const onSelectItem = (value) => {
 		setSelectedItem(value);
 	};
+	const onCangeFlagOpenPopupMenu = (btnName, vnsbName) => {
+		setBtnNameClick({
+			btnName: btnName,
+			vnsbName: vnsbName,
+		});
+		setFlagOpenPopupMenu(true);
+	};
+
+	const callbackModel = (params) => {
+		const { flagOpen } = { ...params };
+		setBtnNameClick("");
+		setFlagOpenPopupMenu(flagOpen);
+	};
 
 	return (
 		<div
@@ -143,11 +159,14 @@ export default function DisplayWheel(props) {
 				>
 					<Col style={{ flex: 1 }}>
 						{/* <PopupMenu wheelId={wheelId} userInfo={userInfo} /> */}
+						<PopupMenuCopy
+							wheelId={wheelId}
+							userInfo={userInfo}
+							flagOpen={flagOpenPopupMenu}
+							btnNameClick={btnNameClick}
+							callback={callbackModel}
+						/>
 						<span className={"icon_LeftCircleTwoTone_custom"}>
-							{/* <LeftOutlined
-								className={"icon_LeftCircleTwoTone_custom"}
-								// style={{ fontSize: "35px", color: "#08c" }}
-							/> */}
 							<img src="/images/wheel/icon_wheel_vector.png" />
 						</span>
 					</Col>
@@ -230,7 +249,11 @@ export default function DisplayWheel(props) {
 						}}
 					>
 						<span className="content_wheel__btn">
-							<button>
+							<button
+								onClick={() =>
+									onCangeFlagOpenPopupMenu("Rules", "Thể lệ")
+								}
+							>
 								<img
 									className="wheel__btn"
 									src="/images/wheel/icon_btn_thele.jpg"
@@ -238,7 +261,14 @@ export default function DisplayWheel(props) {
 							</button>
 						</span>
 						<span className="content_wheel__btn">
-							<button>
+							<button
+								onClick={() =>
+									onCangeFlagOpenPopupMenu(
+										"listReward",
+										"Danh sách quà tặng"
+									)
+								}
+							>
 								<img
 									className="wheel__btn"
 									src="/images/wheel/icon_btn_dsqt.jpg"
@@ -254,7 +284,14 @@ export default function DisplayWheel(props) {
 						}}
 					>
 						<span className="content_wheel__btn">
-							<button>
+							<button
+								onClick={() =>
+									onCangeFlagOpenPopupMenu(
+										"listWinner",
+										"Lịch sử trúng thưởng"
+									)
+								}
+							>
 								<img
 									className="wheel__btn"
 									src="/images/wheel/icon_btn_lstt.jpg"
@@ -262,7 +299,14 @@ export default function DisplayWheel(props) {
 							</button>
 						</span>
 						<span className="content_wheel__btn">
-							<button>
+							<button
+								onClick={() =>
+									onCangeFlagOpenPopupMenu(
+										"listScore",
+										"Danh sách tích điểm"
+									)
+								}
+							>
 								<img
 									className="wheel__btn"
 									src="/images/wheel/icon_btn_lstd.jpg"
