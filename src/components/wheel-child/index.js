@@ -155,7 +155,7 @@ const WheelChild = (props) => {
 									"wheel-item-icon": true,
 								})}
 							/>
-							{item.segment_name}
+							{/* {item.segment_name} */}
 						</div>
 					);
 				})}

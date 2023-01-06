@@ -1,7 +1,6 @@
 :root {
   --wheel-font: 'Lato', 'Quicksand', sans-serif;
   --wheel-font-size: 12px;
-  --wheel-icon-size: 40px;
   --wheel-size: 500px;
   --wheel-position-wheel: 15%;
   --wheel-slice-spacing: 50px;
@@ -17,10 +16,13 @@
   --reset-duration: 0.25s;
   --item-reward-url: url("/images/reward/reward1.png");
   --scale-distance: 2;
+   // wheel icon
+   --wheel-icon-size: 40px;
   // boder spin win
   --wheel-container--border:8px;
   --wheel-border-size: 8px;
 }
+
 
 // Nhac custom
 .wheel-viewbox-border {
@@ -47,7 +49,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  animation-duration: 4s;
+  animation-duration: 2.4s;
   animation-name: animation_logo;
   animation-iteration-count: infinite;
   animation-direction: alternate;
@@ -78,7 +80,7 @@
     --wheel-size: 600px;
     --wheel-font-size: 16px;
     --wheel-font-size: 16px;
-    --wheel-icon-size: 40px;
+    --wheel-icon-size: 80px;
     --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
     --scale-distance: 1.1;
   }
@@ -124,7 +126,7 @@
   :root {
     --wheel-size: 600px;
     --wheel-font-size: calc(12px + (26 - 20) * ((100vw - 992px) / (1199 - 992)));
-    --wheel-icon-size: 40px;
+    --wheel-icon-size: 80px;
     --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
     --scale-distance: 1.1;
 
@@ -215,12 +217,16 @@
 // done
 @media screen and (min-width: 676px) and (max-width: 767px) {
   :root {
-    --wheel-size: calc((100vw/(sqrt(2))) - 10px);
+    --wheel-size: 418px;
     --wheel-font-size: calc(10px + (22 - 15) * ((100vw - 576px) / (767 - 576)));
     --wheel-icon-size: 33px;
     --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
     --scale-distance: 1.3;
-
+    --wheel-container--border:7px;
+    --wheel-border-size: 5px;
+  }
+  .wheel-container {
+    top: 72px;
   }
 
   .wheel-viewbox {
@@ -261,14 +267,18 @@
 
 @media screen and (min-width: 576px) and (max-width: 675px) {
   :root {
-    --wheel-size: calc((100vw/(sqrt(2))) - 10px);
+    --wheel-size: 400px;
     --wheel-font-size: calc(10px + (22 - 15) * ((100vw - 576px) / (767 - 576)));
     --wheel-icon-size: 33px;
     --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
     --scale-distance: 1.5;
+    --wheel-container--border:7px;
+    --wheel-border-size: 5px;
 
   }
-
+  .wheel-container{
+    top:75px
+  }
   .wheel-viewbox {
     top: calc(var(--wheel-size)/2 - 70px/2 + 10px);
     left: calc(var(--wheel-size)/2 - 70px/2 + 10px);
@@ -308,14 +318,18 @@
 // done
 @media screen and (min-width: 535px) and (max-width: 575px) {
   :root {
-    --wheel-size: calc((100vw/(sqrt(2))) - 10px);
+    --wheel-size: 340px;
     --wheel-font-size: calc(8px + (14 - 8) * ((100vw - 414px) / (575 - 414)));
     --wheel-icon-size: 24px;
     --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
     --scale-distance: 1.6;
+    --wheel-container--border:6px;
+    --wheel-border-size: 4px;
 
   }
-
+  .wheel-container{
+    top:65px
+  }
   .wheel-viewbox {
     top: calc(var(--wheel-size)/2 - 50px/2 + 10px);
     left: calc(var(--wheel-size)/2 - 50px/2 + 10px);
@@ -355,12 +369,17 @@
 
 @media screen and (min-width: 474px) and (max-width: 534px) {
   :root {
-    --wheel-size: calc((100vw/(sqrt(2))) - 10px);
+    --wheel-size: 320px;
     --wheel-font-size: calc(8px + (14 - 8) * ((100vw - 414px) / (575 - 414)));
     --wheel-icon-size: 24px;
     --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
     --scale-distance: 1.8;
+    --wheel-container--border:6px;
+    --wheel-border-size: 4px;
 
+  }
+  .wheel-container{
+    top:58px
   }
 
   .wheel-viewbox {
@@ -698,7 +717,7 @@
   border: solid #FBD455 var(--wheel-container--border);
   border-radius: 50%;
   user-select: none;
-  top: var(--wheel-position-wheel);
+  // top: var(--wheel-position-wheel);
 }
 
 
@@ -778,11 +797,11 @@
   transform: translateY(-50%) rotate(calc(var(--item-nb) * (360deg / var(--nb-item, 1))));
 
   /* text */
-  color: var(--neutral-color);
-  text-align: center;
-  padding: 0 25px 0 50px;
-  font-family: var(--wheel-font);
-  font-size: var(--wheel-font-size);
+  // color: var(--neutral-color);
+  // text-align: center;
+  // padding: 0 25px 0 50px;
+  // font-family: var(--wheel-font);
+  // font-size: var(--wheel-font-size);
 }
 
 /* Element background = lighter pink triangle */
@@ -816,16 +835,17 @@
 }
 
 .wheel-item-icon {
-  top: -40%;
-  left: 80%;
+  top: -42px;
+  left: 67%;
   z-index: 1;
   position: absolute;
-  height: var(--wheel-icon-size);
-  width: var(--wheel-icon-size);
+  height: var( --wheel-icon-size);
+  width:  var( --wheel-icon-size);
   background-image: var(--item-reward-url);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
 }
+
 
 // tùy theo số lượng mà mình sẽ scale3

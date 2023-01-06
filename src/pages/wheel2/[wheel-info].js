@@ -268,8 +268,8 @@ export default function DisplayWheel(props) {
 								}
 							>
 								<img
-									className="wheel__btn"
-									src="/images/wheel/icon_btn_thele.jpg"
+									className="wheeld__btn"
+									src="/images/wheel/icon_btn_thele.png"
 								></img>
 							</button>
 						</span>
@@ -284,7 +284,7 @@ export default function DisplayWheel(props) {
 							>
 								<img
 									className="wheel__btn"
-									src="/images/wheel/icon_btn_dsqt.jpg"
+									src="/images/wheel/icon_btn_dsqt.png"
 								></img>
 							</button>
 						</span>
@@ -295,6 +295,7 @@ export default function DisplayWheel(props) {
 							display: "flex",
 							justifyContent: "center",
 						}}
+						className="footer_wheel__btn"
 					>
 						<span className="content_wheel__btn">
 							<button
@@ -307,7 +308,7 @@ export default function DisplayWheel(props) {
 							>
 								<img
 									className="wheel__btn"
-									src="/images/wheel/icon_btn_lstt.jpg"
+									src="/images/wheel/icon_btn_lstt.png"
 								></img>
 							</button>
 						</span>
@@ -322,7 +323,7 @@ export default function DisplayWheel(props) {
 							>
 								<img
 									className="wheel__btn"
-									src="/images/wheel/icon_btn_lstd.jpg"
+									src="/images/wheel/icon_btn_lstd.png"
 								></img>
 							</button>
 						</span>
