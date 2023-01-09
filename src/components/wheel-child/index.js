@@ -7,6 +7,7 @@
 import { useEffect, useState } from "react";
 require("./styles.less");
 const classNames = require("classnames");
+import { Row, Col } from "antd";
 // khai báo store
 import { useSelector, useDispatch } from "react-redux";
 import { actions as actionsEventWheel } from "@/redux/event-wheel";
@@ -16,7 +17,7 @@ import ModalComfirmReward from "@/containers/modal-comfirm-reward";
 import WheelBanner from "./wheel-banner";
 
 const WheelChild = (props) => {
-	const { roles = null, arrItem = [], selectedItem = null,flagOpenWheelBanner=true } = props;
+	const { roles = null, arrItem = [], selectedItem = null } = props;
 	const dispatch = useDispatch();
 	const places = !roles
 		? useSelector(gettersEventWheel.getContentReward)
@@ -24,6 +25,8 @@ const WheelChild = (props) => {
 	const isProcessing = useSelector(gettersEventWheel.getProccessing);
 	const eventInfo = useSelector(gettersEventWheel.getEventInfo);
 	const [rewardBody, setRewardBody] = useState(null);
+	// test 8/1/2022
+	const [flagOpenBtnStart, setFlagOpenBtnStart] = useState(true);
 
 	const wheelVars = {
 		"--nb-item": places.length,
@@ -120,47 +123,88 @@ const WheelChild = (props) => {
 	};
 
 	return (
-		<div className={"wheel-container"}>
-			<WheelBanner flagShow = {flagOpenWheelBanner}></WheelBanner>
-			{spinning && (
-				<ModalComfirmReward
-					onInit={spinning}
-					data={rewardBody}
-					callback={onReset}
-				/>
-			)}
-			<div className={classNames({ "wheel-viewbox-border": true })} />
+		<>
+			<Row className={"wheel-container"}>
+				{/* flagOpenBtnStart */}
+				<WheelBanner flagShow={flagOpenBtnStart}></WheelBanner>
+				<Row className="wheel-container_btnstart">
+					<Col
+						span={24}
+						style={{
+							display: "flex",
+							justifyContent: "center",
+						}}
+					>
+						<span className="content_wheel__btn">
+							{flagOpenBtnStart ? (
+								<button
+									onClick={() => setFlagOpenBtnStart(false)}
+								>
+									<img
+										className="wheel__btnstart"
+										src="/images/wheel/icon_btn_start.png"
+									></img>
+								</button>
+							) : (
+								<button onClick={activeEvent}>
+									<img
+										className="wheel__btnstart"
+										src="/images/wheel/icon_btn_spin.png"
+									></img>
+								</button>
+							)}
+						</span>
+					</Col>
+				</Row>
+				{spinning && (
+					<ModalComfirmReward
+						onInit={spinning}
+						data={rewardBody}
+						callback={onReset}
+					/>
+				)}
+				{/* <div className={classNames({ "wheel-viewbox-border": true })} />
 			<div
 				className={classNames({ "wheel-viewbox": true })}
 				onClick={activeEvent}
-			/>
-			<div
-				className={classNames({ wheel: true }, { spinning: spinning })} //chỗ import
-				style={wheelVars}
-			>
-				{places.map((item, index) => {
-					return (
-						<div
-							className={classNames({ "wheel-item": true })}
-							key={item.no}
-							style={{
-								"--item-nb": index,
-								"--item-reward-url": `url("${item.imgBase64}")`,
-								"--neutral-color": item.wheel_color,
-								"--background-color": item.wheel_color,
-							}}
-						>
-							<div
-								className={classNames({
-									"wheel-item-icon": true,
-								})}
-							/>
-							{/* {item.segment_name} */}
+			/> */}
+
+				<div
+					className={classNames(
+						{ wheel: true },
+						{ spinning: spinning }
+					)} //chỗ import
+					style={wheelVars}
+				>
+					<div className={"wheel-viewbox-content"}>
+						<div className={"wheel-viewbox-border1"}>
+							<div className={"wheel-viewbox1"}></div>
 						</div>
-					);
-				})}
-			</div>
-		</div>
+					</div>
+					{places.map((item, index) => {
+						return (
+							<div
+								className={classNames({ "wheel-item": true })}
+								key={item.no}
+								style={{
+									"--item-nb": index,
+									"--item-reward-url": `url("${item.imgBase64}")`,
+									"--neutral-color": item.wheel_color,
+									"--background-color": item.wheel_color,
+								}}
+							>
+								<div
+									className={classNames({
+										"wheel-item-icon": true,
+									})}
+								/>
+								{/* {item.segment_name} */}
+							</div>
+						);
+					})}
+				</div>
+			</Row>
+		</>
 	);
 };
 

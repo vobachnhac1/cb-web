@@ -1,5 +1,6 @@
 import React from "react";
 require("./styles.less");
+// require("../styles.less");
 const classNames = require("classnames");
 
 const WheelBanner = (props) => {

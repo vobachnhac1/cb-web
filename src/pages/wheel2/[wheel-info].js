@@ -22,7 +22,7 @@ import Header from "@/components/Head";
 // pop up menu
 // import PopupMenu from "@/containers/popup-menu-wheel";
 import PopupMenuCopy from "@/containers/popup-menu-wheel-copy";
-import { Row, Col, Typography, Button } from "antd";
+import { Row, Col, Typography, Button, Layout } from "antd";
 const { Text } = Typography;
 // img
 export default function DisplayWheel(props) {
@@ -39,7 +39,6 @@ export default function DisplayWheel(props) {
 	const [userInfo, setUserInfo] = useState({});
 	const [flagOpenPopupMenu, setFlagOpenPopupMenu] = useState(false);
 	const [btnNameClick, setBtnNameClick] = useState({});
-	const [flagOpenBtnStart, setFlagOpenBtnStart] = useState(true);
 	const getCustomerInfo = useSelector(gettersEventWheel.getCustomerInfo);
 
 	useEffect(() => {
@@ -138,7 +137,7 @@ export default function DisplayWheel(props) {
 	};
 
 	return (
-		<div
+		<Layout
 			className={"App"}
 			style={{
 				backgroundImage: null,
@@ -148,10 +147,7 @@ export default function DisplayWheel(props) {
 			{!manager && (
 				<Row
 					style={{
-						position: "absolute",
 						paddingTop: "2vh",
-						height: "10vh",
-						flex: 1,
 						flexDirection: "row",
 						alignItems: "center",
 						width: "100%",
@@ -177,14 +173,7 @@ export default function DisplayWheel(props) {
 								.toString()
 								.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}
 						</Text>
-						<Text
-							className={"wheel__numbertimes"}
-							style={{
-								fontSize: 14,
-								fontWeight: "bold",
-								color: "lavender",
-							}}
-						>
+						<Text className={"wheel__numbertimes"}>
 							{getCustomerInfo?.numTimes
 								.toString()
 								.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}
@@ -195,10 +184,11 @@ export default function DisplayWheel(props) {
 			{!invalid && (
 				<>
 					<Row
+						className={"content--main__wheel"}
 						style={{
 							paddingTop: "2vh",
-							height: "10vh",
-							flex: 1,
+							// height: "calc(var(--wheel-size) * 1.161) ",
+							// height: "69vh ",
 							flexDirection: "row",
 							alignItems: "center",
 							width: "100%",
@@ -210,50 +200,17 @@ export default function DisplayWheel(props) {
 							onSelectItem={onSelectItem}
 							selectedItem={selectedItem}
 							roles={manager}
-							flagOpenWheelBanner={flagOpenBtnStart}
 						/>
 					</Row>
 				</>
 			)}
 			{!manager && (
 				<Row
+					className="footer_content_wheel__btn"
 					style={{
-						// paddingTop: "2vh",
-						// height: "10vh",
-						// flex: 1,
-						// flexDirection: "row",
-						// alignItems: "center",
-						// width: "100%",
 						justifyContent: "center",
 					}}
 				>
-					<Col
-						span={24}
-						style={{
-							display: "flex",
-							justifyContent: "center",
-						}}
-					>
-						<span className="content_wheel__btn">
-							{flagOpenBtnStart ? (
-								<button
-									onClick={() => setFlagOpenBtnStart(false)}
-								>
-									<img
-										className="wheeld__btn"
-										src="/images/wheel/icon_btn_start.png"
-									></img>
-								</button>
-							) : (
-								<button>
-									<img
-										className="wheeld__btn"
-										src="/images/wheel/icon_btn_spin.png"
-									></img>
-								</button>
-							)}
-						</span>
-					</Col>
 					<Col
 						span={24}
 						style={{
@@ -268,7 +225,7 @@ export default function DisplayWheel(props) {
 								}
 							>
 								<img
-									className="wheeld__btn"
+									className="wheel__btn"
 									src="/images/wheel/icon_btn_thele.png"
 								></img>
 							</button>
@@ -330,6 +287,6 @@ export default function DisplayWheel(props) {
 					</Col>
 				</Row>
 			)}
-		</div>
+		</Layout>
 	);
 }
