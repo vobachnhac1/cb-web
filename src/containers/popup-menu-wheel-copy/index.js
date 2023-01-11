@@ -379,8 +379,104 @@ export default function PopupMenu(props) {
 								""
 							)}
 							{/* Nội dung danh sách quà tặng listReward */}
+							{btnNameClick.btnName === "listReward" ? (
+								<div
+									className={
+										"reward-list-card__content--list-reward"
+									}
+								>
+									<p>
+										Với tổng giải thưởng lên đến hơn{" "}
+										<span style={{ fontWeight: "600" }}>
+											150 triệu đồng. {""}
+										</span>{" "}
+										Khách hàng tham gia chương trình Vòng
+										quay Loyalty có cơ hội nhận các giải
+										thưởng sau:
+									</p>
+									<ul>
+										<li>
+											<img src="/images/popup/icon_wheel_WrappedGift.png" />{" "}
+											04 Giải đặc biệt:{" "}
+											<span style={{ fontWeight: "600" }}>
+												{" "}
+												1.000.000 ₫
+											</span>{" "}
+											/ giải
+										</li>
+										<li>
+											<img src="/images/popup/icon_wheel_WrappedGift.png" />{" "}
+											56 Giải nhất:{" "}
+											<span style={{ fontWeight: "600" }}>
+												500.000 ₫
+											</span>
+											/ giải
+										</li>
+										<li>
+											<img src="/images/popup/icon_wheel_WrappedGift.png" />{" "}
+											280 Giải nhì:{" "}
+											<span style={{ fontWeight: "600" }}>
+												200.000 ₫
+											</span>
+											/ giải
+										</li>
+										<li>
+											<img src="/images/popup/icon_wheel_WrappedGift.png" />{" "}
+											560 Giải ba:{" "}
+											<span style={{ fontWeight: "600" }}>
+												100.000 ₫
+											</span>
+											/ giải
+										</li>
+										<li>
+											<img src="/images/popup/icon_wheel_WrappedGift.png" />{" "}
+											1120 Giải tư:{" "}
+											<span style={{ fontWeight: "600" }}>
+												10.000 ₫
+											</span>
+											/ giải
+										</li>
+										<li>
+											<img src="/images/popup/icon_wheel_WrappedGift.png" />{" "}
+											Thêm lượt quay
+										</li>
+										<li>
+											<img src="/images/popup/icon_wheel_WrappedGift.png" />{" "}
+											Chúc bạn may mắn lần sau
+										</li>
+									</ul>
+								</div>
+							) : (
+								""
+							)}
 							{/* Nội dung Lịch sử trúng thưởng listWinner */}
+							{btnNameClick.btnName === "listWinner" ? (
+								<div
+									className={
+										"reward-list-card__content--list-winner"
+									}
+								>
+									<ul>
+										<li>
+											<p>
+												<span>+1.000 coin</span>
+											</p>
+										</li>
+									</ul>
+								</div>
+							) : (
+								""
+							)}
 							{/* Nội dung Lịch sử tích điểm listScore*/}
+							{btnNameClick.btnName === "listScore" ? (
+								<div
+									className={
+										"reward-list-card__content--rules"
+									}
+								></div>
+							) : (
+								""
+							)}
 						</div>
 					</Card>
 				</div>
