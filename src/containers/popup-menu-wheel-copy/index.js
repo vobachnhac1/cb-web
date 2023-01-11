@@ -456,10 +456,83 @@ export default function PopupMenu(props) {
 										"reward-list-card__content--list-winner"
 									}
 								>
-									<ul>
-										<li>
-											<p>
-												<span>+1.000 coin</span>
+									<ul className={"list-winner__content"}>
+										<li className={"content__item"}>
+											<p className={"item--coin-day"}>
+												<span
+													className={"coin-day--coin"}
+												>
+													+1.000 coin
+												</span>
+												<span
+													className={"coin-day--day"}
+												>
+													24/06/2022 10:10:10
+												</span>
+											</p>
+											<p className={"item--coin-usefor"}>
+												Chức năng thực hiện:
+												<span
+													style={{
+														fontWeight: "600",
+														color: "black",
+													}}
+												>
+													{" "}
+													Chuyển tiền
+												</span>
+											</p>
+										</li>
+										<li className={"content__item"}>
+											<p className={"item--coin-day"}>
+												<span
+													className={"coin-day--coin"}
+												>
+													+1.000 coin
+												</span>
+												<span
+													className={"coin-day--day"}
+												>
+													24/06/2022 10:10:10
+												</span>
+											</p>
+											<p className={"item--coin-usefor"}>
+												Chức năng thực hiện:
+												<span
+													style={{
+														fontWeight: "600",
+														color: "black",
+													}}
+												>
+													{" "}
+													Chuyển tiền
+												</span>
+											</p>
+										</li>
+										<li className={"content__item"}>
+											<p className={"item--coin-day"}>
+												<span
+													className={"coin-day--coin"}
+												>
+													+1.000 coin
+												</span>
+												<span
+													className={"coin-day--day"}
+												>
+													24/06/2022 10:10:10
+												</span>
+											</p>
+											<p className={"item--coin-usefor"}>
+												Chức năng thực hiện:
+												<span
+													style={{
+														fontWeight: "600",
+														color: "black",
+													}}
+												>
+													{" "}
+													Chuyển tiền
+												</span>
 											</p>
 										</li>
 									</ul>
@@ -471,9 +544,80 @@ export default function PopupMenu(props) {
 							{btnNameClick.btnName === "listScore" ? (
 								<div
 									className={
-										"reward-list-card__content--rules"
+										"reward-list-card__content--list-winner"
 									}
-								></div>
+								>
+									<ul className={"list-winner__content"}>
+										<li className={"content__item"}>
+											<p className={"item--coin-day"}>
+												<span
+													className={"coin-day--coin"}
+												>
+													Chúc bạn may mắn lần sau
+												</span>
+												<span
+													className={"coin-day--day"}
+												>
+													24/06/2022 10:10:10
+												</span>
+											</p>
+										</li>
+										<li className={"content__item"}>
+											<p className={"item--coin-day"}>
+												<span
+													className={"coin-day--coin"}
+												>
+													+1.000 coin
+												</span>
+												<span
+													className={"coin-day--day"}
+												>
+													24/06/2022 10:10:10
+												</span>
+											</p>
+											<p className={"item--coin-usefor"}>
+												Tình trạng:
+												<span
+													style={{
+														fontWeight: "600",
+														color: "black",
+													}}
+												>
+													{" "}
+													Đang thực hiện
+												</span>
+											</p>
+										</li>
+										<li className={"content__item"}>
+											<p className={"item--coin-day"}>
+												<span
+													className={"coin-day--coin"}
+												>
+													Chúc bạn may mắn lần sau
+												</span>
+												<span
+													className={"coin-day--day"}
+												>
+													24/06/2022 10:10:10
+												</span>
+											</p>
+										</li>
+										<li className={"content__item"}>
+											<p className={"item--coin-day"}>
+												<span
+													className={"coin-day--coin"}
+												>
+													Chúc bạn may mắn lần sau
+												</span>
+												<span
+													className={"coin-day--day"}
+												>
+													24/06/2022 10:10:10
+												</span>
+											</p>
+										</li>
+									</ul>
+								</div>
 							) : (
 								""
 							)}
