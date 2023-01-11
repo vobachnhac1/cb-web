@@ -46,7 +46,7 @@ export default function PopupMenu(props) {
 				actionWheelPopupMenu.getAllDataHistory(params)
 			);
 			if (!result) {
-				Message.Error("Thông Báo", "Hiển thị lịch sử thất bại");
+				// Message.Error("Thông Báo", "Hiển thị lịch sử thất bại");
 			}
 		}
 
@@ -535,6 +535,188 @@ export default function PopupMenu(props) {
 												</span>
 											</p>
 										</li>
+										<li className={"content__item"}>
+											<p className={"item--coin-day"}>
+												<span
+													className={"coin-day--coin"}
+												>
+													+1.000 coin
+												</span>
+												<span
+													className={"coin-day--day"}
+												>
+													24/06/2022 10:10:10
+												</span>
+											</p>
+											<p className={"item--coin-usefor"}>
+												Chức năng thực hiện:
+												<span
+													style={{
+														fontWeight: "600",
+														color: "black",
+													}}
+												>
+													{" "}
+													Chuyển tiền
+												</span>
+											</p>
+										</li>
+										<li className={"content__item"}>
+											<p className={"item--coin-day"}>
+												<span
+													className={"coin-day--coin"}
+												>
+													+1.000 coin
+												</span>
+												<span
+													className={"coin-day--day"}
+												>
+													24/06/2022 10:10:10
+												</span>
+											</p>
+											<p className={"item--coin-usefor"}>
+												Chức năng thực hiện:
+												<span
+													style={{
+														fontWeight: "600",
+														color: "black",
+													}}
+												>
+													{" "}
+													Chuyển tiền
+												</span>
+											</p>
+										</li>
+										<li className={"content__item"}>
+											<p className={"item--coin-day"}>
+												<span
+													className={"coin-day--coin"}
+												>
+													+1.000 coin
+												</span>
+												<span
+													className={"coin-day--day"}
+												>
+													24/06/2022 10:10:10
+												</span>
+											</p>
+											<p className={"item--coin-usefor"}>
+												Chức năng thực hiện:
+												<span
+													style={{
+														fontWeight: "600",
+														color: "black",
+													}}
+												>
+													{" "}
+													Chuyển tiền
+												</span>
+											</p>
+										</li>
+										<li className={"content__item"}>
+											<p className={"item--coin-day"}>
+												<span
+													className={"coin-day--coin"}
+												>
+													+1.000 coin
+												</span>
+												<span
+													className={"coin-day--day"}
+												>
+													24/06/2022 10:10:10
+												</span>
+											</p>
+											<p className={"item--coin-usefor"}>
+												Chức năng thực hiện:
+												<span
+													style={{
+														fontWeight: "600",
+														color: "black",
+													}}
+												>
+													{" "}
+													Chuyển tiền
+												</span>
+											</p>
+										</li>
+										<li className={"content__item"}>
+											<p className={"item--coin-day"}>
+												<span
+													className={"coin-day--coin"}
+												>
+													+1.000 coin
+												</span>
+												<span
+													className={"coin-day--day"}
+												>
+													24/06/2022 10:10:10
+												</span>
+											</p>
+											<p className={"item--coin-usefor"}>
+												Chức năng thực hiện:
+												<span
+													style={{
+														fontWeight: "600",
+														color: "black",
+													}}
+												>
+													{" "}
+													Chuyển tiền
+												</span>
+											</p>
+										</li>
+										<li className={"content__item"}>
+											<p className={"item--coin-day"}>
+												<span
+													className={"coin-day--coin"}
+												>
+													+1.000 coin
+												</span>
+												<span
+													className={"coin-day--day"}
+												>
+													24/06/2022 10:10:10
+												</span>
+											</p>
+											<p className={"item--coin-usefor"}>
+												Chức năng thực hiện:
+												<span
+													style={{
+														fontWeight: "600",
+														color: "black",
+													}}
+												>
+													{" "}
+													Chuyển tiền
+												</span>
+											</p>
+										</li>
+										<li className={"content__item"}>
+											<p className={"item--coin-day"}>
+												<span
+													className={"coin-day--coin"}
+												>
+													+1.000 coin
+												</span>
+												<span
+													className={"coin-day--day"}
+												>
+													24/06/2022 10:10:10
+												</span>
+											</p>
+											<p className={"item--coin-usefor"}>
+												Chức năng thực hiện:
+												<span
+													style={{
+														fontWeight: "600",
+														color: "black",
+													}}
+												>
+													{" "}
+													Chuyển tiền
+												</span>
+											</p>
+										</li>
 									</ul>
 								</div>
 							) : (
@@ -585,6 +767,132 @@ export default function PopupMenu(props) {
 												>
 													{" "}
 													Đang thực hiện
+												</span>
+											</p>
+										</li>
+										<li className={"content__item"}>
+											<p className={"item--coin-day"}>
+												<span
+													className={"coin-day--coin"}
+												>
+													Chúc bạn may mắn lần sau
+												</span>
+												<span
+													className={"coin-day--day"}
+												>
+													24/06/2022 10:10:10
+												</span>
+											</p>
+										</li>
+										<li className={"content__item"}>
+											<p className={"item--coin-day"}>
+												<span
+													className={"coin-day--coin"}
+												>
+													Chúc bạn may mắn lần sau
+												</span>
+												<span
+													className={"coin-day--day"}
+												>
+													24/06/2022 10:10:10
+												</span>
+											</p>
+										</li>
+										<li className={"content__item"}>
+											<p className={"item--coin-day"}>
+												<span
+													className={"coin-day--coin"}
+												>
+													Chúc bạn may mắn lần sau
+												</span>
+												<span
+													className={"coin-day--day"}
+												>
+													24/06/2022 10:10:10
+												</span>
+											</p>
+										</li>
+										<li className={"content__item"}>
+											<p className={"item--coin-day"}>
+												<span
+													className={"coin-day--coin"}
+												>
+													Chúc bạn may mắn lần sau
+												</span>
+												<span
+													className={"coin-day--day"}
+												>
+													24/06/2022 10:10:10
+												</span>
+											</p>
+										</li>
+										<li className={"content__item"}>
+											<p className={"item--coin-day"}>
+												<span
+													className={"coin-day--coin"}
+												>
+													Chúc bạn may mắn lần sau
+												</span>
+												<span
+													className={"coin-day--day"}
+												>
+													24/06/2022 10:10:10
+												</span>
+											</p>
+										</li>
+										<li className={"content__item"}>
+											<p className={"item--coin-day"}>
+												<span
+													className={"coin-day--coin"}
+												>
+													Chúc bạn may mắn lần sau
+												</span>
+												<span
+													className={"coin-day--day"}
+												>
+													24/06/2022 10:10:10
+												</span>
+											</p>
+										</li>
+										<li className={"content__item"}>
+											<p className={"item--coin-day"}>
+												<span
+													className={"coin-day--coin"}
+												>
+													Chúc bạn may mắn lần sau
+												</span>
+												<span
+													className={"coin-day--day"}
+												>
+													24/06/2022 10:10:10
+												</span>
+											</p>
+										</li>
+										<li className={"content__item"}>
+											<p className={"item--coin-day"}>
+												<span
+													className={"coin-day--coin"}
+												>
+													Chúc bạn may mắn lần sau
+												</span>
+												<span
+													className={"coin-day--day"}
+												>
+													24/06/2022 10:10:10
+												</span>
+											</p>
+										</li>
+										<li className={"content__item"}>
+											<p className={"item--coin-day"}>
+												<span
+													className={"coin-day--coin"}
+												>
+													Chúc bạn may mắn lần sau
+												</span>
+												<span
+													className={"coin-day--day"}
+												>
+													24/06/2022 10:10:10
 												</span>
 											</p>
 										</li>

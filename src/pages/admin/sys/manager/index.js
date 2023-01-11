@@ -186,9 +186,9 @@ export default function SystemManagement(props) {
           style={{ backgroundColor: '#FFFFFF' }}>
           <Col span={48} >
             <Row gutter={[16, 24]} style={{ marginTop: 10 }}>
-              <Col className="gutter-row" span={3}>
+              {/* <Col className="gutter-row" span={3}>
                 <Button type='primary' size='middle' style={{ width: '100%' }} onClick={onSearch} >Tìm kiếm</Button>
-              </Col>
+              </Col> */}
               <Col className="gutter-row" span={3}>
                 <Button type='primary' size='middle' style={{ width: '100%' }} onClick={insertSystem}>Thêm</Button>
               </Col>
