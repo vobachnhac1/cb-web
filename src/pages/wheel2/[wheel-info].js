@@ -122,10 +122,11 @@ export default function DisplayWheel(props) {
 	const onSelectItem = (value) => {
 		setSelectedItem(value);
 	};
-	const onCangeFlagOpenPopupMenu = (btnName, vnsbName) => {
+	const onCangeFlagOpenPopupMenu = (btnName, vnsbName, flagMinibaner) => {
 		setBtnNameClick({
 			btnName: btnName,
 			vnsbName: vnsbName,
+			flagMinibaner: flagMinibaner,
 		});
 		setFlagOpenPopupMenu(true);
 	};
@@ -221,7 +222,11 @@ export default function DisplayWheel(props) {
 						<span className="content_wheel__btn">
 							<button
 								onClick={() =>
-									onCangeFlagOpenPopupMenu("Rules", "Thể lệ")
+									onCangeFlagOpenPopupMenu(
+										"Rules",
+										"Thể lệ",
+										true
+									)
 								}
 							>
 								<img
@@ -235,7 +240,8 @@ export default function DisplayWheel(props) {
 								onClick={() =>
 									onCangeFlagOpenPopupMenu(
 										"listReward",
-										"Danh sách quà tặng"
+										"Danh sách quà tặng",
+										true
 									)
 								}
 							>
@@ -259,7 +265,8 @@ export default function DisplayWheel(props) {
 								onClick={() =>
 									onCangeFlagOpenPopupMenu(
 										"listWinner",
-										"Lịch sử trúng thưởng"
+										"Lịch sử trúng thưởng",
+										false
 									)
 								}
 							>
@@ -274,7 +281,8 @@ export default function DisplayWheel(props) {
 								onClick={() =>
 									onCangeFlagOpenPopupMenu(
 										"listScore",
-										"Danh sách tích điểm"
+										"Danh sách tích điểm",
+										false
 									)
 								}
 							>
