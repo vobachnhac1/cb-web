@@ -185,7 +185,7 @@ export default function WheelDetail({ query }) {
   // define colums
   const columns = [
     {
-      title: 'Key',
+      title: 'STT',
       dataIndex: 'key',
       key: 'key',
       fixed: 'left',

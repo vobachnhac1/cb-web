@@ -1,26 +1,14 @@
 :root {
   --app-font: 'Quicksand', 'Lato', sans-serif;
   --neutral-color: white;
+  --font-size-custom:10px;
+  --wheel-btn-height:calc(var(--wheel-size)/12);
+  --wheel-btn-width:calc(var(--wheel-size)/4);
 }
 
-// .App {
-//   padding-top: 10px;
-//   font-family: var(--app-font);
-//   text-align: center;
-//   background-image: url("/images/happynewyear.jpg");
-//   background-position: center;
-//   /* Center the image */
-//   background-repeat: no-repeat;
-//   /* Do not repeat the image */
-//   background-size: cover;
-//   /* Resize the background image to cover the entire container */
-//   user-select: none;
-//   height: 100vh;
-//   width: 100vw;
-// }
-
 .App {
-  background-image: linear-gradient(#337ab7, white, yellow);
+  // background-image: linear-gradient(#337ab7, white, yellow);
+  background-image: linear-gradient(#EFF9F9,#BFE4E7);
   width: 100vw;
   height: 100vh;
   // text-align: center;
@@ -29,6 +17,12 @@
   background-repeat: no-repeat;
   /* Do not repeat the image */
   background-size: cover;
+  display: flex;
+  flex-direction: column;
+}
+
+.content--main__wheel{
+	height: 66vh;
 }
 
 .wheel-shelf-footer {
@@ -43,7 +37,6 @@
   border-right: 50px solid transparent;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
-
 }
 
 .wheel-shelf-midle {
@@ -55,20 +48,6 @@
   height: 600px;
   border: 20px solid aqua;
   border-radius: 50%;
-
-  // margin: 0 auto;
-  // background: conic-gradient(lightgrey 0deg 30deg,
-  //     red 30deg 60deg,
-  //     lightgrey 60deg 120deg,
-  //     yellow 12deg 150deg,
-  //     lightgrey 150deg 210deg,
-  //     green 210deg 240deg,
-  //     lightgrey 240deg 300deg,
-  //     blue 300deg 330deg,
-  //     lightgrey 330deg 360deg);
-  // -webkit-mask-image: radial-gradient(transparent 65%, black 65%);
-  // mask-image: radial-gradient(transparent 65%, black 65%);
-  // border-radius: 50%;
 }
 
 .wheel-shelf-head {
@@ -83,5 +62,145 @@
   border-right: 20px solid transparent;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+}
+
+// ----------------------------------- 1/1/2022
+
+.wheel__value{
+   width: calc(var(--font-size-custom)*16);
+  height: calc(var(--font-size-custom)*3);
+  left: 0px;
+  top: 14px;
+  margin-right: calc(var(--font-size-custom));
+  background: rgba(171, 166, 161, 0.5);
+  border-radius: 12px;
+  font-style: italic;
+  font-weight: 700;
+  line-height: calc(var(--font-size-custom)*3);
+  font-size: calc(var(--font-size-custom)*1.4);
+  text-align: center;
+  color: #FFFFFF;
+  text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+  display: inline-block;
+}
+
+.wheel__value::before{
+  content: '';
+  position: absolute;
+  background-image: url(/images/wheel/icon_wheel_value.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: calc(var(--font-size-custom)*2.6);
+  height: calc(var(--font-size-custom)*2.7);
+  width: calc(var(--font-size-custom)*2.9);
+  height: calc(var(--font-size-custom)*2.9);
+  top: 0;
+  left: calc(var(--font-size-custom)*-0.4);
+  display: block;
+}
+
+.wheel__numbertimes{
+  display: inline-block;
+  width: calc(var(--font-size-custom)*12.5);
+  height: calc(var(--font-size-custom)*3);
+  left: 0px;
+  top: calc(var(--font-size-custom)*1.4);
+  background: rgba(171, 166, 161, 0.5);
+  border-radius: 12px;
+  font-size: calc(var(--font-size-custom)*1.4);
+  font-style: italic;
+  font-weight: 700;
+  line-height: calc(var(--font-size-custom)*3);
+  text-align: center;
+  color: #FFFFFF;
+  text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+.wheel__numbertimes::before{
+  content: '';
+  position: absolute;
+  background-image: url(/images/wheel/icon_wheel_numTimes.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: calc(var(--font-size-custom)*2.9);
+  height: calc(var(--font-size-custom)*2.9);
+  display: block;
+  margin-left: calc(var(--font-size-custom)*-0.5);
+}
+.content_wheel__btn{
+  padding: 2px;
+  margin: 3px;
+  border-radius: 9px;
+  transition: transform .2s;
+  cursor: pointer;
 
 }
+.content_wheel__btn > button {
+  padding: 0; 
+  border: none;
+  border-radius: 10px;
+  background-color: transparent;
+  cursor: pointer;
+}
+.wheel__btn{
+  border: none;
+  width: var(--wheel-btn-width); 
+  height: var(--wheel-btn-height);
+}
+
+.content_wheel__btn:hover{
+  transform: scale(1.1);
+}
+
+.icon_LeftCircleTwoTone_custom{
+  width: calc(var(--font-size-custom)*3.2);
+  height: calc(var(--font-size-custom)*3.2);
+  color: #FFFFFF;
+  background: #FBD455;
+  border-radius: 50%;
+  margin-left: calc(var(--font-size-custom));
+  transition: transform 0.2s;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.icon_LeftCircleTwoTone_custom > img{
+  width: 50%;
+  margin-left: calc(var(--font-size-custom)*-0.4);
+}
+.icon_LeftCircleTwoTone_custom:hover{
+  transform: scale(1.1);
+}
+
+.footer_content_wheel__btn{
+  margin-top:calc((var(--wheel-size) * 1.083) - var(--wheel-size) +  var(--wheel-btnstart-height) );
+}
+
+// responsive
+@media only screen and (max-width: 992px) {
+  :root {
+    --font-size-custom: 9px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  :root {
+    --font-size-custom: 8px;
+  }
+}
+
+@media only screen and (max-width: 300px) {
+  :root {
+    --font-size-custom: 7px;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .footer_content_wheel__btn{
+    margin-top:0
+  }
+}
+

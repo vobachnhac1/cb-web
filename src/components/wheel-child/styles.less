@@ -1,15 +1,11 @@
 :root {
   --wheel-font: 'Lato', 'Quicksand', sans-serif;
   --wheel-font-size: 12px;
-  --wheel-icon-size: 40px;
-  --wheel-size: 500px;
-  --wheel-position-wheel: 15%;
-  --wheel-slice-spacing: 50px;
-  --wheel-border-size: 5px;
+  --wheel-size: calc(69vh/1.1);
   --wheel-color: #337ab7;
   --background-color: white;
   --neutral-color: white;
-  --PI: 3.14159265358979;
+  --PI: 3.14159265358979; 
   --nb-item: 0;
   --item-nb: 0;
   --selected-item: 0;
@@ -18,9 +14,17 @@
   --reset-duration: 0.25s;
   --item-reward-url: url("/images/reward/reward1.png");
   --scale-distance: 2;
+   // wheel icon
+   --wheel-icon-size: 40px;
+  // boder spin win
+  --wheel-container--border:calc(var(--wheel-size)/73);
+  --wheel-border-size: calc(var(--wheel-size)/60);
+  // wheel__btnstart
+  --wheel-btnstart-height:calc(var(--wheel-size)/7.22);
+  --wheel-btnstart-width:calc(var(--wheel-size)/4);
 }
 
-// Nhac custom
+
 .wheel-viewbox-border {
   top: 35%;
   left: 36%;
@@ -29,11 +33,11 @@
   width: 150px;
   height: 150px;
   border-radius: 100px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 1) 31%, rgba(0, 155, 217, 1) 80%);
+  background: #fcca60;
 
 }
 
-.wheel-viewbox {
+.wheel-viewbox { 
   top: 38%;
   left: 39%;
   z-index: 1;
@@ -45,7 +49,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  animation-duration: 4s;
+  animation-duration: 2.4s;
   animation-name: animation_logo;
   animation-iteration-count: infinite;
   animation-direction: alternate;
@@ -69,635 +73,21 @@
     left: 39%;
   }
 }
-
-
-// done
-@media screen and (min-width: 1200px) {
-  :root {
-    --wheel-size: 600px;
-    --wheel-font-size: 16px;
-    --wheel-font-size: 16px;
-    --wheel-icon-size: 40px;
-    --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
-    --scale-distance: 1.1;
-  }
-
-  .wheel-viewbox {
-    top: 43.5%;
-    left: 44%;
-    width: 80px;
-    height: 80px;
-    border-radius: 80px;
-  }
-
-  .wheel-viewbox-border {
-    top: 40.5%;
-    left: 41%;
-    width: 120px;
-    height: 120px;
-    border-radius: 120px;
-
-  }
-
-  @keyframes animation_logo {
-    from {
-      top: 45%;
-      left: 46%;
-      width: 60px;
-      height: 60px;
-      border-radius: 60px;
-    }
-
-    to {
-      top: 43.5%;
-      left: 44%;
-      width: 80px;
-      height: 80px;
-      border-radius: 80px;
-    }
-  }
-}
-
-// done 
-@media screen and (min-width: 992px) and (max-width: 1199px) {
-  :root {
-    --wheel-size: 600px;
-    --wheel-font-size: calc(12px + (26 - 20) * ((100vw - 992px) / (1199 - 992)));
-    --wheel-icon-size: 40px;
-    --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
-    --scale-distance: 1.1;
-
-  }
-
-  .wheel-viewbox {
-    top: 42.5%;
-    left: 45%;
-    width: 80px;
-    height: 80px;
-    border-radius: 80px;
-  }
-
-  .wheel-viewbox-border {
-    top: 39%;
-    left: 41.5%;
-    width: 120px;
-    height: 120px;
-    border-radius: 120px;
-
-  }
-
-  @keyframes animation_logo {
-    from {
-      top: 44%;
-      left: 46%;
-      width: 60px;
-      height: 60px;
-      border-radius: 60px;
-    }
-
-    to {
-      top: 42.5%;
-      left: 45%;
-      width: 80px;
-      height: 80px;
-      border-radius: 80px;
-    }
-  }
-}
-
-// done
-@media screen and (min-width: 768px) and (max-width: 991px) {
-  :root {
-    --wheel-size: calc(100vw/(sqrt(2)) - 10px);
-    --wheel-font-size: calc(12px + (26 - 18) * ((100vw - 768px) / (991 - 768)));
-    --wheel-icon-size: 35px;
-    --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
-    --scale-distance: 1.2;
-  }
-
-  .wheel-viewbox {
-    top: calc(var(--wheel-size)/2 - 80px/2 + 10px);
-    left: calc(var(--wheel-size)/2 - 80px/2 + 10px);
-    width: 80px;
-    height: 80px;
-    border-radius: 80px;
-  }
-
-  .wheel-viewbox-border {
-    top: calc(var(--wheel-size)/2 - 120px/2 + 10px);
-    left: calc(var(--wheel-size)/2 - 120px/2 + 10px);
-    width: 120px;
-    height: 120px;
-    border-radius: 120px;
-
-  }
-
-  @keyframes animation_logo {
-    from {
-      top: calc(var(--wheel-size)/2 - 60px/2 + 10px);
-      left: calc(var(--wheel-size)/2 - 60px/2 + 10px);
-      width: 60px;
-      height: 60px;
-      border-radius: 60px;
-    }
-
-    to {
-      top: calc(var(--wheel-size)/2 - 80px/2 + 10px);
-      left: calc(var(--wheel-size)/2 - 80px/2 + 10px);
-      width: 80px;
-      height: 80px;
-      border-radius: 80px;
-    }
-  }
-}
-
-// done
-@media screen and (min-width: 676px) and (max-width: 767px) {
-  :root {
-    --wheel-size: calc((100vw/(sqrt(2))) - 10px);
-    --wheel-font-size: calc(10px + (22 - 15) * ((100vw - 576px) / (767 - 576)));
-    --wheel-icon-size: 33px;
-    --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
-    --scale-distance: 1.3;
-
-  }
-
-  .wheel-viewbox {
-    top: calc(var(--wheel-size)/2 - 70px/2 + 10px);
-    left: calc(var(--wheel-size)/2 - 70px/2 + 10px);
-    width: 70px;
-    height: 70px;
-    border-radius: 70px;
-  }
-
-  .wheel-viewbox-border {
-    top: calc(var(--wheel-size)/2 - 100px/2 + 10px);
-    left: calc(var(--wheel-size)/2 - 100px/2 + 10px);
-    width: 100px;
-    height: 100px;
-    border-radius: 100px;
-
-  }
-
-  @keyframes animation_logo {
-    from {
-      top: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-      left: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-      width: 50px;
-      height: 50px;
-      border-radius: 50px;
-    }
-
-    to {
-      top: calc(var(--wheel-size)/2 - 70px/2 + 10px);
-      left: calc(var(--wheel-size)/2 - 70px/2 + 10px);
-      width: 70px;
-      height: 70px;
-      border-radius: 50px;
-    }
-  }
-}
-
-@media screen and (min-width: 576px) and (max-width: 675px) {
-  :root {
-    --wheel-size: calc((100vw/(sqrt(2))) - 10px);
-    --wheel-font-size: calc(10px + (22 - 15) * ((100vw - 576px) / (767 - 576)));
-    --wheel-icon-size: 33px;
-    --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
-    --scale-distance: 1.5;
-
-  }
-
-  .wheel-viewbox {
-    top: calc(var(--wheel-size)/2 - 70px/2 + 10px);
-    left: calc(var(--wheel-size)/2 - 70px/2 + 10px);
-    width: 70px;
-    height: 70px;
-    border-radius: 70px;
-  }
-
-  .wheel-viewbox-border {
-    top: calc(var(--wheel-size)/2 - 100px/2 + 10px);
-    left: calc(var(--wheel-size)/2 - 100px/2 + 10px);
-    width: 100px;
-    height: 100px;
-    border-radius: 100px;
-
-  }
-
-  @keyframes animation_logo {
-    from {
-      top: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-      left: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-      width: 50px;
-      height: 50px;
-      border-radius: 50px;
-    }
-
-    to {
-      top: calc(var(--wheel-size)/2 - 70px/2 + 10px);
-      left: calc(var(--wheel-size)/2 - 70px/2 + 10px);
-      width: 70px;
-      height: 70px;
-      border-radius: 50px;
-    }
-  }
-}
-
-// done
-@media screen and (min-width: 535px) and (max-width: 575px) {
-  :root {
-    --wheel-size: calc((100vw/(sqrt(2))) - 10px);
-    --wheel-font-size: calc(8px + (14 - 8) * ((100vw - 414px) / (575 - 414)));
-    --wheel-icon-size: 24px;
-    --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
-    --scale-distance: 1.6;
-
-  }
-
-  .wheel-viewbox {
-    top: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-    left: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-    width: 50px;
-    height: 50px;
-    border-radius: 50px;
-
-  }
-
-  .wheel-viewbox-border {
-    top: calc(var(--wheel-size)/2 - 80px/2 + 10px);
-    left: calc(var(--wheel-size)/2 - 80px/2 + 10px);
-    width: 80px;
-    height: 80px;
-    border-radius: 80px;
-
-  }
-
-  @keyframes animation_logo {
-    from {
-      top: calc(var(--wheel-size)/2 - 35px/2 + 10px);
-      left: calc(var(--wheel-size)/2 - 35px/2 + 10px);
-      width: 35px;
-      height: 35px;
-      border-radius: 35px;
-    }
-
-    to {
-      top: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-      left: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-      width: 50px;
-      height: 50px;
-      border-radius: 50px;
-    }
-  }
-}
-
-@media screen and (min-width: 474px) and (max-width: 534px) {
-  :root {
-    --wheel-size: calc((100vw/(sqrt(2))) - 10px);
-    --wheel-font-size: calc(8px + (14 - 8) * ((100vw - 414px) / (575 - 414)));
-    --wheel-icon-size: 24px;
-    --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
-    --scale-distance: 1.8;
-
-  }
-
-  .wheel-viewbox {
-    top: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-    left: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-    width: 50px;
-    height: 50px;
-    border-radius: 50px;
-
-  }
-
-  .wheel-viewbox-border {
-    top: calc(var(--wheel-size)/2 - 80px/2 + 10px);
-    left: calc(var(--wheel-size)/2 - 80px/2 + 10px);
-    width: 80px;
-    height: 80px;
-    border-radius: 80px;
-
-  }
-
-  @keyframes animation_logo {
-    from {
-      top: calc(var(--wheel-size)/2 - 35px/2 + 10px);
-      left: calc(var(--wheel-size)/2 - 35px/2 + 10px);
-      width: 35px;
-      height: 35px;
-      border-radius: 35px;
-    }
-
-    to {
-      top: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-      left: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-      width: 50px;
-      height: 50px;
-      border-radius: 50px;
-    }
-  }
-}
-
-// done
-@media screen and (min-width: 440px) and (max-width: 473px) {
-  :root {
-    --wheel-size: calc((100vw/(sqrt(2))) - 10px);
-    --wheel-font-size: calc(8px + (14 - 8) * ((100vw - 414px) / (575 - 414)));
-    --wheel-icon-size: 24px;
-    --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
-    --scale-distance: 2;
-
-  }
-
-  .wheel-viewbox {
-    top: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-    left: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-    width: 50px;
-    height: 50px;
-    border-radius: 50px;
-
-  }
-
-  .wheel-viewbox-border {
-    top: calc(var(--wheel-size)/2 - 80px/2 + 10px);
-    left: calc(var(--wheel-size)/2 - 80px/2 + 10px);
-    width: 80px;
-    height: 80px;
-    border-radius: 80px;
-
-  }
-
-  @keyframes animation_logo {
-    from {
-      top: calc(var(--wheel-size)/2 - 35px/2 + 10px);
-      left: calc(var(--wheel-size)/2 - 35px/2 + 10px);
-      width: 35px;
-      height: 35px;
-      border-radius: 35px;
-    }
-
-    to {
-      top: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-      left: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-      width: 50px;
-      height: 50px;
-      border-radius: 50px;
-    }
-  }
-}
-
-@media screen and (min-width: 414px) and (max-width: 439px) {
-  :root {
-    --wheel-size: calc((100vw/(sqrt(2))) - 10px);
-    --wheel-font-size: calc(8px + (14 - 8) * ((100vw - 414px) / (575 - 414)));
-    --wheel-icon-size: 24px;
-    --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
-    --scale-distance: 2.1;
-
-  }
-
-  .wheel-viewbox {
-    top: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-    left: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-    width: 50px;
-    height: 50px;
-    border-radius: 50px;
-
-  }
-
-  .wheel-viewbox-border {
-    top: calc(var(--wheel-size)/2 - 80px/2 + 10px);
-    left: calc(var(--wheel-size)/2 - 80px/2 + 10px);
-    width: 80px;
-    height: 80px;
-    border-radius: 80px;
-
-  }
-
-  @keyframes animation_logo {
-    from {
-      top: calc(var(--wheel-size)/2 - 35px/2 + 10px);
-      left: calc(var(--wheel-size)/2 - 35px/2 + 10px);
-      width: 35px;
-      height: 35px;
-      border-radius: 35px;
-    }
-
-    to {
-      top: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-      left: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-      width: 50px;
-      height: 50px;
-      border-radius: 50px;
-    }
-  }
-}
-
-// done
-@media screen and (min-width: 390px) and (max-width: 413px) {
-  :root {
-    --wheel-size: calc((100vw/(sqrt(2))) - 10px);
-    --wheel-font-size: calc(8px + (8 - 8) * ((100vw - 360px) / (413 - 360)));
-    --wheel-icon-size: 15px;
-    --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
-    --scale-distance: 2.3;
-  }
-
-  .wheel-viewbox {
-    top: calc(var(--wheel-size)/2 - 60px/2 + 10px);
-    left: calc(var(--wheel-size)/2 - 60px/2 + 10px);
-    width: 60px;
-    height: 60px;
-    border-radius: 60px;
-
-  }
-
-  .wheel-viewbox-border {
-    top: calc(var(--wheel-size)/2 - 80px/2 + 10px);
-    left: calc(var(--wheel-size)/2 - 80px/2 + 10px);
-    width: 80px;
-    height: 80px;
-    border-radius: 80px;
-
-  }
-
-  @keyframes animation_logo {
-    from {
-      top: calc(var(--wheel-size)/2 - 40px/2 + 10px);
-      left: calc(var(--wheel-size)/2 - 40px/2 + 10px);
-      width: 40px;
-      height: 40px;
-      border-radius: 40px;
-    }
-
-    to {
-      top: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-      left: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-      width: 50px;
-      height: 50px;
-      border-radius: 50px;
-    }
-  }
-}
-
-
-@media screen and (min-width: 360px) and (max-width: 389px) {
-  :root {
-    --wheel-size: calc((100vw/(sqrt(2))) - 10px);
-    --wheel-font-size: calc(8px + (8 - 8) * ((100vw - 360px) / (413 - 360)));
-    --wheel-icon-size: 15px;
-    --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
-    --scale-distance: 2.4;
-  }
-
-  .wheel-viewbox {
-    top: calc(var(--wheel-size)/2 - 60px/2 + 10px);
-    left: calc(var(--wheel-size)/2 - 60px/2 + 10px);
-    width: 60px;
-    height: 60px;
-    border-radius: 60px;
-
-  }
-
-  .wheel-viewbox-border {
-    top: calc(var(--wheel-size)/2 - 80px/2 + 10px);
-    left: calc(var(--wheel-size)/2 - 80px/2 + 10px);
-    width: 80px;
-    height: 80px;
-    border-radius: 80px;
-
-  }
-
-  @keyframes animation_logo {
-    from {
-      top: calc(var(--wheel-size)/2 - 40px/2 + 10px);
-      left: calc(var(--wheel-size)/2 - 40px/2 + 10px);
-      width: 40px;
-      height: 40px;
-      border-radius: 40px;
-    }
-
-    to {
-      top: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-      left: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-      width: 50px;
-      height: 50px;
-      border-radius: 50px;
-    }
-  }
-}
-
-// done
-@media screen and (min-width: 320px) and (max-width: 359px) {
-  :root {
-    --wheel-size: calc((100vw/(sqrt(2))) - 10px);
-    --wheel-font-size: 5px;
-    --wheel-icon-size: 15px;
-    --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
-    --scale-distance: 2.6;
-  }
-
-  .wheel-viewbox {
-    top: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-    left: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-    width: 50px;
-    height: 50px;
-    border-radius: 50px;
-
-  }
-
-  .wheel-viewbox-border {
-    top: calc(var(--wheel-size)/2 - 70px/2 + 10px);
-    left: calc(var(--wheel-size)/2 - 70px/2 + 10px);
-    width: 70px;
-    height: 70px;
-    border-radius: 70px;
-
-  }
-
-  @keyframes animation_logo {
-    from {
-      top: calc(var(--wheel-size)/2 - 35px/2 + 10px);
-      left: calc(var(--wheel-size)/2 - 35px/2 + 10px);
-      width: 35px;
-      height: 35px;
-      border-radius: 35px;
-    }
-
-    to {
-      top: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-      left: calc(var(--wheel-size)/2 - 50px/2 + 10px);
-      width: 50px;
-      height: 50px;
-      border-radius: 50px;
-    }
-  }
-}
-
-// done
-@media screen and (max-width: 319px) {
-  :root {
-    --wheel-size: calc((100vw/(sqrt(2))) - 20px);
-    --wheel-font-size: 5px;
-    --wheel-icon-size: 12px;
-    --wheel-position-wheel: calc(calc(100vh - var(--wheel-size))/2);
-    --scale-distance: 3;
-  }
-
-  .wheel-viewbox {
-    top: calc(var(--wheel-size)/2 - 35px/2 + 10px);
-    left: calc(var(--wheel-size)/2 - 35px/2 + 10px);
-    width: 35px;
-    height: 35px;
-    border-radius: 35px;
-
-  }
-
-  .wheel-viewbox-border {
-    top: calc(var(--wheel-size)/2 - 60px/2 + 10px);
-    left: calc(var(--wheel-size)/2 - 60px/2 + 10px);
-    width: 60px;
-    height: 60px;
-    border-radius: 60px;
-
-  }
-
-  @keyframes animation_logo {
-    from {
-      top: calc(var(--wheel-size)/2 - 30px/2 + 10px);
-      left: calc(var(--wheel-size)/2 - 30px/2 + 10px);
-      width: 30px;
-      height: 30px;
-      border-radius: 30px;
-    }
-
-    to {
-      top: calc(var(--wheel-size)/2 - 35px/2 + 10px);
-      left: calc(var(--wheel-size)/2 - 35px/2 + 10px);
-      width: 35px;
-      height: 35px;
-      border-radius: 35px;
-    }
-  }
-}
-
-
-
+//11111111111111111111111111111111111111111111
 /* Wheel container = outer pink circle */
 .wheel-container {
   display: block;
-  position: relative;
+  position: absolute;
   box-sizing: content-box;
   width: calc(var(--wheel-size) + 2 * var(--wheel-border-size));
   height: calc(var(--wheel-size) + 2 * var(--wheel-border-size));
   padding: 3px;
   margin: auto;
-  background-color: var(--neutral-color);
-  border: solid var(--wheel-color) 3px;
+  background-color: #FBD455;
+  border: solid #FBD455 var(--wheel-container--border);
   border-radius: 50%;
   user-select: none;
-  top: var(--wheel-position-wheel);
+
 }
 
 
@@ -712,18 +102,18 @@
   top: 50%;
   transform: translateY(-50%);
   z-index: 2;
-  border: solid transparent 20px;
+  border: solid transparent calc(var(--wheel-size)/21.4);
   border-left-width: 0;
 }
 
 .wheel-container::before {
-  right: 0px;
-  border-right-color: var(--wheel-color);
+  right: calc(var(--wheel-size)/-75);
+  border-right-color: #FAAC18;
 }
 
 .wheel-container::after {
-  right: -5px;
-  border-right-color: var(--neutral-color);
+  right: calc(var(--wheel-size)/-120);
+  border-right-color: #FBD455;
 }
 
 /* Wheel */
@@ -736,7 +126,7 @@
   height: var(--wheel-size);
   overflow: hidden;
   border-radius: 50%;
-  border: solid var(--wheel-color) var(--wheel-border-size);
+  border: solid #FAAC18 var(--wheel-border-size);
   background-color: var(--background-color);
   transition: transform var(--reset-duration);
   transform: rotate(0deg);
@@ -768,20 +158,12 @@
   display: block;
   position: absolute;
   box-sizing: border-box;
-
   /* item position */
   top: 50%;
   left: 50%;
   width: 50%;
   transform-origin: center left;
   transform: translateY(-50%) rotate(calc(var(--item-nb) * (360deg / var(--nb-item, 1))));
-
-  /* text */
-  color: var(--neutral-color);
-  text-align: center;
-  padding: 0 25px 0 50px;
-  font-family: var(--wheel-font);
-  font-size: var(--wheel-font-size);
 }
 
 /* Element background = lighter pink triangle */
@@ -797,30 +179,18 @@
   left: 50%;
   transform: translate(-50%, -50%);
   padding-left: 0px;
-  opacity: 0.25;
-
-  /* 
-   Triangle width
-    I don't know why I need to add
-      " + var(--wheel-size) / 2 " in slice-max-width ==> gives 2.PI.R + R
-    but overall it works pretty well
-    TODO: To study
-  */
-  --slice-max-width: calc(var(--PI) * var(--wheel-size) + var(--wheel-size)* var(--scale-distance));
-  --slice-width: calc((var(--slice-max-width) / var(--nb-item)) - var(--wheel-slice-spacing));
-  border: solid transparent calc(var(--slice-width) /2);
+  border: solid transparent calc(((var(--wheel-size) *2) * var(--PI))/  (var(--nb-item) * 3.79));
   border-left: solid transparent 0;
-  /* profondeur du triangle = du centre de la roue à la bordure = 300px / 2 */
   border-right: solid var(--neutral-color) calc(var(--wheel-size) / 2);
 }
 
 .wheel-item-icon {
-  top: -40%;
-  left: 80%;
+  top: calc(((var(--wheel-size) *2) * var(--PI))/  (var(--nb-item) * 4.2) /2 * -1);
+  left: calc(100% - ((var(--wheel-size) *2) * var(--PI))/  (var(--nb-item) * 4.2)*1.2);
   z-index: 1;
   position: absolute;
-  height: var(--wheel-icon-size);
-  width: var(--wheel-icon-size);
+  height: calc(((var(--wheel-size) *2) * var(--PI))/  (var(--nb-item) * 4.2));
+  width:  calc(((var(--wheel-size) *2) * var(--PI))/  (var(--nb-item) * 4.2));
   background-image: var(--item-reward-url);
   background-position: center;
   background-repeat: no-repeat;
@@ -828,3 +198,81 @@
 }
 
 // tùy theo số lượng mà mình sẽ scale3
+// test view box wheel-viewbox-border1 mục tiêu sẽ xóa wheel-viewbox-border
+.wheel-viewbox-content{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+}
+.wheel-viewbox-border1{
+  z-index: 1;
+  position: absolute;
+  width: calc(var(--wheel-size) /5);
+  height: calc(var(--wheel-size) /5);
+  border-radius: 50%;
+  background: #fcca60;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wheel-viewbox1 {
+  width: calc(var(--wheel-size) /5);
+  height: calc(var(--wheel-size) /5);
+  border-radius: 80px;
+  background-image: url("/images/logo_cbbank.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  animation-duration: 2.4s;
+  animation-name: animation_logo;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+// animation logo
+@keyframes animation_logo {
+  from {
+    top: 42%;
+    left: 43%;
+    width: calc(var(--wheel-size) /8.5);
+    height: calc(var(--wheel-size) /8.5);
+    border-radius: 50px;
+  }
+
+  to {
+    width: calc(var(--wheel-size) /6);
+    height: calc(var(--wheel-size) /6);
+    border-radius: 120px;
+    top: 38%;
+    left: 39%;
+  }
+}
+
+.wheel-container_btnstart{
+  position: absolute;
+  top:calc(var(--wheel-size) * 1.083);
+  width: 100%;
+  text-align: center;
+}
+
+.wheel__btnstart{
+  height: var(--wheel-btnstart-height);
+  width: var(--wheel-btnstart-width);
+}
+
+//responsive
+
+@media only screen and (max-width: 1240px) {
+  :root {
+    --wheel-size: calc(100vw/1.25);
+  }
+}
+
+//11111111111111111111111111111111111111111111 end
+
+

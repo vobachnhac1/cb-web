@@ -75,7 +75,7 @@ export default function GenerateReward(props) {
 
   const columns = [
     {
-      title: 'Key',
+      title: 'STT',
       dataIndex: 'ord_numbers',
       key: 'ord_numbers',
       width: 30,
