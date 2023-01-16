@@ -16,6 +16,7 @@ const MainWheel = (props) => {
   const dispatch = useDispatch();
   const [animation, setAnimation] = useState(false);
   const [selectedItem, setSelectedItem] = useState(0);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const places = !roles ? useSelector(gettersEventWheel.getContentReward) : (arrItem || []);
   const isProcessing = useSelector(gettersEventWheel.getProccessing);
   const eventInfo = useSelector(gettersEventWheel.getEventInfo);

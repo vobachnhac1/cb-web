@@ -101,14 +101,12 @@ const ModalManagerDetailCbCoin = (props) => {
 
     //kiểm tra bahaviorCode có trùng nhau ở database
     const checkBehavior = await dispatch(actionManagerDetailCbCoin.checkBehavior(param));
-    console.log('checkBehavior', checkBehavior)
-    if (!checkBehavior.success) {
-      Message.Warning("Thông Báo", `Mã tích điểm ${checkBehavior.message}`);
-      return;
-    }
-
     // isAdd
     if (isAdd) {
+      if (!checkBehavior.success) {
+        Message.Warning("Thông Báo", `${checkBehavior.message}`);
+        return;
+      }
       const result = await dispatch(actionManagerDetailCbCoin.insertManagerDetailCbCoin(param));
       if (result) {
 
@@ -119,6 +117,10 @@ const ModalManagerDetailCbCoin = (props) => {
       Message.Error("Thông Báo", "Thêm chi tiết điểm thất bại");
       return;
     } else {
+      if (!checkBehavior.success && param.behaviorCode != "CHANGE") {
+        Message.Warning("Thông Báo", `${checkBehavior.message}`);
+        return;
+      }
       const result = await dispatch(actionManagerDetailCbCoin.updateManagerDetailCbCoin(param));
       if (result) {
         callback({ visible: false });
@@ -127,20 +129,15 @@ const ModalManagerDetailCbCoin = (props) => {
       }
       Message.Error("Thông Báo", "Cập nhật chi tiết điểm thất bại");
     }
-
   }
 
   const onCancel = () => {
     callback({ visible: false });
   }
 
-  // onChange = () => {
-
-  // }
-
   return (
     <Modal
-      width={700}
+      width={'auto'}
       maskClosable={false}
       closable={false}
       centered

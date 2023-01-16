@@ -260,6 +260,7 @@ export default function RulesManagement(props) {
       record: null,
       isAdd: false
     });
+    onSearch()
   }
 
   const onDoubleClick = (record, rowIndex) => {
@@ -346,6 +347,7 @@ export default function RulesManagement(props) {
   }
 
   const callback = async (value) => {
+    console.log('value: ', value);
     setVisibleModal(false)
     if(value.comfirm){
       if(keyRows == 'COMFIRM'){
@@ -502,4 +504,3 @@ export default function RulesManagement(props) {
     </LayoutHome >
   )
 }
-
