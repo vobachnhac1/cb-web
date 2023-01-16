@@ -462,7 +462,33 @@ export default function PopupMenu(props) {
 												<span
 													className={"coin-day--coin"}
 												>
-													+1.000 coin
+													+2.000 coin
+												</span>
+												<span
+													className={"coin-day--day"}
+												>
+													24/06/2022 10:10:10
+												</span>
+											</p>
+											<p className={"item--coin-usefor"}>
+												Chức năng thực hiện:
+												<span
+													style={{
+														fontWeight: "600",
+														color: "black",
+													}}
+												>
+													{" "}
+													Chuyển tiền
+												</span>
+											</p>
+										</li>
+										<li className={"content__item"}>
+											<p className={"item--coin-day"}>
+												<span
+													className={"coin-day--coin"}
+												>
+													+3.000 coin
 												</span>
 												<span
 													className={"coin-day--day"}
@@ -514,7 +540,7 @@ export default function PopupMenu(props) {
 												<span
 													className={"coin-day--coin"}
 												>
-													+1.000 coin
+													+5.000 coin
 												</span>
 												<span
 													className={"coin-day--day"}
@@ -540,7 +566,7 @@ export default function PopupMenu(props) {
 												<span
 													className={"coin-day--coin"}
 												>
-													+1.000 coin
+													+2.000 coin
 												</span>
 												<span
 													className={"coin-day--day"}
@@ -566,7 +592,7 @@ export default function PopupMenu(props) {
 												<span
 													className={"coin-day--coin"}
 												>
-													+1.000 coin
+													+6.000 coin
 												</span>
 												<span
 													className={"coin-day--day"}
@@ -592,7 +618,7 @@ export default function PopupMenu(props) {
 												<span
 													className={"coin-day--coin"}
 												>
-													+1.000 coin
+													+3.000 coin
 												</span>
 												<span
 													className={"coin-day--day"}
@@ -618,7 +644,7 @@ export default function PopupMenu(props) {
 												<span
 													className={"coin-day--coin"}
 												>
-													+1.000 coin
+													+2.000 coin
 												</span>
 												<span
 													className={"coin-day--day"}
@@ -644,7 +670,7 @@ export default function PopupMenu(props) {
 												<span
 													className={"coin-day--coin"}
 												>
-													+1.000 coin
+													+3.000 coin
 												</span>
 												<span
 													className={"coin-day--day"}
@@ -670,33 +696,7 @@ export default function PopupMenu(props) {
 												<span
 													className={"coin-day--coin"}
 												>
-													+1.000 coin
-												</span>
-												<span
-													className={"coin-day--day"}
-												>
-													24/06/2022 10:10:10
-												</span>
-											</p>
-											<p className={"item--coin-usefor"}>
-												Chức năng thực hiện:
-												<span
-													style={{
-														fontWeight: "600",
-														color: "black",
-													}}
-												>
-													{" "}
-													Chuyển tiền
-												</span>
-											</p>
-										</li>
-										<li className={"content__item"}>
-											<p className={"item--coin-day"}>
-												<span
-													className={"coin-day--coin"}
-												>
-													+1.000 coin
+													+5.000 coin
 												</span>
 												<span
 													className={"coin-day--day"}
@@ -749,7 +749,61 @@ export default function PopupMenu(props) {
 												<span
 													className={"coin-day--coin"}
 												>
-													+1.000 coin
+													+2.000 coin
+												</span>
+												<span
+													className={"coin-day--day"}
+												>
+													24/06/2022 10:10:10
+												</span>
+											</p>
+											<p className={"item--coin-usefor"}>
+												Tình trạng:
+												<span
+													style={{
+														fontWeight: "600",
+														color: "black",
+													}}
+												>
+													{" "}
+													Đang thực hiện
+												</span>
+											</p>
+										</li>
+										<li className={"content__item"}>
+											<p className={"item--coin-day"}>
+												<span
+													className={"coin-day--coin"}
+												>
+													Chúc bạn may mắn lần sau
+												</span>
+												<span
+													className={"coin-day--day"}
+												>
+													24/06/2022 10:10:10
+												</span>
+											</p>
+										</li>
+										<li className={"content__item"}>
+											<p className={"item--coin-day"}>
+												<span
+													className={"coin-day--coin"}
+												>
+													Chúc bạn may mắn lần sau
+												</span>
+												<span
+													className={"coin-day--day"}
+												>
+													24/06/2022 10:10:10
+												</span>
+											</p>
+										</li>
+										<li className={"content__item"}>
+											<p className={"item--coin-day"}>
+												<span
+													className={"coin-day--coin"}
+												>
+													+2.000 coin
 												</span>
 												<span
 													className={"coin-day--day"}
@@ -817,12 +871,24 @@ export default function PopupMenu(props) {
 												<span
 													className={"coin-day--coin"}
 												>
-													Chúc bạn may mắn lần sau
+													+1.000 coin
 												</span>
 												<span
 													className={"coin-day--day"}
 												>
 													24/06/2022 10:10:10
+												</span>
+											</p>
+											<p className={"item--coin-usefor"}>
+												Tình trạng:
+												<span
+													style={{
+														fontWeight: "600",
+														color: "black",
+													}}
+												>
+													{" "}
+													Đang thực hiện
 												</span>
 											</p>
 										</li>
@@ -831,7 +897,7 @@ export default function PopupMenu(props) {
 												<span
 													className={"coin-day--coin"}
 												>
-													Chúc bạn may mắn lần sau
+													+3.000 coin
 												</span>
 												<span
 													className={"coin-day--day"}
@@ -839,60 +905,16 @@ export default function PopupMenu(props) {
 													24/06/2022 10:10:10
 												</span>
 											</p>
-										</li>
-										<li className={"content__item"}>
-											<p className={"item--coin-day"}>
+											<p className={"item--coin-usefor"}>
+												Tình trạng:
 												<span
-													className={"coin-day--coin"}
+													style={{
+														fontWeight: "600",
+														color: "black",
+													}}
 												>
-													Chúc bạn may mắn lần sau
-												</span>
-												<span
-													className={"coin-day--day"}
-												>
-													24/06/2022 10:10:10
-												</span>
-											</p>
-										</li>
-										<li className={"content__item"}>
-											<p className={"item--coin-day"}>
-												<span
-													className={"coin-day--coin"}
-												>
-													Chúc bạn may mắn lần sau
-												</span>
-												<span
-													className={"coin-day--day"}
-												>
-													24/06/2022 10:10:10
-												</span>
-											</p>
-										</li>
-										<li className={"content__item"}>
-											<p className={"item--coin-day"}>
-												<span
-													className={"coin-day--coin"}
-												>
-													Chúc bạn may mắn lần sau
-												</span>
-												<span
-													className={"coin-day--day"}
-												>
-													24/06/2022 10:10:10
-												</span>
-											</p>
-										</li>
-										<li className={"content__item"}>
-											<p className={"item--coin-day"}>
-												<span
-													className={"coin-day--coin"}
-												>
-													Chúc bạn may mắn lần sau
-												</span>
-												<span
-													className={"coin-day--day"}
-												>
-													24/06/2022 10:10:10
+													{" "}
+													Đang thực hiện
 												</span>
 											</p>
 										</li>
