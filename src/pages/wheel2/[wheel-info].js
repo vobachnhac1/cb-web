@@ -125,12 +125,17 @@ export default function DisplayWheel(props) {
 	};
 
 	return (
-		<Layout
-			className={"App"}
+		<div
+		  className={"App"}
 			style={{
-				backgroundImage: null,
-				background: null
+				display:'flex',
+				flexDirection:'column'
 			}}
+			// className={"App"}
+			// style={{
+			// 	backgroundImage: null,
+			// 	background: null
+			// }}
 		>
 			<Header title={PathTitle[`${path}`]} />
 			{!manager && (
@@ -283,6 +288,6 @@ export default function DisplayWheel(props) {
 					</Col>
 				</Row>
 			)}
-		</Layout>
+		</div>
 	);
 }
