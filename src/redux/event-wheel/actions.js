@@ -31,7 +31,6 @@ export const getContentWheel = (payload) => async (dispatch, getState, { $http }
   return true
 }
 
-
 export const getRewardOfWheel = (payload) => async (dispatch, getState, { $http }) => {
   setToken(getState(),$http)
   dispatch(setEventWheelProccessing({ proccess: true, message: "" }));
@@ -51,13 +50,12 @@ export const getRewardOfWheel = (payload) => async (dispatch, getState, { $http 
   }
   const body = data.data;
   dispatch(setCustomerInfo(body?.customerProfile))
-  return body
+  return {...body, success}
 }
 
 export const SetCustomerInfo =  (payload) =>  (dispatch, getState, { $http }) => {
  dispatch(setCustomerInfo(payload))
 }
-
 
 export const setProcessing = (payload) => (dispatch, getState, { $http }) => {
   dispatch(setEventWheelProccessing({ proccess: payload, message: "" }));
