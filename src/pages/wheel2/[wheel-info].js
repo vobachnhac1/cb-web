@@ -24,30 +24,30 @@ import { Row, Col, Typography, Button, Layout } from "antd";
 const { Text } = Typography;
 // img
 export default function DisplayWheel(props) {
-  /// url mẫu http://localhost:3000/wheel2/000001000099-0000000001
-  const router = useRouter()
-  const { manager = null, arrItem = [] } = props;
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [path, setPath] = useState(router.pathname);
-  const [invalid, setInvalid] = useState(false);
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const places = !manager ? useSelector(gettersEventWheel.getContentReward) : (arrItem || []);
-  const [wheelId, setWheelId] = useState("")
-  const [userInfo, setUserInfo] = useState({})
-  const getCustomerInfo = useSelector(gettersEventWheel.getCustomerInfo);
+	/// url mẫu http://localhost:3000/wheel2/000001000099-0000000001
+	const router = useRouter()
+	const { manager = null, arrItem = [] } = props;
+	const [selectedItem, setSelectedItem] = useState(null);
+	const [path, setPath] = useState(router.pathname);
+	const [invalid, setInvalid] = useState(false);
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const places = !manager ? useSelector(gettersEventWheel.getContentReward) : (arrItem || []);
+	const [wheelId, setWheelId] = useState("")
+	const [userInfo, setUserInfo] = useState({})
+	const getCustomerInfo = useSelector(gettersEventWheel.getCustomerInfo);
 	const [flagOpenPopupMenu, setFlagOpenPopupMenu] = useState(false);
 	const [btnNameClick, setBtnNameClick] = useState({});
-	
-  useEffect(() => {
-    checkWheelDetail();
-  }, [places]);
 
-  const checkWheelDetail = () => {
-    if (!manager && (!places || places.length == 0)) {
-      setInvalid(true)
-    }
-  }
-  const dispatch = useDispatch();
+	useEffect(() => {
+		checkWheelDetail();
+	}, [places]);
+
+	const checkWheelDetail = () => {
+		if (!manager && (!places || places.length == 0)) {
+			setInvalid(true)
+		}
+	}
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		if (!manager) {
@@ -129,6 +129,7 @@ export default function DisplayWheel(props) {
 			className={"App"}
 			style={{
 				backgroundImage: null,
+				background: null
 			}}
 		>
 			<Header title={PathTitle[`${path}`]} />
