@@ -69,19 +69,20 @@ const WheelChild = (props) => {
     await dispatch(actionsEventWheel.setProcessing(true));
     let rsReward = null;
     if (!roles) {
-			console.log('!roles: ', !roles);
       if (eventInfo) {
         rsReward = await dispatch(actionsEventWheel.getRewardOfWheel());
-				console.log('rsReward: ', rsReward);
         setRewardBody(rsReward);
         if (rsReward?.success) {
           if (props.onSelectItem) {
             props.onSelectItem(places.length - (parseInt(rsReward.no)));
+						let myAudio = new Audio('/sound/demo3s.wav');
+            myAudio.load();
+            myAudio.play();
           } else {
             setup();
           }
         } else {
-          Message.Warning("Thông Báo", rsReward?.message);
+          // Message.Warning("Thông Báo", rsReward?.message);
           setup(); 
         }
       }
@@ -94,11 +95,11 @@ const WheelChild = (props) => {
         setup();
       }
     }
+
     setTimeout(async () => {
       if (!roles) {
         if (rsReward) {
-          console.log('rsReward: ', rsReward);
-          Message.Info("Thông Báo", `Bạn nhận được kết quả: ${rsReward.segment_name} `);
+          // Message.Info("Thông Báo", `Bạn nhận được kết quả: ${rsReward.segment_name} `);
 					await dispatch(actionsEventWheel.setProcessing(false));
 
         } else {

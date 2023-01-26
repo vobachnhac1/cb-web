@@ -156,7 +156,7 @@ const MainWheel = (props) => {
                         '--wheel-color': item.wheel_color,
                         "--rotate": rotate + 'deg',
                       }}>
-                      <p className={classNames({ [`content${places.length}`]: true })}>{item.segment_name}</p>
+                      <div className={classNames({ [`content${places.length}`]: true })}>{item.segment_name}</div>
                       <div className={classNames({ "pie-image": true }, { [`pie-img${places.length}`]: true })}
                         style={{ '--url': `url(${item.imgBase64})` }} />
                     </div>
